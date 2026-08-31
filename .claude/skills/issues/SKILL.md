@@ -49,9 +49,15 @@ question is "what is in Testing", it must be the GraphQL query above.
 | **Testing** | Code is in Studio and **owes a human playtest**. MCP playtesting is unavailable, so closure is always a manual run-through. Not closed |
 | **Done** | Finished. Not a question |
 
-`Severity`: **P1** breaks a match or loses player value · **P2** visibly wrong in normal play ·
-**P3** polish. Every issue also carries `standing` (raised by a release) or `internal` (tooling,
-data, infrastructure).
+`Severity` is a **board field, not a label** — **P1** breaks a match or loses player value ·
+**P2** visibly wrong in normal play · **P3** polish. The old `P1`/`P2`/`P3` labels were deleted on
+2026-08-31 because they were a second copy that would drift the moment a severity changed on the
+board. The only labels are `standing` (raised by a release) and `internal` (tooling, data,
+infrastructure) — immutable classification, not state.
+
+**Dragging a card to `Done` closes its issue automatically** (the board's Auto-close workflow, on
+since 2026-08-31). So `gh issue list` and the board agree without anyone reconciling them. You do
+not need to close an issue you have just moved.
 
 ## Renaming or reordering a column
 
@@ -62,11 +68,13 @@ the item counts to confirm nothing was dropped.
 
 ## Open an issue
 
-The issue holds **symptom, repro, and the test that closes it**. Diagnosis does *not* go here — it
+The issue holds **symptom, repro, and the test that closes it**. `.github/ISSUE_TEMPLATE/issue.yml`
+enforces exactly those three in the browser — **`gh issue create` bypasses templates entirely**, so
+when you open one from the CLI you must supply the same three sections yourself. Diagnosis does *not* go here — it
 goes in the release entry that shipped the fix, once. Tag the body `(raised: <release name>)`.
 
 ```bash
-gh issue create --repo Rasmus-Bondo/Bounty --title "..." --body-file <file> --label standing,P2
+gh issue create --repo Rasmus-Bondo/Bounty --title "..." --body-file <file> --label standing
 ```
 
 Then put it on the board and set its fields:

@@ -1,0 +1,50 @@
+name: Issue
+description: A known problem, or work deliberately deferred
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Diagnosis does not go here.** Why a fix worked is written once, in the release entry that
+        shipped it. This form is for the three things only the issue knows.
+
+        After creating it, put it on the board and set **Status** and **Severity** — those are board
+        fields, not labels, and the board is authoritative.
+  - type: textarea
+    id: symptom
+    attributes:
+      label: Symptom
+      description: What is wrong, in the reporter's terms.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Repro
+      description: >
+        How to see it. "Never reproduced" is a valid and valuable answer — say so explicitly
+        rather than leaving this blank.
+    validations:
+      required: true
+  - type: textarea
+    id: closing-test
+    attributes:
+      label: Test that closes it
+      description: >
+        The single most valuable line. MCP playtesting is unavailable, so closure is always a human
+        run-through — write the run-through.
+    validations:
+      required: true
+  - type: input
+    id: raised
+    attributes:
+      label: Raised by
+      description: The release that raised it, if any — e.g. "Hotfix 1.2 preflight, 2026-08-24".
+  - type: dropdown
+    id: class
+    attributes:
+      label: Class
+      options:
+        - standing (raised by a release, player-facing)
+        - internal (tooling, data, infrastructure, deliberate deferral)
+    validations:
+      required: true

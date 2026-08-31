@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Project board
+    url: https://github.com/users/Rasmus-Bondo/projects/1
+    about: Every issue lives on the board. Set Status and Severity there after opening one.
