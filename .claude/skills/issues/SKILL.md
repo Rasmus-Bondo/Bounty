@@ -98,5 +98,12 @@ problem that resurfaces becomes a **new issue**, never a reopened one.
 ## Old ids
 
 Release entries published before 2026-08-31 cite items by their **old** number, which does not
-match the issue number — old item 132 is issue #1. The mapping table is in
-`changelog/OPEN-ITEMS.md`. New work takes an issue number and no old id.
+match the issue number — old item 132 is issue #1.
+
+**This collides, and it fails silently.** Old ids and issue numbers occupy the same range: a
+release entry saying "item 12" translates to issue #12 only by coincidence — issue #12 is actually
+old item 118. `gh issue view 12` succeeds and hands you the wrong issue with no error. **Always
+translate through the mapping table in `changelog/OPEN-ITEMS.md` before looking a cited number up.**
+The overlap widens as the board grows past #33.
+
+New work takes an issue number and no old id.

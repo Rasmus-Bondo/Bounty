@@ -18,8 +18,8 @@ rollback index; the entries below are how you know *which* version to roll back 
 |---|---|
 | What shipped in a given release | the release file in the table below |
 | What is in flight right now | [changelog/UNRELEASED.md](changelog/UNRELEASED.md) |
-| What is still broken or deferred | [changelog/OPEN-ITEMS.md](changelog/OPEN-ITEMS.md) — index; each item is a file in [changelog/open-items/](changelog/open-items/) |
-| Whether something was ever fixed | [changelog/open-items/ARCHIVE.md](changelog/open-items/ARCHIVE.md) |
+| What is still broken or deferred | the [project board](https://github.com/users/Rasmus-Bondo/projects/1) — or run `/issues`. **Not** `changelog/OPEN-ITEMS.md`, which is a signpost and an old-id → issue mapping |
+| Whether something was ever fixed | a closed issue on the board, or [changelog/open-items/ARCHIVE.md](changelog/open-items/ARCHIVE.md) for the 99 closed before 2026-08-31 |
 | How to name a release, what the metadata fields mean, the 20 mirrored modules | [changelog/CONVENTIONS.md](changelog/CONVENTIONS.md) |
 | To write an entry | run `/changelog` — it writes into `UNRELEASED.md` |
 | To ship | run `/preflight` — it gates, rolls `UNRELEASED.md` into a dated file, and bumps the version |
