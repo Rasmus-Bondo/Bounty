@@ -1,0 +1,2 @@
+{"ts":"2026-08-07T12:45:29.2323868+02:00","tool":"create_object","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:98517073248449","name":"WorldAnimationPrewarmClient"}
+{"ts":"2026-08-07T12:46:05.5091263+02:00","tool":"set_script_source","target":"game.StarterPlayer.StarterPlayerScripts.WorldAnimationPrewarmClient","place":"place:98517073248449"}

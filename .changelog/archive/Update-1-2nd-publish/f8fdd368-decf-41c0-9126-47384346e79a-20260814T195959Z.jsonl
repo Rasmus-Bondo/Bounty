@@ -1,0 +1,16 @@
+{"ts":"2026-08-14T21:45:36.7945606+02:00","tool":"set_property","target":"game.Workspace[\"Hunt Beneath the Northern Sky\"]","place":"place:134041618959520"}
+{"ts":"2026-08-14T21:51:03.1120036+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:134041618959520"}
+{"ts":"2026-08-14T21:51:05.3354811+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:98517073248449"}
+{"ts":"2026-08-14T21:51:18.6713953+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:134041618959520"}
+{"ts":"2026-08-14T21:51:27.2085485+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:98517073248449"}
+{"ts":"2026-08-14T21:51:32.6612333+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:134041618959520"}
+{"ts":"2026-08-14T21:51:34.0837592+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:98517073248449"}
+{"ts":"2026-08-14T21:51:38.2189147+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:134041618959520"}
+{"ts":"2026-08-14T21:51:40.1665504+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:98517073248449"}
+{"ts":"2026-08-14T21:51:44.7551143+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:134041618959520"}
+{"ts":"2026-08-14T21:51:45.7580742+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:98517073248449"}
+{"ts":"2026-08-14T21:51:50.9902077+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:134041618959520"}
+{"ts":"2026-08-14T21:51:52.3659072+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:98517073248449"}
+{"ts":"2026-08-14T21:51:56.5960885+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:134041618959520"}
+{"ts":"2026-08-14T21:51:58.4830486+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts","place":"place:98517073248449"}
+{"ts":"2026-08-14T21:52:04.6692272+02:00","tool":"add_tag","target":"game.Workspace[\"Hunt Beneath the Northern Sky\"]","place":"place:134041618959520"}

@@ -1,0 +1,47 @@
+Count,Severity,Type,First seen at,Message,,
+74,Warning,Client,Thu Jul 16 2026 23:31:30 GMT+0200 (Central European Summer Time),[WorldRevolverShotSoundClient] Could not find FireSound in Workspace.Grimm2Day.WorldRevolverCosmetic,,
+44,Warning,Client,Thu Jul 16 2026 23:36:00 GMT+0200 (Central European Summer Time),[WorldRevolverShotSoundClient] Could not find FireSound in Workspace.megismylittlegirl.WorldRevolverCosmetic,,
+41,Warning,Client,Mon May 25 2026 02:44:45 GMT+0200 (Central European Summer Time),Infinite yield possible on WaitForChild,Workspace:WaitForChild("UnlockSkinFrame")
+Workspace.CameraFolder:WaitForChild("CameraPart")
+Workspace.CameraFolder:WaitForChild("CameraPartCollection")
+Workspace.SkinMenu:WaitForChild("PreviewPart"),
+40,Warning,Client,Thu Jul 16 2026 23:31:30 GMT+0200 (Central European Summer Time),[WorldRevolverShotSoundClient] Could not find FireSound in Workspace.Kingjaya021.WorldRevolverCosmetic,,
+31,Error,Client,Tue Jul 07 2026 11:38:20 GMT+0200 (Central European Summer Time),Players.<Player>.PlayerGui.BountyListGui.BountyListClient:47: attempt to call a nil value,"Script 'Players.<Player>.PlayerGui.BountyListGui.BountyListClient', Line 47",
+28,Warning,Client,Thu Jul 16 2026 23:32:25 GMT+0200 (Central European Summer Time),[WorldRevolverShotSoundClient] Could not find FireSound in Workspace.KG2_V.WorldRevolverCosmetic,,
+26,Error,Client,Tue Jul 07 2026 11:38:45 GMT+0200 (Central European Summer Time),Players.<Player>.PlayerGui.BountyListGui.BountyListClient:47: attempt to call a nil value,"Script 'Players.<Player>.PlayerGui.BountyListGui.BountyListClient', Line 47 - function fadeOutRow
+    Script 'Players.<Player>.PlayerGui.BountyListGui.BountyListClient', Line 289",
+22,Warning,Server,Wed Jul 08 2026 22:51:10 GMT+0200 (Central European Summer Time),[PlatformLeaderboard] Fetcher request failed,,
+14,Error,Client,Mon Jun 08 2026 14:34:25 GMT+0200 (Central European Summer Time),Failed to load sound: NetFail,rbxassetid://115531941079965: HttpError
+rbxassetid://123738524284685: HttpError
+rbxassetid://1845780843: HttpError,
+8,Warning,Client,Thu Jul 16 2026 23:37:20 GMT+0200 (Central European Summer Time),[WorldRevolverShotSoundClient] Could not find FireSound in Workspace.SokkaRefr.WorldRevolverCosmetic,,
+8,Warning,Client,Thu Jul 16 2026 23:35:00 GMT+0200 (Central European Summer Time),[WorldRevolverShotSoundClient] Could not find FireSound in Workspace.Roots_Dynamik.WorldRevolverCosmetic,,
+8,Error,Client,Mon Jun 15 2026 19:07:45 GMT+0200 (Central European Summer Time),Remote event invocation queue exhausted; did you forget to implement OnClientEvent? (events dropped),ReplicatedStorage.Revolver.Remotes.ReplicateShot,
+6,Warning,Client,Mon May 25 2026 01:57:35 GMT+0200 (Central European Summer Time),[WorldRevolverShotSoundClient] Could not find FireSound in Workspace.Aethuza.WorldRevolverCosmetic,,
+6,Warning,Client,Thu May 21 2026 15:18:00 GMT+0200 (Central European Summer Time),GetServerChannelRemote not available,,
+5,Warning,Client,Wed Jul 15 2026 20:13:40 GMT+0200 (Central European Summer Time),[HighNoon] Can-shoot cue could not find viewmodel handle,,
+4,Warning,Server,Tue Jul 14 2026 23:57:20 GMT+0200 (Central European Summer Time),[RoundController] Group teleport failed: All players in teleport request are already in progress or throttled.,,
+2,Warning,Client,Mon Jul 06 2026 16:46:05 GMT+0200 (Central European Summer Time),Native code generation of script =ReplicatedStorage.ExternalLibrary.chrono.Shared.Snapshots failed:  Internal error: Native code generation not initialized.,,
+2,Warning,Client,Thu Jul 16 2026 14:14:05 GMT+0200 (Central European Summer Time),[WorldRevolverShotSoundClient] Could not find FireSound in Workspace.Wevnel.WorldRevolverCosmetic,,
+1,Warning,Server,Mon Jul 13 2026 14:38:05 GMT+0200 (Central European Summer Time),[AntiCheat] <Player> reached 3 violations (last: vertical speed 120.9 > ceiling 65.0),,
+1,Warning,Server,Thu Jul 16 2026 14:06:40 GMT+0200 (Central European Summer Time),[AntiCheat] <Player> reached 3 violations (last: position delta 83.4 studs/s > ceiling 70.0),,
+1,Warning,Client,Wed Jul 15 2026 12:37:20 GMT+0200 (Central European Summer Time),[VesperViewModelAnimationClient] Missing BasicReload animation.,,
+1,Error,Server,Mon May 25 2026 12:28:00 GMT+0200 (Central European Summer Time),DataStoreService: InternalServerError: An internal server error occurred. API: UpdateAsync,PlayerData_v2,
+1,Warning,Client,Wed Jul 15 2026 12:37:20 GMT+0200 (Central European Summer Time),[VesperViewModelAnimationClient] Missing Idle animation.,,
+1,Warning,Server,Wed Jul 15 2026 20:18:30 GMT+0200 (Central European Summer Time),[AntiCheat] <Player> reached 3 violations (last: vertical speed 135.5 > ceiling 65.0),,
+Count,Severity,Type,First seen at,Message,,
+1,Error,Server,Wed Jul 15 2026 20:19:10 GMT+0200 (Central European Summer Time),Requested module experienced an error while loading,"Script 'ServerScriptService.Bots.BotService', Line 8",
+1,Error,Client,Tue Jun 23 2026 17:51:00 GMT+0200 (Central European Summer Time),Workspace.<Player>.Animate:604: invalid argument #2 to 'random' (interval is empty),"Script 'Workspace.<Player>.Animate', Line 604 - function rollAnimation
+    Script 'Workspace.<Player>.Animate', Line 649 - function playAnimation
+    Script 'Workspace.<Player>.Animate', Line 941",
+1,Error,Server,Wed Jul 15 2026 20:19:10 GMT+0200 (Central European Summer Time),Remotes is not a valid member of Folder "ReplicatedStorage.Hunters.Vesper","Script 'ServerScriptService.Bots.BotCombat', Line 20",
+1,Warning,Client,Fri Jun 19 2026 23:24:25 GMT+0200 (Central European Summer Time),Still found no StartPoint parts after waiting.,,
+1,Warning,Server,Tue Jul 14 2026 17:27:20 GMT+0200 (Central European Summer Time),[AntiCheat] <Player> reached 4 violations (last: position delta 91.6 studs/s > ceiling 70.0),,
+1,Warning,Server,Mon May 25 2026 12:28:00 GMT+0200 (Central European Summer Time),ProfileService DataStore API error: "502: API Services rejected request with error. Error code: 0 Reason: An internal server error occurred.","PlayerData_v2"";,Player_<PlayerId>""]",
+1,Error,Server,Wed Jul 15 2026 20:19:10 GMT+0200 (Central European Summer Time),Requested module experienced an error while loading,"Script 'ServerScriptService.Main', Line 18",
+1,Error,Server,Mon Jul 13 2026 14:15:25 GMT+0200 (Central European Summer Time),Failed to load animation with sanitized ID. Animation failed to load,rbxassetid://85888566430136,
+1,Error,Client,Wed Jul 08 2026 23:00:40 GMT+0200 (Central European Summer Time),Players.<Player>.PlayerGui.BountyListGui.BountyListClient:47: attempt to call a nil value,"Script 'Players.<Player>.PlayerGui.BountyListGui.BountyListClient', Line 47 - function fadeOutRow
+    Script 'Players.<Player>.PlayerGui.BountyListGui.BountyListClient', Line 293",
+1,Warning,Client,Wed Jul 15 2026 12:37:20 GMT+0200 (Central European Summer Time),[VesperViewModelAnimationClient] Missing Scope animation.,,
+1,Error,Client,,Failed to load object. PBR textures may not be visible in game.,Workspace.Camera.ClientViewModel.Sniper.Reload.SurfaceAppearance,
+1,Error,Server,Wed Jul 15 2026 20:19:10 GMT+0200 (Central European Summer Time),Requested module experienced an error while loading,"Script 'ServerScriptService.Bots.BotController', Line 10",

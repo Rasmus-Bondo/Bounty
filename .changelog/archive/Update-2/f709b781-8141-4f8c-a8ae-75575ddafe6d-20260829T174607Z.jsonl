@@ -1,0 +1,16 @@
+{"ts":"2026-08-24T11:50:54.6452148+02:00","tool":"edit_script_lines","target":"game.StarterGui.BountyListGui.BountyListClient","place":"place:98517073248449"}
+{"ts":"2026-08-24T11:51:05.2827636+02:00","tool":"edit_script_lines","target":"game.StarterGui.BountyListGui.BountyListClient","place":"place:134041618959520"}
+{"ts":"2026-08-24T11:51:17.5611845+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.HunterSwitchClient","place":"place:98517073248449"}
+{"ts":"2026-08-24T11:51:28.0087358+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.HunterSwitchClient","place":"place:134041618959520"}
+{"ts":"2026-08-24T12:15:59.2428357+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.CollectionGuiController.Viewport","place":"place:131701626847012"}
+{"ts":"2026-08-24T12:16:05.2739460+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.CollectionGuiController.Viewport","place":"place:131701626847012"}
+{"ts":"2026-08-24T12:16:15.0343050+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.CollectionGuiController.Viewport","place":"place:131701626847012"}
+{"ts":"2026-08-24T12:16:25.2222896+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.CollectionClient.ViewportIcon","place":"place:131701626847012"}
+{"ts":"2026-08-24T12:16:34.9192530+02:00","tool":"edit_script_lines","target":"game.StarterGui.BundleGuiHomeScreen.BundleHomeController","place":"place:131701626847012"}
+{"ts":"2026-08-24T12:23:59.9552357+02:00","tool":"edit_script_lines","target":"game.StarterGui.BountyListGui.BountyListClient","place":"place:98517073248449"}
+{"ts":"2026-08-24T12:24:08.3195073+02:00","tool":"edit_script_lines","target":"game.StarterGui.BountyListGui.BountyListClient","place":"place:134041618959520"}
+{"ts":"2026-08-24T12:24:20.2875957+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.HunterSwitchClient","place":"place:98517073248449"}
+{"ts":"2026-08-24T12:24:28.9129285+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.HunterSwitchClient","place":"place:134041618959520"}
+{"ts":"2026-08-24T12:24:41.9499860+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.CollectionGuiController.Viewport","place":"place:131701626847012"}
+{"ts":"2026-08-24T12:24:51.0726965+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.CollectionClient.ViewportIcon","place":"place:131701626847012"}
+{"ts":"2026-08-24T12:25:01.2697665+02:00","tool":"edit_script_lines","target":"game.StarterGui.BundleGuiHomeScreen.BundleHomeController","place":"place:131701626847012"}

@@ -1,0 +1,11 @@
+{"ts":"2026-08-04T15:06:45.2148682+02:00","tool":"create_object","target":"game.ReplicatedStorage.Hunters.Shared","place":"place:98517073248449","name":"KillFeedGate"}
+{"ts":"2026-08-04T15:07:06.7246840+02:00","tool":"set_script_source","target":"game.ReplicatedStorage.Hunters.Shared.KillFeedGate","place":"place:98517073248449"}
+{"ts":"2026-08-04T15:07:47.6065518+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterHitPipeline","place":"place:98517073248449"}
+{"ts":"2026-08-04T15:08:08.5650338+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterHitPipeline","place":"place:98517073248449"}
+{"ts":"2026-08-04T15:08:11.6329652+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Revolver.Modules.HighNoonDamage","place":"place:98517073248449"}
+{"ts":"2026-08-04T15:08:13.6292320+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotController","place":"place:98517073248449"}
+{"ts":"2026-08-04T15:08:19.7347318+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Revolver.Modules.HighNoonDamage","place":"place:98517073248449"}
+{"ts":"2026-08-04T15:08:26.9168066+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotController","place":"place:98517073248449"}
+{"ts":"2026-08-04T15:08:46.3178970+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotCombat","place":"place:98517073248449"}
+{"ts":"2026-08-04T15:10:11.6044444+02:00","tool":"set_script_source","target":"game.ReplicatedStorage.Hunters.Shared.KillFeedGate","place":"place:98517073248449"}
+{"ts":"2026-08-04T15:10:37.0659062+02:00","tool":"set_script_source","target":"game.ReplicatedStorage.Hunters.Shared.KillFeedGate","place":"place:98517073248449"}

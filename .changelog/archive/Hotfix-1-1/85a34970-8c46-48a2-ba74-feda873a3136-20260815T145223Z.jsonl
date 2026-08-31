@@ -1,0 +1,7 @@
+{"ts":"2026-08-15T16:42:34.2118328+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotConfig","place":"place:98517073248449"}
+{"ts":"2026-08-15T16:42:36.5165626+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotConfig","place":"place:134041618959520"}
+{"ts":"2026-08-15T16:42:37.4140219+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.RoundSystem.Config","place":"place:134041618959520"}
+{"ts":"2026-08-15T16:42:38.4850953+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.HunterSelectionService","place":"place:134041618959520"}
+{"ts":"2026-08-15T16:50:54.4728431+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.GameEnvironment","place":"place:131701626847012"}
+{"ts":"2026-08-15T16:50:55.8533429+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.GameEnvironment","place":"place:98517073248449"}
+{"ts":"2026-08-15T16:50:57.3536293+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.GameEnvironment","place":"place:134041618959520"}

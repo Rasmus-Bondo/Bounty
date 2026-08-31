@@ -1,0 +1,9 @@
+{"ts":"2026-08-08T20:58:12.9668517+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterMobileFireButton","place":"place:98517073248449"}
+{"ts":"2026-08-08T20:58:15.9767666+02:00","tool":"delete_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterMobileFireButton","place":"place:98517073248449"}
+{"ts":"2026-08-08T20:58:49.1371820+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterMobileFireButton","place":"place:98517073248449"}
+{"ts":"2026-08-08T20:58:52.6690269+02:00","tool":"delete_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterMobileFireButton","place":"place:98517073248449"}
+{"ts":"2026-08-08T20:59:59.4120440+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterMobileClusterLayout","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:00:01.9601474+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterMobileReloadButton","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:00:11.1416246+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterIntroTags","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:00:32.0934730+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterIntroTags","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:02:44.4217830+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterMobileSprintButton","place":"place:98517073248449"}

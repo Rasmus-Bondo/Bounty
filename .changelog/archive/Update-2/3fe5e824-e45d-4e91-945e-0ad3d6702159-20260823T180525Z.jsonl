@@ -1,0 +1,2 @@
+{"ts":"2026-08-23T19:35:05.5639881+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.CollectionGuiController.TileVisuals","place":"place:131701626847012"}
+{"ts":"2026-08-23T19:41:33.7949686+02:00","tool":"set_properties","target":"game.StarterGui.CollectionGui.CanvasRight.Background.MenuTabs.2Weapon.BackgroundFrame.TextButton","place":"place:131701626847012"}

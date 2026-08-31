@@ -1,0 +1,50 @@
+Count,Severity,Type,First seen at,Message,,
+546,Warning,Client,Fri Jul 31 2026 23:09:45 GMT+0200 (Central European Summer Time),Device3DClickHandler could not find Workspace > InviteParts.,,
+125,Error,Client,Wed Jul 22 2026 00:17:40 GMT+0200 (Central European Summer Time),Remote event invocation discarded event; did you forget to implement OnClientEvent? (events dropped),ReplicatedStorage.Hunters.Shared.Remotes.BotShotFX
+ReplicatedStorage.Hunters.Shared.Remotes.BotTransformUpdate,
+56,Warning,Client,Mon May 25 2026 02:44:45 GMT+0200 (Central European Summer Time),Infinite yield possible on WaitForChild,Players.<Player>.PlayerGui:WaitForChild("BattlepassGui")
+Players.<Player>.PlayerGui:WaitForChild("QuestCompleteNotification")
+ReplicatedStorage:WaitForChild("Events")
+Workspace:WaitForChild("CameraFolder")
+Workspace.InviteButtons:WaitForChild("InvitePartyPart1")
+Workspace.InviteButtons:WaitForChild("InvitePartyPart2")
+Workspace.LobbySpawns:WaitForChild("Player1"),
+47,Warning,Client,Thu May 21 2026 15:18:00 GMT+0200 (Central European Summer Time),GetServerChannelRemote not available,,
+43,Error,Client,Mon May 25 2026 12:05:25 GMT+0200 (Central European Summer Time),Failed to load animation with sanitized ID. Animation failed to load,rbxassetid://104495381270539
+rbxassetid://107172454211140
+rbxassetid://123958453269998,
+25,Error,Client,Mon Jun 08 2026 14:34:25 GMT+0200 (Central European Summer Time),Failed to load sound: NetFail,rbxassetid://123738524284685: HttpError
+rbxassetid://133904008738767: HttpError
+rbxassetid://1845780843: HttpError
+rbxassetid://1845846874: HttpError,
+22,Warning,Client,Tue Jul 28 2026 20:19:15 GMT+0200 (Central European Summer Time),[VesperScopeController] Camera rotateInput unavailable — scoped look speed is not damped on touch.,,
+12,Error,Server,Mon May 25 2026 12:28:00 GMT+0200 (Central European Summer Time),DataStoreService: InternalServerError: An internal server error occurred. API: UpdateAsync,PlayerData_v2,
+12,Warning,Server,Mon May 25 2026 12:28:00 GMT+0200 (Central European Summer Time),ProfileService DataStore API error: "502: API Services rejected request with error. Error code: 0 Reason: An internal server error occurred.","PlayerData_v2"";,Player_<PlayerId>""]
+PlayerData_v2"";,Player_7232832474""]",
+7,Error,Client,,MeshContentProvider failed to process asset because 'could not fetch',https://assetdelivery.roblox.com/v1/asset?id=112057594836917
+https://assetdelivery.roblox.com/v1/asset?id=83208746962331
+https://assetdelivery.roblox.com/v1/asset?id=94145511860279,
+3,Error,Client,Tue Jun 23 2026 17:51:00 GMT+0200 (Central European Summer Time),Workspace.<Player>.Animate:604: invalid argument #2 to 'random' (interval is empty),"Script 'Workspace.<Player>.Animate', Line 604 - function rollAnimation
+    Script 'Workspace.<Player>.Animate', Line 649 - function playAnimation
+    Script 'Workspace.<Player>.Animate', Line 941",
+2,Error,Client,Mon Jun 29 2026 21:39:40 GMT+0200 (Central European Summer Time),Server Kick Message: Your data session ended. Please rejoin.,,
+2,Warning,Server,Sat Aug 01 2026 14:19:10 GMT+0200 (Central European Summer Time),[AntiCheat] nna999991 kicked for movement violations.,,
+1,Warning,Client,Sat Aug 01 2026 02:41:05 GMT+0200 (Central European Summer Time),Could not find Workspace.TumbleweedSpawns (Persistent Model). Check spelling.,,
+1,Warning,Server,Sat Aug 01 2026 10:45:50 GMT+0200 (Central European Summer Time),[AntiCheat] <Player> reached 3 violations (last: position delta 110.1 studs/s > ceiling 70.0),,
+1,Warning,Server,Sat Aug 01 2026 01:26:25 GMT+0200 (Central European Summer Time),[FollowJoinService] Could not forward lolxnobodyy to their friend: That match is wrapping up - they'll be back in the lobby in a moment.,,
+1,Warning,Server,Fri Jul 31 2026 20:46:30 GMT+0200 (Central European Summer Time),[FollowJoinService] Could not forward <Player> to their friend: That match is wrapping up - they'll be back in the lobby in a moment.,,
+1,Warning,Server,Fri Jul 31 2026 22:01:10 GMT+0200 (Central European Summer Time),[AntiCheat] <Player> reached 3 violations (last: position delta 103.7 studs/s > ceiling 70.0),,
+1,Warning,Client,Mon Jul 06 2026 16:46:05 GMT+0200 (Central European Summer Time),Native code generation of script =ReplicatedStorage.ExternalLibrary.chrono.Shared.Snapshots failed:  Internal error: Native code generation not initialized.,,
+1,Warning,Client,Fri Jul 31 2026 20:25:50 GMT+0200 (Central European Summer Time),Lobby weapon missing Dust HellFire offset,,
+1,Error,Server,Sat Aug 01 2026 10:11:05 GMT+0200 (Central European Summer Time),DataStoreService: InternalServerError: An internal server error occurred. API: GetAsync,RankPoints_v2,
+1,Error,Client,Sat Aug 01 2026 10:53:35 GMT+0200 (Central European Summer Time),Failed to load sound: HTTP 502,rbxassetid://1835345914,
+1,Error,Server,Sat Aug 01 2026 02:36:30 GMT+0200 (Central European Summer Time),"MemoryStoreService: InternalError: Internal Error. API: SortedMap.Set, Data Structure: RedwaterMatchDirectory_v1.",,
+1,Error,Server,Sat Aug 01 2026 10:11:05 GMT+0200 (Central European Summer Time),DataStoreService: InternalServerError: An internal server error occurred. API: GetSortedAsync,RankPoints_v2,
+1,Warning,Server,Sat Aug 01 2026 10:12:00 GMT+0200 (Central European Summer Time),[ProfileService]: Entered critical state,,
+1,Warning,Server,Sat Aug 01 2026 10:46:20 GMT+0200 (Central European Summer Time),[AntiCheat] folkway92 kicked for movement violations.,,
+1,Warning,Server,Sat Aug 01 2026 10:46:20 GMT+0200 (Central European Summer Time),[AntiCheat] folkway92 reached 5 violations (last: position delta 203.2 studs/s > ceiling 70.0),,
+1,Warning,Server,Mon Jul 06 2026 14:36:50 GMT+0200 (Central European Summer Time),[RoundController] Solo teleport failed for Aethuza : All players in teleport request are already in progress or throttled.,,
+1,Warning,Server,Sat Aug 01 2026 14:19:10 GMT+0200 (Central European Summer Time),[AntiCheat] nna999991 reached 3 violations (last: horizontal speed 42.5 > ceiling 40.0),,
+1,Warning,Server,Fri Jul 31 2026 22:06:40 GMT+0200 (Central European Summer Time),[RoundController] Solo teleport failed for Headmaster_012 : All players in teleport request are already in progress or throttled.,,
+1,Warning,Server,Sat Aug 01 2026 10:11:05 GMT+0200 (Central European Summer Time),[RankLeaderboardService] GetSortedAsync failed: 502: API Services rejected request with error. Error code: 0 Reason: An internal server error occurred.,,
+1,Warning,Server,Sat Aug 01 2026 02:36:30 GMT+0200 (Central European Summer Time),[MatchDirectoryService] publish failed (1 in a row): InternalError: Internal Error.,,

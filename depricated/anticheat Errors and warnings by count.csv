@@ -1,0 +1,100 @@
+Count,Severity,Type,First seen at,First seen version,Message,,
+763,Error,Client,Mon May 25 2026 12:05:25 GMT+0200 (Central European Summer Time),V420,Failed to load animation with sanitized ID. Animation failed to load,rbxassetid://103133433995711
+rbxassetid://10358505520
+rbxassetid://103595586831507
+rbxassetid://107172454211140
+rbxassetid://107731406398056
+rbxassetid://116854322871556
+rbxassetid://127167998229924,
+193,Warning,Client,Tue Jun 30 2026 23:32:05 GMT+0200 (Central European Summer Time),V959,"Failed to play animation. AnimationTrack limit of 64 tracks exceeded, new animations will not be played.","http://www.roblox.com/asset/?id=507765000,<Player>
+http://www.roblox.com/asset/?id=507766388,<Player>",
+72,Error,Client,Mon Jun 08 2026 14:34:25 GMT+0200 (Central European Summer Time),V621,Failed to load sound: NetFail,rbxassetid://102146872444344: HttpError
+rbxassetid://115531941079965: HttpError
+rbxassetid://123738524284685: HttpError
+rbxassetid://135871245123017: HttpError
+rbxassetid://1845780843: HttpError,
+66,Error,Client,Wed Jul 22 2026 00:17:40 GMT+0200 (Central European Summer Time),V1561,Remote event invocation discarded event; did you forget to implement OnClientEvent? (events dropped),ReplicatedStorage.Hunters.Shared.Remotes.BotShotFX
+ReplicatedStorage.Hunters.Shared.Remotes.BotTransformUpdate,
+61,Warning,Client,Thu May 21 2026 15:18:00 GMT+0200 (Central European Summer Time),V318,GetServerChannelRemote not available,,
+34,Error,Client,Mon Aug 03 2026 14:17:10 GMT+0200 (Central European Summer Time),V2055,HSRDataContentProvider failed to process asset because 'could not fetch',https://assetdelivery.roblox.com/v1/asset?id=100836424706889,
+32,Warning,Client,Tue Jul 28 2026 20:19:15 GMT+0200 (Central European Summer Time),V1884,[VesperScopeController] Camera rotateInput unavailable — scoped look speed is not damped on touch.,,
+28,Warning,Client,Mon May 25 2026 02:03:00 GMT+0200 (Central European Summer Time),V384,Infinite yield possible on WaitForChild,Players.<Player>.PlayerGui:WaitForChild("QuestCompleteNotification")
+Workspace.<Player>:WaitForChild("Humanoid"),
+25,Error,Client,Sat Aug 01 2026 23:27:40 GMT+0200 (Central European Summer Time),V2055,Failed to load sound: Timedout,rbxassetid://116565742544806: HttpError
+rbxassetid://123738524284685: HttpError
+rbxassetid://144884872: HttpError,
+12,Error,Client,Tue Aug 04 2026 07:03:25 GMT+0200 (Central European Summer Time),V2113,Failed to load sound: Unable to download sound data,rbxassetid://116565742544806,
+10,Error,Client,,V267,MeshContentProvider failed to process asset because 'could not fetch',https://assetdelivery.roblox.com/v1/asset?id=80275174953427
+https://assetdelivery.roblox.com/v1/asset/?id=11438475784,
+5,Error,Client,Tue Jun 23 2026 17:51:00 GMT+0200 (Central European Summer Time),V768,Workspace.<Player>.Animate:604: invalid argument #2 to 'random' (interval is empty),"Script 'Workspace.<Player>.Animate', Line 604 - function rollAnimation
+    Script 'Workspace.<Player>.Animate', Line 649 - function playAnimation
+    Script 'Workspace.<Player>.Animate', Line 941",
+3,Error,Client,Sat Aug 01 2026 10:53:35 GMT+0200 (Central European Summer Time),V2048,Failed to load sound: HTTP 502,rbxassetid://1845780850
+rbxassetid://75336145720603
+rbxassetid://9047144332,
+3,Warning,Server,Tue Aug 04 2026 11:07:25 GMT+0200 (Central European Summer Time),V2113,[RoundController] Solo teleport failed for 2CloudySkys : All players in teleport request are already in progress or throttled.,,
+3,Warning,Server,Tue Aug 04 2026 01:12:15 GMT+0200 (Central European Summer Time),V2113,[AntiCheat] loveskyylie kicked for movement violations.,,
+2,Warning,Server,Tue Aug 04 2026 07:43:40 GMT+0200 (Central European Summer Time),V2113,[AntiCheat] dungeon_parts kicked for movement violations.,,
+2,Warning,Client,Sat Aug 01 2026 21:20:10 GMT+0200 (Central European Summer Time),V2055,[DamageVignetteClient] Humanoid not found,,
+2,Warning,Server,Tue Aug 04 2026 02:43:45 GMT+0200 (Central European Summer Time),V2113,[SkinService] Failed to load custom StarterCharacter: LoadCharacter can only be called when Player is in the world,,
+2,Warning,Client,Sat Jul 04 2026 14:54:00 GMT+0200 (Central European Summer Time),V1012,Native code generation of script =ReplicatedStorage.ExternalLibrary.chrono.Shared.Snapshots failed:  Native code generation is not supported on this device.,,
+1,Warning,Server,Tue Aug 04 2026 00:45:00 GMT+0200 (Central European Summer Time),V2113,"[AntiCheat] <Player> reached 3 violations (last: position delta 106.3 studs/s > ceiling 70.0) | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=true hSpeed=20.0 vY=-13.8 pos=(17,34,-186) graces{none} move{<Player> -> 16.00; base=16.00; base:Passive=16.00 p0}",,
+1,Error,Server,Tue Aug 04 2026 02:43:45 GMT+0200 (Central European Summer Time),V2113,LoadCharacter can only be called when Player is in the world,"Script 'ServerScriptService.PlayerServices.SkinService', Line 257 - function loadCharacter
+    Script 'ServerScriptService.PlayerServices.SkinService', Line 273 - function initPlayer",
+1,Warning,Server,Tue Aug 04 2026 01:12:15 GMT+0200 (Central European Summer Time),V2113,"[AntiCheat] loveskyylie kick detail: 9 violations, last: position delta 82.0 studs/s > ceiling 70.0 | move{loveskyylie -> 16.00; base=16.00; base:Passive=16.00 p0}
+[   8.8s]  1 -> 1 | horizontal speed 88.2 > ceiling 50.0 | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=88.2 vY=4.3 pos=(-71,92,-86) graces{none}
+[   9.3s]  1 -> 2 | horizontal speed 79.7 > ceiling 50.0 | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=79.7 vY=41.7 pos=(-100,122,-109) graces{none}
+[   9.3s]  3 -> 5 | position delta 71.6 studs/s > ceiling 70.0 | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=79.7 vY=41.7 pos=(-100,122,-109) graces{none}
+[   9.8s]  1 -> 6 | horizontal speed 79.1 > ceiling 50.0 | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=79.1 vY=28.5 pos=(-108,144,-150) graces{none}
+[   9.8s]  3 -> 9 | position delta 82.0 studs/s > ceiling 70.0 | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=79.1 vY=28.5 pos=(-108,144,-150) graces{none}",,
+1,Warning,Client,Sat Aug 01 2026 23:27:40 GMT+0200 (Central European Summer Time),V2055,Unhandled Promise rejection:
+
+nil
+
+CoreGui.RobloxGui.Modules.AvatarEditorPrompts.Thunks.GetGameName:25
+CorePackages.Packages._Index.Rodux.Rodux.makeThunkMiddleware:18
+CorePackages.Packages._Index.Rodux.Rodux.makeThunkMiddleware:17
+CorePackages.Packages._Index.Rodux.Rodux.Store:116
+CoreGui.RobloxGui.Modules.AvatarEditorPrompts:48 function new
+CoreGui.RobloxGui.Modules.AvatarEditorPrompts:82,,
+1,Warning,Server,Tue Aug 04 2026 01:12:15 GMT+0200 (Central European Summer Time),V2113,"[AntiCheat] loveskyylie reached 5 violations (last: position delta 71.6 studs/s > ceiling 70.0) | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=79.7 vY=41.7 pos=(-100,122,-109) graces{none} move{loveskyylie -> 16.00; base=16.00; base:Passive=16.00 p0}",,
+1,Warning,Client,Sat Aug 01 2026 23:27:40 GMT+0200 (Central European Summer Time),V2055,Unable to get game name for Avatar Editor Prompts,,
+1,Warning,Server,Tue Aug 04 2026 07:43:40 GMT+0200 (Central European Summer Time),V2113,"[AntiCheat] dungeon_parts reached 3 violations (last: airborne for 3.1s) | hunter=Dust state=Running floor=Air walkSpeed=0.0 grounded=false hSpeed=14.9 vY=3.8 pos=(52,1,-250) graces{none} move{dungeon_parts -> 0.00; override VictoryFreeze=0.00 (jump locked); base=16.00; base:Passive=16.00 p0}",,
+1,Warning,Server,Tue Jun 16 2026 03:00:20 GMT+0200 (Central European Summer Time),V675,[RoundController] Solo teleport failed for <Player> : All players in teleport request are already in progress or throttled.,,
+1,Warning,Server,Tue Aug 04 2026 04:38:50 GMT+0200 (Central European Summer Time),V2113,"[AntiCheat] <Player> reached 3 violations (last: position delta 73.7 studs/s > ceiling 70.0) | hunter=Dust state=Running floor=Sand walkSpeed=16.0 grounded=true hSpeed=16.0 vY=-1.2 pos=(-66,14,-219) graces{none} move{<Player> -> 16.00; base=16.00; base:Passive=16.00 p0}",,
+1,Warning,Server,Mon Aug 03 2026 23:26:20 GMT+0200 (Central European Summer Time),V2113,"[AntiCheat] <Player> reached 3 violations (last: position delta 121.2 studs/s > ceiling 70.0) | hunter=Dust state=Running floor=Air walkSpeed=16.0 grounded=true hSpeed=18.6 vY=5.4 pos=(48,30,-457) graces{none} move{<Player> -> 16.00; base=16.00; base:Passive=16.00 p0}",,
+1,Warning,Server,Tue Aug 04 2026 01:12:15 GMT+0200 (Central European Summer Time),V2113,"[AntiCheat] loveskyylie kick detail: 6 violations, last: horizontal speed 79.1 > ceiling 50.0 | move{loveskyylie -> 16.00; base=16.00; base:Passive=16.00 p0}
+[   8.8s]  1 -> 1 | horizontal speed 88.2 > ceiling 50.0 | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=88.2 vY=4.3 pos=(-71,92,-86) graces{none}
+[   9.3s]  1 -> 2 | horizontal speed 79.7 > ceiling 50.0 | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=79.7 vY=41.7 pos=(-100,122,-109) graces{none}
+[   9.3s]  3 -> 5 | position delta 71.6 studs/s > ceiling 70.0 | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=79.7 vY=41.7 pos=(-100,122,-109) graces{none}
+[   9.8s]  1 -> 6 | horizontal speed 79.1 > ceiling 50.0 | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=79.1 vY=28.5 pos=(-108,144,-150) graces{none}",,
+1,Warning,Server,Tue Aug 04 2026 07:43:40 GMT+0200 (Central European Summer Time),V2113,"[AntiCheat] dungeon_parts kick detail: 7 violations, last: airborne for 3.1s | move{dungeon_parts -> 0.00; override VictoryFreeze=0.00 (jump locked); base=16.00; base:Passive=16.00 p0}
+[  32.6s]  1 -> 1 | airborne with no ground detected | hunter=Dust state=Running floor=Air walkSpeed=0.0 grounded=false hSpeed=14.9 vY=3.8 pos=(52,1,-250) graces{none}
+[  33.6s]  2 -> 3 | airborne for 3.1s | hunter=Dust state=Running floor=Air walkSpeed=0.0 grounded=false hSpeed=14.9 vY=3.8 pos=(52,1,-250) graces{none}
+[  34.6s]  1 -> 4 | airborne with no ground detected | hunter=Dust state=Running floor=Air walkSpeed=0.0 grounded=false hSpeed=14.9 vY=3.8 pos=(52,1,-250) graces{none}
+[  36.7s]  1 -> 5 | airborne with no ground detected | hunter=Dust state=Running floor=Air walkSpeed=0.0 grounded=false hSpeed=14.9 vY=3.8 pos=(52,1,-250) graces{none}
+[  36.7s]  2 -> 7 | airborne for 3.1s | hunter=Dust state=Running floor=Air walkSpeed=0.0 grounded=false hSpeed=14.9 vY=3.8 pos=(52,1,-250) graces{none}",,
+1,Warning,Server,Tue Aug 04 2026 01:12:15 GMT+0200 (Central European Summer Time),V2113,"[AntiCheat] loveskyylie kick detail: 5 violations, last: position delta 71.6 studs/s > ceiling 70.0 | move{loveskyylie -> 16.00; base=16.00; base:Passive=16.00 p0}
+[   8.8s]  1 -> 1 | horizontal speed 88.2 > ceiling 50.0 | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=88.2 vY=4.3 pos=(-71,92,-86) graces{none}
+[   9.3s]  1 -> 2 | horizontal speed 79.7 > ceiling 50.0 | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=79.7 vY=41.7 pos=(-100,122,-109) graces{none}
+[   9.3s]  3 -> 5 | position delta 71.6 studs/s > ceiling 70.0 | hunter=Dust state=Freefall floor=Air walkSpeed=16.0 grounded=false hSpeed=79.7 vY=41.7 pos=(-100,122,-109) graces{none}",,
+1,Error,Server,Tue Aug 04 2026 02:43:45 GMT+0200 (Central European Summer Time),V2113,LoadCharacter can only be called when Player is in the world,"Script 'ServerScriptService.PlayerServices.SkinService', Line 257 - function loadCharacter
+    Script 'ServerScriptService.RoundSystem.RoundController', Line 955",
+1,Warning,Client,Fri Jul 10 2026 15:43:00 GMT+0200 (Central European Summer Time),V1176,[RoundClientController] CameraIdlePart missing or not a BasePart.,,
+1,Warning,Client,Sat Aug 01 2026 23:27:40 GMT+0200 (Central European Summer Time),V2055,Unhandled Promise rejection:
+
+nil
+
+CoreGui.RobloxGui.Modules.TopBar.Thunks.GetGameName:33
+CorePackages.Packages._Index.Rodux.Rodux.makeThunkMiddleware:18
+CorePackages.Packages._Index.Rodux.Rodux.makeThunkMiddleware:17
+CorePackages.Packages._Index.Rodux.Rodux.Store:116
+CoreGui.RobloxGui.Modules.TopBar:155 function new
+CoreGui.RobloxGui.Modules.TopBar:314,,
+1,Warning,Server,Tue Aug 04 2026 07:43:40 GMT+0200 (Central European Summer Time),V2113,"[AntiCheat] dungeon_parts kick detail: 5 violations, last: airborne with no ground detected | move{dungeon_parts -> 0.00; override VictoryFreeze=0.00 (jump locked); base=16.00; base:Passive=16.00 p0}
+[  32.6s]  1 -> 1 | airborne with no ground detected | hunter=Dust state=Running floor=Air walkSpeed=0.0 grounded=false hSpeed=14.9 vY=3.8 pos=(52,1,-250) graces{none}
+[  33.6s]  2 -> 3 | airborne for 3.1s | hunter=Dust state=Running floor=Air walkSpeed=0.0 grounded=false hSpeed=14.9 vY=3.8 pos=(52,1,-250) graces{none}
+[  34.6s]  1 -> 4 | airborne with no ground detected | hunter=Dust state=Running floor=Air walkSpeed=0.0 grounded=false hSpeed=14.9 vY=3.8 pos=(52,1,-250) graces{none}
+[  36.7s]  1 -> 5 | airborne with no ground detected | hunter=Dust state=Running floor=Air walkSpeed=0.0 grounded=false hSpeed=14.9 vY=3.8 pos=(52,1,-250) graces{none}",,
+1,Warning,Client,Sat Aug 01 2026 23:27:40 GMT+0200 (Central European Summer Time),V2055,Unable to get game name for Gamepad Menu,,
+1,Warning,Server,Tue Aug 04 2026 05:50:25 GMT+0200 (Central European Summer Time),V2113,"[AntiCheat] <Player> reached 4 violations (last: position delta 71.7 studs/s > ceiling 70.0) | hunter=Vesper state=Running floor=Air walkSpeed=16.0 grounded=true hSpeed=16.0 vY=25.7 pos=(120,17,-246) graces{GrappleGraceUntil-2.37s} move{<Player> -> 16.00; base=16.00; base:Passive=16.00 p0}",,

@@ -1,0 +1,17 @@
+{"ts":"2026-08-13T12:10:32.5951784+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterCharacterUtil","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:10:38.6968148+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterCharacterUtil","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:10:40.7350073+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterCharacterUtil","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:11:15.8906906+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Revolver.Modules.RevolverServer.RevolverDamageService","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:11:17.9500097+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Hunters.VesperServer.SunspikeDamageService","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:11:19.9906344+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Hunters.BramServer.GrudgekeeperDamageService","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:11:25.5818919+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Revolver.Modules.HighNoonDamage","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:11:27.1505829+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Hunters.DustServer.RevolverModule","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:11:28.6845891+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotCombat","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:11:35.3492305+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotCombat","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:11:36.3087714+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotCombat","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:11:39.8485407+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.RoundSystem.SpawnService","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:14:20.0140974+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.KillFeedGate","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:25:31.0818033+02:00","tool":"create_object","target":"game.StarterPlayer.StarterCharacterScripts","place":"place:98517073248449","name":"Health"}
+{"ts":"2026-08-13T12:25:51.5030791+02:00","tool":"set_script_source","target":"game.StarterPlayer.StarterCharacterScripts.Health","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:28:49.2172865+02:00","tool":"set_property","target":"game.StarterPlayer.StarterPlayerScripts.DisableDefaultHealth","place":"place:98517073248449"}
+{"ts":"2026-08-13T12:58:26.5162282+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterCharacterScripts.Health","place":"place:98517073248449"}

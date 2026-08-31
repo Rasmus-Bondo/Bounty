@@ -1,0 +1,6 @@
+{"ts":"2026-08-05T12:45:33.1562417+02:00","tool":"delete_object","target":"game.StarterGui.ReworkedSettingsGui.LeaveConfirmFrame","place":"place:98517073248449"}
+{"ts":"2026-08-05T12:45:40.6835466+02:00","tool":"mass_create_objects","target":"(unspecified)","place":"place:98517073248449"}
+{"ts":"2026-08-05T12:45:54.9867487+02:00","tool":"mass_create_objects","target":"(unspecified)","place":"place:98517073248449"}
+{"ts":"2026-08-05T12:46:30.3789169+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkedSettingsGui.SettingsController","place":"place:98517073248449"}
+{"ts":"2026-08-05T12:55:13.2838255+02:00","tool":"mass_create_objects","target":"(unspecified)","place":"place:98517073248449"}
+{"ts":"2026-08-05T12:56:01.4782239+02:00","tool":"mass_create_objects","target":"(unspecified)","place":"place:98517073248449"}

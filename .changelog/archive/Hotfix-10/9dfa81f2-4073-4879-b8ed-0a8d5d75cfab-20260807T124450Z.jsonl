@@ -1,0 +1,12 @@
+{"ts":"2026-08-07T12:01:19.7179614+02:00","tool":"create_object","target":"game.ReplicatedStorage.Modules","place":"place:98517073248449","name":"AnimationLoader"}
+{"ts":"2026-08-07T12:01:20.8127195+02:00","tool":"create_object","target":"game.ReplicatedStorage.Modules","place":"place:131701626847012","name":"AnimationLoader"}
+{"ts":"2026-08-07T12:02:04.0002128+02:00","tool":"set_script_source","target":"game.ReplicatedStorage.Modules.AnimationLoader","place":"place:98517073248449"}
+{"ts":"2026-08-07T12:02:32.2526725+02:00","tool":"set_script_source","target":"game.ReplicatedStorage.Modules.AnimationLoader","place":"place:131701626847012"}
+{"ts":"2026-08-07T12:03:38.8802262+02:00","tool":"find_and_replace_in_scripts","target":"game.ReplicatedStorage.Hunters.Shared.HunterWorldModel","place":"place:98517073248449"}
+{"ts":"2026-08-07T12:03:47.6470195+02:00","tool":"find_and_replace_in_scripts","target":"game.ReplicatedStorage.Hunters.Shared.HunterWorldModel","place":"place:98517073248449"}
+{"ts":"2026-08-07T12:03:54.8222518+02:00","tool":"find_and_replace_in_scripts","target":"game.ReplicatedStorage.Hunters.Shared.HunterWorldModel","place":"place:98517073248449"}
+{"ts":"2026-08-07T12:04:01.4061682+02:00","tool":"find_and_replace_in_scripts","target":"game.ReplicatedStorage.Hunters.Shared.HunterWorldModel","place":"place:98517073248449"}
+{"ts":"2026-08-07T12:04:13.6515317+02:00","tool":"find_and_replace_in_scripts","target":"game.ReplicatedStorage.Hunters.Shared.HunterWorldModel","place":"place:98517073248449"}
+{"ts":"2026-08-07T12:04:49.8849532+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts.Dust.WorldRevolverAimIdleClient","place":"place:98517073248449"}
+{"ts":"2026-08-07T12:04:59.5344830+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts.Dust.WorldRevolverAimIdleClient","place":"place:98517073248449"}
+{"ts":"2026-08-07T12:05:10.2292653+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts.Dust.WorldRevolverAimIdleClient","place":"place:98517073248449"}

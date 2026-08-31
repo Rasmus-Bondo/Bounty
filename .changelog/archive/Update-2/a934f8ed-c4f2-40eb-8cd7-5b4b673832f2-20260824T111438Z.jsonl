@@ -1,0 +1,6 @@
+{"ts":"2026-08-22T16:16:59.5940457+02:00","tool":"set_property","target":"game.StarterPlayer","place":"place:131701626847012"}
+{"ts":"2026-08-22T16:17:00.4614114+02:00","tool":"set_property","target":"game.StarterPlayer","place":"place:134041618959520"}
+{"ts":"2026-08-22T16:17:01.2338761+02:00","tool":"set_property","target":"game.StarterPlayer","place":"place:112014319307228"}
+{"ts":"2026-08-22T16:20:05.8127473+02:00","tool":"set_property","target":"game.TextChatService.BubbleChatConfiguration","place":"place:131701626847012"}
+{"ts":"2026-08-22T16:20:07.8889843+02:00","tool":"set_property","target":"game.TextChatService.BubbleChatConfiguration","place":"place:134041618959520"}
+{"ts":"2026-08-22T16:20:09.9936273+02:00","tool":"set_property","target":"game.TextChatService.BubbleChatConfiguration","place":"place:112014319307228"}

@@ -1,0 +1,13 @@
+{"ts":"2026-08-23T11:06:06.4149327+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.PlayerServices.Wallet","place":"place:131701626847012"}
+{"ts":"2026-08-23T11:06:07.3635619+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.PlayerServices.Wallet","place":"place:98517073248449"}
+{"ts":"2026-08-23T11:06:08.9553492+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.PlayerServices.Wallet","place":"place:134041618959520"}
+{"ts":"2026-08-23T11:07:24.6500759+02:00","tool":"set_script_source","target":"game.ServerScriptService.PlayerServices.TesterGrantService","place":"place:131701626847012"}
+{"ts":"2026-08-23T11:07:51.2745313+02:00","tool":"set_script_source","target":"game.ServerScriptService.PlayerServices.TesterGrantService","place":"place:98517073248449"}
+{"ts":"2026-08-23T11:08:08.1878637+02:00","tool":"set_script_source","target":"game.ServerScriptService.PlayerServices.TesterGrantService","place":"place:134041618959520"}
+{"ts":"2026-08-23T11:08:40.4391505+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Main","place":"place:131701626847012"}
+{"ts":"2026-08-23T11:08:42.6780900+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Main","place":"place:98517073248449"}
+{"ts":"2026-08-23T11:08:43.7898298+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Main","place":"place:134041618959520"}
+{"ts":"2026-08-23T11:08:48.0067335+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Main","place":"place:131701626847012"}
+{"ts":"2026-08-23T11:08:49.2375006+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Main","place":"place:98517073248449"}
+{"ts":"2026-08-23T11:08:51.0151616+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Main","place":"place:134041618959520"}
+{"ts":"2026-08-23T11:08:59.2617490+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.Main","place":"place:131701626847012"}

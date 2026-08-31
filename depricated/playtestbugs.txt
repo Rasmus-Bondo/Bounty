@@ -1,0 +1,129 @@
+
+
+Sound when claiming an item in the Bounty pass
+
+
+
+Team test:
+Movement mutations checklist:
+x. Sprint through a Vesper E zone — should slow, then resume sprinting on its own without re-pressing Shift.
+x. Vesper: scope in while slowed, and scope out while still slowed.
+x. Fortuna: ult while slowed;
+4. Bram: Last Call while slowed; pin a bot that's already slowed and confirm it moves normally after.
+x. Dust: High Noon while slowed, and check you can't jump during it.
+6. Watch the output for [HunterMovement] warnings — any drift warning names a writer I missed.
+
+
+Settings ui closes on death
+
+Bram charge animaton
+
+Quests all progress
+
+titels look good mobile
+
+
+
+Skins
+- [x] Default first, rest alphabetical; captions prettified (CrimsonRevenant → CRIMSON REVENANT)
+- [x] IvoryGambler caption still special-cased correctly
+- [ ] Equip persists → see §6
+
+
+Titles
+- [x] All hunter-locked titles listed for the selected hunter
+- [ ] Locked ones show the price badge + LOCKED
+- [x] Nameplate preview renders with the correct style
+- [x] Equipping updates the lobby dummy's nametag
+
+Boosts — 6 tiles, USE / IN USE / NONE
+- [x] Counts correct; USE consumes and flips to IN USE; NONE when out
+
+Emotes — largest module (903 lines)
+- [x] Grid builds, ripple animation plays and cancels on close (playRipple/cancelRipple were rewired)
+- [x] Equip persists; locked emotes route to the shop
+
+
+---
+5. Trading Post hand-off
+
+- [ ] Locked skin → button routes to the right Trading Post tab (MenuNavigateRequested)
+- [ ] Locked title → ACCESSORIES tab
+- [ ] Locked hunter → hunter shop
+- [ ] Buy something, come back to Collection — it now reads owned without a rejoin
+- [ ] HuntersBuyController still frames guns correctly — it now reads WEAPON_DISPLAY from ReplicatedStorage.WeaponDisplayConfig instead of its own copy. Walk all four hunters in the buy menu.
+
+---
+6. Persistence round-trip
+
+The panel writes equipped state locally right after firing the remote, so the UI is not proof the server agreed.
+
+- [ ] Equip a skin + gun skin + title + emote, then rejoin. All four still equipped.
+- [ ] Equip, then teleport to Redwater — the right skin/gun appears in-match.
+- [ ] Fresh profile (alt account or wiped key): menu opens with defaults, nothing errors.
+
+
+8. Tripwires
+
+- [ ] Output window clean through the whole pass — no Infinite yield possible on WaitForChild, no attempt to index nil
+- [x] Open and close the menu 10+ times — no leaked connections, no doubling frame rate cost, no duplicate tiles
+- [x] Menu open → immediately click another bottom tab → back to Collection
+- [ ] Nothing references the deleted CollectionPanelClient (it's gone from StarterPlayerScripts; a stale reference would show as an infinite-yield warning)
+
+
+
+- [x] Fortuna skin → UNLOCK FORTUNA → Fortuna's page, not the hunter grid
+- [x] Fortuna card skin → same (routes via HUNTERS, since she's the blocking purchase)
+- [x] Locked gun skin on an owned hunter → that hunter's gun page with that gun selected
+- [x] Locked title → its card armed and scrolled into view, not page 1
+- [x] Locked emote → its card armed and scrolled into view
+- [ ] Back out and re-enter: deep-link to Fortuna, GO BACK to the grid, leave the shop, reopen it → must open normally, not jump into Fortuna again
+- [ ] Deep-link, then switch ACCESSORIES halves manually → the armed panel follows the visible half
+- [ ] Do each of the above twice in a row without leaving the shop
+
+
+┌──────┬───────────────┬─────┬──────────┬─────────┬────────────────────────────────────┐
+│ Week │     Quest     │ Now │ Proposed │ Matches │               Label                │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 1    │ bountyClaim   │ 2   │ 8        │ 5       │ Kill 8 bounty targets              │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 1    │ assist        │ 10  │ 50       │ 8       │ Get 40 assists                     │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 1    │ kill          │ 40  │ 125      │ 11      │ Get 150 kills                      │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 1    │ roundComplete │ 3   │ 10       │ 12      │ Finish 12 matches                  │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 1    │ becomeBounty  │ 4   │ 20       │ 14      │ Become the bounty 35 times         │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 1    │ damage        │ 12k │ 40k      │ 17      │ Deal 50k damage                    │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 1    │ win           │ 1   │ 3        │ 20      │ Win 3 matches                      │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 2    │ bountyClaim   │ 3   │ 15       │ 7       │ Kill 10 bounty targets             │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 2    │ ultimateUse   │ 15  │ 35       │ 10      │ Use your ultimate 35 times         │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 2    │ roundComplete │ 4   │ 10       │ 14      │ Finish 14 matches                  │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 2    │ damage        │ 15k │ 45k      │ 15      │ Deal 45k damage                    │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 2    │ killStreak5   │ 4   │ 10       │ 18      │ Get 18 five-kill streaks           │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 2    │ assist        │ 25  │ 60       │ 20      │ Get 100 assists                    │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 2    │ headshot      │ 100 │ 200      │ 24      │ Land 240 headshots                 │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 3    │ hunterVariety │ 1   │ 8        │ 8       │ Use 3 hunters in 8 matches         │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 3    │ ultimateKill  │ 12  │ 30       │ 11      │ Kill 45 enemies with your ultimate │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 3    │ bountyTime    │ 360 │ 600      │ 15      │ Be the bounty for 15 minutes       │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 3    │ roundComplete │ 5   │ 12       │ 16      │ Finish 16 matches                  │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 3    │ kill          │ 150 │ 150      │ 19      │ Get 270 kills                      │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 3    │ deadMansHand  │ 3   │ 10       │ 19      │ Kill 2 as the bounty (15 times)    │
+├──────┼───────────────┼─────┼──────────┼─────────┼────────────────────────────────────┤
+│ 3    │ podium        │ 5   │ 8        │ 23      │ Finish top 3 in 8 matches          │
+└──────┴───────────────┴─────┴──────────┴─────────┴────────────────────────────────────┘

@@ -1,0 +1,14 @@
+{"ts":"2026-08-08T20:59:54.7299090+02:00","tool":"create_object","target":"game.StarterGui.HunterReloadGui.MobileReloadButton","place":"place:98517073248449","name":"Icon"}
+{"ts":"2026-08-08T20:59:56.8101445+02:00","tool":"create_object","target":"game.StarterGui.HunterJumpGui.MobileJumpButton","place":"place:98517073248449","name":"Icon"}
+{"ts":"2026-08-08T20:59:57.8117975+02:00","tool":"delete_object","target":"game.StarterGui.HunterReloadGui.MobileReloadButton.UIPadding","place":"place:98517073248449"}
+{"ts":"2026-08-08T20:59:58.8701661+02:00","tool":"delete_object","target":"game.StarterGui.HunterJumpGui.MobileJumpButton.UIPadding","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:01:26.4705616+02:00","tool":"set_properties","target":"game.StarterGui.HunterReloadGui.MobileReloadButton.Icon","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:01:32.5942339+02:00","tool":"set_properties","target":"game.StarterGui.HunterReloadGui.MobileReloadButton.Icon","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:01:38.1701368+02:00","tool":"set_properties","target":"game.StarterGui.HunterJumpGui.MobileJumpButton.Icon","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:01:39.2264071+02:00","tool":"set_property","target":"game.StarterGui.HunterReloadGui.MobileReloadButton","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:01:48.4302110+02:00","tool":"set_properties","target":"game.StarterGui.HunterReloadGui.MobileReloadButton","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:01:52.5067443+02:00","tool":"set_properties","target":"game.StarterGui.HunterJumpGui.MobileJumpButton","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:02:49.4338102+02:00","tool":"set_properties","target":"game.StarterGui.HunterReloadGui","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:02:50.4588329+02:00","tool":"set_properties","target":"game.StarterGui.HunterJumpGui","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:02:51.4753191+02:00","tool":"set_properties","target":"game.StarterGui.HunterFireGui","place":"place:98517073248449"}
+{"ts":"2026-08-08T21:02:52.5053940+02:00","tool":"set_properties","target":"game.StarterGui.HunterSprintGui","place":"place:98517073248449"}

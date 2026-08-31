@@ -1,0 +1,12 @@
+{"ts":"2026-08-13T11:20:33.1783466+02:00","tool":"edit_script_lines","target":"game.StarterGui.BountyListGui.BountyListClient","place":"place:98517073248449"}
+{"ts":"2026-08-13T11:20:38.2312696+02:00","tool":"edit_script_lines","target":"game.StarterGui.BountyListGui.BountyListClient","place":"place:98517073248449"}
+{"ts":"2026-08-13T11:20:43.3191218+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.KillFeedClient","place":"place:98517073248449"}
+{"ts":"2026-08-13T11:20:45.8494764+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.KillCamClient","place":"place:98517073248449"}
+{"ts":"2026-08-13T11:20:51.4830989+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.VictoryShowcaseClient","place":"place:98517073248449"}
+{"ts":"2026-08-13T11:20:53.4816814+02:00","tool":"edit_script_lines","target":"game.StarterGui.RoundStatusGui.RoundStatusClient","place":"place:98517073248449"}
+{"ts":"2026-08-13T11:21:03.6168988+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkReworkedBuyMenu.HuntersBuyController","place":"place:131701626847012"}
+{"ts":"2026-08-13T11:21:08.7139604+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkReworkedBuyMenu.HuntersBuyController","place":"place:131701626847012"}
+{"ts":"2026-08-13T11:21:14.3745081+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkReworkedBuyMenu.HuntersBuyController","place":"place:131701626847012"}
+{"ts":"2026-08-13T11:21:16.8965299+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.LobbySpawn","place":"place:131701626847012"}
+{"ts":"2026-08-13T11:27:44.5154936+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.RoundSystem.ZoneService","place":"place:98517073248449"}
+{"ts":"2026-08-13T11:27:46.5490249+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.RoundSystem.MatchDirectoryService","place":"place:98517073248449"}

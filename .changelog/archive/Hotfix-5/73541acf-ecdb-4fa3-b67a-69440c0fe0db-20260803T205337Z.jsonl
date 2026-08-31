@@ -1,0 +1,4 @@
+{"ts":"2026-08-03T22:44:12.4310902+02:00","tool":"insert_script_lines","target":"game.ReplicatedStorage.Hunters.Vesper.Config.VesperConfig","place":"place:98517073248449"}
+{"ts":"2026-08-03T22:44:20.1628319+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts.Vesper","place":"place:98517073248449"}
+{"ts":"2026-08-03T22:51:18.0835987+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.AntiCheat.MovementChecker","place":"place:98517073248449"}
+{"ts":"2026-08-03T22:51:27.7854990+02:00","tool":"find_and_replace_in_scripts","target":"game.ServerScriptService.AntiCheat","place":"place:98517073248449"}

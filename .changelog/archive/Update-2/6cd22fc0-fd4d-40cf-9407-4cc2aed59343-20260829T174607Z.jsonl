@@ -1,0 +1,5 @@
+{"ts":"2026-08-24T16:30:05.5134510+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.PlayerServices.TesterGrantService","place":"place:98517073248449"}
+{"ts":"2026-08-24T16:30:06.9785518+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.PlayerServices.TesterGrantService","place":"place:134041618959520"}
+{"ts":"2026-08-24T16:30:27.6250443+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.TesterGrantService","place":"place:98517073248449"}
+{"ts":"2026-08-24T16:30:33.2358068+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.TesterGrantService","place":"place:134041618959520"}
+{"ts":"2026-08-24T16:30:46.4529343+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.PlayerServices.TesterGrantService","place":"place:131701626847012"}

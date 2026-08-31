@@ -1,0 +1,6 @@
+{"ts":"2026-08-03T20:49:28.4958203+02:00","tool":"delete_object","target":"game.StarterGui.CinematicTest","place":"place:131701626847012"}
+{"ts":"2026-08-03T20:49:29.4553636+02:00","tool":"delete_object","target":"game.StarterGui.RankLeaderboardGuiLegacy","place":"place:131701626847012"}
+{"ts":"2026-08-03T20:49:29.9650010+02:00","tool":"delete_object","target":"game.StarterGui.CurrencyGui","place":"place:131701626847012"}
+{"ts":"2026-08-03T20:49:30.7079493+02:00","tool":"delete_object","target":"game.ReplicatedStorage.PlayCurrencyCounter","place":"place:131701626847012"}
+{"ts":"2026-08-03T21:02:12.1872292+02:00","tool":"find_and_replace_in_scripts","target":"game.ServerScriptService.PlayerServices.StoreService","place":"place:131701626847012"}
+{"ts":"2026-08-03T21:02:17.5372478+02:00","tool":"find_and_replace_in_scripts","target":"game.ServerScriptService.PlayerServices.StoreService","place":"place:131701626847012"}

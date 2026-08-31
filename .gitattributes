@@ -1,0 +1,15 @@
+# Roblox model exports and images are binary - never diff or line-ending-convert.
+*.rbxm  binary
+*.rbxmx binary
+*.png   binary
+*.PNG   binary
+*.jpg   binary
+*.mp3   binary
+
+# Everything textual normalises to LF in the repo and checks out native on Windows.
+*.md    text
+*.py    text
+*.json  text
+*.ps1   text
+*.csv   text
+*.txt   text

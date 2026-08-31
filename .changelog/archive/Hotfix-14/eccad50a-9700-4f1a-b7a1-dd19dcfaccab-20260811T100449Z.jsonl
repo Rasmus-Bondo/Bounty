@@ -1,0 +1,4 @@
+{"ts":"2026-08-11T12:00:00.0688715+02:00","tool":"delete_script_lines","target":"game.StarterGui.ReworkedSettingsGui.SettingsController","place":"place:98517073248449"}
+{"ts":"2026-08-11T12:00:43.8758156+02:00","tool":"insert_script_lines","target":"game.StarterGui.ReworkedSettingsGui.SettingsController","place":"place:98517073248449"}
+{"ts":"2026-08-11T12:00:55.5677480+02:00","tool":"delete_script_lines","target":"game.StarterGui.ReworkedSettingsGui.SettingsController","place":"place:98517073248449"}
+{"ts":"2026-08-11T12:01:25.2320581+02:00","tool":"insert_script_lines","target":"game.StarterGui.ReworkedSettingsGui.SettingsController","place":"place:98517073248449"}

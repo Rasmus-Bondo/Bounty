@@ -1,0 +1,4 @@
+{"ts":"2026-08-21T14:36:16.3828534+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Hunters.FortunaServer.CardsServer","place":"place:98517073248449"}
+{"ts":"2026-08-21T14:36:18.9564721+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Hunters.FortunaServer.CardsServer","place":"place:134041618959520"}
+{"ts":"2026-08-21T14:41:31.6813588+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.AimAssistController","place":"place:98517073248449"}
+{"ts":"2026-08-21T14:41:35.7558760+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.AimAssistController","place":"place:134041618959520"}

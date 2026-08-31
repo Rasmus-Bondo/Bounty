@@ -1,0 +1,5 @@
+{"ts":"2026-08-13T10:17:47.1681204+02:00","tool":"delete_script_lines","target":"game.ServerScriptService.RoundSystem.RoundController","place":"(default)"}
+{"ts":"2026-08-13T10:17:50.2166168+02:00","tool":"delete_script_lines","target":"game.ServerScriptService.RoundSystem.RoundController","place":"(default)"}
+{"ts":"2026-08-13T10:17:52.8879447+02:00","tool":"delete_script_lines","target":"game.ServerScriptService.RoundSystem.RoundController","place":"(default)"}
+{"ts":"2026-08-13T10:17:56.2795704+02:00","tool":"delete_object","target":"game.ServerScriptService.RoundSystem.DestructibleService","place":"(default)"}
+{"ts":"2026-08-13T10:17:59.3768924+02:00","tool":"delete_object","target":"game.StarterPlayer.StarterPlayerScripts.FootstepClient","place":"(default)"}

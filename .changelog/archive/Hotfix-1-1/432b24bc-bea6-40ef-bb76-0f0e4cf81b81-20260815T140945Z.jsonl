@@ -1,0 +1,12 @@
+{"ts":"2026-08-15T14:27:19.2075337+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotConfig","place":"place:98517073248449"}
+{"ts":"2026-08-15T14:27:38.2874767+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotPathing","place":"place:98517073248449"}
+{"ts":"2026-08-15T14:27:43.3585436+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotPathing","place":"place:98517073248449"}
+{"ts":"2026-08-15T14:27:55.0884175+02:00","tool":"find_and_replace_in_scripts","target":"game.ServerScriptService.Bots.BotPathing","place":"place:98517073248449"}
+{"ts":"2026-08-15T14:28:01.7773415+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotPathing","place":"place:98517073248449"}
+{"ts":"2026-08-15T14:30:12.2548395+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotBrain","place":"place:98517073248449"}
+{"ts":"2026-08-15T16:07:39.0393403+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotConfig","place":"place:134041618959520"}
+{"ts":"2026-08-15T16:07:52.3619462+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotPathing","place":"place:134041618959520"}
+{"ts":"2026-08-15T16:07:56.9218682+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotPathing","place":"place:134041618959520"}
+{"ts":"2026-08-15T16:08:00.4581613+02:00","tool":"find_and_replace_in_scripts","target":"game.ServerScriptService.Bots.BotPathing","place":"place:134041618959520"}
+{"ts":"2026-08-15T16:08:06.1308302+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotPathing","place":"place:134041618959520"}
+{"ts":"2026-08-15T16:08:11.6466829+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotBrain","place":"place:134041618959520"}

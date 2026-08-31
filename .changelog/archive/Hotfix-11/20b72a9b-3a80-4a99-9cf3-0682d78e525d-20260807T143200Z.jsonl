@@ -1,0 +1,7 @@
+{"ts":"2026-08-07T15:33:22.4696200+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.DataService","place":"place:98517073248449"}
+{"ts":"2026-08-07T15:33:36.7028284+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.ProgressionService","place":"place:98517073248449"}
+{"ts":"2026-08-07T15:33:43.3193432+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.ProgressionService","place":"place:98517073248449"}
+{"ts":"2026-08-07T15:34:05.2432403+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.RoundSystem.RoundController","place":"place:98517073248449"}
+{"ts":"2026-08-07T15:34:14.9343777+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.RoundSystem.RoundController","place":"place:98517073248449"}
+{"ts":"2026-08-07T15:34:18.9501313+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.RoundSystem.RoundController","place":"place:98517073248449"}
+{"ts":"2026-08-07T15:34:41.8551049+02:00","tool":"set_property","target":"game.StarterGui.StatMenuGui.MainFrame.ContentFrame.MyStatsPanel.SessionSection.SessionHeader","place":"place:98517073248449"}

@@ -1,0 +1,8 @@
+{"ts":"2026-08-14T10:48:57.5903816+02:00","tool":"set_property","target":"game.StarterGui.MapVoteGui","place":"place:98517073248449"}
+{"ts":"2026-08-14T10:48:58.2893023+02:00","tool":"set_property","target":"game.StarterGui.MapVoteGui","place":"place:134041618959520"}
+{"ts":"2026-08-14T10:49:10.2005322+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.MapVoteClient","place":"place:98517073248449"}
+{"ts":"2026-08-14T10:49:20.1931054+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.MapVoteClient","place":"place:98517073248449"}
+{"ts":"2026-08-14T10:49:29.2067014+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.MapVoteClient","place":"place:134041618959520"}
+{"ts":"2026-08-14T10:49:31.1467602+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.MapVoteClient","place":"place:134041618959520"}
+{"ts":"2026-08-14T10:53:05.4918820+02:00","tool":"set_property","target":"game.StarterGui.MapVoteGui.TileTemplate.Frame.ImageButton","place":"place:98517073248449"}
+{"ts":"2026-08-14T10:53:06.3581851+02:00","tool":"set_property","target":"game.StarterGui.MapVoteGui.TileTemplate.Frame.ImageButton","place":"place:134041618959520"}

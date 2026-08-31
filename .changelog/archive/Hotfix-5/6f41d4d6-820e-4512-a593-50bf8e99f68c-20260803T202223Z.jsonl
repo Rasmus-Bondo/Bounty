@@ -1,0 +1,2 @@
+{"ts":"2026-08-03T22:13:34.4034264+02:00","tool":"mass_set_property","target":"(unspecified)","place":"place:131701626847012"}
+{"ts":"2026-08-03T22:13:40.0515292+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterPlayer.StarterPlayerScripts.LobbySpawn","place":"place:131701626847012"}

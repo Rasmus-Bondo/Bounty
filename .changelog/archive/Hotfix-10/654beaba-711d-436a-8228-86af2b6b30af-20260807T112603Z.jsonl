@@ -1,0 +1,14 @@
+{"ts":"2026-08-07T13:16:23.5183820+02:00","tool":"create_object","target":"game.ReplicatedStorage.Modules","place":"place:131701626847012","name":"WaitForRequired"}
+{"ts":"2026-08-07T13:16:36.8148629+02:00","tool":"set_script_source","target":"game.ReplicatedStorage.Modules.WaitForRequired","place":"place:131701626847012"}
+{"ts":"2026-08-07T13:17:55.4229916+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.CollectionClient","place":"place:131701626847012"}
+{"ts":"2026-08-07T13:18:01.5288701+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.ReworkedUIPlay","place":"place:131701626847012"}
+{"ts":"2026-08-07T13:18:03.5837095+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkedMainMenuFolder.MainMenuGui.CanvasBottom.MenuHandlerScript","place":"place:131701626847012"}
+{"ts":"2026-08-07T13:18:18.4260459+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkReworkedBuyMenu.HuntersBuyController","place":"place:131701626847012"}
+{"ts":"2026-08-07T13:18:56.5791551+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkReworkedBuyMenu.TradingPostController","place":"place:131701626847012"}
+{"ts":"2026-08-07T13:18:58.0705141+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkedMainMenuFolder.MainMenuGui.PartyFrame.ReworkedPartyClient","place":"place:131701626847012"}
+{"ts":"2026-08-07T13:19:02.6542274+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkReworkedBuyMenu.TradingPostController","place":"place:131701626847012"}
+{"ts":"2026-08-07T13:19:04.7110164+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Modules.FeaturedSequence","place":"place:131701626847012"}
+{"ts":"2026-08-07T13:19:10.8284048+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkReworkedBuyMenu.TradingPostController","place":"place:131701626847012"}
+{"ts":"2026-08-07T13:19:12.3375832+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Modules.FeaturedSequence","place":"place:131701626847012"}
+{"ts":"2026-08-07T13:19:18.9702212+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.CollectionGuiController.Refs","place":"place:131701626847012"}
+{"ts":"2026-08-07T13:19:23.0879302+02:00","tool":"edit_script_lines","target":"game.ReplicatedFirst.LoadingScreen","place":"place:131701626847012"}

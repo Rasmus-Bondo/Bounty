@@ -1,0 +1,12 @@
+{"ts":"2026-08-07T10:49:18.4256439+02:00","tool":"create_object","target":"game.ReplicatedStorage.Hunters.Shared.Remotes","place":"place:98517073248449","name":"BotFXReady"}
+{"ts":"2026-08-07T10:49:19.3841248+02:00","tool":"create_object","target":"game.ServerScriptService.Bots","place":"place:98517073248449","name":"BotFXAudience"}
+{"ts":"2026-08-07T10:49:41.8720054+02:00","tool":"set_script_source","target":"game.ServerScriptService.Bots.BotFXAudience","place":"place:98517073248449"}
+{"ts":"2026-08-07T10:49:49.0219608+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotService","place":"place:98517073248449"}
+{"ts":"2026-08-07T10:49:50.6366207+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotCombat","place":"place:98517073248449"}
+{"ts":"2026-08-07T10:49:56.1299452+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotService","place":"place:98517073248449"}
+{"ts":"2026-08-07T10:49:59.7477610+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotService","place":"place:98517073248449"}
+{"ts":"2026-08-07T10:50:17.7448938+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotCombat","place":"place:98517073248449"}
+{"ts":"2026-08-07T10:50:57.6301847+02:00","tool":"set_script_source","target":"game.ReplicatedFirst.EarlyShotRemoteDrain","place":"place:98517073248449"}
+{"ts":"2026-08-07T10:51:43.7326775+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotFXAudience","place":"place:98517073248449"}
+{"ts":"2026-08-07T10:52:02.5212657+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Bots.BotService","place":"place:98517073248449"}
+{"ts":"2026-08-07T10:52:53.3768282+02:00","tool":"set_script_source","target":"game.ServerScriptService.Bots.BotFXAudience","place":"place:98517073248449"}

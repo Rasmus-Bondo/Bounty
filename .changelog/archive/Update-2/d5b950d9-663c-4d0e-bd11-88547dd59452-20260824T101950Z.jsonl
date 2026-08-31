@@ -1,0 +1,12 @@
+{"ts":"2026-08-24T12:16:19.9129968+02:00","tool":"set_properties","target":"game.ReplicatedStorage.Hunters.Dust.Weapon.Viewmodel.Skins.HellFire.Revolver","place":"place:98517073248449"}
+{"ts":"2026-08-24T12:16:20.8834984+02:00","tool":"set_properties","target":"game.ReplicatedStorage.Hunters.Dust.Weapon.Viewmodel.Skins.Icefang.Ice","place":"place:98517073248449"}
+{"ts":"2026-08-24T12:16:26.7021439+02:00","tool":"set_properties","target":"game.ReplicatedStorage.Hunters.Dust.Weapon.Viewmodel.Skins.HellFire.Revolver","place":"place:134041618959520"}
+{"ts":"2026-08-24T12:16:27.7242322+02:00","tool":"set_properties","target":"game.ReplicatedStorage.Hunters.Dust.Weapon.Viewmodel.Skins.Icefang.Ice","place":"place:134041618959520"}
+{"ts":"2026-08-24T12:18:13.2428237+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterViewmodelContract","place":"place:98517073248449"}
+{"ts":"2026-08-24T12:18:16.4301522+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Shared.HunterViewmodelContract","place":"place:134041618959520"}
+{"ts":"2026-08-24T12:18:24.2829606+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Dust.Modules.RevolverViewModel","place":"place:98517073248449"}
+{"ts":"2026-08-24T12:18:25.7359974+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Dust.Modules.RevolverViewModel","place":"place:134041618959520"}
+{"ts":"2026-08-24T12:18:32.7608534+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Dust.Modules.HighNoonGunFX","place":"place:98517073248449"}
+{"ts":"2026-08-24T12:18:34.4241416+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Hunters.Dust.Modules.HighNoonGunFX","place":"place:134041618959520"}
+{"ts":"2026-08-24T12:18:41.9037929+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.Dust.HighNoonViewModelOrbit","place":"place:98517073248449"}
+{"ts":"2026-08-24T12:18:43.0494491+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.Dust.HighNoonViewModelOrbit","place":"place:134041618959520"}

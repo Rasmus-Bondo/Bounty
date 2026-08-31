@@ -1,0 +1,12 @@
+{"ts":"2026-08-14T19:48:57.2211898+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.StoreConfig","place":"place:131701626847012"}
+{"ts":"2026-08-14T19:49:06.8990338+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.StoreService","place":"place:131701626847012"}
+{"ts":"2026-08-14T19:49:12.0841995+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.DataService","place":"place:131701626847012"}
+{"ts":"2026-08-14T19:52:25.1684217+02:00","tool":"set_properties","target":"game.StarterGui.BundleGuiHomeScreen","place":"place:131701626847012"}
+{"ts":"2026-08-14T19:52:30.2441042+02:00","tool":"create_object","target":"game.StarterGui.BundleGuiHomeScreen.Canvas.Background.PurchaseButton","place":"place:131701626847012","name":"PriceLayout"}
+{"ts":"2026-08-14T19:52:32.2785001+02:00","tool":"create_object","target":"game.StarterGui.BundleGuiHomeScreen.Canvas.Background.PurchaseButton","place":"place:131701626847012","name":"PriceLabel"}
+{"ts":"2026-08-14T19:52:33.3030734+02:00","tool":"create_object","target":"game.StarterGui.BundleGuiHomeScreen.Canvas.Background.PurchaseButton","place":"place:131701626847012","name":"RobuxIcon"}
+{"ts":"2026-08-14T19:53:56.5512610+02:00","tool":"create_object","target":"game.StarterGui.BundleGuiHomeScreen","place":"place:131701626847012","name":"BundleHomeController"}
+{"ts":"2026-08-14T19:54:35.4694687+02:00","tool":"set_script_source","target":"game.StarterGui.BundleGuiHomeScreen.BundleHomeController","place":"place:131701626847012"}
+{"ts":"2026-08-14T19:59:33.5590647+02:00","tool":"create_object","target":"game.StarterGui.BundleGuiHomeScreen.Canvas","place":"place:131701626847012","name":"CardHitbox"}
+{"ts":"2026-08-14T19:59:45.0195783+02:00","tool":"edit_script_lines","target":"game.StarterGui.BundleGuiHomeScreen.BundleHomeController","place":"place:131701626847012"}
+{"ts":"2026-08-14T19:59:52.5643357+02:00","tool":"edit_script_lines","target":"game.StarterGui.BundleGuiHomeScreen.BundleHomeController","place":"place:131701626847012"}

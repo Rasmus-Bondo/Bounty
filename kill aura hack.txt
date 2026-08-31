@@ -1,0 +1,418 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local localPlayer = Players.LocalPlayer
+
+if not localPlayer then
+    warn("LocalPlayer is unavailable")
+    return
+end
+
+local revolver = ReplicatedStorage:WaitForChild("Revolver", 10)
+
+if not revolver then
+    warn("ReplicatedStorage.Revolver is missing")
+    return
+end
+
+local modules = revolver:WaitForChild("Modules", 10)
+local remotes = revolver:WaitForChild("Remotes", 10)
+
+if not modules or not remotes then
+    warn("Revolver Modules or Remotes is missing")
+    return
+end
+
+local fireBullet = remotes:WaitForChild("FireBullet", 10)
+local reloadRequest = remotes:WaitForChild("ReloadRequest", 10)
+
+if not fireBullet or not fireBullet:IsA("RemoteEvent") then
+    warn("FireBullet is missing or is not a RemoteEvent")
+    return
+end
+
+if not reloadRequest or not reloadRequest:IsA("RemoteEvent") then
+    warn("ReloadRequest is missing or is not a RemoteEvent")
+    return
+end
+
+local botFolder = workspace:WaitForChild("ClientBotVisuals", 10)
+
+if not botFolder then
+    warn("workspace.ClientBotVisuals is missing")
+    return
+end
+
+local MAGAZINE_SIZE = 6
+local FIRE_COOLDOWN = 0.4
+local RELOAD_TIME = 1.5
+local MAX_RANGE = 500
+
+_G.RevolverBotAura = _G.RevolverBotAura or {}
+local controller = _G.RevolverBotAura
+
+if controller.InputConnection then
+    pcall(function()
+        controller.InputConnection:Disconnect()
+    end)
+end
+
+if controller.Thread then
+    pcall(function()
+        task.cancel(controller.Thread)
+    end)
+end
+
+if controller.RestoreAmmoPatch then
+    pcall(controller.RestoreAmmoPatch)
+    controller.RestoreAmmoPatch = nil
+end
+
+controller.Enabled = false
+controller.Destroyed = false
+controller.Debug = true
+controller.LoopInterval = 0.05
+controller.ShotsSinceReload = 0
+controller.IsReloading = false
+controller.NextShotAt = 0
+controller.ReloadToken = 0
+
+local function debugPrint(...)
+    if controller.Debug then
+        print("tst2", ...)
+    end
+end
+
+local function getCamera()
+    return workspace.CurrentCamera
+end
+
+local function getMuzzleAttachment()
+    local camera = getCamera()
+
+    if not camera then
+        return nil
+    end
+
+    for _, object in ipairs(camera:GetDescendants()) do
+        if object:IsA("Attachment")
+            and object.Name == "MuzzleAttachment"
+            and object.Parent
+            and object.Parent:IsA("BasePart") then
+            return object
+        end
+    end
+
+    return nil
+end
+
+local function getLocalPosition()
+    local character = localPlayer.Character
+
+    if not character then
+        return nil
+    end
+
+    local root = character:FindFirstChild("HumanoidRootPart")
+    local head = character:FindFirstChild("Head")
+
+    if root and root:IsA("BasePart") then
+        return root.Position
+    end
+
+    if head and head:IsA("BasePart") then
+        return head.Position
+    end
+
+    return nil
+end
+
+local function parseBot(model)
+    if not model:IsA("Model") then
+        return nil
+    end
+
+    local humanoid = model:FindFirstChildOfClass("Humanoid")
+    local head = model:FindFirstChild("Head")
+
+    if not humanoid or humanoid.Health <= 0 then
+        return nil
+    end
+
+    if not head or not head:IsA("BasePart") then
+        return nil
+    end
+
+    return {
+        Model = model,
+        Humanoid = humanoid,
+        Head = head,
+        Distance = 0,
+    }
+end
+
+local function getBotsInRange()
+    local localPosition = getLocalPosition()
+
+    if not localPosition then
+        return {}
+    end
+
+    local bots = {}
+
+    for _, object in ipairs(botFolder:GetDescendants()) do
+        local bot = parseBot(object)
+
+        if bot then
+            local distance = (bot.Head.Position - localPosition).Magnitude
+
+            if distance <= MAX_RANGE then
+                bot.Distance = distance
+                table.insert(bots, bot)
+            end
+        end
+    end
+
+    table.sort(bots, function(left, right)
+        return left.Distance < right.Distance
+    end)
+
+    return bots
+end
+
+local function buildShot(bot, muzzle)
+    local camera = getCamera()
+
+    if not camera or not muzzle or not muzzle.Parent then
+        return nil
+    end
+
+    if not bot.Model.Parent
+        or bot.Humanoid.Health <= 0
+        or not bot.Head.Parent then
+        return nil
+    end
+
+    local origin = camera.CFrame.Position
+    local delta = bot.Head.Position - origin
+    local distance = delta.Magnitude
+
+    if distance <= 0 or distance > MAX_RANGE then
+        return nil
+    end
+
+    return {
+        Origin = origin,
+        Direction = delta.Unit,
+        MuzzlePosition = muzzle.WorldPosition,
+        ServerTime = workspace:GetServerTimeNow(),
+        Distance = distance,
+    }
+end
+
+local function finishLocalReload(expectedToken)
+    if controller.Destroyed or expectedToken ~= controller.ReloadToken then
+        return
+    end
+
+    controller.ShotsSinceReload = 0
+    controller.IsReloading = false
+    controller.NextShotAt = os.clock()
+    debugPrint("reload window finished")
+end
+
+local function requestReload(reason)
+    if controller.Destroyed or controller.IsReloading then
+        return false
+    end
+
+    controller.IsReloading = true
+    controller.ReloadToken += 1
+    controller.NextShotAt = math.huge
+
+    local token = controller.ReloadToken
+
+    -- The supplied exports do not contain the receiver, so this uses the
+    -- no-argument packet observed in the live hierarchy.
+    reloadRequest:FireServer()
+
+    debugPrint(
+        "reload requested",
+        "| reason:",
+        reason or "manual",
+        "| sent shots:",
+        controller.ShotsSinceReload
+    )
+
+    -- FireServer has no return value and the supplied files expose no reload
+    -- acknowledgement. Pause for the known client reload time as a fallback.
+    task.delay(RELOAD_TIME, finishLocalReload, token)
+
+    return true
+end
+
+local function fireAtBot(bot, muzzle)
+    if controller.Destroyed or controller.IsReloading then
+        return false
+    end
+
+    if controller.ShotsSinceReload >= MAGAZINE_SIZE then
+        requestReload("magazine limit reached")
+        return false
+    end
+
+    local now = os.clock()
+
+    if now < controller.NextShotAt then
+        return false
+    end
+
+    local shot = buildShot(bot, muzzle)
+
+    if not shot then
+        return false
+    end
+
+    fireBullet:FireServer(
+        shot.Origin,
+        shot.Direction,
+        shot.MuzzlePosition,
+        false,
+        shot.ServerTime
+    )
+
+    controller.ShotsSinceReload += 1
+    controller.NextShotAt = now + FIRE_COOLDOWN
+
+    debugPrint(
+        "shot sent ->",
+        bot.Model.Name,
+        "|",
+        controller.ShotsSinceReload,
+        "/",
+        MAGAZINE_SIZE,
+        "|",
+        math.floor(shot.Distance),
+        "studs"
+    )
+
+    if controller.ShotsSinceReload >= MAGAZINE_SIZE then
+        requestReload("six shots sent")
+    end
+
+    return true
+end
+
+controller.Thread = task.spawn(function()
+    while not controller.Destroyed do
+        if controller.Enabled and not controller.IsReloading then
+            local muzzle = getMuzzleAttachment()
+
+            if muzzle then
+                local bots = getBotsInRange()
+                local nearestBot = bots[1]
+
+                if nearestBot then
+                    fireAtBot(nearestBot, muzzle)
+                end
+            elseif controller.Debug then
+                warn("Equip the revolver; MuzzleAttachment was not found")
+            end
+        end
+
+        task.wait(controller.LoopInterval)
+    end
+end)
+
+controller.InputConnection = UserInputService.InputBegan:Connect(function(input, processed)
+    if processed or input.UserInputType ~= Enum.UserInputType.Keyboard then
+        return
+    end
+
+    if input.KeyCode == Enum.KeyCode.G then
+        controller.Enabled = not controller.Enabled
+        debugPrint(controller.Enabled and "ON" or "OFF")
+    elseif input.KeyCode == Enum.KeyCode.R then
+        requestReload("manual R key")
+    end
+end)
+
+controller.Enable = function()
+    controller.Enabled = true
+    debugPrint("ON")
+end
+
+controller.Disable = function()
+    controller.Enabled = false
+    debugPrint("OFF")
+end
+
+controller.Toggle = function()
+    controller.Enabled = not controller.Enabled
+    debugPrint(controller.Enabled and "ON" or "OFF")
+end
+
+controller.Reload = function()
+    return requestReload("manual API call")
+end
+
+controller.Scan = function()
+    local bots = getBotsInRange()
+
+    print("tst", #bots, "bots within", MAX_RANGE, "studs")
+
+    for index, bot in ipairs(bots) do
+        print(index, bot.Model.Name, math.floor(bot.Distance), "studs")
+    end
+
+    return bots
+end
+
+controller.Destroy = function()
+    if controller.Destroyed then
+        return
+    end
+
+    controller.Destroyed = true
+    controller.Enabled = false
+    controller.ReloadToken += 1
+
+    if controller.InputConnection then
+        controller.InputConnection:Disconnect()
+        controller.InputConnection = nil
+    end
+
+    if controller.Thread then
+        task.cancel(controller.Thread)
+        controller.Thread = nil
+    end
+
+    debugPrint("destroyed")
+end
+
+print("================================")
+print("REVOLVER PRIVATE TEST LOADED")
+print("G = Toggle | R = Request reload")
+print("Range =", MAX_RANGE)
+print("Fire cooldown =", FIRE_COOLDOWN)
+print("Magazine =", MAGAZINE_SIZE)
+print("Reload time =", RELOAD_TIME)
+print("================================")
+
+task.delay(1, function()
+    if controller.Destroyed then
+        return
+    end
+
+    local muzzle = getMuzzleAttachment()
+
+    if muzzle then
+        print("Muzzle:", muzzle:GetFullName())
+    else
+        warn("Equip the revolver; MuzzleAttachment was not found")
+    end
+
+    controller.Scan()
+end)

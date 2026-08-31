@@ -1,0 +1,34 @@
+Count,Severity,Type,First seen at,First seen version,Message,,
+220,Error,Client,Mon May 25 2026 12:05:25 GMT+0200 (Central European Summer Time),V420,Failed to load animation with sanitized ID. Animation failed to load,rbxassetid://103133433995711
+rbxassetid://10319882993
+rbxassetid://118588265460505,
+59,Error,Client,Thu Aug 13 2026 14:49:50 GMT+0200 (Central European Summer Time),V2545,Failed to load sound: HTTP 429 (Too Many Requests),rbxassetid://111408745268827,
+33,Error,Client,Mon Aug 03 2026 14:17:10 GMT+0200 (Central European Summer Time),V2055,HSRDataContentProvider failed to process asset because 'could not fetch',https://assetdelivery.roblox.com/v1/asset?id=100836424706889,
+7,Error,Client,,V267,MeshContentProvider failed to process asset because 'could not fetch',https://assetdelivery.roblox.com/v1/asset?id=112057594836917
+https://assetdelivery.roblox.com/v1/asset?id=94145511860279,
+5,Warning,Server,Tue Jun 16 2026 03:00:20 GMT+0200 (Central European Summer Time),V675,[RoundController] Solo teleport failed for <Player> : All players in teleport request are already in progress or throttled.,,
+5,Error,Client,Mon Jun 08 2026 14:34:25 GMT+0200 (Central European Summer Time),V621,Failed to load sound: NetFail,rbxassetid://139638115866253: HttpError
+rbxassetid://78776764182416: HttpError,
+3,Error,Client,,V267,Failed to load object. PBR textures may not be visible in game.,Workspace.1st Gun.Plane.002.SurfaceAppearance,
+3,Warning,Client,Thu Aug 13 2026 14:49:50 GMT+0200 (Central European Summer Time),V2545,[WorldRevolverAimIdleClient] Failed to load aim idle: rbxassetid://85888566430136 Enum.AssetFetchStatus.Failure,,
+2,Warning,Client,Mon May 25 2026 02:03:00 GMT+0200 (Central European Summer Time),V384,Infinite yield possible on WaitForChild,Players.<Player>.PlayerGui:WaitForChild("QuestCompleteNotification"),
+2,Warning,Client,Sat Aug 01 2026 21:20:10 GMT+0200 (Central European Summer Time),V2055,[DamageVignetteClient] Humanoid not found,,
+2,Warning,Client,Thu Aug 13 2026 04:14:50 GMT+0200 (Central European Summer Time),V2518,[VictoryShowcaseClient] Victory cinematic scene is incomplete.,,
+2,Warning,Client,Sat Jul 04 2026 14:54:00 GMT+0200 (Central European Summer Time),V1012,Native code generation of script =ReplicatedStorage.ExternalLibrary.chrono.Shared.Snapshots failed:  Native code generation is not supported on this device.,,
+2,Warning,Client,Thu Aug 13 2026 05:58:55 GMT+0200 (Central European Summer Time),V2518,"[WorldAnimationPrewarmClient] showcase emotes: 18 clip(s) never fetched: rbxassetid://81115132588245, rbxassetid://139601699854551, rbxassetid://5911729486, rbxassetid://130864769476299, rbxassetid://110021104195913, rbxassetid://77782975111520, rbxassetid://100053824381847, rbxassetid://111505665806312, rbxassetid://136095999219650, rbxassetid://131104967711844, rbxassetid://137805134774837, rbxassetid://75410877928917, rbxassetid://124620858323185, rbxassetid://84843886114550, rbxassetid://134459607456762, rbxassetid://104035774752278, rbxassetid://98001307756828, rbxassetid://125426981084794",,
+2,Warning,Client,Thu Aug 13 2026 14:49:50 GMT+0200 (Central European Summer Time),V2545,[HunterPortraitClient] Failed to load portrait idle: rbxassetid://507766388 Enum.AssetFetchStatus.Failure,,
+2,Warning,Client,Thu Aug 13 2026 14:43:15 GMT+0200 (Central European Summer Time),V2545,"[BountyMusicClient] Music never fetched -- these cues are silent this session: BountyPlaced (rbxassetid://1845780843), RoundEndingSoon (rbxassetid://9047144526), BountyEnded (rbxassetid://1845780850), BountyClaimed (rbxassetid://1845846874), BountyClaimed2 (rbxassetid://1845841743)",,
+1,Error,Server,Thu Aug 13 2026 14:15:30 GMT+0200 (Central European Summer Time),V2545,LoadCharacter can only be called when Player is in the world,"Script 'ServerScriptService.PlayerServices.SkinService', Line 257 - function loadCharacter
+    Script 'ServerScriptService.RoundSystem.SpawnService', Line 369 - function respawnAllPlayers
+    Script 'ServerScriptService.RoundSystem.RoundController', Line 1788",
+1,Warning,Client,Thu Aug 13 2026 05:58:55 GMT+0200 (Central European Summer Time),V2518,"[WorldAnimationPrewarmClient] viewmodels (all hunters): 15 clip(s) never fetched: rbxassetid://78307906200615, rbxassetid://118040286576002, rbxassetid://119957724727533, rbxassetid://75789662685407, rbxassetid://107224384288403, rbxassetid://103153584743199, rbxassetid://73583544224104, rbxassetid://93422535311122, rbxassetid://84860686696858, rbxassetid://125036411554611, rbxassetid://121214634495022, rbxassetid://78350631756950, rbxassetid://82623093683842, rbxassetid://101746142745601, rbxassetid://103611548117911",,
+1,Warning,Server,Thu Aug 13 2026 14:46:40 GMT+0200 (Central European Summer Time),V2545,"[SpawnService] Teleport for <Player> did not take -- 135 studs off target (at -59, 13, -241; wanted 2, -56, -142); repairing.",,
+1,Warning,Client,Thu Aug 13 2026 13:54:10 GMT+0200 (Central European Summer Time),V2545,"[BountyMusicClient] Music never fetched -- these cues are silent this session: BountyEnded (rbxassetid://1845780850), BountyClaimed (rbxassetid://1845846874)",,
+1,Warning,Client,Thu Aug 13 2026 15:12:10 GMT+0200 (Central European Summer Time),V2545,[BountyMusicClient] Music never fetched -- these cues are silent this session: BountyEnded (rbxassetid://1845780850),,
+1,Warning,Client,Thu Aug 13 2026 14:11:05 GMT+0200 (Central European Summer Time),V2545,"[HunterSwitchClient] down push arrived while local humanoid still alive (health 98.9, roundActive true) -- panel deferred to Health/recheck",,
+1,Warning,Client,Thu Aug 13 2026 14:13:00 GMT+0200 (Central European Summer Time),V2545,"[HunterSwitchClient] down push arrived while local humanoid still alive (health 85.0, roundActive true) -- panel deferred to Health/recheck",,
+1,Warning,Server,Thu Aug 13 2026 14:16:00 GMT+0200 (Central European Summer Time),V2545,[RoundController] Solo teleport failed for 3iix_960 : All players in teleport request are already in progress or throttled.,,
+1,Error,Client,Thu Aug 13 2026 14:09:30 GMT+0200 (Central European Summer Time),V2545,Players.<Player>.PlayerScripts.VictoryShowcaseClient:697: attempt to index nil with 'Position',"Script 'Players.<Player>.PlayerScripts.VictoryShowcaseClient', Line 697 - function computePodiumFraming
+    Script 'Players.<Player>.PlayerScripts.VictoryShowcaseClient', Line 3287 - function startVictoryShowcase
+    Script 'Players.<Player>.PlayerScripts.VictoryShowcaseClient', Line 3338",
+1,Warning,Client,Thu Aug 13 2026 14:23:50 GMT+0200 (Central European Summer Time),V2545,"[HunterSwitchClient] down push arrived while local humanoid still alive (health 129.9, roundActive true) -- panel deferred to Health/recheck",,

@@ -1,0 +1,7 @@
+{"ts":"2026-08-13T15:42:46.0093136+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.SkinService","place":"place:98517073248449"}
+{"ts":"2026-08-13T15:42:47.3982349+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.SkinService","place":"place:98517073248449"}
+{"ts":"2026-08-13T15:42:48.4246758+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.SkinService","place":"place:98517073248449"}
+{"ts":"2026-08-13T15:42:56.6138535+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.SkinService","place":"place:98517073248449"}
+{"ts":"2026-08-13T15:43:06.2689217+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.RoundSystem.SpawnService","place":"place:98517073248449"}
+{"ts":"2026-08-13T15:44:38.0893416+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.VictoryShowcaseClient","place":"place:98517073248449"}
+{"ts":"2026-08-13T15:44:48.2015717+02:00","tool":"set_property","target":"game.Workspace.FinishSpawns.BoxPlayerSpawns","place":"place:98517073248449"}

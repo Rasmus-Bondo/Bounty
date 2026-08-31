@@ -1,0 +1,5 @@
+{"ts":"2026-08-03T21:58:08.4171499+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkReworkedBuyMenu.HuntersBuyController","place":"place:131701626847012"}
+{"ts":"2026-08-03T21:58:13.5038049+02:00","tool":"find_and_replace_in_scripts","target":"game.StarterGui.ReworkReworkedBuyMenu.HuntersBuyController","place":"place:131701626847012"}
+{"ts":"2026-08-03T21:58:19.5335621+02:00","tool":"edit_script_lines","target":"game.StarterGui.GiftGui.GiftPopupClient","place":"place:131701626847012"}
+{"ts":"2026-08-03T21:58:25.1200066+02:00","tool":"edit_script_lines","target":"game.StarterGui.FollowJoinGui.Canvas.FriendsInMatchClient","place":"place:131701626847012"}
+{"ts":"2026-08-03T21:58:29.7413354+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkedSettingsGui.SettingsController","place":"place:131701626847012"}
