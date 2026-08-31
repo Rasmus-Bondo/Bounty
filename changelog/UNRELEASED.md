@@ -13,8 +13,28 @@ which is the point.
 
 ---
 
+- **Shared modules:** none of the universe-wide twenty touched. Match-place mirror only — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). Bounty untouched.
+- **Data-affecting:** no.
+
 ## Added
 
 ## Changed
 
 ## Fixed
+
+- **A Bram now cancels a Dust ultimate outright instead of pausing it.** Being carried by a Breach
+  Charge, or slammed into a wall by one, ends High Noon on the spot — no shot, no refund of the
+  charge. Previously only the shoot request consulted the action lock, which refuses the trigger only
+  *while* the lock is up: the slam stun is shorter than the ultimate's hold window, so Dust kept his
+  cone, went on locking the enemies in it, and executed the moment the stun lapsed. Landing the ram
+  bought 2.5 seconds; it did not beat the ultimate.
+
+  Covers all four pairings — player or bot Bram, against a player or bot Dust — because both Bram
+  implementations write the same two status attributes and the check lives on the victim's side.
+
+  **Revert hazard:** both match places carry it and must ship together. `HunterActionLock` itself is
+  unchanged, so nothing else depends on this. The bot path additionally swapped its single
+  `task.delay(LockInTime)` for a poll on the same beat as the player's cone scan — reverting restores
+  the one-shot timer, not a half-fixed version.
+
+  **Playtested by the owner**, confirmed cancelling in a live round.
