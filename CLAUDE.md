@@ -270,6 +270,7 @@ Rolling a release **renames** `UNRELEASED.md` to the dated file and adds a row t
 - **Never patch-note an exploit fix.** Duplication bugs, anti-cheat changes and permission holes get full detail in the changelog and the words *"backend improvements"* in anything player-facing. Naming an exploit advertises that it existed and invites probing for the next one.
 - **Mark data-affecting releases.** Anything touching Wallet reasons, the XP curve, RP awards, battle-pass grants or the profile shape cannot be undone by reverting a place. Reverting restores code, never stored data.
 - **Record the place versions** in the release's `Published` field immediately after publishing. An entry without them cannot be rolled back to.
+- **Cut a GitHub release too**, tagged from the dated changelog filename, carrying the place versions and a short dev changelist. `/preflight` Step 10 does it. It is internal like the changelog — the repo is private, and every release would become public with it if that ever changed.
 - **Profile schema bumps are one-way.** You cannot safely revert a place past one.
 
 ### Environments

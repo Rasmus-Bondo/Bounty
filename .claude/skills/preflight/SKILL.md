@@ -1,6 +1,6 @@
 ---
 name: preflight
-description: Run the pre-publish gates before shipping to Roblox - verify shared-module mirrors, syntax-check changed scripts, sync vault and graphs, confirm release scope, roll the changelog, bump the version, hand over the DEV soak and manual publish checklists, record the place versions, and draft the public Discord announcement last. Pass "check" to run the read-only gates only. Use whenever the user is about to publish, or wants a health check on the mirrors.
+description: Run the pre-publish gates before shipping to Roblox - verify shared-module mirrors, syntax-check changed scripts, sync vault and graphs, confirm release scope, roll the changelog, bump the version, hand over the DEV soak and manual publish checklists, record the place versions, cut the GitHub release, and draft the public Discord announcement last. Pass "check" to run the read-only gates only. Use whenever the user is about to publish, or wants a health check on the mirrors.
 ---
 
 # Preflight
@@ -341,7 +341,7 @@ release, not a change *to* it. Instead:
 - Leave `changelog/UNRELEASED.md` empty of entries (keep its header block).
 - Archive the captures anyway: `.\.claude\scripts\changelog-capture.ps1 -Archive "Launch"`.
 - Leave `GameEnvironment.version` at `"Launch"` — **skip Step 6 entirely.**
-- Then continue to Step 8. Step 7's DEV soak and Step 10's announcement are both moot before the
+- Then continue to Step 8. Step 7's DEV soak and Step 11's announcement are both moot before the
   first release — nothing has shipped, so there is no live build to protect and nothing to announce.
 
 Pure polish and bugfixing on features that have never shipped needs no entry at all. Only
@@ -543,7 +543,7 @@ Publishing itself is manual — never attempt it via MCP, and never start a play
 [ ] Join live: version tag top-right reads the new release name + version, with NO [DEV] suffix
 [ ] Server log clean of "[GameEnvironment] PlaceId ... has no ENVIRONMENTS row"
 [ ] Look around - the things this release changed actually work on live
-[ ] Tell me it looks right, and I will draft the Discord post (Step 10)
+[ ] Tell me it looks right, and I will cut the GitHub release (Step 10) and draft the Discord post (Step 11)
 ```
 
 That `ENVIRONMENTS` warning is the one that must not be ignored: it means a PlaceId changed, so
@@ -616,7 +616,54 @@ to re-read it, and never reason from the Studio value.
 Also state, in the entry itself, which versions a rollback of this release would land on — the
 previous release's numbers. Under fire nobody wants to derive that from the file.
 
-## Step 10 — Draft the public Discord post
+## Step 10 — Cut the GitHub release
+
+**Skipped in `check` mode**, and in the pre-first-release case from Step 5.
+
+Runs **after Step 9**, because the body carries the place versions and those do not exist until the
+publish has happened.
+
+This is the internal record on GitHub: the version, the place versions it maps to, and a short dev
+changelist on one screen. It is not the Discord post and shares no text with it — that one is
+player-facing and comes last.
+
+**The repo is private, so this is internal**, on the same footing as the changelog: it may name
+place versions and describe a security fix plainly. **If the repo is ever made public, every past
+release becomes public with it** — the exploit rule would then apply to these bodies retroactively,
+so they would need auditing before any such change.
+
+**Tag** — derive it from the dated changelog filename with the date dropped:
+`2026-08-29-update-2.md` → `update-2`, `2026-08-17-hotfix-1-2.md` → `hotfix-1-2`. The human version
+string contains a space and cannot be a git ref. Tags are never reused.
+
+**Target the commit that carries the dated release file**, not whatever `main` points at by then —
+four other sessions may have pushed since.
+
+```bash
+gh release create <tag> --repo Rasmus-Bondo/Bounty   --title "<human version string, e.g. Hotfix 1.3>"   --target <sha of the commit carrying changelog/<release>.md>   --latest --notes-file <file>
+```
+
+**Body — five to ten lines, never the entry itself:**
+
+```
+**Published 2026-09-05** · Bounty r2481 · Redwater Canyon r2733 · Frostbite Claim r410
+**Rollback lands on:** Bounty r2475 · Redwater r2726 · Frostbite r406
+**Data-affecting:** no
+
+- <one line per change, lifted from the entry's own bolded summaries>
+
+Full entry: https://github.com/Rasmus-Bondo/Bounty/blob/main/changelog/<release>.md
+```
+
+Lift the bullets from the release entry's one-line summaries — do not rewrite them and do not paste
+the entry. **`Data-affecting: yes`** whenever the release touched Wallet reasons, the XP curve, RP
+awards, battle-pass grants or the profile shape: reverting a place restores code, never stored data.
+
+**Verify:** `gh release view <tag> --repo Rasmus-Bondo/Bounty`, and confirm the place versions match
+what Step 9 wrote into `CHANGELOG.md`. A release whose numbers disagree with the index is worse than
+no release at all.
+
+## Step 11 — Draft the public Discord post
 
 **Skipped in `check` mode**, and in the pre-first-release case from Step 5 — nothing has shipped, so
 there is nothing to announce.
