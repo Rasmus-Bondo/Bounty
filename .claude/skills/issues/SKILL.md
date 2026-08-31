@@ -53,6 +53,13 @@ question is "what is in Testing", it must be the GraphQL query above.
 **P3** polish. Every issue also carries `standing` (raised by a release) or `internal` (tooling,
 data, infrastructure).
 
+## Renaming or reordering a column
+
+**Pass the existing option `id` for every option**, and pass *all* of them — `updateProjectV2Field`
+replaces the whole option set. Omit the ids and every card silently loses its column; there is no
+warning and no undo. Read the current ids first, change only what you mean to change, then re-read
+the item counts to confirm nothing was dropped.
+
 ## Open an issue
 
 The issue holds **symptom, repro, and the test that closes it**. Diagnosis does *not* go here — it
