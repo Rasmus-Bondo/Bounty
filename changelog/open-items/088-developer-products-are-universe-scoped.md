@@ -1,8 +1,9 @@
 # 88 — Developer Products are universe-scoped
 
-[Open items index](../OPEN-ITEMS.md) · [Conventions](../CONVENTIONS.md)
+**Moved to the project board.** This item now lives at
+[Bounty#27](https://github.com/Rasmus-Bondo/Bounty/issues/27) — status, severity and all
+detail are maintained there, not here.
 
----
-
-**Developer Products are universe-scoped**, so monetisation cannot be staged in DEV without
-parallel product IDs. Verify gamepass behaviour separately. *(raised: Launch)*
+This stub exists only so the links in the published release entries keep resolving. It carries no
+facts; do not add any. The content this file used to hold is in the issue, and in git history
+before the 2026-08-31 migration.

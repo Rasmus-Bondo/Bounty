@@ -11,9 +11,9 @@ Reads the mechanical capture and writes human prose. The capture cannot be forgo
 **You write into `changelog/UNRELEASED.md` and nothing else.** The root `CHANGELOG.md` is an index —
 one table row per release, no prose — and it only changes when `/preflight` rolls a release. Shipped
 releases live in `changelog/YYYY-MM-DD-<release>.md` and are never edited after publishing. Standing
-concerns that outlive a release become **one file each** in `changelog/open-items/` plus a single
-row in the `changelog/OPEN-ITEMS.md` index — never a paragraph in the index itself. Conventions are
-in `changelog/CONVENTIONS.md`.
+concerns that outlive a release become **an issue on the project board**
+(<https://github.com/users/Rasmus-Bondo/projects/1>) — not a file in `changelog/open-items/`, which
+is redirect stubs only since 2026-08-31. Conventions are in `changelog/CONVENTIONS.md`.
 
 **Several agents work this project at once, so this skill never deletes anything and never touches
 another session's capture.** The capture is partitioned per session at write time —

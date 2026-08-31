@@ -1,9 +1,9 @@
 # 70 — `Workspace.TumbleweedSpawns` has duplicate child names
 
-[Open items index](../OPEN-ITEMS.md) · [Conventions](../CONVENTIONS.md)
+**Moved to the project board.** This item now lives at
+[Bounty#19](https://github.com/Rasmus-Bondo/Bounty/issues/19) — status, severity and all
+detail are maintained there, not here.
 
----
-
-**`Workspace.TumbleweedSpawns` has duplicate child names** — `StartPoint` ×3, `EndPoint` ×2 —
-so `FindFirstChild("StartPoint")` returns an arbitrary one. Looks like a lane is missing its
-`EndPoint`. *(raised: [Hotfix 2](../2026-08-01-hotfix-2.md))*
+This stub exists only so the links in the published release entries keep resolving. It carries no
+facts; do not add any. The content this file used to hold is in the issue, and in git history
+before the 2026-08-31 migration.

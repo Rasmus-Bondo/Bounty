@@ -17,9 +17,11 @@ in `changelog/`: `UNRELEASED.md` for in-flight work, `YYYY-MM-DD-<release>.md` f
 `CONVENTIONS.md` for the rules. Rolling a release **renames** `UNRELEASED.md` and adds a row to the
 index; nothing is cut and pasted between files.
 
-**Open items are a folder too.** `changelog/OPEN-ITEMS.md` is an index of one row per open item;
-each item lives in `changelog/open-items/<id>-<slug>.md`, and closed ones move to
-`open-items/archive/` with a row in `open-items/ARCHIVE.md`. Never write prose into the index.
+**Open items live on the project board.** Since 2026-08-31 an open item is a GitHub Issue on
+<https://github.com/users/Rasmus-Bondo/projects/1>, carrying `Status` (Backlog / In Progress /
+Testing / Deferred / Done) and `Severity` (P1 / P2 / P3). `changelog/OPEN-ITEMS.md` is a signpost
+plus the old-id → issue mapping and `changelog/open-items/*.md` are redirect stubs — write to
+neither. `open-items/archive/` holds only what closed before the migration.
 
 Run the steps in order. **Steps 1, 2 and 4 are hard gates:** if any fails, stop and report.
 Do not proceed because the failure looks cosmetic.
@@ -380,13 +382,13 @@ change the Launch entry when what the game *contains* changes.
 5. Add a row to the top of the release table in `CHANGELOG.md`, by **anchored `Edit`** — never a
    whole-file write, another agent may be reading it. Carry over the `Summary` line as the
    *What it was* cell.
-6. Move anything from this release that is knowingly unfinished, deferred or still broken into
-   `changelog/open-items/` — **one file per item**, taking the next free id from the top of
-   `changelog/OPEN-ITEMS.md`, tagged `(raised: <release name>)`, plus one row in that index. A
+6. Open a **board issue** for anything from this release that is knowingly unfinished, deferred or
+   still broken: `gh issue create`, label it `standing` or `internal`, add it to the board and set
+   `Status` and `Severity`. Tag the body `(raised: <release name>)` and link the release entry. A
    release file is history and stops being edited the moment it ships; a live concern buried in one
-   is a concern nobody finds. While you are there, move any item this release **verified** into
-   `open-items/archive/` and shift its row to `open-items/ARCHIVE.md` — an open list that never
-   loses rows is the thing that made the old file unreadable.
+   is a concern nobody finds. While you are there, **close** any board issue this release verified,
+   and say in the closing comment whether the basis was a playtest or elapsed time without
+   recurrence — those are different claims.
 7. **Do not archive the captures yet.** Archiving is the closing action of *Step 6*, after the
    version bump, because the bump is itself a captured Studio edit. Archiving here strands it —
    see Step 6.

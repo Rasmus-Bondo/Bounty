@@ -1,9 +1,9 @@
 # 85 — Profile schema is not version-tracked in code
 
-[Open items index](../OPEN-ITEMS.md) · [Conventions](../CONVENTIONS.md)
+**Moved to the project board.** This item now lives at
+[Bounty#29](https://github.com/Rasmus-Bondo/Bounty/issues/29) — status, severity and all
+detail are maintained there, not here.
 
----
-
-**Profile schema is not version-tracked in code.** Add a `ProfileSchemaVersion` field and an
-explicit migration step per bump, so "can I safely revert past this?" is answerable without
-reading code. *(raised: Launch)*
+This stub exists only so the links in the published release entries keep resolving. It carries no
+facts; do not add any. The content this file used to hold is in the issue, and in git history
+before the 2026-08-31 migration.

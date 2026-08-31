@@ -48,8 +48,10 @@ folder sorts chronologically, since `Hotfix 10` would otherwise sort before `Hot
 
 - `../CHANGELOG.md` — the index. One table row per release, nothing else. It is the entry point.
 - `UNRELEASED.md` — work that has shipped to no one yet. `/changelog` writes here.
-- `OPEN-ITEMS.md` — **index** of known issues and deferred work, one row per open item.
-- `open-items/<id>-<slug>.md` — one open item. `open-items/archive/` + `ARCHIVE.md` for closed ones.
+- `OPEN-ITEMS.md` — signpost to the project board plus the old-id → issue mapping. Open items are
+  **not** tracked here any more.
+- `open-items/<id>-<slug>.md` — redirect stubs, so the published release entries' links still
+  resolve. `open-items/archive/` + `ARCHIVE.md` hold the 99 items closed before 2026-08-31.
 - `CONVENTIONS.md` — this file.
 
 **Rolling a release renames `UNRELEASED.md`** to the dated file and creates a fresh empty one.

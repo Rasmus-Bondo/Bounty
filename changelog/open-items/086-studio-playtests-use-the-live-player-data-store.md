@@ -1,14 +1,9 @@
 # 86 — Studio playtests use the LIVE player data store
 
-[Open items index](../OPEN-ITEMS.md) · [Conventions](../CONVENTIONS.md)
+**Moved to the project board.** This item now lives at
+[Bounty#28](https://github.com/Rasmus-Bondo/Bounty/issues/28) — status, severity and all
+detail are maintained there, not here.
 
----
-
-**Studio playtests use the LIVE player data store.** `GetProfileStore("PlayerData_" ..
-DATA_VERSION, ...)` has no `IsStudio()` branch and no Mock in either place, so pressing Play in
-Studio takes a real session lock on a real profile — the cause of the "session locked too often"
-symptom that `ForceLoadMaxSteps = 4` was papering over. `MatchDirectoryService` already solves
-this one layer down by suffixing its MemoryStore map name under `IsStudio()`; the same treatment
-belongs here. **Weigh first:** scoping Studio to its own store means playtests get an empty
-profile — no owned hunters, no currency, no pass progress — so a seeded test profile is probably
-wanted alongside it. *(raised: Launch)*
+This stub exists only so the links in the published release entries keep resolving. It carries no
+facts; do not add any. The content this file used to hold is in the issue, and in git history
+before the 2026-08-31 migration.

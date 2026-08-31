@@ -47,6 +47,8 @@ sitting in the source.
 
 To read or modify the codebase, you **MUST** use the **Roblox MCP server** tools (`mcp__robloxstudio__*`). Do NOT attempt to read game code from local files — they are documentation, not source.
 
+This folder **is** a git repo, pushed to private `Rasmus-Bondo/Bounty`. It versions the docs, vaults, graphs and changelog only. `git log` will never tell you what changed in the game — the changelog and the Roblox place versions do that.
+
 ### Constraints
 - **Platform**: Roblox Studio — all game code is Luau scripts within the Roblox data model
 - **Architecture**: Client-server model enforced by Roblox (LocalScripts on client, Scripts on server, RemoteEvents for communication)
@@ -202,7 +204,7 @@ One-line description.
 
 ## Changelog & Release Rules
 
-The changelog is the project's **only** version history — there is no git repository, so nothing else records what changed when. Roblox place versions are the rollback index; the changelog is how you know *which* version to roll back to. It is **internal**: it carries place versions and security fixes and is never pasted anywhere a player can read.
+The changelog is the **only** version history of the game itself. The project folder is a git repo (private `Rasmus-Bondo/Bounty`), but git versions the *documentation* — the Luau code lives in Studio, so no commit records what shipped. Roblox place versions are the rollback index; the changelog is how you know *which* version to roll back to. It is **internal**: it carries place versions and security fixes and is never pasted anywhere a player can read.
 
 **It is a folder, not a file.** `CHANGELOG.md` in the project root is an **index** — one table row per release and nothing else — so an agent looking up one release does not load five. Open only what you need:
 
@@ -211,8 +213,8 @@ The changelog is the project's **only** version history — there is no git repo
 | `CHANGELOG.md` | Index. Release table with dates, place versions, data-affecting flag, one-line summaries. Start here. |
 | `changelog/UNRELEASED.md` | In-flight work. The **only** file `/changelog` writes. |
 | `changelog/YYYY-MM-DD-<release>.md` | One shipped release. **Published history — never edited after publishing.** A correction to a shipped entry is a new entry in `UNRELEASED.md`. |
-| `changelog/OPEN-ITEMS.md` | **Index** of known issues and deferred work — one row per open item, each tagged with the release that raised it. Edit freely; never put prose here. |
-| `changelog/open-items/<id>-<slug>.md` | One open item. Closed ones move to `open-items/archive/` with a row in `open-items/ARCHIVE.md`. |
+| `changelog/OPEN-ITEMS.md` | Signpost to the [project board](https://github.com/users/Rasmus-Bondo/projects/1) plus the old-id → issue mapping. **Open items are not tracked here any more.** |
+| `changelog/open-items/<id>-<slug>.md` | Redirect stubs, so links in the published release entries still resolve. `open-items/archive/` + `ARCHIVE.md` hold the 99 items closed before 2026-08-31. |
 | `changelog/CONVENTIONS.md` | Metadata-block fields, versioning scheme, the 20 mirrored modules, the exploit rule. |
 
 Rolling a release **renames** `UNRELEASED.md` to the dated file and adds a row to the index — prose is never cut and pasted between files.
@@ -229,8 +231,8 @@ Rolling a release **renames** `UNRELEASED.md` to the dated file and adds a row t
 - **Never publish one place alone.** The mirrored modules make a half-published experience a live drift bug. All three places go out together, always.
 - **Curate your own capture, and retire it rather than deleting it.** Several agents work this project at once, which is the whole reason the capture is partitioned per session. Touching another pane's `pending/` file — curating it, emptying it, deleting it — silently destroys work that agent has not written up yet, and it cannot tell that anything went missing. `/changelog all` is the only sweep, and it belongs to a release, announced first.
 - **Never `Write` `changelog/UNRELEASED.md` or `CHANGELOG.md` whole.** Append with an `Edit` anchored on a section heading, and re-read the file immediately before, because another agent may have written since. A whole-file write is the one operation that destroys a concurrent entry without complaining; a stale anchor merely errors, which is the point.
-- **A shipped release file is history.** `changelog/YYYY-MM-DD-<release>.md` stops being edited the moment it publishes, except to fill in its `Published` versions. Corrections go in `UNRELEASED.md`; anything still broken or deferred becomes a file in `changelog/open-items/` plus a row in `OPEN-ITEMS.md`, not something buried in a release entry where nobody will look.
-- **Open items are one file per item, and closed ones leave.** The index carries rows; the item file carries symptom, repro and the test that closes it; **diagnosis stays in the release entry**. On `VERIFIED`/`WONTFIX`, move the file to `open-items/archive/` and its row to `ARCHIVE.md` in the same pass. Skipping that is what turned the old single file into 217 KB. `FIXED (unverified)` is not closed — it still owes a playtest.
+- **A shipped release file is history.** `changelog/YYYY-MM-DD-<release>.md` stops being edited the moment it publishes, except to fill in its `Published` versions. Corrections go in `UNRELEASED.md`; anything still broken or deferred becomes an issue on the project board, not something buried in a release entry where nobody will look.
+- **Open items live on the [project board](https://github.com/users/Rasmus-Bondo/projects/1), one issue each.** The issue carries symptom, repro and the test that closes it; **diagnosis stays in the release entry**. Closing the issue closes the item, and the closing comment records whether the basis was a playtest or elapsed time without recurrence. The **`Testing` column is not closed** — it still owes a playtest, which is the distinction the old `FIXED (unverified)` status existed to make.
 - **Never patch-note an exploit fix.** Duplication bugs, anti-cheat changes and permission holes get full detail in the changelog and the words *"backend improvements"* in anything player-facing. Naming an exploit advertises that it existed and invites probing for the next one.
 - **Mark data-affecting releases.** Anything touching Wallet reasons, the XP curve, RP awards, battle-pass grants or the profile shape cannot be undone by reverting a place. Reverting restores code, never stored data.
 - **Record the place versions** in the release's `Published` field immediately after publishing. An entry without them cannot be rolled back to.
