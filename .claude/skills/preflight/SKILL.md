@@ -19,8 +19,8 @@ index; nothing is cut and pasted between files.
 
 **Issues live on the project board.** Since 2026-08-31 a known problem is an *issue* — the term
 "open item" is retired — and it is a GitHub Issue on
-<https://github.com/users/Rasmus-Bondo/projects/1>, carrying `Status` (Backlog / In Progress /
-Testing / Deferred / Done) and `Severity` (P1 / P2 / P3). `changelog/OPEN-ITEMS.md` is a signpost
+<https://github.com/users/Rasmus-Bondo/projects/1>, carrying `Status` (Deferred / Open /
+In Progress / Testing / Done) and `Severity` (P1 / P2 / P3). `changelog/OPEN-ITEMS.md` is a signpost
 plus the old-id → issue mapping and `changelog/open-items/*.md` are redirect stubs — write to
 neither. `open-items/archive/` holds only what closed before the migration.
 
