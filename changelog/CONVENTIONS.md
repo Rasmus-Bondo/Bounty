@@ -1,6 +1,6 @@
 # Changelog conventions
 
-[Index](../CHANGELOG.md) · [Unreleased](UNRELEASED.md) · [Open items](OPEN-ITEMS.md)
+[Index](../CHANGELOG.md) · [Unreleased](UNRELEASED.md) · [Issues](https://github.com/users/Rasmus-Bondo/projects/1)
 
 How release entries are named, structured and written. Read this before rolling a release
 or writing an entry; you do not need it to look up what a past release did.
@@ -33,9 +33,9 @@ already commented in the source is a second copy of that explanation, and the tw
 - **State the verification basis, not a transcript.** "Playtested by the owner", "harness-verified,
   not playtested", "recompile only" each carry real information. Three paragraphs of harness output
   do not.
-- **One exception: an entry cited by an open item carries that item's diagnosis** — see rule 2
-  above. The item file deliberately holds only symptom, repro and closing test, so the forensics
-  have to live somewhere, and this is that somewhere. Absent an open item, a fix explained in its
+- **One exception: an entry cited by an issue carries that issue's diagnosis** — see rule 2
+  above. The issue deliberately holds only symptom, repro and closing test, so the forensics
+  have to live somewhere, and this is that somewhere. Absent an issue, a fix explained in its
   own source does not need re-explaining here.
 
 Rough shape: a bolded one-line summary, then one to three short paragraphs. Anything longer is
@@ -58,31 +58,38 @@ folder sorts chronologically, since `Hotfix 10` would otherwise sort before `Hot
 Nothing is cut and pasted between files, which is the whole reason the in-flight prose does not
 live in the index.
 
-## Open items are one file per item
+## Issues live on the project board
 
-`OPEN-ITEMS.md` was a single 2,755-line / 217 KB document until 2026-08-11, so reading one item
-meant loading all 94. It is now an index of one-line rows over `open-items/`, on the same pattern
-as `CHANGELOG.md` over `changelog/`.
+Since 2026-08-31 a known problem or a deferred piece of work is an **issue** on
+<https://github.com/users/Rasmus-Bondo/projects/1>. The board is its only home: you drag it between
+columns there, and nothing about it is tracked in this folder. The term *open item* is retired — it
+is an issue, and its id is its issue number.
 
-Three rules keep it from growing back — the split alone would only move the growth:
+`OPEN-ITEMS.md` was a single 2,755-line / 217 KB document until 2026-08-11, then an index of rows
+over `open-items/` until the migration. Both shapes drifted, and the migration audit caught three
+at once: the index listed 18 rows under a heading that said 16, item 125 had a file and no row at
+all, and a cross-reference pointed at a path that had been archived out from under it. **A board
+cannot drift from itself** — the status you see is the status there is.
 
-1. **The index holds rows, never prose.** One line per item.
-2. **An item file holds symptom, repro, the test that closes it, and a link to its release entry.**
-   **Diagnosis lives in the release entry**, which is where this file already said it lives. The old
-   document's bulk was items restating forensics that already existed one folder up.
-3. **Closed items leave.** On `VERIFIED` / `WONTFIX` / a dated closure, the file moves to
-   `open-items/archive/` and its row moves to `ARCHIVE.md`, in the same pass.
+Three rules carry over unchanged:
 
-**A closure records its basis.** `FIXED (unverified)` normally stays open because it still owes a
-playtest — but an owner may close on **elapsed time without recurrence** instead, which is how the
-last ten launch issues closed on 2026-08-11. Stamp the item file with which one it was
-(`**Closed <date>** — <basis>`), because "shipped and tested" and "shipped and nothing broke" are
-different claims and only the stamp distinguishes them later. A resurfaced item becomes a **new id**,
-never a reopened one.
+1. **The issue holds symptom, repro and the test that closes it. Diagnosis lives in the release
+   entry.** The forensics that explain *why* a fix worked are written once, in the entry that
+   shipped it. The old document's bulk was items restating what already existed one folder up.
+2. **`Testing` is not closed.** Code sitting in Studio still owes a human playtest; MCP playtesting
+   is unavailable, so closure is always a manual run-through. That was the entire point of the old
+   `FIXED (unverified)` status, and it is now a column you can see without opening anything.
+3. **A closure records its basis.** An owner may close on **elapsed time without recurrence**
+   rather than a playtest — that is how the last ten launch issues closed on 2026-08-11. Say which
+   in the closing comment: "shipped and tested" and "shipped and nothing broke" are different
+   claims, and only that comment distinguishes them later. A resurfaced problem becomes a **new
+   issue**, never a reopened one.
 
-Ids are never reused or renumbered; release entries cite them by number. 1–32 are the original
-launch report (no #2), 33+ were assigned at the split. The next free id is recorded at the top of
-`OPEN-ITEMS.md`.
+**Old ids still resolve, and do not match issue numbers.** Release entries published before the
+migration cite items by their old number — 1–32 are the launch report (no #2), 33+ from the
+2026-08-11 split — and old 132 is issue #1. `OPEN-ITEMS.md` carries the mapping table, and the
+stubs under `open-items/` keep those citations clicking through. New work takes an issue number and
+no old id at all.
 
 ## The 20 mirrored shared modules
 

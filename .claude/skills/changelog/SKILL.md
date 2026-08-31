@@ -73,7 +73,7 @@ revert it, and whether it was verified. A bolded one-liner plus one to three sho
 **Do not re-explain in the entry a mechanism you have just commented in the source** — that is a
 second copy which will drift, and the source is where the next person reads it. See
 [Entries are precise, not long](../../../changelog/CONVENTIONS.md) for the full rule, including the
-one case that does carry diagnosis: an entry cited by an open item.
+one case that does carry diagnosis: an entry cited by an issue on the board.
 
 **4. Write into `changelog/UNRELEASED.md` — by anchored `Edit` only.**
 

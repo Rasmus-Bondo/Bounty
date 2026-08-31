@@ -34,13 +34,44 @@ the change, the rollback risk, and whether it is verified — not the diagnosis 
 sitting in the source.
 
 ## Concurrent Sessions
-**Multiple Claude sessions can be working on this project at the same time.** Treat every shared resource as potentially modified by a peer session since you last read it.
+**Up to five Claude sessions work this project at once — same folder, same working tree, same Studio instance.** Treat every shared resource as potentially modified by a peer session since you last read it.
 
 - **`changelog/UNRELEASED.md`** — never `Write` it whole; always `Edit` anchored on a section heading and re-read immediately before editing, because another session may have appended since. Same for the root `CHANGELOG.md` index. See Changelog & Release Rules.
 - **Vault `.md` files** — re-read before editing; a peer may have updated the summary or connections section.
 - **Shared mirror modules** — if you edit one copy, check the other copy for peer edits before writing so you don't clobber concurrent changes.
 - **`.changelog/pending/`** — each session writes its own `<session>.jsonl`; never touch another session's file. `/changelog all` is the only sweep and belongs to a release.
 - **Studio data model** — MCP reads reflect the live state; a peer session may have created, moved, or deleted instances between your tool calls. Re-fetch before assuming structure.
+
+### Git with five agents in one working tree
+
+**One clone, one working tree, one branch.** Every session commits to `main` in the same folder, so
+each commit is a child of the last and **pushes cannot diverge — merge conflicts are structurally
+impossible.** Keep it that way. The hazard here is not merging; it is that four peers' half-finished
+edits are sitting in the same tree as yours, and git cannot tell them from your own.
+
+- **Stage explicit paths. `git add <path>` — never `git add -A`, `git add .`, or `git commit -a`.**
+  Those sweep every peer's in-progress work into your commit, and the peer has no way to notice. This
+  is the rule that matters most, and it is *denied* in `.claude/settings.json` so it fails outright
+  rather than prompting.
+- **Never rewrite the shared tree.** No `git checkout`, `git switch`, `git reset --hard`,
+  `git stash`, `git clean`. Each silently destroys uncommitted work belonging to sessions you cannot
+  see, and there is no reflog for a file that was never staged. These prompt — treat the prompt as a
+  stop sign, not a speed bump.
+- **No branches, no worktrees.** Studio is the authority and cannot be branched, so a doc branch
+  describes a place that has already moved on. And `graphs/` is regenerated wholesale from the
+  *entire* vault: on a branch it would be built from a partial one, and a 386 KB generated JSON is a
+  file nobody can merge or review. Isolation would manufacture the conflicts it claims to prevent.
+- **Commit small and often.** The window where your work sits unstaged is exactly the window a peer's
+  careless `add` can take it.
+- **Scope your status:** `git status --short -- <your paths>`, not a bare `git status` showing four
+  other people's work.
+- **`index.lock` means a peer is mid-commit.** Wait a moment and retry. **Never delete the lock
+  file** — that corrupts their commit without unblocking yours.
+- **A rejected push means someone edited on github.com or another machine.** That is the only way
+  this repo can diverge. `git pull --rebase`, then push.
+- **`graphs/` regenerates, never merges.** Run the update script and commit the regenerated graph in
+  the same commit as the vault edits that caused it. If two sessions both touched the vault, the last
+  run is the correct one — never hand-edit or hand-merge a generated graph.
 
 ## Codebase Location
 **The codebase does NOT live in this project folder.** All game code (Luau scripts, instances, properties) lives exclusively in **Roblox Studio**. This folder only contains planning documents, an Obsidian documentation vault, and generated knowledge graphs.
@@ -213,7 +244,7 @@ The changelog is the **only** version history of the game itself. The project fo
 | `CHANGELOG.md` | Index. Release table with dates, place versions, data-affecting flag, one-line summaries. Start here. |
 | `changelog/UNRELEASED.md` | In-flight work. The **only** file `/changelog` writes. |
 | `changelog/YYYY-MM-DD-<release>.md` | One shipped release. **Published history — never edited after publishing.** A correction to a shipped entry is a new entry in `UNRELEASED.md`. |
-| `changelog/OPEN-ITEMS.md` | Signpost to the [project board](https://github.com/users/Rasmus-Bondo/projects/1) plus the old-id → issue mapping. **Open items are not tracked here any more.** |
+| `changelog/OPEN-ITEMS.md` | Signpost to the [project board](https://github.com/users/Rasmus-Bondo/projects/1) plus the old-id → issue mapping. **Issues are not tracked here any more.** |
 | `changelog/open-items/<id>-<slug>.md` | Redirect stubs, so links in the published release entries still resolve. `open-items/archive/` + `ARCHIVE.md` hold the 99 items closed before 2026-08-31. |
 | `changelog/CONVENTIONS.md` | Metadata-block fields, versioning scheme, the 20 mirrored modules, the exploit rule. |
 
@@ -232,7 +263,7 @@ Rolling a release **renames** `UNRELEASED.md` to the dated file and adds a row t
 - **Curate your own capture, and retire it rather than deleting it.** Several agents work this project at once, which is the whole reason the capture is partitioned per session. Touching another pane's `pending/` file — curating it, emptying it, deleting it — silently destroys work that agent has not written up yet, and it cannot tell that anything went missing. `/changelog all` is the only sweep, and it belongs to a release, announced first.
 - **Never `Write` `changelog/UNRELEASED.md` or `CHANGELOG.md` whole.** Append with an `Edit` anchored on a section heading, and re-read the file immediately before, because another agent may have written since. A whole-file write is the one operation that destroys a concurrent entry without complaining; a stale anchor merely errors, which is the point.
 - **A shipped release file is history.** `changelog/YYYY-MM-DD-<release>.md` stops being edited the moment it publishes, except to fill in its `Published` versions. Corrections go in `UNRELEASED.md`; anything still broken or deferred becomes an issue on the project board, not something buried in a release entry where nobody will look.
-- **Open items live on the [project board](https://github.com/users/Rasmus-Bondo/projects/1), one issue each.** The issue carries symptom, repro and the test that closes it; **diagnosis stays in the release entry**. Closing the issue closes the item, and the closing comment records whether the basis was a playtest or elapsed time without recurrence. The **`Testing` column is not closed** — it still owes a playtest, which is the distinction the old `FIXED (unverified)` status existed to make.
+- **Issues live on the [project board](https://github.com/users/Rasmus-Bondo/projects/1) and nowhere else.** They are called *issues*, not "open items" — the old term is retired. You drag them between columns on the board; that is the interface. The issue carries symptom, repro and the test that closes it; **diagnosis stays in the release entry**. Closing the issue is how it closes, and the closing comment records whether the basis was a playtest or elapsed time without recurrence. The **`Testing` column is not closed** — it still owes a playtest, which is the distinction the old `FIXED (unverified)` status existed to make.
 - **Never patch-note an exploit fix.** Duplication bugs, anti-cheat changes and permission holes get full detail in the changelog and the words *"backend improvements"* in anything player-facing. Naming an exploit advertises that it existed and invites probing for the next one.
 - **Mark data-affecting releases.** Anything touching Wallet reasons, the XP curve, RP awards, battle-pass grants or the profile shape cannot be undone by reverting a place. Reverting restores code, never stored data.
 - **Record the place versions** in the release's `Published` field immediately after publishing. An entry without them cannot be rolled back to.

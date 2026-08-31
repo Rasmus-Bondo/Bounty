@@ -17,7 +17,8 @@ in `changelog/`: `UNRELEASED.md` for in-flight work, `YYYY-MM-DD-<release>.md` f
 `CONVENTIONS.md` for the rules. Rolling a release **renames** `UNRELEASED.md` and adds a row to the
 index; nothing is cut and pasted between files.
 
-**Open items live on the project board.** Since 2026-08-31 an open item is a GitHub Issue on
+**Issues live on the project board.** Since 2026-08-31 a known problem is an *issue* — the term
+"open item" is retired — and it is a GitHub Issue on
 <https://github.com/users/Rasmus-Bondo/projects/1>, carrying `Status` (Backlog / In Progress /
 Testing / Deferred / Done) and `Severity` (P1 / P2 / P3). `changelog/OPEN-ITEMS.md` is a signpost
 plus the old-id → issue mapping and `changelog/open-items/*.md` are redirect stubs — write to
