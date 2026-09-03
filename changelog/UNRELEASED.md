@@ -93,6 +93,36 @@ which is the point.
   matrix. **Not yet playtested** — the camera, spam-click and 3D reveal fixes need the owner's
   next run (#37).
 
+- **Chest scene, second playtest round (owner, 2026-09-03).** Five changes to the unreleased lootbox
+  build, all in Bounty (`ChestController` plus two authored rows in the odds panel):
+  - **Any of the five shots can land.** Exactly `stage` shots still hit, but the shot numbers that
+    hit are drawn at random once per chest instead of always being the first `stage`, so the last
+    shot can still decide the tier. The count never changes; the server's stage is replayed as
+    before.
+  - **Two guarantee bars in the odds panel.** Rows six and seven (`6PityEpic`, `7PityLegendary`,
+    cloned from `ChestXPBar` and the old pity label; the grid is now 1/7 rows) fill from the
+    server's pity counters against the config thresholds — `EPIC+ GUARANTEED  7 / 20`. They
+    replace the guarantee sentence.
+  - **The chest's glow behind every reward replaces the outline.** The chest's own glow recipe (a
+    neon disc plus its `Rays` emitter, recoloured and rescaled to the reward) sits behind each
+    reward on the camera's side; the tier-coloured Highlight outline is gone.
+  - **Emotes play on a small default Dust rig** — root anchored, limbs released after the pop,
+    the clip through `AnimationLoader`; the name card only if the rig or clip is missing.
+  - **The duplicate line is coloured:** DUPLICATE in orange, the refund in its currency's colour
+    (Tokens `237, 56, 188`, Cash `255, 216, 0`).
+
+  The LOOT badge was **not** moved: it already sits horizontally centred on the diamond's apex like
+  the STORE pill at every aspect ratio (its offsets are all in screen height), so "centre it" is
+  waiting on the owner saying where — see #37.
+
+  **Revert hazard:** none beyond the build itself. The odds grid is an authored-instance change
+  (six rows to seven); reverting the script alone leaves the two bars painted at zero.
+
+  **Verified:** syntax (`loadstring`); the bars by screenshot. **Not yet playtested** — the random
+  hit pattern, the glow discs and above all the animated Dust rig (an AnimationConstraint rig with
+  free limbs under the hover's per-frame PivotTo has never run live) need the owner's next run
+  (#37).
+
 ## Changed
 
 - **A second DEV ranked-season boundary, Saturday 2026-09-05 18:00 CEST.** `DEV_RANK_SEASONS` in
