@@ -151,6 +151,35 @@ which is the point.
   call-out's motion and the chips' runtime layout and vault round trip need the owner's next run
   (#37).
 
+- **Chest scene, fourth round (owner, 2026-09-03).** Four fixes to the unreleased lootbox work,
+  all in Bounty:
+  - **HIT / MISS fly from over the chest**, never from where the shot landed — a miss hole on a
+    far wall put the word nowhere near the chest. The origin is `K.SHOT_TEXT_LIFT` of the chest's
+    live height over its base pivot, jittered sideways by `K.SHOT_TEXT_JITTER` so five call-outs
+    do not stack (`spawnShotText` no longer takes a position).
+  - **The rarity glow appears as the reward leaves the chest**, not on landing: `attachLootGlow`
+    runs at spawn and a new `placeLootGlow` keeps the rays behind the reward through the pop as
+    well as the hover.
+  - **The emote rig flailed with its name label under it.** Its root is now the PrimaryPart, and
+    once the limbs go physical the hover drives the root's CFrame alone instead of pivoting the
+    whole model every frame (which wrote CFrames onto simulated limbs); the label is adorned to
+    the root part, lifted by the root-to-centre distance, instead of to the Model. Same recipe as
+    the Trading Post stand (`ShopStandDisplay.cleanRig`).
+  - **The LOOT-tab chips lay across the settings gear and the version tag on a windowed PC.** The
+    row was measured off `ChestMenu`'s purchase panel while that GUI was still disabled, and a
+    disabled ScreenGui reports the layout of the window it was last enabled in (~380 px tall
+    here). `CurrencyHudController` now ignores the panel until `ChestMenu` is enabled (its
+    authored-scale fallback stands in, exact for any window) and re-lays on the panel's and the
+    gear's geometry signals and on `ChestMenu.Enabled`.
+
+  **Revert hazard:** none; all four are client-side presentation in two scripts.
+
+  **Verified:** syntax on both scripts; the rig's pivot / root maths replayed on a clone in edit
+  mode (driving the root reproduces the target pivot exactly); the chip layout checked against
+  edit-mode geometry at 1658x678 (the row lands at y 83–117, under the gear's row ending at 54).
+  **Not playtested** — the emote rig's physics and the chips' runtime re-lay need the owner's
+  next run (#37).
+
 - **New-item bubbles: a red dot chains from the COLLECTION button down to the individual tile**
   ([#34](https://github.com/Rasmus-Bondo/Bounty/issues/34), built 2026-09-03, Bounty). A player who
   gains a cosmetic — level-up, purchase, battle-pass tier, chest, quest — now gets a bubble on the
