@@ -103,11 +103,12 @@ which is the point.
     cloned from `ChestXPBar` and the old pity label; the grid is now 1/7 rows) fill from the
     server's pity counters against the config thresholds — `EPIC+ GUARANTEED  7 / 20`. They
     replace the guarantee sentence.
-  - **The chest's glow behind every reward replaces the outline.** One sprite of the chest's ray
-    texture on a billboard (`Brightness` 2, slow spin), tinted to the tier and sized to the reward,
-    on an invisible carrier behind each reward on the camera's side. No emitter and no solid
-    backdrop — the same day's neon disc and multi-ray emitter were both cut on the owner's look;
-    the tier-coloured Highlight outline is gone.
+  - **The chest's glow behind every reward replaces the outline.** The chest's `Rays` emitter,
+    recoloured and rescaled to the reward and tuned more visible (two rays alive at a time, held
+    near opaque, `Brightness` 3), plays from an invisible carrier behind each reward on the camera's
+    side. Particles only — a neon disc backdrop and a billboard of the same texture (which draws
+    the texture's black ground) were both tried and cut the same day; the tier-coloured Highlight
+    outline is gone.
   - **Emotes play on a small default Dust rig** — root anchored, limbs released after the pop,
     the clip through `AnimationLoader`; the name card only if the rig or clip is missing.
   - **The duplicate line is coloured:** DUPLICATE in orange, the refund in its currency's colour
