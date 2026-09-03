@@ -14,7 +14,7 @@ which is the point.
 ---
 
 - **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). **Lootbox build (2026-09-03):** `Wallet` (four reasons) and `Telemetry` (one event) touched in all three places, verified by length + hash (`7719 B` / `663703730`, `28058 B` / `1779240489`); match-place mirror `DataService` and `TutorialDirector` across Redwater and Frostbite (`26512 B` / `1269809867`, `80703 B` / `1157972711`); the profile-template block and the launch-migration block are byte-identical in all three DataServices (`1220 B` / `237526912`, `2058 B` / `3057621043`).
-- **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed. **Lootbox build:** profile shape gains `Lootboxes` + `LootboxLaunchV1` (Reconcile-backfilled, no `DATA_VERSION` bump) and four Wallet reasons; the one-way launch migration (Level/XP reset, veteran bundle) is **disarmed** (`LOOTBOX_LAUNCH_ARMED = false`) until the launch publish. See Added.
+- **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed. **Lootbox build:** profile shape gains `Lootboxes` + `LootboxLaunchV1` (Reconcile-backfilled, no `DATA_VERSION` bump) and four Wallet reasons; the one-way launch migration (Level/XP reset, veteran bundle) is armed for the **DEV universe only** (`LOOTBOX_LAUNCH_ARMED = GameEnvironment.env == "Dev"`) and stays off on live until the launch publish flips it to `true`. See Added.
 
 ## Added
 
@@ -59,6 +59,39 @@ which is the point.
   1.6 MB copies of `WorkingChest` sit in `ReplicatedStorage.Lootbox`; the two backups await owner
   confirmation before deletion. `TEST_ACCOUNT_BONUS_REPLAY` in `TutorialDirector` is still on
   (pre-existing, #119's successor on the board).
+
+- **Chest scene, first playtest round (owner, 2026-09-03).** Six fixes to the unreleased lootbox
+  build, all in Bounty:
+  - **PURCHASE no longer strands on a grey "..."** after a spam-click. The server answers a
+    cooldown- or busy-rejected purchase with a state push (`purchaseResult = "cooldown"`) instead of
+    dropping it, the client drops clicks inside `REMOTE_COOLDOWN` before they are sent, the busy
+    window keeps the button red with its label, and the no-reply fallback is 3 s, not 6.
+  - **OPEN / SHOOT stays red while a chest lands or opens**; only an empty inventory greys it.
+    `REVEALING` reads OPENING rather than "...".
+  - **The camera no longer drifts a little per shot.** The shot shake now swaps its previous
+    frame's offset out of `Camera.CFrame` before applying the next and removes it when it ends,
+    and the FOV kick holds one rest FOV for the whole run instead of re-reading a half-returned
+    value on every kick (a cancelled kick's `Completed` also no longer starts a stray return
+    tween). Both restore in `resetChestState`, so a tab change mid-shot is clean. Rationale in
+    the source above `playShotFOVKick`; the lobby camera is parked between tabs, so anything left
+    behind was permanent.
+  - **The LOOT count badge sits on the diamond's apex** like the STORE pill (`0.5, 0.192`, no
+    rotation, a 0.28 circle) instead of rotated on its upper-left edge.
+  - **The purchase panel is flush right** on every device: `ChestPurchaseFrame` is anchored at
+    `(1, 0.5)`, `X = 1.455` of the canvas, which lands its right edge one gap left of the party
+    handle's parked position (`closedPosition` in `ReworkedPartyClient`). Device matrix
+    (phone, 4:3 tablet, 1080p) with the party parked as at runtime: clear on all three.
+  - **Rewards float out as their real 3D model** where one exists — weapon skins as the Trading Post's gun models in side profile, hero skins as the shop's standing rigs, Cash and Tokens as the `MoneyPhysical` coin on its edge — and as their
+    2D icon on a billboard where none does (the `BoostConfig` potion icon, the title in its own style through `TitleRenderer`, an emote name card); the tier-coloured union remains the
+    fallback for anything unresolvable. Only the fallback is recoloured; real models get a
+    tier-coloured outline.
+
+  **Revert hazard:** none beyond the build itself; the server change is additive (one extra push).
+  Bounty only — `LootboxService`, `ChestController`, two authored GUI instances.
+
+  **Verified:** syntax (`loadstring`) on both scripts, badge and panel by screenshot / device
+  matrix. **Not yet playtested** — the camera, spam-click and 3D reveal fixes need the owner's
+  next run (#37).
 
 ## Changed
 

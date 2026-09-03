@@ -1,11 +1,11 @@
 # Graph Report - LocalBounty  (2026-09-03)
 
 ## Corpus Check
-- 127 files · ~154,193 words
+- 127 files · ~154,646 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 127 nodes · 416 edges · 17 communities detected
+- 127 nodes · 418 edges · 17 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -45,8 +45,8 @@
   LocalBounty/ServerScriptService/PlayerServices/LootboxService.md → LocalBounty/ReplicatedStorage/Config/LootboxConfig.md
 - `QuestService` --calls--> `QuestConfig`  [EXTRACTED]
   LocalBounty/ServerScriptService/PlayerServices/QuestService.md → LocalBounty/ReplicatedStorage/Config/QuestConfig.md
-- `GiftPopupClient` --calls--> `RankSeasonRewardService`  [EXTRACTED]
-  LocalBounty/StarterGui/GiftGui/GiftPopupClient.md → LocalBounty/ServerScriptService/RankSeasonRewardService.md
+- `GiftPopupClient` --calls--> `DataService`  [EXTRACTED]
+  LocalBounty/StarterGui/GiftGui/GiftPopupClient.md → LocalBounty/ServerScriptService/PlayerServices/DataService.md
 - `LoadingScreen` --calls--> `WaitForRequired`  [EXTRACTED]
   LocalBounty/ReplicatedFirst/LoadingScreen.md → LocalBounty/ReplicatedStorage/Modules/WaitForRequired.md
 - `PlayerSettingsService` --calls--> `LoadingScreen`  [EXTRACTED]
@@ -71,16 +71,16 @@ Cohesion: 0.26
 Nodes (13): FriendJoinService, FriendsInMatchClient, GameModeClient, GamemodeConfig, MapCatalog, MatchmakingService, Mobile3DClickHandler, NotificationModule (+5 more)
 
 ### Community 4 - "Server Bootstrap"
-Cohesion: 0.31
-Nodes (11): CodeRedemptionService, CollisionService, DataService, GiftPopupClient, LobbyService, Main, MouseSensitivityService, PlayerSettingsService (+3 more)
-
-### Community 5 - "Server Bootstrap"
 Cohesion: 0.38
 Nodes (11): CarouselMath, CollectionClient, Config, GroupPerkConfig, HunterList, NameGui, PreviewModel, Reel (+3 more)
 
+### Community 5 - "Server Bootstrap"
+Cohesion: 0.36
+Nodes (10): CodeRedemptionService, CollisionService, DataService, LobbyService, Main, MouseSensitivityService, PlayerSettingsService, ProfileService (+2 more)
+
 ### Community 6 - "Server Bootstrap"
-Cohesion: 0.33
-Nodes (9): GameEnvironment, RankLeaderboardClient, RankLeaderboardService, RankRewardsConfig, RankSeasonRewardService, SoftShutdown, TesterGrantService, VersionTagController (+1 more)
+Cohesion: 0.29
+Nodes (10): GameEnvironment, GiftPopupClient, RankLeaderboardClient, RankLeaderboardService, RankRewardsConfig, RankSeasonRewardService, SoftShutdown, TesterGrantService (+2 more)
 
 ### Community 7 - "Server Bootstrap"
 Cohesion: 0.32
@@ -146,10 +146,10 @@ Nodes (1): TumbleweedSpawner
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `DataService` connect `Server Bootstrap` to `Main Menu`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`?**
-  _High betweenness centrality (0.306) - this node is a cross-community bridge._
-- **Why does `PartyService` connect `Server Bootstrap` to `Main Menu`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`?**
-  _High betweenness centrality (0.117) - this node is a cross-community bridge._
+  _High betweenness centrality (0.305) - this node is a cross-community bridge._
 - **Why does `CollectionClient` connect `Server Bootstrap` to `Main Menu`, `Server Bootstrap`, `Server Bootstrap`?**
+  _High betweenness centrality (0.116) - this node is a cross-community bridge._
+- **Why does `PartyService` connect `Server Bootstrap` to `Main Menu`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`?**
   _High betweenness centrality (0.116) - this node is a cross-community bridge._
 - **What connects `FriendBonusConfig`, `TitleStyles`, `CollisionService` to the rest of the system?**
   _24 weakly-connected nodes found - possible documentation gaps or missing edges._
