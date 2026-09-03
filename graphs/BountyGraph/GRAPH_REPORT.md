@@ -1,19 +1,22 @@
 # Graph Report - LocalBounty  (2026-09-03)
 
 ## Corpus Check
-- 124 files · ~150,559 words
+- 127 files · ~154,145 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 124 nodes · 396 edges · 14 communities detected
+- 127 nodes · 415 edges · 17 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Main Menu|Main Menu]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
-- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_UI & HUD|UI & HUD]]
+- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
+- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
+- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
+- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_BattlePassRigAnimationClient|BattlePassRigAnimationClient]]
@@ -26,16 +29,16 @@
 - [[_COMMUNITY_Lobby|Lobby]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `DataService` - 35 edges
-2. `Main` - 20 edges
+1. `DataService` - 36 edges
+2. `Main` - 21 edges
 3. `Panels` - 17 edges
 4. `State` - 17 edges
 5. `CollectionGuiController` - 17 edges
-6. `PartyService` - 16 edges
-7. `Preview` - 16 edges
-8. `Refs` - 16 edges
-9. `ShopState` - 16 edges
-10. `TitlesConfig` - 15 edges
+6. `TitlesConfig` - 16 edges
+7. `PartyService` - 16 edges
+8. `CollectionService` - 16 edges
+9. `LootboxService` - 16 edges
+10. `Preview` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `LoadingScreen` --calls--> `WaitForRequired`  [EXTRACTED]
@@ -52,58 +55,70 @@
 ## Communities
 
 ### Community 0 - "Main Menu"
-Cohesion: 0.23
-Nodes (26): BundleConfig, BundleService, CurrencyHudController, FeaturedSequence, GroupPerkConfig, HuntersBuyController, LimitedStockConfig, LimitedStockService (+18 more)
+Cohesion: 0.26
+Nodes (24): BundleConfig, BundleService, CurrencyHudController, FeaturedSequence, HuntersBuyController, LimitedStockConfig, LimitedStockService, MenuHandlerScript (+16 more)
 
 ### Community 1 - "Server Bootstrap"
-Cohesion: 0.14
-Nodes (24): BoostService, CodeRedemptionService, DailyLoginController, DailyRewardConfig, DailyRewardService, DataService, FriendBonusConfig, FriendBonusService (+16 more)
-
-### Community 2 - "Server Bootstrap"
 Cohesion: 0.18
-Nodes (21): CollisionService, FollowJoinClient, FollowJoinService, FriendJoinService, FriendsInMatchClient, GameModeClient, GamemodeConfig, Main (+13 more)
+Nodes (19): AccessoryBuyPanel, BattlePassClient, BattlePassConfig, BattlePassService, BoostConfig, ChestController, CollectionService, EmoteBuyController (+11 more)
 
-### Community 3 - "UI & HUD"
+### Community 2 - "UI & HUD"
 Cohesion: 0.57
 Nodes (18): BoostsTab, Catalog, CollectionGuiController, EmotesTab, EquipButton, HuntersTab, Panels, Preview (+10 more)
 
+### Community 3 - "Server Bootstrap"
+Cohesion: 0.24
+Nodes (15): BundleHomeController, CodeRedemptionService, CollisionService, DataService, GiftPopupClient, LoadingScreen, LobbyService, Main (+7 more)
+
 ### Community 4 - "Server Bootstrap"
-Cohesion: 0.22
-Nodes (15): AccessoryBuyPanel, BattlePassClient, BattlePassConfig, BattlePassService, BoostConfig, CollectionService, EmoteBuyController, EmoteConfig (+7 more)
+Cohesion: 0.4
+Nodes (11): AnimationLoader, CarouselMath, CollectionClient, Config, HunterList, NameGui, PreviewModel, Reel (+3 more)
 
 ### Community 5 - "Server Bootstrap"
-Cohesion: 0.35
-Nodes (12): AnimationLoader, BundleHomeController, CarouselMath, CollectionClient, Config, HunterList, NameGui, PreviewModel (+4 more)
+Cohesion: 0.29
+Nodes (10): FollowJoinClient, FollowJoinService, FriendJoinService, FriendsInMatchClient, MapCatalog, MatchmakingService, Telemetry, TelemetryClient (+2 more)
 
-### Community 6 - "BattlePassRigAnimationClient"
+### Community 6 - "Server Bootstrap"
+Cohesion: 0.31
+Nodes (9): GameModeClient, GamemodeConfig, Mobile3DClickHandler, NotificationModule, PartyService, RegionService, ReworkedPartyClient, ReworkedUIPlay (+1 more)
+
+### Community 7 - "Server Bootstrap"
+Cohesion: 0.38
+Nodes (7): BoostService, DailyLoginController, DailyRewardConfig, DailyRewardService, FriendBonusConfig, FriendBonusService, MultiplierDisplayClient
+
+### Community 8 - "Server Bootstrap"
+Cohesion: 0.4
+Nodes (6): GameEnvironment, RankLeaderboardClient, RankLeaderboardService, RankRewardsConfig, SoftShutdown, VersionTagController
+
+### Community 9 - "BattlePassRigAnimationClient"
 Cohesion: 1.0
 Nodes (1): BattlePassRigAnimationClient
 
-### Community 7 - "AbilitiesPanelClient"
+### Community 10 - "AbilitiesPanelClient"
 Cohesion: 1.0
 Nodes (1): AbilitiesPanelClient
 
-### Community 8 - "CollectionSoundClient"
+### Community 11 - "CollectionSoundClient"
 Cohesion: 1.0
 Nodes (1): CollectionSoundClient
 
-### Community 9 - "ViewportRigAnimationClient"
+### Community 12 - "ViewportRigAnimationClient"
 Cohesion: 1.0
 Nodes (1): ViewportRigAnimationClient
 
-### Community 10 - "TutorialCompleteController"
+### Community 13 - "TutorialCompleteController"
 Cohesion: 1.0
 Nodes (1): TutorialCompleteController
 
-### Community 11 - "Unused/Legacy"
+### Community 14 - "Unused/Legacy"
 Cohesion: 1.0
 Nodes (1): DisableDefaultLeaderboard
 
-### Community 12 - "Character Select"
+### Community 15 - "Character Select"
 Cohesion: 1.0
 Nodes (1): DisableResetCharacter
 
-### Community 13 - "Lobby"
+### Community 16 - "Lobby"
 Cohesion: 1.0
 Nodes (1): TumbleweedSpawner
 
@@ -130,13 +145,11 @@ Nodes (1): TumbleweedSpawner
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `DataService` connect `Server Bootstrap` to `Main Menu`, `Server Bootstrap`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`?**
-  _High betweenness centrality (0.301) - this node is a cross-community bridge._
-- **Why does `PartyService` connect `Server Bootstrap` to `Main Menu`, `Server Bootstrap`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`?**
-  _High betweenness centrality (0.127) - this node is a cross-community bridge._
-- **Why does `CollectionClient` connect `Server Bootstrap` to `Main Menu`, `Server Bootstrap`, `Server Bootstrap`?**
-  _High betweenness centrality (0.118) - this node is a cross-community bridge._
+- **Why does `DataService` connect `Server Bootstrap` to `Main Menu`, `Server Bootstrap`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`?**
+  _High betweenness centrality (0.284) - this node is a cross-community bridge._
+- **Why does `PartyService` connect `Server Bootstrap` to `Main Menu`, `Server Bootstrap`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`?**
+  _High betweenness centrality (0.122) - this node is a cross-community bridge._
+- **Why does `CollectionClient` connect `Server Bootstrap` to `Main Menu`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`?**
+  _High betweenness centrality (0.116) - this node is a cross-community bridge._
 - **What connects `FriendBonusConfig`, `TitleStyles`, `CollisionService` to the rest of the system?**
   _24 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Server Bootstrap` be split into smaller, more focused modules?**
-  _Cohesion score 0.14 - nodes in this community are weakly interconnected._

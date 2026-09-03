@@ -7,9 +7,9 @@ lines: 1333
 
 # CollectionClient
 
-> **DISABLED (`Disabled = true`) since 2026-07-31 — legacy.** Superseded by the 2D
+> **DISABLED (`Enabled = false`) since 2026-09-03 — legacy.** (This note claimed it had been disabled on 2026-07-31; it was still enabled and live until the LOOT tab was re-pointed at the chest menu, at which point the owner retired the 3D carousel outright.) Superseded by the 2D
 > CollectionGui / CollectionGuiController panel on the `3CollectionFrame` tab. Its own tab
-> (`2LootFrame` → `CameraPartCollection`) is `Visible = false` in the bottom bar, so the 3D
+> `2LootFrame` tab now opens the lootbox chest scene (StarterGui.ChestMenu.ChestController) instead, so the 3D
 > carousel had been unreachable for a while; every flow below (equip, purchase, join-time
 > restore) is now covered by CollectionGuiController, HuntersBuyController and the server's
 > `EquippedCharacter` / `EquippedSkin` attributes. It was still costing an early-boot

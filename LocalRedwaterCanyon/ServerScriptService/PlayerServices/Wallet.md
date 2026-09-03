@@ -2,7 +2,7 @@
 tags: [server, modulescript, economy, analytics]
 path: game.ServerScriptService.PlayerServices.Wallet
 type: ModuleScript
-lines: 151
+lines: 160
 ---
 
 # Wallet
@@ -34,7 +34,7 @@ left to the unmapped-reason fallback so a DEV economy breakdown separates it fro
 
 ## Dependencies
 - **Requires:** [[GameEnvironment]] (plus the `AnalyticsService` service)
-- **Required by:** ProgressionService, CodeRedemptionService, TesterGrantService
+- **Required by:** ProgressionService, CodeRedemptionService, TesterGrantService, DataService (the `LootboxLaunchV1` migration's Token grant only)
 
 ## Connections
 ### RemoteEvents
@@ -55,3 +55,13 @@ Two `Shop`-type reasons added to `TRANSACTION_TYPE`, in every place because Wall
 Starter Pack pays back out). Two reasons rather than one so the breakdown separates what the
 player spent from what the same purchase handed back. Only Bounty fires them (BundleService);
 Redwater and Frostbite carry them so the mirror stays byte-identical.
+
+## Lootbox reasons (2026-09-03)
+
+Four reasons added to `TRANSACTION_TYPE`, in every place because Wallet is mirrored verbatim:
+`lootbox_tokens` (→ `Shop`, the Sink for a 100-Token chest, fired by LootboxService in Bounty) and
+three `TimedReward` Sources — `lootbox_reward` (the Cash / Tokens a chest pays out directly),
+`lootbox_duplicate` (the 35% shop-price refund a duplicate cosmetic converts to, with the item id as
+the SKU) and `lootbox_launch_grant` (the 200 Tokens DataService's one-way `LootboxLaunchV1`
+migration pays veterans). The last one fires in **whichever place loads the profile first**, which
+is why a lobby-only feature still needs its reasons in the match places' copies.

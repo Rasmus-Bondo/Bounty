@@ -13,10 +13,51 @@ which is the point.
 
 ---
 
-- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`).
-- **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed.
+- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). **Lootbox build (2026-09-03):** `Wallet` (four reasons) and `Telemetry` (one event) touched in all three places, verified by length + hash (`7719 B` / `663703730`, `28058 B` / `1779240489`); match-place mirror `DataService` and `TutorialDirector` across Redwater and Frostbite (`26512 B` / `1269809867`, `80703 B` / `1157972711`); the profile-template block and the launch-migration block are byte-identical in all three DataServices (`1220 B` / `237526912`, `2058 B` / `3057621043`).
+- **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed. **Lootbox build:** profile shape gains `Lootboxes` + `LootboxLaunchV1` (Reconcile-backfilled, no `DATA_VERSION` bump) and four Wallet reasons; the one-way launch migration (Level/XP reset, veteran bundle) is **disarmed** (`LOOTBOX_LAUNCH_ARMED = false`) until the launch publish. See Added.
 
 ## Added
+
+- **Lootbox chests: the LOOT tab is now a chest scene** (`LOOTBOX_SPEC.md`, built 2026-09-03). One
+  free chest per account level plus a 100-Token chest bought inside the menu; a bought chest banks
+  rather than opens. The chest lands on the SkinMenu pedestal, five shots reveal the tier, and the
+  loot floats out with its name under it. `LootboxService` (new, started in `Main`'s upper block
+  because the chest client waits on its five remotes) rolls tier, items and duplicate refunds and the
+  client replays them — the prototype rolled loot client-side. Odds panel and price paint from
+  `LootboxConfig` (effective rates 50 / 29 / 14 / 5 / 2 from a 1e6-open simulation; Epic+ guaranteed
+  within 20, Legendary within 100). Duplicates refund 35% of shop price, floored before Wallet.
+  PolicyService's paid-random-item restriction blocks the Token purchase only, failing closed. The
+  tutorial banks one super chest (a guaranteed weapon skin from Icefang / Frostpiercer /
+  FrostbiteGrudgekeeper preferring one unowned, plus three skin-free fillers; HellFire is out as a
+  pass reward) in Redwater's `TutorialDirector`, and a returning player is routed to the LOOT tab
+  after the TRAINING COMPLETE card. The LOOT tab carries a count badge cloned from `DailyNotiFrame`.
+  Imported as `StarterGui.ChestMenu`, never over the live `LootboxMenu` that `CollectionClient`
+  blocks on. The 10 `LootboxSFX` sounds now carry the `SFX` group (they had none).
+
+  **Not armed.** `LOOTBOX_LAUNCH_ARMED = false` in all three DataServices keeps the launch migration
+  (every account's Level/XP to 1/0; veterans paid 5 chests, 3 `xp_25_30` potions, 200 Tokens) and the
+  free per-level accrual off, because Studio writes the live store and a test run would reset the
+  tester's real account. Flip it in all three places in one pass at the launch publish, after backing
+  up the test profile. Until then only the Token purchase and the tutorial chest put a chest in a
+  profile.
+
+  **Retired with it:** `CollectionClient`, the old 3D hunter carousel the LOOT tab used to open, is
+  disabled on the owner's call (Collection tab + Trading Post cover it). Delete it and the old
+  `StarterGui.LootboxMenu` one release later.
+
+  **Revert hazard:** the profile keys and Wallet reasons are in all three places and are harmless
+  orphans on a reverted place; the migration, once armed and run, cannot be reverted. `Main` start
+  order is load-bearing — LootboxService must stay in the upper block.
+
+  **Verified:** syntax and byte-identical mirrors in all three places; first-draft device matrix
+  (phone, 640×480, tablet, 1080p) after moving the odds panel clear of the party strip and the OPEN
+  button above the nav diamonds. **Not yet playtested** — buy, open, super-chest routing, the region
+  gate and the migration all need a live run.
+
+  **Open:** `StarterGui.ChestAward` is imported but disabled — the spec gives it no trigger. Three
+  1.6 MB copies of `WorkingChest` sit in `ReplicatedStorage.Lootbox`; the two backups await owner
+  confirmation before deletion. `TEST_ACCOUNT_BONUS_REPLAY` in `TutorialDirector` is still on
+  (pre-existing, #119's successor on the board).
 
 ## Changed
 

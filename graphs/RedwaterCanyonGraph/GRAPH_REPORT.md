@@ -1,29 +1,29 @@
 # Graph Report - LocalRedwaterCanyon  (2026-09-03)
 
 ## Corpus Check
-- 247 files · ~312,396 words
+- 247 files · ~313,046 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 242 nodes · 760 edges · 25 communities detected
+- 242 nodes · 761 edges · 25 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Combat|Combat]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
-- [[_COMMUNITY_UI & HUD|UI & HUD]]
+- [[_COMMUNITY_Combat|Combat]]
 - [[_COMMUNITY_Round System|Round System]]
 - [[_COMMUNITY_Combat|Combat]]
-- [[_COMMUNITY_High Noon Ultimate|High Noon Ultimate]]
-- [[_COMMUNITY_Combat|Combat]]
+- [[_COMMUNITY_UI & HUD|UI & HUD]]
 - [[_COMMUNITY_UI & HUD|UI & HUD]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Round System|Round System]]
-- [[_COMMUNITY_Combat|Combat]]
-- [[_COMMUNITY_Testing|Testing]]
+- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
+- [[_COMMUNITY_High Noon Ultimate|High Noon Ultimate]]
 - [[_COMMUNITY_Chrono Networking|Chrono Networking]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
+- [[_COMMUNITY_Movement|Movement]]
 - [[_COMMUNITY_Types|Types]]
 - [[_COMMUNITY_RevolverRemotes|RevolverRemotes]]
 - [[_COMMUNITY_HunterImplementationGuide|HunterImplementationGuide]]
@@ -57,8 +57,8 @@
   LocalRedwaterCanyon/StarterPlayer/StarterPlayerScripts/CapturePointVisualClient.md → LocalRedwaterCanyon/ReplicatedStorage/Config/MapConfig.md
 - `HunterAbilityIntroClient` --calls--> `Manifest`  [EXTRACTED]
   LocalRedwaterCanyon/StarterPlayer/StarterPlayerScripts/HunterAbilityIntroClient.md → LocalRedwaterCanyon/ReplicatedStorage/Hunters/Vesper/Config/Manifest.md
-- `HighNoonCharacterUtil` --calls--> `TeamAffinity`  [EXTRACTED]
-  LocalRedwaterCanyon/ReplicatedStorage/Hunters/Dust/Modules/HighNoonCharacterUtil.md → LocalRedwaterCanyon/ReplicatedStorage/Modules/TeamAffinity.md
+- `HighNoonMovement` --calls--> `HunterMovement`  [EXTRACTED]
+  LocalRedwaterCanyon/ReplicatedStorage/Hunters/Dust/Modules/HighNoonMovement.md → LocalRedwaterCanyon/ReplicatedStorage/Hunters/Shared/HunterMovement.md
 
 ## Communities
 
@@ -70,53 +70,53 @@ Nodes (55): AimAssistController, BotVisualClient, BramHunterGuiClient, CardsClie
 Cohesion: 0.12
 Nodes (27): AnimationLoader, BramWorldIdleClient, CardsConfig, CardsWorldVisualClient, CardsWorldVisualServer, EmoteConfig, FortunaCardsWorldIdleClient, GrudgekeeperConfig (+19 more)
 
-### Community 2 - "UI & HUD"
-Cohesion: 0.16
-Nodes (23): BoostConfig, BoostService, CharacterStateLockServer, CodeRedemptionService, DailyRewardConfig, DailyRewardService, DataService, FriendBonusConfig (+15 more)
+### Community 2 - "Combat"
+Cohesion: 0.23
+Nodes (21): BotController, BulletHitAudioService, CardsServer, DamageDirectionClient, DashDustVFX, DashDustVFXServer, FortunaCardsFXClient, HealthBarSpawnerClient (+13 more)
 
 ### Community 3 - "Round System"
 Cohesion: 0.22
 Nodes (21): BotConfig, BotPathing, BotService, CapturePointService, Deathmatch, Domination, GamemodeConfig, MapCatalog (+13 more)
 
 ### Community 4 - "Combat"
-Cohesion: 0.23
-Nodes (17): BotCombat, BotFXAudience, BramWorldFXClient, BreachCarryGeometry, BreachChargeService, EarlyShotRemoteDrain, GrudgekeeperDamageService, GrudgekeeperModule (+9 more)
+Cohesion: 0.22
+Nodes (18): BotCombat, BramWorldFXClient, BreachCarryGeometry, BreachChargeService, GrudgekeeperDamageService, GrudgekeeperModule, HunterActionLock, HunterCharacterUtil (+10 more)
 
-### Community 5 - "High Noon Ultimate"
-Cohesion: 0.2
-Nodes (15): CardsServer, FortunaCardsFXClient, HighNoonCharacterUtil, HighNoonModule, HighNoonMovement, HighNoonServerConfig, HunterActionLock, HunterMovement (+7 more)
+### Community 5 - "UI & HUD"
+Cohesion: 0.18
+Nodes (18): BoostConfig, BoostService, CharacterStateLockServer, CodeRedemptionService, DailyRewardConfig, DailyRewardService, DataService, FriendBonusConfig (+10 more)
 
-### Community 6 - "Combat"
-Cohesion: 0.3
-Nodes (15): BotController, BulletHitAudioService, DamageDirectionClient, DashDustVFX, DashDustVFXServer, HealthBarSpawnerClient, HighNoonDamage, HitMarkScript (+7 more)
-
-### Community 7 - "UI & HUD"
+### Community 6 - "UI & HUD"
 Cohesion: 0.15
 Nodes (13): BountyListClient, CapturePointVisualClient, DominationAudioClient, DominationClient, HealthBarController, RoundStatusClient, StatMenuScript, TeamView (+5 more)
 
-### Community 8 - "Server Bootstrap"
+### Community 7 - "Server Bootstrap"
+Cohesion: 0.21
+Nodes (12): BattlePassConfig, GameEnvironment, HunterSelectionService, HunterSwitchClient, HunterSwitchService, SkinService, SoftShutdown, Telemetry (+4 more)
+
+### Community 8 - "Round System"
+Cohesion: 0.35
+Nodes (11): BotFXAudience, DamageGate, EarlyShotRemoteDrain, GrappleHookService, HealthPackSystem, HealthPackVisuals, PinningRoundService, SpawnProtectionService (+3 more)
+
+### Community 9 - "Server Bootstrap"
 Cohesion: 0.42
 Nodes (11): BattlePassService, BountyMusicClient, BountyService, CombatFeedClient, ProgressionService, QuestConfig, QuestEvents, QuestService (+3 more)
 
-### Community 9 - "Round System"
-Cohesion: 0.44
-Nodes (9): DamageGate, GrappleHookService, HealthPackSystem, HealthPackVisuals, PinningRoundService, SpawnProtectionService, StarfallSightModule, SunspikeModule (+1 more)
-
-### Community 10 - "Combat"
-Cohesion: 0.43
-Nodes (7): BotBrain, BulletPenetration, HighNoonTargeting, HunterPositionHistory, RevolverHitForgiveness, RevolverLagCompensation, TeamAffinity
-
-### Community 11 - "Testing"
+### Community 10 - "High Noon Ultimate"
 Cohesion: 0.33
-Nodes (7): BattlePassConfig, GameEnvironment, RankedService, SoftShutdown, TesterGrantService, VersionTagController, Wallet
+Nodes (9): BulletPenetration, HighNoonCharacterUtil, HighNoonModule, HighNoonMovement, HighNoonServerConfig, HighNoonTargeting, RevolverHitForgiveness, RevolverLagCompensation (+1 more)
 
-### Community 12 - "Chrono Networking"
+### Community 11 - "Chrono Networking"
 Cohesion: 0.47
 Nodes (6): chrono, ChronoClientBootstrap, ChronoServerBootstrap, Config, Entity, Replicate
 
-### Community 13 - "Server Bootstrap"
+### Community 12 - "Server Bootstrap"
 Cohesion: 0.4
 Nodes (5): HealingVignette, HealthPackPickupFeedbackClient, HunterAbilityIntroClient, HunterIntroTags, TutorialClient
+
+### Community 13 - "Movement"
+Cohesion: 0.5
+Nodes (4): BotBrain, HunterMovement, MovementChecker, SprintController
 
 ### Community 14 - "Types"
 Cohesion: 1.0
@@ -191,11 +191,11 @@ Nodes (1): SlowVignetteClient
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Main` connect `UI & HUD` to `Server Bootstrap`, `Round System`, `High Noon Ultimate`, `Combat`, `Server Bootstrap`, `Testing`, `Chrono Networking`?**
+- **Why does `Main` connect `UI & HUD` to `Server Bootstrap`, `Combat`, `Round System`, `Server Bootstrap`, `Server Bootstrap`, `High Noon Ultimate`, `Chrono Networking`?**
   _High betweenness centrality (0.130) - this node is a cross-community bridge._
-- **Why does `FPSRevolverClient` connect `Combat` to `Server Bootstrap`, `Round System`, `High Noon Ultimate`, `Combat`?**
+- **Why does `FPSRevolverClient` connect `Combat` to `Server Bootstrap`, `Combat`, `Round System`, `Combat`, `High Noon Ultimate`?**
   _High betweenness centrality (0.126) - this node is a cross-community bridge._
-- **Why does `RoundController` connect `Round System` to `Server Bootstrap`, `UI & HUD`, `High Noon Ultimate`, `UI & HUD`, `Server Bootstrap`, `Testing`, `Chrono Networking`?**
+- **Why does `RoundController` connect `Round System` to `Server Bootstrap`, `UI & HUD`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`, `Chrono Networking`, `Movement`?**
   _High betweenness centrality (0.092) - this node is a cross-community bridge._
 - **What connects `BoostConfig`, `FriendBonusConfig`, `QuestConfig` to the rest of the system?**
   _47 weakly-connected nodes found - possible documentation gaps or missing edges._
