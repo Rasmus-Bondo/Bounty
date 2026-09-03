@@ -105,8 +105,9 @@ which is the point.
     replace the guarantee sentence.
   - **The chest's glow behind every reward replaces the outline.** The chest's `Rays` emitter,
     recoloured and rescaled to the reward and tuned more visible (two rays alive at a time, held
-    near opaque, `Brightness` 3), plays from an invisible carrier behind each reward on the camera's
-    side. Particles only — a neon disc backdrop and a billboard of the same texture (which draws
+    near opaque, `Brightness` 3), plays from one point (an Attachment on an invisible carrier, as the chest's own does) right
+    behind each reward on the camera's side, so the rays stack instead of scattering around the
+    reward. Particles only — a neon disc backdrop and a billboard of the same texture (which draws
     the texture's black ground) were both tried and cut the same day; the tier-coloured Highlight
     outline is gone.
   - **Emotes play on a small default Dust rig** — root anchored, limbs released after the pop,
