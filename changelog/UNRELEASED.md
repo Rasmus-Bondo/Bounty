@@ -14,13 +14,29 @@ which is the point.
 ---
 
 - **Shared modules:** none of the universe-wide twenty touched. Match-place mirror only — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). Bounty untouched.
-- **Data-affecting:** no.
+- **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed.
 
 ## Added
 
 ## Changed
 
 ## Fixed
+
+- **The ranked-season payout can no longer pay the same season twice.** The profile mark recording a
+  paid season is now keyed by `tostring(season)` at both the read and the write, so it survives the
+  profile's JSON round-trip. Bounty only — `RankSeasonRewardService` is not mirrored. Closes
+  [#1](https://github.com/Rasmus-Bondo/Bounty/issues/1).
+
+  Nothing has ever been paid on live: `FIRST_REWARDED_SEASON = 4` and season 4 does not close until
+  **2026-09-12 20:00 CEST**, so no live profile carries either key form and no migration is owed. DEV
+  profiles written during the 2026-08-29 dry run already hold the string form and are now honoured.
+
+  **Revert hazard — data-affecting once a season has paid.** A mark written as a string is
+  invisible to the reverted numeric read, so rolling this place back after 2026-09-12 re-opens the
+  double-pay on exactly the profiles that were paid correctly.
+
+  **Not yet playtested.** Closure needs a DEV season boundary crossed, the payout collected, then two
+  rejoins with no Token movement and a string key read back off the profile.
 
 - **A Bram now cancels a Dust ultimate outright instead of pausing it.** Being carried by a Breach
   Charge, or slammed into a wall by one, ends High Noon on the spot — no shot, no refund of the

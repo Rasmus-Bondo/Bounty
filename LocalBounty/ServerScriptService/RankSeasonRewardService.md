@@ -8,7 +8,7 @@ tags:
   - economy
 path: game.ServerScriptService.RankSeasonRewardService
 type: Script
-lines: 260
+lines: 269
 ---
 
 # RankSeasonRewardService
@@ -20,7 +20,7 @@ Pays the ranked-season ladder to the top 100 of every closed season — Tokens t
 2. **Safe because a closed season's store is immutable.** A season reset works by pointing at a NEW OrderedDataStore name, so the previous season's store is never written again. Final standings are readable forever and the payout cannot race the reset — which is also why the standings cache never expires
 3. `payableSeasons()` returns closed seasons from `FIRST_REWARDED_SEASON` (4) up to `currentSeason - 1`, bounded by `MAX_SEASON_LOOKBACK` (6 seasons, ~3 months). Seasons 1-3 closed before the ladder existed and are never paid retroactively
 4. `fetchStandings(season)` does one `GetSortedAsync(false, 100)` per season per server and returns `(map, ok)`. The success flag is separate on purpose: a failed read and a genuinely empty season both produce an empty map, and treating a failure as "nobody placed" would silently pay the whole season nothing. **Only successful reads are cached**, so a failure retries on the player's next join
-5. `paySeason` marks `data.RankRewards[season]` **before** granting. A half-applied grant is recoverable by hand; paying 2000 Tokens twice because the server died between the award and the write is not
+5. `paySeason` marks `data.RankRewards[tostring(season)]` **before** granting. The key is the season **stringified**, so the mark survives the profile's JSON round-trip. A half-applied grant is recoverable by hand; paying 2000 Tokens twice because the server died between the award and the write is not
 6. Tokens go through `Wallet.award` with reason `rank_season_reward`, followed by `DataService.updateLeaderstats`. Titles go through `CollectionService.grantTitle`, once per hunter's copy of that place's title
 7. Idempotency lives in the profile and is **lazily initialised** rather than added to `PROFILE_TEMPLATE`, so this needs no profile schema bump. Only seasons that actually paid are recorded — a player who did not place is never written, so re-checking them is a cache hit and profiles do not grow a key per season for everyone in the game
 8. Runs for players already present at server start as well as on `PlayerAdded`, and polls up to 30s for ProfileService to finish loading. A timeout costs nothing permanent: the payout retries on the next join
