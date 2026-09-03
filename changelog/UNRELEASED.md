@@ -34,12 +34,13 @@ which is the point.
   Imported as `StarterGui.ChestMenu`, never over the live `LootboxMenu` that `CollectionClient`
   blocks on. The 10 `LootboxSFX` sounds now carry the `SFX` group (they had none).
 
-  **Not armed.** `LOOTBOX_LAUNCH_ARMED = false` in all three DataServices keeps the launch migration
-  (every account's Level/XP to 1/0; veterans paid 5 chests, 3 `xp_25_30` potions, 200 Tokens) and the
-  free per-level accrual off, because Studio writes the live store and a test run would reset the
-  tester's real account. Flip it in all three places in one pass at the launch publish, after backing
-  up the test profile. Until then only the Token purchase and the tutorial chest put a chest in a
-  profile.
+  **Armed for DEV only.** `LOOTBOX_LAUNCH_ARMED = GameEnvironment.env == "Dev"` in all three
+  DataServices, so the DEV universe (separate stores) runs the launch migration (every account's
+  Level/XP to 1/0; veterans paid 5 chests, 3 `xp_25_30` potions, 200 Tokens) and pays free per-level
+  chests, while live stays off because Studio writes the live store and a test run would reset the
+  tester's real account. Set it to `true` in all three places in one pass at the launch publish, after
+  backing up the test profile. Until then only the Token purchase and the tutorial chest put a chest
+  in a live profile.
 
   **Retired with it:** `CollectionClient`, the old 3D hunter carousel the LOOT tab used to open, is
   disabled on the owner's call (Collection tab + Trading Post cover it). Delete it and the old
