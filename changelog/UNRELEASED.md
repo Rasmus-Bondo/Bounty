@@ -13,12 +13,29 @@ which is the point.
 
 ---
 
-- **Shared modules:** none of the universe-wide twenty touched. Match-place mirror only — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). Bounty untouched.
+- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`).
 - **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed.
 
 ## Added
 
 ## Changed
+
+- **A second DEV ranked-season boundary, Saturday 2026-09-05 18:00 CEST.** `DEV_RANK_SEASONS` in
+  `GameEnvironment` gains one row — `1788624000`, DEV season 7 — which closes DEV season 6 and makes
+  `RankSeasonRewardService` pay it out two to three minutes later, once the settle elapses. DEV only:
+  the live table is untouched and the `env == "Dev"` gate is unchanged, so `Live` and `Unknown` still
+  fall through to the five live boundaries.
+
+  This is the re-test of [#1](https://github.com/Rasmus-Bondo/Bounty/issues/1) — the 2026-08-29 dry
+  run is what exposed the double pay. It pays only whoever banked RP into DEV's `RankPoints_v6` since
+  08-29 20:00 CEST, so someone has to play a DEV Redwater round before Saturday or the season
+  correctly pays nobody.
+
+  **Revert hazard:** the row shifts DEV season numbers to **+3** against live, moving DEV's
+  `RankPoints_v<n>` windows again. Contained to the DEV universe — separate experience, separate
+  stores. The fixture's removal deadline moves with it: #20 now reads after 2026-09-05.
+
+  **Not yet run** — it fires on its own at the boundary.
 
 ## Fixed
 
