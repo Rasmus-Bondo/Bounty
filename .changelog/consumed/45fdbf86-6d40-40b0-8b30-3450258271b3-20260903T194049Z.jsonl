@@ -1,0 +1,16 @@
+{"ts":"2026-09-03T18:10:43.9750495+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.PlayerServices.DataService","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T18:12:23.3596272+02:00","tool":"set_script_source","target":"game.ServerScriptService.PlayerServices.NewItemService","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T18:12:40.0322881+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.Main","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T18:12:43.5148373+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.Main","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T18:14:24.5039158+02:00","tool":"set_script_source","target":"game.StarterGui.CollectionGui.NewItemClient","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T18:14:42.9969802+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.NewItemClient","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T18:16:18.6329677+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.NewItemClient","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T18:16:23.3877300+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.NewItemClient","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T18:17:22.6415442+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.PlayerServices.DataService","place":"instance:5rl-x6x"}
+{"ts":"2026-09-03T18:17:30.5608227+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.PlayerServices.DataService","place":"instance:5rl-y1w"}
+{"ts":"2026-09-03T18:20:00.1819007+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.NewItemClient","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T19:01:10.8082475+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.NewItemClient","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T19:01:23.1502145+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.NewItemClient","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T20:14:16.4119521+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.NewItemClient","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T20:14:22.0275191+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.NewItemClient","place":"instance:5rl-ugj"}
+{"ts":"2026-09-03T20:14:26.2542801+02:00","tool":"edit_script_lines","target":"game.StarterGui.CollectionGui.NewItemClient","place":"instance:5rl-ugj"}

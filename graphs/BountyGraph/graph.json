@@ -11,7 +11,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "loadingscreen",
-      "community": 0,
+      "community": 3,
       "norm_label": "loadingscreen"
     },
     {
@@ -22,7 +22,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "battlepassconfig",
-      "community": 2,
+      "community": 1,
       "norm_label": "battlepassconfig"
     },
     {
@@ -33,7 +33,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "boostconfig",
-      "community": 2,
+      "community": 1,
       "norm_label": "boostconfig"
     },
     {
@@ -66,7 +66,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "emoteconfig",
-      "community": 2,
+      "community": 1,
       "norm_label": "emoteconfig"
     },
     {
@@ -88,7 +88,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "gameenvironment",
-      "community": 3,
+      "community": 7,
       "norm_label": "gameenvironment"
     },
     {
@@ -99,7 +99,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "gamemodeconfig",
-      "community": 4,
+      "community": 6,
       "norm_label": "gamemodeconfig"
     },
     {
@@ -110,7 +110,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "groupperkconfig",
-      "community": 9,
+      "community": 4,
       "norm_label": "groupperkconfig"
     },
     {
@@ -132,7 +132,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "lootboxconfig",
-      "community": 0,
+      "community": 1,
       "norm_label": "lootboxconfig"
     },
     {
@@ -143,7 +143,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "mapcatalog",
-      "community": 4,
+      "community": 5,
       "norm_label": "mapcatalog"
     },
     {
@@ -154,7 +154,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "questconfig",
-      "community": 2,
+      "community": 1,
       "norm_label": "questconfig"
     },
     {
@@ -165,7 +165,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "rankrewardsconfig",
-      "community": 3,
+      "community": 7,
       "norm_label": "rankrewardsconfig"
     },
     {
@@ -198,7 +198,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "titlesconfig",
-      "community": 1,
+      "community": 2,
       "norm_label": "titlesconfig"
     },
     {
@@ -209,7 +209,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "titlestyles",
-      "community": 2,
+      "community": 1,
       "norm_label": "titlestyles"
     },
     {
@@ -220,7 +220,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "weapondisplayconfig",
-      "community": 1,
+      "community": 0,
       "norm_label": "weapondisplayconfig"
     },
     {
@@ -231,7 +231,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "animationloader",
-      "community": 5,
+      "community": 0,
       "norm_label": "animationloader"
     },
     {
@@ -253,7 +253,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "notificationmodule",
-      "community": 4,
+      "community": 6,
       "norm_label": "notificationmodule"
     },
     {
@@ -264,7 +264,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "titlerenderer",
-      "community": 2,
+      "community": 1,
       "norm_label": "titlerenderer"
     },
     {
@@ -286,7 +286,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "collisionservice",
-      "community": 6,
+      "community": 3,
       "norm_label": "collisionservice"
     },
     {
@@ -297,7 +297,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "followjoinservice",
-      "community": 7,
+      "community": 5,
       "norm_label": "followjoinservice"
     },
     {
@@ -308,7 +308,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "friendjoinservice",
-      "community": 4,
+      "community": 5,
       "norm_label": "friendjoinservice"
     },
     {
@@ -319,7 +319,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "lobbyservice",
-      "community": 6,
+      "community": 3,
       "norm_label": "lobbyservice"
     },
     {
@@ -330,7 +330,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "main",
-      "community": 6,
+      "community": 3,
       "norm_label": "main"
     },
     {
@@ -341,7 +341,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "tutorialdispatchservice",
-      "community": 7,
+      "community": 5,
       "norm_label": "tutorialdispatchservice"
     },
     {
@@ -352,7 +352,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "tutorialreplayservice",
-      "community": 4,
+      "community": 6,
       "norm_label": "tutorialreplayservice"
     },
     {
@@ -363,7 +363,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "matchmakingservice",
-      "community": 4,
+      "community": 5,
       "norm_label": "matchmakingservice"
     },
     {
@@ -374,7 +374,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "partyservice",
-      "community": 4,
+      "community": 6,
       "norm_label": "partyservice"
     },
     {
@@ -385,7 +385,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "regionservice",
-      "community": 4,
+      "community": 6,
       "norm_label": "regionservice"
     },
     {
@@ -396,7 +396,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "battlepassservice",
-      "community": 2,
+      "community": 1,
       "norm_label": "battlepassservice"
     },
     {
@@ -407,7 +407,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "boostservice",
-      "community": 6,
+      "community": 1,
       "norm_label": "boostservice"
     },
     {
@@ -418,7 +418,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "bundleservice",
-      "community": 6,
+      "community": 1,
       "norm_label": "bundleservice"
     },
     {
@@ -429,7 +429,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "coderedemptionservice",
-      "community": 6,
+      "community": 3,
       "norm_label": "coderedemptionservice"
     },
     {
@@ -440,7 +440,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "collectionservice",
-      "community": 2,
+      "community": 1,
       "norm_label": "collectionservice"
     },
     {
@@ -495,7 +495,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "lootboxservice",
-      "community": 9,
+      "community": 1,
       "norm_label": "lootboxservice"
     },
     {
@@ -506,8 +506,19 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "mousesensitivityservice",
-      "community": 6,
+      "community": 3,
       "norm_label": "mousesensitivityservice"
+    },
+    {
+      "label": "NewItemService",
+      "file_type": "code",
+      "source_file": "LocalBounty/ServerScriptService/PlayerServices/NewItemService.md",
+      "source_location": "game.ServerScriptService.PlayerServices.NewItemService",
+      "script_type": "ModuleScript",
+      "side": "shared",
+      "id": "newitemservice",
+      "community": 3,
+      "norm_label": "newitemservice"
     },
     {
       "label": "PlayerSettingsService",
@@ -517,7 +528,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "playersettingsservice",
-      "community": 6,
+      "community": 3,
       "norm_label": "playersettingsservice"
     },
     {
@@ -539,7 +550,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "questservice",
-      "community": 3,
+      "community": 1,
       "norm_label": "questservice"
     },
     {
@@ -561,7 +572,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "telemetry",
-      "community": 7,
+      "community": 5,
       "norm_label": "telemetry"
     },
     {
@@ -572,7 +583,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "testergrantservice",
-      "community": 3,
+      "community": 7,
       "norm_label": "testergrantservice"
     },
     {
@@ -583,7 +594,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "wallet",
-      "community": 3,
+      "community": 1,
       "norm_label": "wallet"
     },
     {
@@ -605,7 +616,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "rankleaderboardservice",
-      "community": 3,
+      "community": 7,
       "norm_label": "rankleaderboardservice"
     },
     {
@@ -616,7 +627,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "rankseasonrewardservice",
-      "community": 3,
+      "community": 7,
       "norm_label": "rankseasonrewardservice"
     },
     {
@@ -627,7 +638,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "softshutdown",
-      "community": 3,
+      "community": 7,
       "norm_label": "softshutdown"
     },
     {
@@ -638,7 +649,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "battlepassriganimationclient",
-      "community": 10,
+      "community": 9,
       "norm_label": "battlepassriganimationclient"
     },
     {
@@ -649,7 +660,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "bundlehomecontroller",
-      "community": 5,
+      "community": 0,
       "norm_label": "bundlehomecontroller"
     },
     {
@@ -660,7 +671,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "chestcontroller",
-      "community": 0,
+      "community": 1,
       "norm_label": "chestcontroller"
     },
     {
@@ -671,7 +682,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "abilitiespanelclient",
-      "community": 11,
+      "community": 10,
       "norm_label": "abilitiespanelclient"
     },
     {
@@ -682,7 +693,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "booststab",
-      "community": 1,
+      "community": 2,
       "norm_label": "booststab"
     },
     {
@@ -693,7 +704,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "catalog",
-      "community": 1,
+      "community": 2,
       "norm_label": "catalog"
     },
     {
@@ -704,7 +715,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "emotestab",
-      "community": 1,
+      "community": 2,
       "norm_label": "emotestab"
     },
     {
@@ -715,7 +726,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "equipbutton",
-      "community": 1,
+      "community": 2,
       "norm_label": "equipbutton"
     },
     {
@@ -726,7 +737,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "hunterstab",
-      "community": 1,
+      "community": 2,
       "norm_label": "hunterstab"
     },
     {
@@ -737,7 +748,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "panels",
-      "community": 1,
+      "community": 2,
       "norm_label": "panels"
     },
     {
@@ -748,7 +759,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "preview",
-      "community": 1,
+      "community": 2,
       "norm_label": "preview"
     },
     {
@@ -759,7 +770,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "previewmode",
-      "community": 1,
+      "community": 2,
       "norm_label": "previewmode"
     },
     {
@@ -770,7 +781,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "refs",
-      "community": 1,
+      "community": 2,
       "norm_label": "refs"
     },
     {
@@ -781,7 +792,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "shop",
-      "community": 1,
+      "community": 2,
       "norm_label": "shop"
     },
     {
@@ -792,7 +803,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "skinstab",
-      "community": 1,
+      "community": 2,
       "norm_label": "skinstab"
     },
     {
@@ -803,7 +814,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "state",
-      "community": 1,
+      "community": 2,
       "norm_label": "state"
     },
     {
@@ -814,7 +825,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "tilevisuals",
-      "community": 1,
+      "community": 2,
       "norm_label": "tilevisuals"
     },
     {
@@ -825,7 +836,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "titlestab",
-      "community": 1,
+      "community": 2,
       "norm_label": "titlestab"
     },
     {
@@ -836,7 +847,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "viewport",
-      "community": 1,
+      "community": 2,
       "norm_label": "viewport"
     },
     {
@@ -847,7 +858,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "collectionguicontroller",
-      "community": 1,
+      "community": 2,
       "norm_label": "collectionguicontroller"
     },
     {
@@ -858,8 +869,19 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "collectionsoundclient",
-      "community": 12,
+      "community": 11,
       "norm_label": "collectionsoundclient"
+    },
+    {
+      "label": "NewItemClient",
+      "file_type": "code",
+      "source_file": "LocalBounty/StarterGui/CollectionGui/NewItemClient.md",
+      "source_location": "game.StarterGui.CollectionGui.NewItemClient",
+      "script_type": "LocalScript",
+      "side": "client",
+      "id": "newitemclient",
+      "community": 3,
+      "norm_label": "newitemclient"
     },
     {
       "label": "CurrencyHudController",
@@ -880,7 +902,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "viewportriganimationclient",
-      "community": 13,
+      "community": 12,
       "norm_label": "viewportriganimationclient"
     },
     {
@@ -891,7 +913,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "friendsinmatchclient",
-      "community": 4,
+      "community": 5,
       "norm_label": "friendsinmatchclient"
     },
     {
@@ -902,7 +924,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "followjoinclient",
-      "community": 7,
+      "community": 5,
       "norm_label": "followjoinclient"
     },
     {
@@ -913,7 +935,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "gamemodeclient",
-      "community": 4,
+      "community": 6,
       "norm_label": "gamemodeclient"
     },
     {
@@ -924,7 +946,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "giftpopupclient",
-      "community": 3,
+      "community": 7,
       "norm_label": "giftpopupclient"
     },
     {
@@ -946,7 +968,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "rankleaderboardclient",
-      "community": 3,
+      "community": 7,
       "norm_label": "rankleaderboardclient"
     },
     {
@@ -968,7 +990,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "reworkedpartyclient",
-      "community": 4,
+      "community": 6,
       "norm_label": "reworkedpartyclient"
     },
     {
@@ -979,7 +1001,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "settingscontroller",
-      "community": 6,
+      "community": 3,
       "norm_label": "settingscontroller"
     },
     {
@@ -990,7 +1012,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "accessorybuypanel",
-      "community": 2,
+      "community": 1,
       "norm_label": "accessorybuypanel"
     },
     {
@@ -1001,7 +1023,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "emotebuycontroller",
-      "community": 2,
+      "community": 1,
       "norm_label": "emotebuycontroller"
     },
     {
@@ -1023,7 +1045,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "titlebuycontroller",
-      "community": 2,
+      "community": 1,
       "norm_label": "titlebuycontroller"
     },
     {
@@ -1155,7 +1177,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "tutorialcompletecontroller",
-      "community": 14,
+      "community": 13,
       "norm_label": "tutorialcompletecontroller"
     },
     {
@@ -1166,7 +1188,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "tutorialwelcomecontroller",
-      "community": 7,
+      "community": 5,
       "norm_label": "tutorialwelcomecontroller"
     },
     {
@@ -1177,7 +1199,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "battlepassclient",
-      "community": 2,
+      "community": 1,
       "norm_label": "battlepassclient"
     },
     {
@@ -1188,7 +1210,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "carouselmath",
-      "community": 5,
+      "community": 4,
       "norm_label": "carouselmath"
     },
     {
@@ -1199,7 +1221,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "config",
-      "community": 5,
+      "community": 4,
       "norm_label": "config"
     },
     {
@@ -1210,7 +1232,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "hunterlist",
-      "community": 5,
+      "community": 4,
       "norm_label": "hunterlist"
     },
     {
@@ -1221,7 +1243,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "namegui",
-      "community": 5,
+      "community": 4,
       "norm_label": "namegui"
     },
     {
@@ -1232,7 +1254,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "previewmodel",
-      "community": 5,
+      "community": 4,
       "norm_label": "previewmodel"
     },
     {
@@ -1243,7 +1265,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "reel",
-      "community": 5,
+      "community": 4,
       "norm_label": "reel"
     },
     {
@@ -1254,7 +1276,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "surfaceanimator",
-      "community": 5,
+      "community": 4,
       "norm_label": "surfaceanimator"
     },
     {
@@ -1265,7 +1287,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "tween",
-      "community": 5,
+      "community": 4,
       "norm_label": "tween"
     },
     {
@@ -1276,7 +1298,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "viewporticon",
-      "community": 5,
+      "community": 4,
       "norm_label": "viewporticon"
     },
     {
@@ -1287,7 +1309,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "collectionclient",
-      "community": 5,
+      "community": 4,
       "norm_label": "collectionclient"
     },
     {
@@ -1309,7 +1331,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "disabledefaultleaderboard",
-      "community": 15,
+      "community": 14,
       "norm_label": "disabledefaultleaderboard"
     },
     {
@@ -1320,7 +1342,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "disableresetcharacter",
-      "community": 16,
+      "community": 15,
       "norm_label": "disableresetcharacter"
     },
     {
@@ -1331,7 +1353,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "lobbyspawn",
-      "community": 2,
+      "community": 1,
       "norm_label": "lobbyspawn"
     },
     {
@@ -1342,7 +1364,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "mobile3dclickhandler",
-      "community": 4,
+      "community": 6,
       "norm_label": "mobile3dclickhandler"
     },
     {
@@ -1353,7 +1375,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "questclient",
-      "community": 2,
+      "community": 1,
       "norm_label": "questclient"
     },
     {
@@ -1364,7 +1386,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "reworkeduiplay",
-      "community": 4,
+      "community": 6,
       "norm_label": "reworkeduiplay"
     },
     {
@@ -1375,7 +1397,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "telemetryclient",
-      "community": 7,
+      "community": 5,
       "norm_label": "telemetryclient"
     },
     {
@@ -1386,7 +1408,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "tumbleweedspawner",
-      "community": 17,
+      "community": 16,
       "norm_label": "tumbleweedspawner"
     },
     {
@@ -1397,7 +1419,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "versiontagcontroller",
-      "community": 3,
+      "community": 7,
       "norm_label": "versiontagcontroller"
     }
   ],
@@ -2550,6 +2572,17 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "LocalBounty/StarterGui/CollectionGui/NewItemClient.md",
+      "weight": 1.0,
+      "_src": "newitemclient",
+      "_tgt": "titlesconfig",
+      "source": "titlesconfig",
+      "target": "newitemclient"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "LocalBounty/StarterGui/ReworkReworkedBuyMenu/TitleBuyController.md",
       "weight": 1.0,
       "_src": "titlebuycontroller",
@@ -3353,6 +3386,17 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "LocalBounty/ServerScriptService/Main.md",
+      "weight": 1.0,
+      "_src": "main",
+      "_tgt": "newitemservice",
+      "source": "main",
+      "target": "newitemservice"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "LocalBounty/ServerScriptService/Onboarding/TutorialDispatchService.md",
       "weight": 1.0,
       "_src": "tutorialdispatchservice",
@@ -3650,6 +3694,17 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "LocalBounty/StarterGui/CollectionGui/NewItemClient.md",
+      "weight": 1.0,
+      "_src": "newitemclient",
+      "_tgt": "boostservice",
+      "source": "boostservice",
+      "target": "newitemclient"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "LocalBounty/ServerScriptService/PlayerServices/BundleService.md",
       "weight": 1.0,
       "_src": "bundleservice",
@@ -3832,6 +3887,17 @@
       "_tgt": "collectionservice",
       "source": "collectionservice",
       "target": "panels"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "LocalBounty/StarterGui/CollectionGui/NewItemClient.md",
+      "weight": 1.0,
+      "_src": "newitemclient",
+      "_tgt": "collectionservice",
+      "source": "collectionservice",
+      "target": "newitemclient"
     },
     {
       "relation": "calls",
@@ -4024,6 +4090,17 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "LocalBounty/StarterGui/CollectionGui/NewItemClient.md",
+      "weight": 1.0,
+      "_src": "newitemclient",
+      "_tgt": "dataservice",
+      "source": "dataservice",
+      "target": "newitemclient"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "LocalBounty/StarterGui/CollectionGui/CollectionGuiController/SkinsTab.md",
       "weight": 1.0,
       "_src": "skinstab",
@@ -4096,6 +4173,17 @@
       "_tgt": "dataservice",
       "source": "dataservice",
       "target": "mousesensitivityservice"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "LocalBounty/ServerScriptService/PlayerServices/NewItemService.md",
+      "weight": 1.0,
+      "_src": "newitemservice",
+      "_tgt": "dataservice",
+      "source": "dataservice",
+      "target": "newitemservice"
     },
     {
       "relation": "calls",
@@ -4305,6 +4393,17 @@
       "_tgt": "mousesensitivityservice",
       "source": "mousesensitivityservice",
       "target": "settingscontroller"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "LocalBounty/StarterGui/CollectionGui/NewItemClient.md",
+      "weight": 1.0,
+      "_src": "newitemclient",
+      "_tgt": "newitemservice",
+      "source": "newitemservice",
+      "target": "newitemclient"
     },
     {
       "relation": "calls",

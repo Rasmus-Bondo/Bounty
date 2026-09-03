@@ -42,7 +42,7 @@ Manages player data loading, saving, and leaderstats using ProfileService. Also 
 
 ## Dependencies
 - **Requires:** [[ProfileService]], [[Wallet]], [[BattlePassConfig]], [[GroupPerkConfig]], [[StoreConfig]], [[GameEnvironment]] (the `LOOTBOX_LAUNCH_ARMED` env gate only)
-- **Required by:** Main, TesterGrantService, QuestService, PlayerSettingsService, BattlePassService, BoostService, DailyRewardService, CollectionService, BundleService, LootboxService, StoreService, CodeRedemptionService, LobbyService, PartyService, Telemetry (lazily, inside a pcall — analytics must never be able to break a spawn)
+- **Required by:** Main, TesterGrantService, QuestService, PlayerSettingsService, BattlePassService, BoostService, DailyRewardService, CollectionService, BundleService, LootboxService, StoreService, CodeRedemptionService, LobbyService, PartyService, Telemetry (lazily, inside a pcall — analytics must never be able to break a spawn), NewItemService (ownership buckets + the SeenItems set for the COLLECTION dot chain)
 
 ## Analytics fields (added with [[Telemetry]])
 Profile template gained four fields, backfilled via the existing `:Reconcile()` and byte-identical to Redwater's copy (same shared `PlayerData_v2` key): `MatchesPlayed` (matches STARTED, not finished — counting only finishers would compute completion rate against a denominator that drops the very people it measures), `LastMatchAt` + `SittingMatchIndex` (the same-sitting replay counter; a Redwater server hosts one match then closes and the lobby a player returns to may be a different server instance, so this can be held neither in-server nor in memory), and `LastPlatform` (written by [[Telemetry]] `setPlatform`, persisted so a server can attribute events before the client has booted). All four are **written in Redwater** — Bounty only mirrors them to keep the shared template in sync, apart from `LastPlatform`, which is written in both places whenever a client reports in.
@@ -53,6 +53,7 @@ Profile template gained four fields, backfilled via the existing `:Reconcile()` 
 |--------|-----------|-------------|
 | `SkinDataEvent` | → Client | [[CollectionClient]] populates owned skins + equipped selection |
 | `SkinDataEvent` | → Client | [[State]] (join prefetch) and [[CollectionGuiController]] (purchase re-push) receive owned skins/characters + equipped state |
+| `SkinDataEvent` | → Client | [[NewItemClient]] listens only as a signal that ownership moved, and re-asks NewItemService for the unseen set |
 | `RequestSkinData` | ← Client | [[State]] pulls the skin payload at startup so a missed join push can't leave owned skins LOCKED |
 | `RequestSkinData` | ← Client | [[HuntersBuyController]] same pull for the Trading Post buy menu |
 | `RequestSkinData` | ← Client | [[CollectionClient]] same pull for the carousel collection |

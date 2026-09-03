@@ -43,10 +43,12 @@ Bounty-lobby server for two persisted cosmetic systems: **cosmetic TITLES** and 
 | `PurchaseTitleEvent` | ← Client | [[TitleBuyController]] buys a title from the Trading Post ACCESSORIES tab (`titleId`); price/currency resolved server-side |
 | `RequestTitleState` | ← Client | [[TitlesTab]] / [[Panels]] and [[TitleBuyController]] ask for a fresh owned-title set |
 | `TitleStateEvent` | → Client | [[TitlesTab]] and [[TitleBuyController]] receive `{ owned }` on join, on request, and after every purchase |
+| `TitleStateEvent` | → Client | [[NewItemClient]] listens only as an ownership-moved signal for the COLLECTION dot chain |
 | `EquipEmoteEvent` | ← Client | [[EmotesTab]] equip/unequip the account emote (`emoteId`, `""` = none) |
 | `PurchaseEmoteEvent` | ← Client | [[EmoteBuyController]] buys an emote with Cash from the Trading Post |
 | `RequestEmoteState` | ← Client | [[EmotesTab]] / [[Panels]] ask for a fresh owned/equipped emote state |
 | `EmoteStateEvent` | → Client | [[EmotesTab]] receives `{ owned, equipped }` after request/equip/grant |
+| `EmoteStateEvent` | → Client | [[NewItemClient]] listens only as an ownership-moved signal for the COLLECTION dot chain |
 | `ShopPurchaseSuccessEvent` | → Client | [[TradingPostController]] plays the purchase confirmation after a successful title or emote buy |
 
 ### BindableEvents

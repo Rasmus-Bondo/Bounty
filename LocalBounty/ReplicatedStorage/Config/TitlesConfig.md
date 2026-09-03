@@ -65,7 +65,7 @@ HIGH ROLLER went first (a static `gradient` priced identically to Wild Card's an
 
 ## Dependencies
 - **Requires:** [[GameEnvironment]]
-- **Required by:** RankRewardsConfig (season title ids for the payout ladder), RankSeasonRewardService (grants the podium titles), CollectionService (ownership + validation + display label), Catalog (per-hunter list), State (free-title rule), Shop (purchase vs grant routing), Preview (nameplate label), TitleBuyController (shop grid + prices), TitleRenderer (id/label → style lookup), BattlePassClient (reward-card title text + its `HunterOf` caption), BattlePassService (`EntryById` validates a `title` reward id before writing `Cosmetics.Titles`)
+- **Required by:** RankRewardsConfig (season title ids for the payout ladder), RankSeasonRewardService (grants the podium titles), CollectionService (ownership + validation + display label), Catalog (per-hunter list), State (free-title rule), Shop (purchase vs grant routing), Preview (nameplate label), TitleBuyController (shop grid + prices), TitleRenderer (id/label → style lookup), BattlePassClient (reward-card title text + its `HunterOf` caption), BattlePassService (`EntryById` validates a `title` reward id before writing `Cosmetics.Titles`), NewItemClient (`HunterOf` attributes an unseen title to a hunter so the hunter tile can aggregate it)
 
 ## Connections
 ### RemoteEvents

@@ -28,6 +28,7 @@ Bounty-lobby boost server — where players **activate** XP / Cash boost consuma
 | `ActivateBoost` | ← Client | [[BoostsTab]] requests activating an owned boost by id (BOOSTS tab USE button) |
 | `RequestBoostState` | ← Client | [[BoostsTab]] / [[Panels]] ask for a fresh state push on open / entering BOOSTS |
 | `BoostStateEvent` | → Client | Pushes `{ Inventory, Active }` on join / activate / grant to [[BoostsTab]] |
+| `BoostStateEvent` | → Client | [[NewItemClient]] listens only as an ownership-moved signal for the COLLECTION dot chain |
 
 ### BindableEvents
 None

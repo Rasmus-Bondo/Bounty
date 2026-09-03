@@ -13,8 +13,8 @@ which is the point.
 
 ---
 
-- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). **Lootbox build (2026-09-03):** `Wallet` (four reasons) and `Telemetry` (one event) touched in all three places, verified by length + hash (`7719 B` / `663703730`, `28058 B` / `1779240489`); match-place mirror `DataService` and `TutorialDirector` across Redwater and Frostbite (`26512 B` / `1269809867`, `80703 B` / `1157972711`); the profile-template block and the launch-migration block are byte-identical in all three DataServices (`1220 B` / `237526912`, `2058 B` / `3057621043`).
-- **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed. **Lootbox build:** profile shape gains `Lootboxes` + `LootboxLaunchV1` (Reconcile-backfilled, no `DATA_VERSION` bump) and four Wallet reasons; the one-way launch migration (Level/XP reset, veteran bundle) is armed for the **DEV universe only** (`LOOTBOX_LAUNCH_ARMED = GameEnvironment.env == "Dev"`) and stays off on live until the launch publish flips it to `true`. See Added.
+- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). **Lootbox build (2026-09-03):** `Wallet` (four reasons) and `Telemetry` (one event) touched in all three places, verified by length + hash (`7719 B` / `663703730`, `28058 B` / `1779240489`); match-place mirror `DataService` and `TutorialDirector` across Redwater and Frostbite (`26512 B` / `1269809867`, `80703 B` / `1157972711`); the profile-template block and the launch-migration block are byte-identical in all three DataServices (`1220 B` / `237526912`, `2058 B` / `3057621043`). **New-item bubbles (2026-09-03):** none of the 20 mirrored modules was edited — `TitlesConfig` is only read — but the `SeenItems` template block was added to `DataService` in all three places and verified byte-identical by length + byte-sum (`1453 B` / `122758`).
+- **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed. **Lootbox build:** profile shape gains `Lootboxes` + `LootboxLaunchV1` (Reconcile-backfilled, no `DATA_VERSION` bump) and four Wallet reasons; the one-way launch migration (Level/XP reset, veteran bundle) is armed for the **DEV universe only** (`LOOTBOX_LAUNCH_ARMED = GameEnvironment.env == "Dev"`) and stays off on live until the launch publish flips it to `true`. See Added. **New-item bubbles:** profile shape gains `SeenItems` (Reconcile-backfilled, no `DATA_VERSION` bump) whose `Stamped` seed is one-way, stamped on the first load after this ships. See Added.
 
 ## Added
 
@@ -151,6 +151,45 @@ which is the point.
   call-out's motion and the chips' runtime layout and vault round trip need the owner's next run
   (#37).
 
+- **New-item bubbles: a red dot chains from the COLLECTION button down to the individual tile**
+  ([#34](https://github.com/Rasmus-Bondo/Bounty/issues/34), built 2026-09-03, Bounty). A player who
+  gains a cosmetic — level-up, purchase, battle-pass tier, chest, quest — now gets a bubble on the
+  COLLECTION button, on whichever of the six Collection tabs holds it, on the owning hunter's tile
+  and on the item's own tile, so following the bubbles always ends on the item. Presence only: no
+  glyph, no count. An item is marked seen the instant the cursor enters its tile, or on tap on a
+  touchscreen; a parent clears when the last unseen item under it does.
+
+  `NewItemService` (new, started in `Main`'s upper block) derives "new" as owned minus a new
+  `SeenItems` profile set, so **no grant site was edited** — which is also why a chest payout badges
+  without it knowing lootboxes exist. `NewItemClient` (new, in `StarterGui.CollectionGui`) drives
+  every bubble as a sibling layer, finding tiles by attributes the tab modules already set, so none
+  of the six Collection tab modules — whose require order is load-bearing — was touched.
+
+  Thirteen authored instances: the `3CollectionFrame` badge, six tab dots, four hunter-tile dots and
+  two clone templates. `NewItemDotTitle` exists because a title row is full-width but only ~46px
+  tall and the aspect constraint clamps to the shorter axis, so one size cannot serve both it and a
+  square tile. All in the STORE pill's red, and the COLLECTION badge sits at `0.5, 0.192` like STORE.
+
+  **Data-affecting.** `SeenItems` lands in all three DataServices (Reconcile-backfilled, no
+  `DATA_VERSION` bump). The `Stamped` seed is one-way: the first load after this ships copies
+  everything already owned in as seen, so neither the live player base nor a brand-new account opens
+  the menu to a dot on every tile.
+
+  **Revert hazard:** the profile key is a harmless orphan on a reverted place, but a stamped profile
+  cannot be un-stamped — reverting and re-shipping does not re-badge, it leaves the set as it stands.
+  `Main` start order is load-bearing. The bubbles are authored instances, so reverting the scripts
+  alone leaves thirteen permanently hidden frames.
+
+  **Verified:** syntax on all four scripts; the seed/diff logic against synthetic profiles (a new
+  account and a 14-item veteran both seed to zero dots, all six grant kinds badge, both title homes
+  count, spoofed and unowned marks are refused, a topped-up boost does not re-badge); the client's
+  aggregation across nine cases; geometry by device matrix on PC, iPhone 13 and a 4:3 tablet — which
+  is what caught the first draft rendering rectangles instead of circles. **Not yet playtested** —
+  hover-to-clear, the flush surviving a rejoin, and the Titles / Boosts / Emotes grids need a live run.
+
+  **Open:** Daily and Quest still show a `!` and the LOOT badge still uses the older darker red, so
+  the bottom-bar and side notifications are not yet one look — owner's call whether to align them.
+
 ## Changed
 
 - **A second DEV ranked-season boundary, Saturday 2026-09-05 18:00 CEST.** `DEV_RANK_SEASONS` in
@@ -204,3 +243,20 @@ which is the point.
   the one-shot timer, not a half-fixed version.
 
   **Playtested by the owner**, confirmed cancelling in a live round.
+
+- **Default audio volume lowered from 100% to 50% on first join.** Three layers, all three places:
+  the SoundGroup instances (SFX, Music, HitSound) now ship with `Volume = 0.5` instead of the
+  engine default 1.0; `PlayerSettingsService` defaults `MasterVolume` to `0.5` so new accounts
+  start at half; and `SettingsController` seeds the client at `0.5` instead of `1` so the
+  pre-settings-payload window is already at the lowered level. Per-group defaults (SFX, Music,
+  HitSound sliders) stay at 1.0 — only the master knob moved, so the relative mix is unchanged.
+  Existing profiles keep their saved value; `Reconcile` only backfills missing keys. Closes
+  [#36](https://github.com/Rasmus-Bondo/Bounty/issues/36).
+
+  `PlayerSettingsService` is not one of the 20 mirrored modules but exists in all three places and
+  must agree — edited in one pass. `SettingsController` likewise.
+
+  **Revert hazard:** none. The SoundGroup volumes and the client seed are stateless; the server
+  default only affects accounts that have never touched the slider. No profile migration.
+
+  **Playtested by the owner**, confirmed comfortable on join.
