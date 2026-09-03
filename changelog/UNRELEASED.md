@@ -127,6 +127,30 @@ which is the point.
   free limbs under the hover's per-frame PivotTo has never run live) need the owner's next run
   (#37).
 
+- **Chest scene, third round (owner, 2026-09-03).** Two additions, both in Bounty:
+  - **"HIT" / "MISS" flies off every shot.** A call-out pops in small at the bullet or the miss
+    hole, grows past full size, arcs up and out to a random side of the camera and fades over the
+    back half of a 0.9 s flight (`spawnShotText` in `ChestController`; constants `K.SHOT_TEXT_*`).
+  - **The cash / token chips show on the LOOT tab.** `CurrencyHudController` gains a second page:
+    the two pills it draws beside the Bounty Pass are laid out as a row over the chest purchase
+    panel, sized to it and right-aligned, in the band under the settings gear and the version tag;
+    on a phone, where that band is too short, the pair moves up beside the version tag as a
+    two-high stack, clear of the XP bar, instead of covering anything. Their `+` opens the currency vault and GO BACK returns to the LOOT tab. Hosted in
+    `CurrencyHudGui.LootHolder` (new authored frame) and laid out in pixels from the live
+    neighbours, which works because all three GUIs share `ScreenInsets.None`.
+
+  Asked and answered, not changed: a Legendary resets the Epic+ guarantee counter as well as its
+  own. That is the spec's rule (§3: the counter is "Epic or better"); separate counters are one
+  line in `LootboxService.rollTier` if the owner wants them.
+
+  **Revert hazard:** none; both additive. `LootHolder` is an authored instance — reverting the
+  script alone leaves an empty hidden frame.
+
+  **Verified:** syntax on both scripts; the chip row by an edit-mode device matrix (phone, 4:3
+  tablet, 1080p) with the party parked and a stand-in version tag. **Not yet playtested** — the
+  call-out's motion and the chips' runtime layout and vault round trip need the owner's next run
+  (#37).
+
 ## Changed
 
 - **A second DEV ranked-season boundary, Saturday 2026-09-05 18:00 CEST.** `DEV_RANK_SEASONS` in

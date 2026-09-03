@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, lootbox, menu]
 path: game.StarterGui.ChestMenu.Canvas.ChestController
 type: LocalScript
-lines: 2789
+lines: 2893
 ---
 
 # ChestController
@@ -21,7 +21,8 @@ The LOOT tab's chest scene: purchase panel with odds, the OPEN / SHOOT run, the 
 9. **Menu wiring:** opens on `MenuCameraArrived` / `BlackBarMenuCovered` for `"2LootFrame"` (with a 2s fallback off `SelectedMenuFrame`), closes — destroying the chest, loot and holes — when `SelectedMenuFrame` moves off the tab. Nothing enables the ScreenGui directly
 10. **Post-tutorial routing** (spec 7c), profile-driven: when `superPending` is true, waits for `BountyIntroComplete`, then for `TutorialCompleteGui` to show and hide if TeleportData says a card is coming, then fires `MenuNavigateRequested("2LootFrame")` — once per session, so backing out is respected and the next join routes again
 11. Every cloned Sound is given the `SFX` SoundGroup; feel constants live in one `K` table because the flat list of ~90 locals plus the new wiring exceeded Luau's 200-register cap
-12. **Shot camera feel leaves the camera exactly as found:** the lobby camera is parked between tabs, so the shake swaps its previous frame's offset out of `Camera.CFrame` before applying the next and removes it at the end, and the FOV kick holds one rest FOV per run (a cancelled kick's `Completed` no longer starts a stray return tween). Both restore in `resetChestState`. The OPEN / SHOOT button only greys when nothing is held; a chest landing or opening keeps it red
+12. **Shot call-out** (`spawnShotText`, owner 2026-09-03): every shot flings a `HIT` (SUCCESS green) or `MISS` (DANGER red) label from where it landed — the bullet on the chest or the miss hole — on a throwaway carrier's BillboardGui (the `LootLabel` name label's font and stroke). It starts at a fifth of its size, pops past full, rides a quadratic curve up and out to a random camera side and fades over the last 55% of a 0.9 s flight; Debris removes it. Constants in `K.SHOT_TEXT_*`
+13. **Shot camera feel leaves the camera exactly as found:** the lobby camera is parked between tabs, so the shake swaps its previous frame's offset out of `Camera.CFrame` before applying the next and removes it at the end, and the FOV kick holds one rest FOV per run (a cancelled kick's `Completed` no longer starts a stray return tween). Both restore in `resetChestState`. The OPEN / SHOOT button only greys when nothing is held; a chest landing or opening keeps it red
 
 ## Dependencies
 - **Requires:** [[WaitForRequired]], [[LootboxConfig]], [[BoostConfig]], [[TitleRenderer]], [[EmoteConfig]], [[AnimationLoader]]
