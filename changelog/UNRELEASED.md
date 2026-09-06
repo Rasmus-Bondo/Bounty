@@ -356,6 +356,22 @@ which is the point.
 
 ## Changed
 
+- **The Outlaw Starter Pack now includes three lootbox chests.** `BundleConfig`'s starter pack gains
+  a `Chest` grant (`Count = 3`), `BundleService` a branch that banks it, and `LootboxService` a
+  `grantChests` entry point that normalises the counters, adds to `Unopened` and pushes the LOOT tab.
+  Price stays 250 Tokens — chests are not ownable, so they never enter `priceFor`'s discount
+  arithmetic, and the pack is now cheaper than three chests bought at 100 each, capped by the
+  one-per-account rule.
+
+  **Region-restricted accounts get the pack without the chests** (owner's call): a Token-bought chest
+  is what `ArePaidRandomItemsRestricted` forbids and a bundle is no different, so `grantChests`
+  returns 0 for them while the Cash and boosts still land.
+
+  Card art unchanged — the grant carries no `Slot`, so the chests show in the detail panel only
+  ("3x LOOT CHEST"). **Revert hazard:** removing the grant costs nothing stored, but chests already
+  banked stay banked, and anyone already in `data.PurchasedBundles` never sees the chests at all.
+  Syntax-checked with `loadstring`; **not yet playtested.**
+
 - **A second DEV ranked-season boundary, Saturday 2026-09-05 18:00 CEST.** `DEV_RANK_SEASONS` in
   `GameEnvironment` gains one row — `1788624000`, DEV season 7 — which closes DEV season 6 and makes
   `RankSeasonRewardService` pay it out two to three minutes later, once the settle elapses. DEV only:

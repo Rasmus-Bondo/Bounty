@@ -1,20 +1,20 @@
 # Graph Report - LocalBounty  (2026-09-06)
 
 ## Corpus Check
-- 129 files · ~158,449 words
+- 129 files · ~158,602 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 129 nodes · 429 edges · 14 communities detected
+- 129 nodes · 430 edges · 14 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
-- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Main Menu|Main Menu]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
+- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_UI & HUD|UI & HUD]]
+- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_BattlePassRigAnimationClient|BattlePassRigAnimationClient]]
 - [[_COMMUNITY_AbilitiesPanelClient|AbilitiesPanelClient]]
@@ -30,11 +30,11 @@
 2. `Main` - 22 edges
 3. `TitlesConfig` - 18 edges
 4. `CollectionService` - 17 edges
-5. `Panels` - 17 edges
-6. `State` - 17 edges
-7. `CollectionGuiController` - 17 edges
-8. `PartyService` - 16 edges
-9. `LootboxService` - 16 edges
+5. `LootboxService` - 17 edges
+6. `Panels` - 17 edges
+7. `State` - 17 edges
+8. `CollectionGuiController` - 17 edges
+9. `PartyService` - 16 edges
 10. `Preview` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
@@ -44,32 +44,32 @@
   LocalBounty/ReplicatedStorage/Config/BattlePassConfig.md → LocalBounty/ReplicatedStorage/Config/GameEnvironment.md
 - `DataService` --calls--> `BattlePassConfig`  [EXTRACTED]
   LocalBounty/ServerScriptService/PlayerServices/DataService.md → LocalBounty/ReplicatedStorage/Config/BattlePassConfig.md
+- `LootboxService` --calls--> `BattlePassConfig`  [EXTRACTED]
+  LocalBounty/ServerScriptService/PlayerServices/LootboxService.md → LocalBounty/ReplicatedStorage/Config/BattlePassConfig.md
 - `Shop` --calls--> `BattlePassConfig`  [EXTRACTED]
   LocalBounty/StarterGui/CollectionGui/CollectionGuiController/Shop.md → LocalBounty/ReplicatedStorage/Config/BattlePassConfig.md
-- `HuntersBuyController` --calls--> `BattlePassConfig`  [EXTRACTED]
-  LocalBounty/StarterGui/ReworkReworkedBuyMenu/HuntersBuyController.md → LocalBounty/ReplicatedStorage/Config/BattlePassConfig.md
 
 ## Communities
 
-### Community 0 - "Server Bootstrap"
+### Community 0 - "Main Menu"
+Cohesion: 0.21
+Nodes (29): BundleConfig, BundleService, ChestController, CurrencyHudController, FeaturedSequence, GroupPerkConfig, HuntersBuyController, LimitedStockConfig (+21 more)
+
+### Community 1 - "Server Bootstrap"
 Cohesion: 0.13
 Nodes (28): CollisionService, FollowJoinClient, FollowJoinService, FriendJoinService, FriendsInMatchClient, GameEnvironment, GameModeClient, GamemodeConfig (+20 more)
 
-### Community 1 - "Server Bootstrap"
-Cohesion: 0.15
-Nodes (23): BoostService, BundleConfig, BundleHomeController, BundleService, CodeRedemptionService, DailyLoginController, DailyRewardConfig, DailyRewardService (+15 more)
+### Community 2 - "Server Bootstrap"
+Cohesion: 0.16
+Nodes (20): BoostService, BundleHomeController, CodeRedemptionService, DailyLoginController, DailyRewardConfig, DailyRewardService, DataService, FriendBonusConfig (+12 more)
 
-### Community 2 - "Main Menu"
-Cohesion: 0.3
-Nodes (21): CurrencyHudController, FeaturedSequence, HuntersBuyController, LimitedStockConfig, LimitedStockService, LobbyService, MenuHandlerScript, PromptPurchase (+13 more)
-
-### Community 3 - "Server Bootstrap"
-Cohesion: 0.19
-Nodes (20): AccessoryBuyPanel, BattlePassClient, BattlePassConfig, BattlePassService, BoostConfig, ChestController, CollectionService, EmoteBuyController (+12 more)
-
-### Community 4 - "UI & HUD"
+### Community 3 - "UI & HUD"
 Cohesion: 0.57
 Nodes (18): BoostsTab, Catalog, CollectionGuiController, EmotesTab, EquipButton, HuntersTab, Panels, Preview (+10 more)
+
+### Community 4 - "Server Bootstrap"
+Cohesion: 0.22
+Nodes (15): AccessoryBuyPanel, BattlePassClient, BattlePassConfig, BattlePassService, BoostConfig, CollectionService, EmoteBuyController, EmoteConfig (+7 more)
 
 ### Community 5 - "Server Bootstrap"
 Cohesion: 0.4
@@ -130,11 +130,11 @@ Nodes (1): TumbleweedSpawner
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `DataService` connect `Server Bootstrap` to `Server Bootstrap`, `Main Menu`, `Server Bootstrap`, `UI & HUD`, `Server Bootstrap`?**
-  _High betweenness centrality (0.312) - this node is a cross-community bridge._
-- **Why does `PartyService` connect `Server Bootstrap` to `Server Bootstrap`, `Main Menu`, `Server Bootstrap`, `UI & HUD`, `Server Bootstrap`?**
+- **Why does `DataService` connect `Server Bootstrap` to `Main Menu`, `Server Bootstrap`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`?**
+  _High betweenness centrality (0.311) - this node is a cross-community bridge._
+- **Why does `PartyService` connect `Server Bootstrap` to `Main Menu`, `Server Bootstrap`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`?**
   _High betweenness centrality (0.114) - this node is a cross-community bridge._
-- **Why does `CollectionClient` connect `Server Bootstrap` to `Server Bootstrap`, `Server Bootstrap`, `Main Menu`, `Server Bootstrap`?**
+- **Why does `CollectionClient` connect `Server Bootstrap` to `Main Menu`, `Server Bootstrap`, `Server Bootstrap`?**
   _High betweenness centrality (0.113) - this node is a cross-community bridge._
 - **What connects `FriendBonusConfig`, `TitleStyles`, `CollisionService` to the rest of the system?**
   _24 weakly-connected nodes found - possible documentation gaps or missing edges._

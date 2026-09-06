@@ -2,7 +2,7 @@
 tags: [server, modulescript, lootbox, economy, data]
 path: game.ServerScriptService.PlayerServices.LootboxService
 type: ModuleScript
-lines: 772
+lines: 805
 ---
 
 # LootboxService
@@ -20,10 +20,11 @@ Server half of the lootbox chests (LOOTBOX_SPEC.md). Owns `profile.Lootboxes`, s
 8. **Duplicates** are rolled: an owned title / emote / hero skin / weapon skin converts to `floor(shopPrice * 0.35)` in its own currency via `Wallet.award(..., "lootbox_duplicate", id)`. Floored **here** because Wallet rounds half-up (87.5 → 88). Ownership is re-read per item, so two rolls of one skin in a box grant once and refund once. Cash / Tokens / potions stack (`Wallet.award(..., "lootbox_reward")`, `BoostService.grantBoost`)
 9. Grants route through the existing APIs: `DataService.GrantHunterSkin` / `GrantWeaponSkin`, `CollectionService.grantTitle` / `grantEmote`, `BoostService.grantBoost`, and Wallet for every currency movement — never a raw `data.Cash` / `data.Tokens` write
 10. Per-player `busy` flag plus `REMOTE_COOLDOWN` on both mutating remotes; caches cleared on `PlayerRemoving`
+11. `grantChests(player, data, count)` banks standard chests earned outside the LOOT tab — today only the Trading Post's OUTLAW STARTER PACK. Normalises the counters, adds to `Unopened` and pushes state, and **returns 0 for a player the region gate covers**: a restricted account still buys the pack and still gets its Cash and boosts, the chests alone are withheld. `isPaidRandomRestricted` is exposed alongside it
 
 ## Dependencies
 - **Requires:** [[LootboxConfig]], [[BoostConfig]], [[TitlesConfig]], [[EmoteConfig]], [[SkinCatalog]], [[BattlePassConfig]], [[StoreConfig]], [[GroupPerkConfig]], [[LimitedStockConfig]], [[DataService]], [[Wallet]], [[BoostService]], [[CollectionService]], [[Telemetry]]
-- **Required by:** Main
+- **Required by:** Main, BundleService
 
 ## Connections
 ### RemoteEvents
