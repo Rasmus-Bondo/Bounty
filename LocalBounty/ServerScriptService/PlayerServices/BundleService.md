@@ -2,7 +2,7 @@
 tags: [server, modulescript, shop, trading-post, bundles, economy, purchase]
 path: game.ServerScriptService.PlayerServices.BundleService
 type: ModuleScript
-lines: 273
+lines: 282
 ---
 
 # BundleService
@@ -17,7 +17,7 @@ Server side of the Trading Post's BUNDLES tab: validates a bundle purchase, pric
 5. Spends through `Wallet.spend(..., "Tokens", price, "bundle_tokens", bundleId)`, then applies grants — hunter and weapon skins via `DataService.GrantHunterSkin / GrantWeaponSkin` (idempotent, and each re-pushes SkinDataEvent), Cash via `Wallet.award(..., "bundle_cash", ...)`, boosts via `BoostService.grantBoost`, chests via `LootboxService.grantChests` — then updates leaderstats and fires the purchase-success cue
 6. Refuses a fully-owned bundle and a zero price outright, and holds a per-player busy flag so a double click cannot double-charge
 7. One per account: the sale is stamped into `data.PurchasedBundles[bundleId]` the instant the Tokens move — before the grants, so a grant that throws cannot reopen the sale — and a bundle already in that set is refused with a re-push. The two skin bundles were already unrepeatable by accident (owning every skin in one drives `priceFor` to 0); the starter pack grants nothing ownable, so the record is the only thing that ever retires it
-8. `sendBundleState` pushes `{ purchased = { [bundleId] = true } }` on join and on `RequestBundleState`, waiting up to 20 s for a profile still loading behind a teleport session lock (one waiter per player, so a spammed pull cannot stack coroutines). Ids the catalog no longer sells are left out of the push but stay in the profile
+8. `sendBundleState` pushes `{ purchased = { [bundleId] = true }, chestsRestricted }` on join and on `RequestBundleState`, waiting up to 20 s for a profile still loading behind a teleport session lock (one waiter per player, so a spammed pull cannot stack coroutines). Ids the catalog no longer sells are left out of the push but stay in the profile. `chestsRestricted` is `LootboxService.isPaidRandomRestricted` relayed to the shop, which hides the starter pack's chest viewport and chest line for an account that cannot be sold chests
 
 ## Dependencies
 - **Requires:** [[BundleConfig]], [[BoostConfig]], [[DataService]], [[BoostService]], [[LootboxService]], [[Wallet]]
@@ -29,7 +29,7 @@ Server side of the Trading Post's BUNDLES tab: validates a bundle purchase, pric
 |--------|-----------|-------------|
 | `PurchaseBundleEvent` | ← Client | [[ShopBundlesTab]] buy the selected bundle |
 | `RequestBundleState` | ← Client | [[ShopState]] pull the purchased set on load |
-| `BundleStateEvent` | → Client | [[ShopState]] `{ purchased }` push on join and after a sale |
+| `BundleStateEvent` | → Client | [[ShopState]] `{ purchased, chestsRestricted }` push on join and after a sale |
 | `ShopPurchaseSuccessEvent` | → Client | [[ShopState]] purchase cue, re-arms the buy button |
 
 ### BindableEvents
@@ -42,5 +42,5 @@ None
 | [[BoostConfig]] | `get` | boot-time check that a boost grant names a real potion |
 | [[DataService]] | `getPlayerData / SkinGrantExists / GrantHunterSkin / GrantWeaponSkin / updateLeaderstats` | profile, catalog check, cosmetic grants |
 | [[BoostService]] | `grantBoost` | boost grants into the inventory |
-| [[LootboxService]] | `grantChests` | the starter pack's three chests, withheld from a region-restricted account |
+| [[LootboxService]] | `grantChests / isPaidRandomRestricted` | the starter pack's three chests, withheld from a region-restricted account, and the flag that tells the shop to stop drawing them |
 | [[Wallet]] | `spend / award` | the Token sink and the starter pack's Cash source |

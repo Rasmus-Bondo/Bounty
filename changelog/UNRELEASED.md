@@ -373,12 +373,19 @@ which is the point.
 
   **Region-restricted accounts get the pack without the chests** (owner's call): a Token-bought chest
   is what `ArePaidRandomItemsRestricted` forbids and a bundle is no different, so `grantChests`
-  returns 0 for them while the Cash and boosts still land.
+  returns 0 for them while the Cash and boosts still land — **and the card stops promising them.**
+  `BundleStateEvent` now carries `chestsRestricted` (`LootboxService.isPaidRandomRestricted`), which
+  `ShopState.lootboxesRestricted` exposes and `ShopBundlesTab.showsChests` gates: the card's authored
+  `LootFrame` chest viewport goes `Visible = false` and the panel drops its chest line. The client
+  flag starts restricted, so the art appears when the server allows it rather than the other way
+  round. The bundle `Description` deliberately does not name the chests — it would survive both.
 
-  Card art unchanged — the grant carries no `Slot`, so the chests show in the detail panel only
-  ("3x LOOT CHEST"). **Revert hazard:** removing the grant costs nothing stored, but chests already
-  banked stay banked, and anyone already in `data.PurchasedBundles` never sees the chests at all.
-  Syntax-checked with `loadstring`; **not yet playtested.**
+  **Revert hazard:** removing the grant costs nothing stored, but chests already banked stay banked,
+  and anyone already in `data.PurchasedBundles` never sees the chests at all. An old server that
+  pushes no `chestsRestricted` reads as unrestricted, so publish the place and the lobby together.
+  Syntax-checked with `loadstring`; **not yet playtested** — the restricted path needs an account
+  PolicyService actually flags, and the card's `LootHeader` still reads a hand-authored
+  "3x BASIC CHESTS" rather than the grant's count.
 
 - **A second DEV ranked-season boundary, Saturday 2026-09-05 18:00 CEST.** `DEV_RANK_SEASONS` in
   `GameEnvironment` gains one row — `1788624000`, DEV season 7 — which closes DEV season 6 and makes

@@ -2,7 +2,7 @@
 tags: [client, modulescript, ui, shop, trading-post, remotes]
 path: game.StarterGui.Shop.Modules.ShopState
 type: ModuleScript
-lines: 307
+lines: 319
 ---
 
 # ShopState
@@ -12,8 +12,8 @@ The Trading Post's one client-side mirror of ownership state and its one remote 
 ## What it does
 1. Resolves every remote it needs in `ReplicatedStorage.Events` (and `Events.SettingsEvents`) on background `WaitForChild` threads — most are created at runtime by the server, so nothing here yields the caller. `State.fire(name, ...)` returns false (and warns) if that remote is not resolved yet
 2. Signals via `State.on(name, cb)`: `skins`, `titles`, `emotes`, `bundles`, `limited`, `hunters`, `purchaseSuccess`, `redeem`
-3. Listens: `SkinDataEvent(ownedSkins[h][s], equippedHunter, equippedSkin, ownedCharacters, ownedWeaponSkins[h][s], equippedWeaponSkins[h])`, `TitleStateEvent{owned}`, `EmoteStateEvent{owned, equipped}`, `BundleStateEvent{purchased}`, `LimitedStockEvent{itemId = remaining}`, `ShopPurchaseSuccessEvent()` (cash/token buys) or `(kind, amount, productId)` (Robux receipts), `SettingsEvents.RedeemCodeResponse{success, message}`; hunter ownership is the `Owns<Hunter>` player attribute (`hunters` signal)
-4. Queries: `ownsHunter / isSkinOwned / isWeaponSkinOwned / equippedWeaponSkin / isTitleOwned / isEmoteOwned / isBundlePurchased / limitedRemaining / hasSkinData`, plus `ownsSkinRecord(kind, hunter, skin)` — raw ownership out of the last push, without `isSkinOwned`'s "you must own the hunter first" gate and without `isWeaponSkinOwned`'s free-default shortcut. BUNDLES prices itself off this because the server prices off exactly those two profile buckets, and the two shortcuts would part the numbers
+3. Listens: `SkinDataEvent(ownedSkins[h][s], equippedHunter, equippedSkin, ownedCharacters, ownedWeaponSkins[h][s], equippedWeaponSkins[h])`, `TitleStateEvent{owned}`, `EmoteStateEvent{owned, equipped}`, `BundleStateEvent{purchased, chestsRestricted}`, `LimitedStockEvent{itemId = remaining}`, `ShopPurchaseSuccessEvent()` (cash/token buys) or `(kind, amount, productId)` (Robux receipts), `SettingsEvents.RedeemCodeResponse{success, message}`; hunter ownership is the `Owns<Hunter>` player attribute (`hunters` signal)
+4. Queries: `ownsHunter / isSkinOwned / isWeaponSkinOwned / equippedWeaponSkin / isTitleOwned / isEmoteOwned / isBundlePurchased / lootboxesRestricted / limitedRemaining / hasSkinData`, plus `ownsSkinRecord(kind, hunter, skin)` — raw ownership out of the last push, without `isSkinOwned`'s "you must own the hunter first" gate and without `isWeaponSkinOwned`'s free-default shortcut. BUNDLES prices itself off this because the server prices off exactly those two profile buckets, and the two shortcuts would part the numbers
 5. `requestAll` pulls `RequestSkinData`, `RequestTitleState`, `RequestEmoteState`, `RequestBundleState`, `RequestLimitedStockEvent` once each remote resolves — the join-time pushes can land before this LocalScript connected (join-state handshake rule)
 
 ## Dependencies
@@ -30,7 +30,7 @@ The Trading Post's one client-side mirror of ownership state and its one remote 
 | `RequestTitleState` | → Server | [[CollectionService]] |
 | `EmoteStateEvent` | ← Server | [[CollectionService]] `{ owned, equipped }` |
 | `RequestEmoteState` | → Server | [[CollectionService]] |
-| `BundleStateEvent` | ← Server | [[BundleService]] `{ purchased }` — bundles this account has bought |
+| `BundleStateEvent` | ← Server | [[BundleService]] `{ purchased, chestsRestricted }` — bundles this account has bought, and whether it can be sold lootbox chests at all |
 | `RequestBundleState` | → Server | [[BundleService]] pull on load |
 | `LimitedStockEvent` | ← Server | [[LimitedStockService]] remaining units |
 | `RequestLimitedStockEvent` | → Server | [[LimitedStockService]] pull on load |

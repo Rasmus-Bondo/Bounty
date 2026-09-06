@@ -2,7 +2,7 @@
 tags: [shared, modulescript, config, shop, trading-post, bundles, economy]
 path: game.ReplicatedStorage.Config.BundleConfig
 type: ModuleScript
-lines: 213
+lines: 216
 ---
 
 # BundleConfig
@@ -17,6 +17,7 @@ Catalog for the Trading Post's BUNDLES tab: what each bundle contains, its stick
 5. `list()` (ordered ids, with stragglers appended), `get`, `isOwnable`, `valueOf`, `fullValue`, `labelOf` (display name for the panel's contents list)
 6. `isPurchased(purchased, bundleId)` is the one-per-account test both surfaces share: no bundle sells twice. The skin bundles were already unrepeatable by accident (owning every skin in one drives `priceFor` to 0), but the starter pack grants nothing ownable, so the purchase record BundleService keeps in `data.PurchasedBundles` is the only thing that retires it
 7. `Slot` on a grant names the authored label inside the card's ViewportFrame that shows its amount, so the card art cannot disagree with the grant
+8. A bundle's `Description` never names its chests. The panel already lists every grant, and a region-restricted account has both the chest line and the card's chest viewport taken away — a description that promised them would survive both
 
 Bounty-only — not mirrored. Redwater sells nothing.
 

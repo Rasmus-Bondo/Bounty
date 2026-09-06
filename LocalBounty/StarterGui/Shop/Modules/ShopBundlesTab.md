@@ -2,7 +2,7 @@
 tags: [client, modulescript, ui, shop, trading-post, bundles]
 path: game.StarterGui.Shop.Modules.ShopBundlesTab
 type: ModuleScript
-lines: 453
+lines: 477
 ---
 
 # ShopBundlesTab
@@ -16,7 +16,8 @@ The BUNDLES tab of the Trading Post — the row of bundle cards, the detail pane
 4. The panel writes the bundle title, its description plus a line per grant with the ones already owned marked, the discounted price, and a footnote naming how many of the items are already owned when the price has dropped
 5. The buy button is the purple `BuyButtonTokens` (UI_STYLE_GUIDE 5.4b — the button family is colour-coded by currency and magenta is Tokens); the gold `BuyButtonCash` sibling is hidden once at load because bundles are sold for Tokens only. Purchase fires `PurchaseBundleEvent(id, price)`, shows PURCHASING… and re-arms on the next `skins` or `bundles` push, the `purchaseSuccess` cue, or a 5 s timeout
 6. `fitBundleRow` is the horizontal counterpart of `Core.fitGridCanvas`: the authored card is 0.30 of BundlesCanvas and three of them are wider than the row, so the cards shrink to fit while that keeps them near their authored size and only scroll past that point. The scrollbar is taken away when the row fits, because ScrollingDirection XY otherwise draws a full-width bar with no travel in it
-7. A viewport camera is built only where the card authored a `BundleCameraCFrame` attribute — the starter pack has none and keeps the engine's own auto-fit, which is what it was framed against
+7. **Chests are hidden from a region-restricted account.** `showsChests(bundle)` is false unless the bundle carries a `Chest` grant AND `ShopState.lootboxesRestricted()` is false, and it gates two things: the starter-pack card's `LootFrame` viewport (`Visible`, set ahead of the price early-return so a differently-authored bottom strip cannot skip it) and the chest line in the panel's contents list. BundleService withholds exactly that part of the pack from those players and sells them the rest, so the card must not promise it. The flag starts restricted and the art appears when the server's bundle push says otherwise
+8. A viewport camera is built only where the card authored a `BundleCameraCFrame` attribute — the starter pack has none and keeps the engine's own auto-fit, which is what it was framed against
 
 The prototype's `BundleViewportController` was dropped on import; its camera binding is step 7 here.
 
