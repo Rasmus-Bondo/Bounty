@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, lootbox, menu]
 path: game.StarterGui.ChestMenu.Canvas.ChestController
 type: LocalScript
-lines: 3418
+lines: 3578
 ---
 
 # ChestController
@@ -24,9 +24,11 @@ The LOOT tab's chest scene: purchase panel with odds, the OPEN / SHOOT run, the 
 12. **Shot call-out** (`spawnShotText`, owner 2026-09-03): every shot flings a `HIT` (SUCCESS green) or `MISS` (DANGER red) label from just over the chest, never from where the shot landed (`K.SHOT_TEXT_LIFT` of the chest's live height over its base pivot, jittered sideways by `K.SHOT_TEXT_JITTER` so five do not stack), on a throwaway carrier's BillboardGui (the `LootLabel` name label's font and stroke). It starts at a fifth of its size, pops past full, rides a quadratic curve up and out to a random camera side and fades over the last 55% of a 0.9 s flight; Debris removes it. Constants in `K.SHOT_TEXT_*`
 13. **Shot camera feel leaves the camera exactly as found:** the lobby camera is parked between tabs, so the shake swaps its previous frame's offset out of `Camera.CFrame` before applying the next and removes it at the end, and the FOV kick holds one rest FOV per run (a cancelled kick's `Completed` no longer starts a stray return tween). Both restore in `resetChestState`. The OPEN / SHOOT button only greys when nothing is held; a chest landing or opening keeps it red
 14. **Lobby chrome fade** (`Chrome`, since 2026-09-06): when OPEN is accepted every other ScreenGui under PlayerGui, plus this menu's purchase panel and XP bar, fades out over 0.35 s and is disabled (a panel hidden) once faded, so invisible buttons take no clicks; it fades back in once the loot has landed, and `resetChestState` restores it too. Kept by name (`K.CHROME_KEEP`): `ReworkedSettingsGui`, `VersionTagGui`, `PingFPSGui`, the black-bar transition, `ChestLootViewports` and `ChestMenu` itself. Transparencies are snapshotted per GuiObject / UIStroke and tweened back; a GUI its owner enabled meanwhile is left as set, a GUI with nothing visible is never touched
+15. **The purchase panel is scaled up at runtime** (since 2026-09-06). Authored as a fraction of the screen it lands 300 x 486 px at 1080p and 125 x 162 on a landscape Galaxy A06, where the odds rows come out ~9 px tall. A `UIScale` named `PanelScale` grows the panel and all twelve of its children by one number; the frame is first re-anchored from centre-right to **top-right** (its position pulled up by half its height) so the growth runs down and left, away from the settings gear, the version tag and the LOOT currency chips in the band above it. How far is measured off `MainMenuGui.CanvasBottom`, and it is not one constant: the nav bar is aspect-locked, spanning half a phone's width but 0.63 of a 16:9 desktop's, so the larger of two ways past it wins — the panel's bottom stopping 6 px above the nav's top, or its left edge staying 6 px clear of the nav's right edge. A phone gets past it sideways (~1.39), a 16:9 desktop stops above it (~1.25); 1.45 is a guard cap and 1.2 stands in until the nav can be measured. Re-measured on the nav's `AbsoluteSize`, on this GUI's `AbsoluteSize` and on its `Enabled`, because a disabled ScreenGui reports the window it was last enabled in. CurrencyHudController measures this panel's live box, so the LOOT chips follow the growth. Instance reads with fallbacks, not code links
+16. **Studio-only loot preview** (since 2026-09-06, gated on `RunService:IsStudio()`): F9 with the LOOT tab open runs `setupChest`, parks the open-lid track on its last frame, hides the chrome and reveals the next scripted batch of five, cycling through every `LootboxConfig.POOLS` entry plus one duplicate per duplicable kind and a made-up kind for the generic fallback, with labels built as `LootboxService.labelFor` builds them. No remote is fired and no chest is consumed. Lazily requires `SkinCatalog` and `TitlesConfig` for the labels and refunds
 
 ## Dependencies
-- **Requires:** [[WaitForRequired]], [[LootboxConfig]], [[BoostConfig]], [[TitleRenderer]], [[EmoteConfig]], [[AnimationLoader]]
+- **Requires:** [[WaitForRequired]], [[LootboxConfig]], [[BoostConfig]], [[TitleRenderer]], [[EmoteConfig]], [[AnimationLoader]], [[SkinCatalog]] and [[TitlesConfig]] (Studio preview only)
 - **Required by:** Nobody
 
 ## Connections
@@ -55,3 +57,5 @@ The LOOT tab's chest scene: purchase panel with odds, the OPEN / SHOOT run, the 
 | [[TitleRenderer]] | `apply(label, text, titleId)` | The title reward's styled card |
 | [[EmoteConfig]] | `get(id).animationId` | The emote reward's clip for the Dust rig |
 | [[AnimationLoader]] | `prewarm(ids)`, `load(animator, id, opts)` | Fetch-checked load of that clip, looped at Action priority, warmed while the pop plays |
+| [[SkinCatalog]] | `getSkin(hunter, skin).Title` / `.TokenPrice`, `getWeaponSkin(...)` | Preview labels and duplicate refunds (Studio only) |
+| [[TitlesConfig]] | `LabelById[id]`, `UnlockOf(id)` | Preview labels and duplicate refunds (Studio only) |

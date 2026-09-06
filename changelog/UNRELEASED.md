@@ -232,6 +232,14 @@ which is the point.
     (weapon skins) adorn their label to a `LabelAnchor` part at the pivot instead of the Model,
     whose adornee point is the bounding box.
 
+  - **Studio-only loot preview** (owner, same day): F9 with the LOOT tab open lands a chest, parks
+    the lid open and reveals a scripted batch of five, cycling through every `LootboxConfig.POOLS`
+    entry (cash / tokens at their max, every potion, title, hero and weapon skin, two emotes), one
+    duplicate of each duplicable kind with the server's refund, and a made-up kind for the generic
+    fallback — labels built as `LootboxService.labelFor` builds them. No roll, no server call, no
+    chest consumed, no profile write. Gated on `RunService:IsStudio()`, so it is unreachable from any
+    published place, DEV included.
+
   **Revert hazard:** none; client-side presentation in one script plus two frames in one template.
   Reverting brings the flailing rig back, the mid-open error and the bare labels; the template's
   frames are inert without the code.
@@ -240,6 +248,34 @@ which is the point.
   `electro_swing` pose (a hand moved 1.85 studs over 45 frames); the glow blow-up reproduced and
   measured on a clone. **Not playtested** — the ScreenGui viewport (the Collection tiles' and shop
   cards' proven path), runtime spin, lighting and framing need the owner's next run (#37).
+
+- **Chest scene, sixth round (owner, 2026-09-06): the purchase panel is bigger and the LOOT chips
+  actually draw on a phone.** Bounty, `ChestController` and `CurrencyHudController`.
+  - **The LOOT-tab cash / token chips were missing on every phone.** They are laid out in
+    absolute-space pixels off their neighbours but written into a position relative to their own
+    ScreenGui, and on a `ScreenInsets.None` GUI those two spaces differ by the topbar and safe-area
+    inset — 58 px on a landscape Galaxy A06 — which parked the pair off the top of the screen
+    (measured live at y −114 with a height of 60). Every live neighbour read now converts into the
+    GUI's own space. A PC never showed it: the same gap there is the 36-px topbar, so the row
+    stayed on screen, just higher than intended.
+  - **The purchase panel grows to fill the space it has**, on desktop as well as touch. Authored as
+    a screen fraction, it came out 125 × 162 px on a phone — ~9 px odds rows — and 300 × 486 at
+    1080p. A `UIScale`, with the frame re-anchored to its top-right corner so the growth runs down
+    and left away from the gear and the chips, is sized off the nav diamonds' live box. That box is
+    aspect-locked, so one rule gives two outcomes: a phone clears it sideways (~1.39), a 16:9
+    desktop stops above it (~1.25).
+  - **The chips left-align with the panel on a phone.** In the two-high stack layout the pair now
+    starts at the panel's left edge and stops short of the version tag, taking its height from that
+    gap — 6% shorter chips in exchange for a straight edge down the right-hand column.
+
+  **Revert hazard:** none; client-side layout in two scripts. No authored instance changed — the
+  re-anchor and the `UIScale` are applied to the PlayerGui clone at runtime, so reverting the
+  scripts restores the authored panel exactly.
+
+  **Verified:** syntax on both scripts; the inset bug measured on a live phone client before the
+  fix. The panel and chip geometry after it is arithmetic off those same measurements, not a second
+  capture. **Not playtested** — both need the owner's next run on a phone *and* on a windowed and
+  full-screen PC, which is the case a single scale constant would have got wrong (#37).
 
 - **New-item bubbles: a red dot chains from the COLLECTION button down to the individual tile**
   ([#34](https://github.com/Rasmus-Bondo/Bounty/issues/34), built 2026-09-03, Bounty). A player who
