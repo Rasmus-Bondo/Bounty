@@ -13,7 +13,7 @@ which is the point.
 
 ---
 
-- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). **Lootbox build (2026-09-03):** `Wallet` (four reasons) and `Telemetry` (one event) touched in all three places, verified by length + hash (`7719 B` / `663703730`, `28058 B` / `1779240489`); match-place mirror `DataService` and `TutorialDirector` across Redwater and Frostbite (`26512 B` / `1269809867`, `80703 B` / `1157972711`); the profile-template block and the launch-migration block are byte-identical in all three DataServices (`1220 B` / `237526912`, `2058 B` / `3057621043`). **New-item bubbles (2026-09-03):** none of the 20 mirrored modules was edited — `TitlesConfig` is only read — but the `SeenItems` template block was added to `DataService` in all three places and verified byte-identical by length + byte-sum (`1453 B` / `122758`). **Bubble polish + left-grid fix (2026-09-06):** none of the 20 touched — Bounty only, four client scripts and a handful of authored GUI instances.
+- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). **Lootbox build (2026-09-03):** `Wallet` (four reasons) and `Telemetry` (one event) touched in all three places, verified by length + hash (`7719 B` / `663703730`, `28058 B` / `1779240489`); match-place mirror `DataService` and `TutorialDirector` across Redwater and Frostbite (`26512 B` / `1269809867`, `80703 B` / `1157972711`); the profile-template block and the launch-migration block are byte-identical in all three DataServices (`1220 B` / `237526912`, `2058 B` / `3057621043`). **New-item bubbles (2026-09-03):** none of the 20 mirrored modules was edited — `TitlesConfig` is only read — but the `SeenItems` template block was added to `DataService` in all three places and verified byte-identical by length + byte-sum (`1453 B` / `122758`). **Bubble polish + left-grid fix (2026-09-06):** none of the 20 touched — Bounty only, four client scripts and a handful of authored GUI instances. **Chest codes (2026-09-06):** none of the 20 touched either, but `CodeRedemptionService` — mirrored by hand, not on the list — had its `CODES` + `resolveCode` block verified byte-identical in all three places (`2682 B` / `439550909`).
 - **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed. **Lootbox build:** profile shape gains `Lootboxes` + `LootboxLaunchV1` (Reconcile-backfilled, no `DATA_VERSION` bump) and four Wallet reasons; the one-way launch migration (Level/XP reset, veteran bundle) is armed for the **DEV universe only** (`LOOTBOX_LAUNCH_ARMED = GameEnvironment.env == "Dev"`) and stays off on live until the launch publish flips it to `true`. See Added. **New-item bubbles:** profile shape gains `SeenItems` (Reconcile-backfilled, no `DATA_VERSION` bump) whose `Stamped` seed is one-way, stamped on the first load after this ships. See Added.
 
 ## Added
@@ -361,6 +361,28 @@ which is the point.
 
   **Verified:** syntax on three scripts; every placement by screenshot at 800x360 and at desktop,
   with the tab geometry also read back numerically. **Not yet playtested** in its final state.
+
+- **Two chest codes, and `100LIKES` switched on.** `GIVEMECRATE` (1 chest) and `BOUNTYPLUS` (2) are
+  new in `CodeRedemptionService`'s `CODES` table, and `100LIKES` trades its `active = false` for the
+  same window: `startsAt = 1788804000` → `expiresAt = 1790013600`, i.e. **Mon 7 Sep 2026 20:00 CEST
+  → Mon 21 Sep 2026 20:00 CEST**. `chests` is a new reward field, banked into `Lootboxes.Unopened` —
+  in Bounty through `LootboxService.grantFreeChests`, in the two match places through a local profile
+  write beside the weapon-skin one (there is no LootboxService there; the lobby reports the new count
+  on the next profile load, as it already does for the tutorial super chest). `grantChests` split
+  into a shared `bankChests` body with two entry points: the paid one keeps the plain name and the
+  region gate, the free one skips it.
+
+  **Must be published before Monday 20:00 CEST.** `startsAt` only keeps a *shipped* code dark; it
+  cannot ship one late, so a publish that slips starts the promo whenever the publish lands.
+
+  **Revert hazard:** no profile-shape change — `Lootboxes.Unopened` already exists — but chests
+  already banked survive a revert. Reverting Bounty alone would leave the lobby copy without the
+  `chests` branch while the match places still accept the code, burning it for nothing; all three go
+  out together as always.
+
+  **Verified:** all three copies compile, and the mirrored `CODES` + `resolveCode` block is
+  byte-identical across them (`2682 B` / `439550909`). The window was read back with `os.date("!…")`
+  off the loaded table. **Not yet playtested** — no code has been redeemed against the new field.
 
 ## Changed
 

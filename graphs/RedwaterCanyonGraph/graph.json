@@ -11,7 +11,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "earlyshotremotedrain",
-      "community": 5,
+      "community": 8,
       "norm_label": "earlyshotremotedrain"
     },
     {
@@ -33,7 +33,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "boostconfig",
-      "community": 11,
+      "community": 10,
       "norm_label": "boostconfig"
     },
     {
@@ -44,7 +44,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "dailyrewardconfig",
-      "community": 11,
+      "community": 10,
       "norm_label": "dailyrewardconfig"
     },
     {
@@ -66,7 +66,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "friendbonusconfig",
-      "community": 11,
+      "community": 10,
       "norm_label": "friendbonusconfig"
     },
     {
@@ -154,7 +154,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "chrono",
-      "community": 10,
+      "community": 11,
       "norm_label": "chrono"
     },
     {
@@ -165,7 +165,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "replicate",
-      "community": 10,
+      "community": 11,
       "norm_label": "replicate"
     },
     {
@@ -176,7 +176,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "config",
-      "community": 10,
+      "community": 11,
       "norm_label": "config"
     },
     {
@@ -187,7 +187,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "entity",
-      "community": 10,
+      "community": 11,
       "norm_label": "entity"
     },
     {
@@ -209,7 +209,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "breachcarrygeometry",
-      "community": 5,
+      "community": 4,
       "norm_label": "breachcarrygeometry"
     },
     {
@@ -264,7 +264,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "highnoondamage",
-      "community": 4,
+      "community": 5,
       "norm_label": "highnoondamage"
     },
     {
@@ -308,7 +308,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "highnoonmovement",
-      "community": 13,
+      "community": 7,
       "norm_label": "highnoonmovement"
     },
     {
@@ -341,7 +341,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "highnoontargeting",
-      "community": 7,
+      "community": 13,
       "norm_label": "highnoontargeting"
     },
     {
@@ -484,7 +484,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "revolverremotesetup",
-      "community": 4,
+      "community": 7,
       "norm_label": "revolverremotesetup"
     },
     {
@@ -495,7 +495,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "dashdustvfx",
-      "community": 4,
+      "community": 7,
       "norm_label": "dashdustvfx"
     },
     {
@@ -528,7 +528,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "revolverhitforgiveness",
-      "community": 7,
+      "community": 13,
       "norm_label": "revolverhitforgiveness"
     },
     {
@@ -539,7 +539,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "revolverimpactfx",
-      "community": 7,
+      "community": 4,
       "norm_label": "revolverimpactfx"
     },
     {
@@ -550,7 +550,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "revolverlagcompensation",
-      "community": 7,
+      "community": 13,
       "norm_label": "revolverlagcompensation"
     },
     {
@@ -649,7 +649,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "bullethitaudioservice",
-      "community": 4,
+      "community": 5,
       "norm_label": "bullethitaudioservice"
     },
     {
@@ -660,7 +660,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "bulletpenetration",
-      "community": 7,
+      "community": 13,
       "norm_label": "bulletpenetration"
     },
     {
@@ -671,7 +671,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "hunteractionlock",
-      "community": 5,
+      "community": 4,
       "norm_label": "hunteractionlock"
     },
     {
@@ -704,7 +704,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "huntercharacterutil",
-      "community": 5,
+      "community": 4,
       "norm_label": "huntercharacterutil"
     },
     {
@@ -748,7 +748,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "hunterhitpipeline",
-      "community": 8,
+      "community": 5,
       "norm_label": "hunterhitpipeline"
     },
     {
@@ -880,7 +880,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "huntermovement",
-      "community": 13,
+      "community": 4,
       "norm_label": "huntermovement"
     },
     {
@@ -891,7 +891,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "hunterpositionhistory",
-      "community": 4,
+      "community": 5,
       "norm_label": "hunterpositionhistory"
     },
     {
@@ -902,7 +902,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "hunterremotesetup",
-      "community": 4,
+      "community": 7,
       "norm_label": "hunterremotesetup"
     },
     {
@@ -913,7 +913,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "hunterserverruntime",
-      "community": 8,
+      "community": 7,
       "norm_label": "hunterserverruntime"
     },
     {
@@ -924,7 +924,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "hunterstatuseffects",
-      "community": 5,
+      "community": 4,
       "norm_label": "hunterstatuseffects"
     },
     {
@@ -968,7 +968,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "killfeedgate",
-      "community": 4,
+      "community": 5,
       "norm_label": "killfeedgate"
     },
     {
@@ -990,7 +990,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "movementgrace",
-      "community": 5,
+      "community": 4,
       "norm_label": "movementgrace"
     },
     {
@@ -1001,7 +1001,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "sprintcontroller",
-      "community": 13,
+      "community": 4,
       "norm_label": "sprintcontroller"
     },
     {
@@ -1012,7 +1012,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "ultimatechargeservice",
-      "community": 4,
+      "community": 7,
       "norm_label": "ultimatechargeservice"
     },
     {
@@ -1078,7 +1078,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "teamaffinity",
-      "community": 7,
+      "community": 13,
       "norm_label": "teamaffinity"
     },
     {
@@ -1122,7 +1122,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "movementchecker",
-      "community": 13,
+      "community": 4,
       "norm_label": "movementchecker"
     },
     {
@@ -1133,7 +1133,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "botbrain",
-      "community": 13,
+      "community": 4,
       "norm_label": "botbrain"
     },
     {
@@ -1144,7 +1144,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "botcombat",
-      "community": 5,
+      "community": 4,
       "norm_label": "botcombat"
     },
     {
@@ -1166,7 +1166,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "botcontroller",
-      "community": 4,
+      "community": 5,
       "norm_label": "botcontroller"
     },
     {
@@ -1177,7 +1177,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "botfxaudience",
-      "community": 5,
+      "community": 8,
       "norm_label": "botfxaudience"
     },
     {
@@ -1254,7 +1254,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "breachchargeservice",
-      "community": 5,
+      "community": 4,
       "norm_label": "breachchargeservice"
     },
     {
@@ -1265,7 +1265,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "grudgekeeperdamageservice",
-      "community": 5,
+      "community": 4,
       "norm_label": "grudgekeeperdamageservice"
     },
     {
@@ -1276,7 +1276,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "grudgekeepermodule",
-      "community": 5,
+      "community": 4,
       "norm_label": "grudgekeepermodule"
     },
     {
@@ -1298,7 +1298,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "lastcallmodule",
-      "community": 5,
+      "community": 4,
       "norm_label": "lastcallmodule"
     },
     {
@@ -1309,7 +1309,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "shrapnelshellservice",
-      "community": 5,
+      "community": 4,
       "norm_label": "shrapnelshellservice"
     },
     {
@@ -1342,7 +1342,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "cardsserver",
-      "community": 4,
+      "community": 5,
       "norm_label": "cardsserver"
     },
     {
@@ -1364,7 +1364,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "huntersharedremotesetup",
-      "community": 4,
+      "community": 5,
       "norm_label": "huntersharedremotesetup"
     },
     {
@@ -1408,7 +1408,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "sunspikedamageservice",
-      "community": 5,
+      "community": 8,
       "norm_label": "sunspikedamageservice"
     },
     {
@@ -1452,7 +1452,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "chronoserverbootstrap",
-      "community": 10,
+      "community": 11,
       "norm_label": "chronoserverbootstrap"
     },
     {
@@ -1463,7 +1463,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "tutorialdirector",
-      "community": 2,
+      "community": 3,
       "norm_label": "tutorialdirector"
     },
     {
@@ -1485,7 +1485,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "boostservice",
-      "community": 11,
+      "community": 10,
       "norm_label": "boostservice"
     },
     {
@@ -1518,7 +1518,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "dailyrewardservice",
-      "community": 11,
+      "community": 10,
       "norm_label": "dailyrewardservice"
     },
     {
@@ -1540,7 +1540,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "friendbonusservice",
-      "community": 11,
+      "community": 10,
       "norm_label": "friendbonusservice"
     },
     {
@@ -1815,7 +1815,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "state",
-      "community": 9,
+      "community": 3,
       "norm_label": "state"
     },
     {
@@ -1881,7 +1881,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "dashdustvfxserver",
-      "community": 4,
+      "community": 7,
       "norm_label": "dashdustvfxserver"
     },
     {
@@ -1969,7 +1969,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "stunnedcontroller",
-      "community": 5,
+      "community": 4,
       "norm_label": "stunnedcontroller"
     },
     {
@@ -2046,7 +2046,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "bramworldfxclient",
-      "community": 5,
+      "community": 4,
       "norm_label": "bramworldfxclient"
     },
     {
@@ -2090,7 +2090,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "chronoclientbootstrap",
-      "community": 10,
+      "community": 11,
       "norm_label": "chronoclientbootstrap"
     },
     {
@@ -2112,7 +2112,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "damagedirectionclient",
-      "community": 4,
+      "community": 5,
       "norm_label": "damagedirectionclient"
     },
     {
@@ -2277,7 +2277,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "fortunacardsfxclient",
-      "community": 4,
+      "community": 5,
       "norm_label": "fortunacardsfxclient"
     },
     {
@@ -2310,7 +2310,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "healthbarspawnerclient",
-      "community": 4,
+      "community": 5,
       "norm_label": "healthbarspawnerclient"
     },
     {
@@ -2354,7 +2354,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "hitmarkscript",
-      "community": 7,
+      "community": 5,
       "norm_label": "hitmarkscript"
     },
     {
@@ -2420,7 +2420,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "killcamclient",
-      "community": 4,
+      "community": 5,
       "norm_label": "killcamclient"
     },
     {
@@ -2431,7 +2431,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "killfeedclient",
-      "community": 4,
+      "community": 5,
       "norm_label": "killfeedclient"
     },
     {
