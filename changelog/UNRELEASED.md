@@ -273,9 +273,8 @@ which is the point.
   scripts restores the authored panel exactly.
 
   **Verified:** syntax on both scripts; the inset bug measured on a live phone client before the
-  fix. The panel and chip geometry after it is arithmetic off those same measurements, not a second
-  capture. **Not playtested** — both need the owner's next run on a phone *and* on a windowed and
-  full-screen PC, which is the case a single scale constant would have got wrong (#37).
+  fix, and the panel and chip geometry after it computed off those same measurements.
+  **Playtested by the owner** (2026-09-06): chips drawing and both frames sized correctly.
 
 - **New-item bubbles: a red dot chains from the COLLECTION button down to the individual tile**
   ([#34](https://github.com/Rasmus-Bondo/Bounty/issues/34), built 2026-09-03, Bounty). A player who
