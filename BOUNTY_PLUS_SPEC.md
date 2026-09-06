@@ -6,8 +6,17 @@ Designed 2026-09-06. The owner answered the three open questions in that session
 recorded in §2 together with the alternatives that were rejected, so a fresh session does not
 re-litigate them.
 
-**Status: not built**, with one exception. No code exists in any shipping place — not the config,
-not the services, not the earn-site edits, and the card has not been imported into Bounty.
+**Status: BUILT 2026-09-06.** Everything below shipped to the three places and is described in
+`changelog/UNRELEASED.md`, which is now the authority on what exists — this file is the design
+record, kept for the rationale in §2 and §8. Two things are deliberately still open: the one-time
+grant has never been run against a real profile (Studio writes the live store), and the covered
+wagon's wooden body is an invisible stand-in Part because its union is 178 KB of baked CSG. The
+three "Owner's call" items in §11 were reviewed and left as they are.
+
+The original status note, for context:
+
+> **Not built**, with one exception. No code exists in any shipping place — not the config,
+> not the services, not the earn-site edits, and the card has not been imported into Bounty.
 
 The exception is the card's own artwork in the **UI-Update place** (`place:112014319307228`, which
 never ships): its `GOLDEN OUTLAW TITLE` row was added and the five perk rows re-laid on 2026-09-06,
