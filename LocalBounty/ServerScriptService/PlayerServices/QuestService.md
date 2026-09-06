@@ -23,9 +23,10 @@ Assigns daily quests to players on join, resets expired buckets, and handles rew
 
 ## Assignment used to diverge between places
 This place shuffled the pool randomly and expired buckets on **UTC-day boundaries**; Redwater rotated deterministically and expired on a **rolling 24h** from `assignedAt` — both writing one shared profile. They could disagree about which quests were live *and* about when the day ended, so a player crossing between places could watch their quests swap out mid-day with progress reset. Selection and cycle maths now live in the mirrored config.
+11. **BOUNTY+ boost** (2026-09-06) — both claim paths (single quest and the complete-all bonus) run `reward.cash` and `reward.xp` through `BountyPlusConfig.apply` before the Wallet award and the `data.XP` write. Quests carry no other multiplier, so the pass term IS the multiplier here — a bare x1.25 / x1.10. The same helper the quest card draws with, so the two cannot disagree
 
 ## Dependencies
-- **Requires:** [[DataService]], [[Wallet]], [[QuestConfig]]
+- **Requires:** [[DataService]], [[Wallet]], [[QuestConfig]], [[BountyPlusConfig]]
 - **Required by:** Main
 
 ## Connections

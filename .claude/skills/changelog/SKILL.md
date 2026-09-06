@@ -119,11 +119,11 @@ While grouping, watch for and call out explicitly:
 Record both in the metadata bullets at the top of `UNRELEASED.md`, above the section headings —
 `/preflight` reads them when it converts the file into the release entry.
 
-- **Shared modules touched.** The mirrored set is 20 files: `Wallet`, `Telemetry`,
+- **Shared modules touched.** The mirrored set is 21 files: `Wallet`, `Telemetry`,
   `TelemetryClient`, `ProfileService`, `GameEnvironment`, `MapCatalog`, `GamemodeConfig`,
   `SoftShutdown`, `VersionTagController`, `BattlePassConfig`, `BoostConfig`, `EmoteConfig`,
   `QuestConfig`, `TitlesConfig`, `DailyRewardConfig`, `FriendBonusConfig`, `TitleStyles`,
-  `TitleRenderer`, `AnimationLoader`, `TesterGrantService`. If any appear,
+  `TitleRenderer`, `AnimationLoader`, `TesterGrantService`, `BountyPlusConfig`. If any appear,
   note them so `/preflight` knows to verify the mirrors. If a module starts being mirrored and
   is not on this list, say so — an untracked mirror is how `QuestConfig` drifted unnoticed.
   **`MapCatalog` is not `MapConfig`** — the catalog is universe-wide and mirrored; `MapConfig` is

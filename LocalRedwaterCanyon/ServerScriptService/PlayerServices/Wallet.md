@@ -31,6 +31,7 @@ TesterGrantService on join. It is in every copy because Wallet is mirrored verba
 only ever fire on a DEV server — the gate is `GameEnvironment.env == "Dev"`. Mapped rather than
 left to the unmapped-reason fallback so a DEV economy breakdown separates it from the real
 `admin_grant` offline gifts.
+8. `bountyplus_grant = "IAP"` (2026-09-06) — the BOUNTY+ pass's one-time 1000-Token grant. Paid in the lobby, but mirrored here like every other reason: a profile loaded first in this place must not fall through to the unmapped-reason "Gameplay" fallback
 
 ## Dependencies
 - **Requires:** [[GameEnvironment]] (plus the `AnalyticsService` service)

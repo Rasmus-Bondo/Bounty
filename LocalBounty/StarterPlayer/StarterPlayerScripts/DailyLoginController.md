@@ -23,9 +23,10 @@ Drives the designer-built `StarterGui.DailyLoginGui` for the daily play-streak r
 7. Updates the header `InfoText` to show the current streak + "+10% CASH & XP ACTIVE" while the passive is on (falls back to the designer's tagline at streak 0)
 8. **Visibility gate:** enables the GUI only after `BountyIntroComplete` AND while on a tab that keeps the left sidebar up — **Home or Battle Pass** (matching MenuHandlerScript's `SIDEBAR_VISIBLE_FRAMES`). `onSidebarTab` is read from the `SelectedMenuFrame` attribute on `MainMenuGui`, which MenuHandlerScript publishes from `selectMenuFrame` — the one function every navigation route passes through. It previously hooked the `CanvasBottom.Frame` tab buttons, which only see navigation that *starts* on the bottom bar, so arriving back on a sidebar tab by any hand-off (the pass's X button, the currency vault's return hop) left the DAILY button visible but dead. Loot / Collection / Trading Post hide it. A 12s fallback reveals it if the intro flag is missed. Opened from the authored `CanvasLeft` `3Daily` button (whose click is a no-op while `gui.Enabled` is false, so the gate is also what makes the DAILY button live or dead); the red pending dot (`DailyNotiFrame`) is the only "reward waiting" cue. The panel sits at DisplayOrder 40 (dim 39) so it layers over the battle pass panel (8)
 9. Requests state on load via `RequestDailyReward` (the server also pushes on join)
+10. **BOUNTY+ reward numbers** (2026-09-06) — `describeReward` runs its Cash and XP lines through `BountyPlusConfig.apply` and leaves the Tokens line bare, matching what the server actually grants. The last pushed state is cached so the attribute's change signal can re-render when ownership resolves, rather than asking the server again
 
 ## Dependencies
-- **Requires:** [[DailyRewardConfig]]
+- **Requires:** [[DailyRewardConfig]], [[BountyPlusConfig]]
 - **Required by:** Nobody
 
 ## Connections

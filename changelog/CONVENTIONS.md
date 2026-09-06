@@ -15,7 +15,7 @@ Every release entry opens with these fields:
 |---|---|
 | **Published** | Roblox place version for each place, e.g. `Bounty r42 · Redwater r67`. This is your rollback target — record it right after publishing. |
 | **Rollback target** | The *previous* release's place versions — where a revert of this release lands. Under fire nobody wants to derive that from the file. |
-| **Shared modules** | Which of the 20 mirrored modules were touched, and whether the byte-length + checksum compare passed. A touched module with no ✅ is a live drift bug. |
+| **Shared modules** | Which of the 21 mirrored modules were touched, and whether the byte-length + checksum compare passed. A touched module with no ✅ is a live drift bug. |
 | **Profile schema** | ProfileService data shape version. Bumps are **one-way** — you cannot safely revert a place past one. |
 | **Data-affecting** | `yes` if the release mutates stored player data (Wallet reasons, XP curve, RP awards, pass grants, migrations). Reverting the place does **not** undo these. |
 
@@ -91,12 +91,12 @@ migration cite items by their old number — 1–32 are the launch report (no #2
 stubs under `open-items/` keep those citations clicking through. New work takes an issue number and
 no old id at all.
 
-## The 20 mirrored shared modules
+## The 21 mirrored shared modules
 
 `Wallet`, `Telemetry`, `TelemetryClient`, `ProfileService`, `GameEnvironment`, `MapCatalog`,
 `GamemodeConfig`, `SoftShutdown`, `VersionTagController`, `BattlePassConfig`, `BoostConfig`,
 `EmoteConfig`, `QuestConfig`, `TitlesConfig`, `DailyRewardConfig`, `FriendBonusConfig`,
-`TitleStyles`, `TitleRenderer`, `AnimationLoader`, `TesterGrantService`.
+`TitleStyles`, `TitleRenderer`, `AnimationLoader`, `TesterGrantService`, `BountyPlusConfig`.
 
 **`MapCatalog` is not `MapConfig`.** The catalog is universe-wide and lists every map; `MapConfig`
 is per-place, describes only that map, and must never be mirrored. The two agree on exactly one

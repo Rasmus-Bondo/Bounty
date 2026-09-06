@@ -15,9 +15,10 @@ CLAIMS the daily play-streak rewards, and grants the **free instant Day 1**. Day
 3. `claim(player, dayNum)` — **per-day claim**. Applies a lapse + `ensureFreeFirstDay`, then removes the FIRST pending entry equal to `dayNum` and grants just that one day; ignores a `dayNum` that is not currently pending. Per grant kind: Cash/Tokens via [[Wallet]] `award` (reason `daily_reward`); account XP added to `data.XP` with `data.Level` recomputed from a mirrored XP curve (matches Redwater's `Config.XP_BASE/LINEAR/QUADRATIC` + ProgressionService); boost items via [[BoostService]] `grantBoost`; `passive` is a no-op here (the +10% is driven by the play-streak in Redwater). Syncs leaderstats via [[DataService]] `updateLeaderstats`, then re-sends a fresh `DailyRewardState` so the panel re-renders
 4. Local XP curve mirror: `xpNeededForLevel` / `levelFromTotalXP` (kept in sync with Redwater so lobby-granted XP lands on the same level as gameplay XP)
 5. On `Start()` + PlayerAdded, pushes state so the [[DailyLoginController]] can show its pending dot + the free Day 1 as soon as the player loads; handles `RequestDailyReward` and `ClaimDailyReward` (validates the day number is a number); creates its RemoteEvents in ReplicatedStorage if missing
+6. **BOUNTY+ boost** (2026-09-06) — `grantOne` runs the `cash` and `xp` grants through `BountyPlusConfig.apply`. The `tokens` branch is deliberately left bare: the pass promises bonus Cash and XP and says nothing about Tokens, and both currencies are handed out from this one loop
 
 ## Dependencies
-- **Requires:** [[DataService]], [[Wallet]], [[BoostService]], [[DailyRewardConfig]]
+- **Requires:** [[DataService]], [[Wallet]], [[BoostService]], [[DailyRewardConfig]], [[BountyPlusConfig]]
 - **Required by:** Main (starts it)
 
 ## Connections

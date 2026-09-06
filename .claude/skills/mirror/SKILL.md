@@ -1,6 +1,6 @@
 ---
 name: mirror
-description: Compare and reconcile the shared code trees across the connected Roblox places - the 19 universe-wide modules across all three, and the full gamemode codebase between Redwater Canyon and Frostbite Claim. Reports drift by default; writes only when told to. Use before a publish, after editing anything shared, or whenever asked to check or fix mirror drift.
+description: Compare and reconcile the shared code trees across the connected Roblox places - the 21 universe-wide modules across all three, and the full gamemode codebase between Redwater Canyon and Frostbite Claim. Reports drift by default; writes only when told to. Use before a publish, after editing anything shared, or whenever asked to check or fix mirror drift.
 ---
 
 # Mirror
@@ -19,7 +19,7 @@ named a direction and the user has agreed to it.
 | Invocation | Does |
 |---|---|
 | `/mirror` | Compare the **match** tier: Redwater ↔ Frostbite, whole shared codebase. Top-level rollup. |
-| `/mirror universe` | Compare the **universe** tier: the 19 shared modules across **all three** places. This is what `/preflight` Step 1 runs. |
+| `/mirror universe` | Compare the **universe** tier: the 21 shared modules across **all three** places. This is what `/preflight` Step 1 runs. |
 | `/mirror <path>` | Drill one level into a drifted subtree, e.g. `/mirror ReplicatedStorage.Hunters`. |
 | `/mirror apply <path>` | Reconcile the scripts under `<path>`. Requires a stated direction. |
 
@@ -93,7 +93,7 @@ if TIER == "match" then
 		{ "TextChatService", game:GetService("TextChatService") },
 	}
 else
-	-- The 19 universe modules, each addressed by its FULL path rather than a bare name.
+	-- The 21 universe modules, each addressed by its FULL path rather than a bare name.
 	--
 	-- These moved once already: on 2026-08-21 a preflight found twelve of them had been
 	-- restructured out of the ReplicatedStorage root into RS.Config / RS.Modules, and the
@@ -115,7 +115,7 @@ else
 	for _, n in ipairs({
 		"GameEnvironment", "MapCatalog", "GamemodeConfig", "BattlePassConfig", "BoostConfig",
 		"EmoteConfig", "QuestConfig", "TitlesConfig", "DailyRewardConfig", "FriendBonusConfig",
-		"TitleStyles",
+		"TitleStyles", "BountyPlusConfig",
 	}) do add("RS/Config/" .. n, RS, "Config", n) end
 	add("RS/Modules/TitleRenderer", RS, "Modules", "TitleRenderer")
 	add("RS/Modules/AnimationLoader", RS, "Modules", "AnimationLoader")
@@ -257,7 +257,7 @@ does not, the walker was edited — not the code.
 | Tier | Canonical |
 |---|---|
 | match (Redwater ↔ Frostbite) | **Redwater Canyon.** Frostbite is downstream and carries no code of its own. |
-| universe (19 modules) | **Neither.** A mismatch here is a real conflict — whoever edited last is the only one who knows which side is right. Ask; do not guess from timestamps. |
+| universe (21 modules) | **Neither.** A mismatch here is a real conflict — whoever edited last is the only one who knows which side is right. Ask; do not guess from timestamps. |
 
 > **Repair with `.rbxm`, never with `set_script_source`.** Measured while building this skill:
 > `set_script_source` **interprets** `\n`, `\r` and `\t` inside the source text, so pushing a script

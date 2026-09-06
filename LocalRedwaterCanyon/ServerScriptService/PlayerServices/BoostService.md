@@ -18,9 +18,11 @@ Spends the live-round-time budget of active XP / Cash boost consumables and expo
 6. Writes `XPBoostRemaining` / `CashBoostRemaining` player attributes each tick for a smooth client countdown
 7. Streams inventory + active state via `BoostStateEvent` (on join, activate, grant, expire) and on demand via `RequestBoostState`
 8. Creates its RemoteEvents in ReplicatedStorage on `Start()` if missing
+9. **BOUNTY+ is the third additive term** (2026-09-06) — `getMultiplier` adds `BountyPlusConfig.bonusFraction(...)` beside the potion and friend terms, so the stack is now `1 + potion% + friend% + pass%`. Additive, not a factor on top: a 25% potion plus the pass is x1.50, not x1.5625. Tokens get no term because `bonusFraction` only maps `xp` and `cash`
+10. **Join-time ownership resolve** — `onPlayerAdded` reads `data.BountyPlus.Owned` off the shared profile (the lobby normally answered it long before anyone reaches a match) and only falls back to a live `UserOwnsGamePassAsync` for a profile that predates the stamp. Like every other reader it may move ownership nil/false → true and never back; a failed call leaves the stamp alone and the attribute nil. Runs BEFORE `sendState` because that yields. There is no BountyPlusService in this place — the purchase prompt, the grant and the state remote are all lobby-side
 
 ## Dependencies
-- **Requires:** [[BoostConfig]], [[DailyRewardConfig]], [[DataService]], [[State]] (in Start), [[FriendBonusService]] (in Start)
+- **Requires:** [[BoostConfig]], [[DailyRewardConfig]], [[BountyPlusConfig]], [[DataService]], [[State]] (in Start), [[FriendBonusService]] (in Start)
 - **Required by:** Main (starts it), ProgressionService (calls `getMultiplier`)
 
 ## Connections

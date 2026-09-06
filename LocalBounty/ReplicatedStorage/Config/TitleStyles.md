@@ -28,6 +28,7 @@ Visual style presets for cosmetic titles — the data half of the title styling 
 9. `get(styleName)` returns the preset, falling back to `plain` so an unknown or missing style renders flat rather than erroring
 
 Mirrored verbatim in Redwater Canyon.
+10. **`gilded`** (2026-09-06) — the BOUNTY+ apex, reserved to GOLDEN OUTLAW alone, taking the preset count 12 → 13. Fixed gold glyphs under a slowly cycling prismatic aura: nothing else in the catalog moves colour through the HALO. Built entirely from `hue`, which was already in the schema and already implemented in TitleRenderer but used by no preset, so the style is DATA-ONLY and the renderer stayed byte-identical. Carries a `flash` glint so an apex owns an event, not just a palette. Deliberately has NO `stroke`: `hue` drives both the tight stroke and every bloom layer, so a fixed dark rim is not expressible — the host label's own authored TextStroke supplies it
 
 ## Dependencies
 - **Requires:** Nothing

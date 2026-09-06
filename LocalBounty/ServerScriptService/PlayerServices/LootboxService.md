@@ -21,9 +21,10 @@ Server half of the lootbox chests (LOOTBOX_SPEC.md). Owns `profile.Lootboxes`, s
 9. Grants route through the existing APIs: `DataService.GrantHunterSkin` / `GrantWeaponSkin`, `CollectionService.grantTitle` / `grantEmote`, `BoostService.grantBoost`, and Wallet for every currency movement — never a raw `data.Cash` / `data.Tokens` write
 10. Per-player `busy` flag plus `REMOTE_COOLDOWN` on both mutating remotes; caches cleared on `PlayerRemoving`
 11. Two entry points bank standard chests earned outside the LOOT tab, both over one `bankChests` body that normalises the counters, adds to `Unopened`, pushes state and returns how many landed. `grantChests(player, data, count)` is the paid path — the Trading Post's OUTLAW STARTER PACK — and **returns 0 for a player the region gate covers**: a restricted account still buys the pack and still gets its Cash and boosts, the chests alone are withheld. `grantFreeChests(player, data, count)` skips that gate for chests nobody paid for (redemption codes), the same reading that leaves the free per-level and tutorial super chests ungated. The gated one keeps the plain name so a caller that never considers the policy fails closed; `isPaidRandomRestricted` is exposed alongside them
+12. **BOUNTY+ boost on the cash roll** (2026-09-06) — `grantItem` boosts `item.amount` for `kind == "cash"` only (the Tokens roll shares the branch and stays bare), resolved BEFORE `resolved` is built so both `amount` and `label` carry the boosted number. `labelFor` gained an optional amount override for this: it formats `"%d CASH"`, so boosting the award alone would have banked 110 while the reveal card said 100
 
 ## Dependencies
-- **Requires:** [[LootboxConfig]], [[BoostConfig]], [[TitlesConfig]], [[EmoteConfig]], [[SkinCatalog]], [[BattlePassConfig]], [[StoreConfig]], [[GroupPerkConfig]], [[LimitedStockConfig]], [[DataService]], [[Wallet]], [[BoostService]], [[CollectionService]], [[Telemetry]]
+- **Requires:** [[LootboxConfig]], [[BoostConfig]], [[TitlesConfig]], [[EmoteConfig]], [[SkinCatalog]], [[BattlePassConfig]], [[StoreConfig]], [[GroupPerkConfig]], [[LimitedStockConfig]], [[DataService]], [[Wallet]], [[BoostService]], [[CollectionService]], [[Telemetry]], [[BountyPlusConfig]]
 - **Required by:** Main, BundleService, CodeRedemptionService
 
 ## Connections
