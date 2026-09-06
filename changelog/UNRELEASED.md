@@ -232,7 +232,7 @@ which is the point.
     (weapon skins) adorn their label to a `LabelAnchor` part at the pivot instead of the Model,
     whose adornee point is the bounding box.
 
-  - **Studio-only loot preview** (owner, same day): F9 with the LOOT tab open lands a chest, parks
+  - **Studio-only loot preview** (owner, same day): L with the LOOT tab open lands a chest, parks
     the lid open and reveals a scripted batch of five, cycling through every `LootboxConfig.POOLS`
     entry (cash / tokens at their max, every potion, title, hero and weapon skin, two emotes), one
     duplicate of each duplicable kind with the server's refund, and a made-up kind for the generic
