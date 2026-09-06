@@ -1,7 +1,7 @@
 # Graph Report - LocalRedwaterCanyon  (2026-09-06)
 
 ## Corpus Check
-- 250 files · ~316,192 words
+- 250 files · ~316,360 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -96,12 +96,12 @@ Cohesion: 0.29
 Nodes (8): BattlePassConfig, GameEnvironment, GamemodeConfig, MapCatalog, MatchDirectoryService, RankedService, SoftShutdown, VersionTagController
 
 ### Community 9 - "Chrono Networking"
-Cohesion: 0.47
-Nodes (6): chrono, ChronoClientBootstrap, ChronoServerBootstrap, Config, Entity, Replicate
-
-### Community 10 - "Chrono Networking"
 Cohesion: 0.33
 Nodes (6): BoostConfig, BoostService, DailyRewardConfig, DailyRewardService, FriendBonusConfig, FriendBonusService
+
+### Community 10 - "Chrono Networking"
+Cohesion: 0.47
+Nodes (6): chrono, ChronoClientBootstrap, ChronoServerBootstrap, Config, Entity, Replicate
 
 ### Community 11 - "Types"
 Cohesion: 1.0

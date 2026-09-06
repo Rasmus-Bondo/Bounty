@@ -33,7 +33,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "boostconfig",
-      "community": 10,
+      "community": 9,
       "norm_label": "boostconfig"
     },
     {
@@ -44,7 +44,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "dailyrewardconfig",
-      "community": 10,
+      "community": 9,
       "norm_label": "dailyrewardconfig"
     },
     {
@@ -66,7 +66,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "friendbonusconfig",
-      "community": 10,
+      "community": 9,
       "norm_label": "friendbonusconfig"
     },
     {
@@ -154,7 +154,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "chrono",
-      "community": 9,
+      "community": 10,
       "norm_label": "chrono"
     },
     {
@@ -165,7 +165,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "replicate",
-      "community": 9,
+      "community": 10,
       "norm_label": "replicate"
     },
     {
@@ -176,7 +176,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "config",
-      "community": 9,
+      "community": 10,
       "norm_label": "config"
     },
     {
@@ -187,7 +187,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "entity",
-      "community": 9,
+      "community": 10,
       "norm_label": "entity"
     },
     {
@@ -1452,7 +1452,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "chronoserverbootstrap",
-      "community": 9,
+      "community": 10,
       "norm_label": "chronoserverbootstrap"
     },
     {
@@ -1485,7 +1485,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "boostservice",
-      "community": 10,
+      "community": 9,
       "norm_label": "boostservice"
     },
     {
@@ -1518,7 +1518,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "dailyrewardservice",
-      "community": 10,
+      "community": 9,
       "norm_label": "dailyrewardservice"
     },
     {
@@ -1540,7 +1540,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "friendbonusservice",
-      "community": 10,
+      "community": 9,
       "norm_label": "friendbonusservice"
     },
     {
@@ -2101,7 +2101,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "chronoclientbootstrap",
-      "community": 9,
+      "community": 10,
       "norm_label": "chronoclientbootstrap"
     },
     {

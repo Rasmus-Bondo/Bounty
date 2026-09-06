@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, progression, lootbox]
 path: game.StarterPlayer.StarterPlayerScripts.LevelRewardClient
 type: LocalScript
-lines: 230
+lines: 256
 ---
 
 # LevelRewardClient
@@ -20,6 +20,14 @@ Plays the level-up card: a chest flies into a viewport on the left of the screen
 8. **`HIDDEN_X` is NOT the prototype's value.** Its off-screen x was measured inside a 0.70-wide canvas and still left the card 93% on screen, so the entrance read as a pop at the left edge rather than a slide. This one clears the edge by the card's own half-width
 9. The card is sized in height-scale with a `CardAspect` UIAspectRatioConstraint (2.0928, ScaleWithParentSize, DominantAxis Height) rather than in scale on both axes. The prototype was drawn against a ~2.45:1 Studio viewport, so its two-axis scale carried that aspect and would squash on 16:9 and 4:3
 10. A `token` counter guards every deferred step, so a second level-up landing mid-animation restarts the card cleanly instead of two sequences fighting over it
+11. **A Studio-only test block, present in Redwater and NOT in Frostbite Claim.** `L` in a Studio playtest plays the card without a real level-up, alternating CHEST EARNED and the plain state so one run covers both. It calls `showLevelReward` directly — no XP earned, no remote fired, no profile touched — and `RunService:IsStudio()` is false on every live server. Same gate Bounty's `ChestController` uses for its own reveal test
+
+## Mirror note
+
+This file is otherwise byte-identical to Frostbite Claim's copy; item 11 is the **one deliberate
+divergence** (owner's call, 2026-09-06), because it is a dev affordance rather than gameplay and
+Frostbite has no need of a second copy. Redwater `10179 B` / `1269348379`, Frostbite `8691 B` /
+`274843250`. A mirror pass will flag it — leave it rather than syncing it in either direction.
 
 ## Dependencies
 - **Requires:** Nothing
