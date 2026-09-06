@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, lootbox, menu]
 path: game.StarterGui.ChestMenu.Canvas.ChestController
 type: LocalScript
-lines: 3152
+lines: 3183
 ---
 
 # ChestController
@@ -11,7 +11,7 @@ The LOOT tab's chest scene: purchase panel with odds, the OPEN / SHOOT run, the 
 
 ## What it does
 1. **Connects the `LootboxStateEvent` handler before any scene construction** and fires `RequestLootboxState` right after — the profile-load push can beat a long build, and a fire with no listener is dropped for good. The state drives the purchase panel, the held-chest count, the XP progress bar (`ChestProgress.ChestXPBar`) and the bubble
-2. **Replays the server's roll instead of rolling.** OPEN fires `OpenLootboxEvent(boxType)`, lands the chest while the reply is in flight, then waits for `LootboxResultEvent` (8s cap). The run lands exactly `stage` bullets, on shot numbers drawn at random once per chest (`shouldShotHit`, the pattern kept on the result) so the last shot can still be the one that decides, and the reveal spawns exactly the items it was given, ascending by tier so the headline lands last. The only `Random` left (`visualRandom`) places miss holes and loot spin phases. A rejected or missing reply resets the chest and re-requests state
+2. **Replays the server's roll instead of rolling.** OPEN fires `OpenLootboxEvent(boxType)`, lands the chest while the reply is in flight, then waits for `LootboxResultEvent` (8s cap). The run lands exactly `stage` bullets, on shot numbers drawn at random once per chest (`shouldShotHit`, the pattern kept on the result) so the last shot can still be the one that decides, and the reveal spawns exactly the items it was given, ascending by tier so the headline lands last. The only `Random` left (`visualRandom`) places miss holes and loot spin phases. A rejected or missing reply resets the chest and re-requests state. Every `resetChestState` bumps `ChestFlow.run`; the shot step and the open sequence capture it and stop after any yield that finds it changed, so a tab change, a fresh chest or a timeout mid-run no longer leaves them driving a track that is gone
 3. **Streaming:** `Workspace.PersistentMarkers.ChestShootPart` and `Workspace.SkinMenu.PreviewPart` through `WaitForRequired` — a loose root-level part does not replicate until it streams in, and this wait is at the top of the file
 4. **A bought chest banks:** PURCHASE fires `PurchaseLootboxEvent`, the next push (carrying `purchaseResult`) clears the busy flag, and the buy button stays up so a player can stock up. Busy is not a look: the button stays red and labelled PURCHASE, clicks inside `REMOTE_COOLDOWN` (+50 ms) of the last send are dropped client-side so they never meet the server's cooldown, and the no-reply fallback is 3 s. The prototype's OWNED swap is unused; `AfterPurchaseText` shows the held count. A super chest is opened before any standard one, and the title reads SUPER CHEST for it
 5. Odds panel painted from `LootboxConfig.DISPLAYED_ODDS` with the authored tier colours, plus two guarantee bars as rows six and seven (`OddsFrame.6PityEpic` / `7PityLegendary`: `Track > Fill` cloned from `ChestProgress.ChestXPBar`, `Text` cloned from the old pity label) that `refreshProgress` fills from the server's `pityEpic` / `pityLegendary` against `LootboxConfig`'s thresholds — a bar empties the moment its guarantee fires; price from `LootboxConfig.PRICE_TOKENS`. A `restricted` state hides the price and greys the button as UNAVAILABLE IN YOUR REGION

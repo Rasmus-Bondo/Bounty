@@ -200,8 +200,14 @@ which is the point.
     studs on a clone). The glow now sits beside the reward in Workspace and leaves with it through
     `Destroying`.
 
+  - **`attempt to index nil with 'AdjustSpeed'` in `playOpenChest`** (owner's log, same day): the
+    open sequence and the shot step yield mid-run, and a tab change, a fresh chest or a result
+    timeout resets the chest under them, nulling the tracks they hold. Both now capture
+    `ChestFlow.run`, bumped by every `resetChestState`, and stop after any yield that finds it
+    changed.
+
   **Revert hazard:** none; client-side presentation in one script. Reverting brings the flailing
-  rig back.
+  rig back and the mid-open error.
 
   **Verified:** syntax (`loadstring`); in edit mode the WorldModel rig draws and redraws a stepped
   `electro_swing` pose (a hand moved 1.85 studs over 45 frames); the glow blow-up reproduced and

@@ -1,7 +1,7 @@
 # Graph Report - LocalBounty  (2026-09-06)
 
 ## Corpus Check
-- 129 files · ~157,353 words
+- 129 files · ~157,402 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -67,24 +67,24 @@ Cohesion: 0.62
 Nodes (17): BoostsTab, Catalog, CollectionGuiController, EmotesTab, EquipButton, HuntersTab, Panels, Preview (+9 more)
 
 ### Community 3 - "Server Bootstrap"
+Cohesion: 0.26
+Nodes (13): FriendJoinService, FriendsInMatchClient, GameModeClient, GamemodeConfig, MapCatalog, MatchmakingService, Mobile3DClickHandler, NotificationModule (+5 more)
+
+### Community 4 - "Server Bootstrap"
 Cohesion: 0.29
 Nodes (12): CodeRedemptionService, CollisionService, DataService, LoadingScreen, LobbyService, Main, MouseSensitivityService, NewItemClient (+4 more)
 
-### Community 4 - "Server Bootstrap"
+### Community 5 - "Server Bootstrap"
 Cohesion: 0.38
 Nodes (11): CarouselMath, CollectionClient, Config, GroupPerkConfig, HunterList, NameGui, PreviewModel, Reel (+3 more)
 
-### Community 5 - "Server Bootstrap"
-Cohesion: 0.29
-Nodes (10): FollowJoinClient, FollowJoinService, FriendJoinService, FriendsInMatchClient, MapCatalog, MatchmakingService, Telemetry, TelemetryClient (+2 more)
-
 ### Community 6 - "Server Bootstrap"
-Cohesion: 0.31
-Nodes (9): GameModeClient, GamemodeConfig, Mobile3DClickHandler, NotificationModule, PartyService, RegionService, ReworkedPartyClient, ReworkedUIPlay (+1 more)
-
-### Community 7 - "Server Bootstrap"
 Cohesion: 0.28
 Nodes (9): GameEnvironment, GiftPopupClient, RankLeaderboardClient, RankLeaderboardService, RankRewardsConfig, RankSeasonRewardService, SoftShutdown, TesterGrantService (+1 more)
+
+### Community 7 - "Server Bootstrap"
+Cohesion: 0.4
+Nodes (6): FollowJoinClient, FollowJoinService, Telemetry, TelemetryClient, TutorialDispatchService, TutorialWelcomeController
 
 ### Community 8 - "Server Bootstrap"
 Cohesion: 0.4
