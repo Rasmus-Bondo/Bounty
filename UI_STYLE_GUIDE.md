@@ -755,6 +755,7 @@ whole subtree travels with it. Reach for sibling order before reaching for a big
 | 45 | `TutorialGui` — the onboarding lesson banner; above `BountyListGui` (41) and `StatMenuGui` (20) so the instruction line reads through the stats backdrop, below the feeds |
 | 100 | `PingFPSGui` |
 | 8500 / 8600 / 9000 | `CombatFeed` / `QuestToast`, `QuestCompleteNotification` / `KillFeed` |
+| 8650 | `LevelRewardGui` — the level-up / CHEST EARNED card, driven by `LevelRewardClient`. Above the quest toasts (8600) because a level-up is the rarer event, below the kill feed (9000). It sits left-of-centre at y 0.406 and the feeds run right of the crosshair, so the ordering is a tie-break rather than an overlap |
 | 9500 / 9600 | `KillCamGui` / `SwapHunterGui` |
 | 99998 / 99999 / 100000 | `SlowVignette` / `DamageVignette` / `DamageDirection`, `HealthPackPickup`, `HealingVignetteGui`, `StunnedGui` |
 | **100001** | `ReworkedSettingsGui` **while open** — above every HUD and damage overlay |

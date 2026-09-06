@@ -13,10 +13,37 @@ which is the point.
 
 ---
 
-- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). **Lootbox build (2026-09-03):** `Wallet` (four reasons) and `Telemetry` (one event) touched in all three places, verified by length + hash (`7719 B` / `663703730`, `28058 B` / `1779240489`); match-place mirror `DataService` and `TutorialDirector` across Redwater and Frostbite (`26512 B` / `1269809867`, `80703 B` / `1157972711`); the profile-template block and the launch-migration block are byte-identical in all three DataServices (`1220 B` / `237526912`, `2058 B` / `3057621043`). **New-item bubbles (2026-09-03):** none of the 20 mirrored modules was edited — `TitlesConfig` is only read — but the `SeenItems` template block was added to `DataService` in all three places and verified byte-identical by length + byte-sum (`1453 B` / `122758`). **Bubble polish + left-grid fix (2026-09-06):** none of the 20 touched — Bounty only, four client scripts and a handful of authored GUI instances. **Chest codes (2026-09-06):** none of the 20 touched either, but `CodeRedemptionService` — mirrored by hand, not on the list — had its `CODES` + `resolveCode` block verified byte-identical in all three places (`2682 B` / `439550909`). **Chest chime (2026-09-06):** none of the 20 touched — Bounty only, one client script and one new Sound template.
-- **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed. **Lootbox build:** profile shape gains `Lootboxes` + `LootboxLaunchV1` (Reconcile-backfilled, no `DATA_VERSION` bump) and four Wallet reasons; the one-way launch migration (Level/XP reset, veteran bundle) is armed for the **DEV universe only** (`LOOTBOX_LAUNCH_ARMED = GameEnvironment.env == "Dev"`) and stays off on live until the launch publish flips it to `true`. See Added. **New-item bubbles:** profile shape gains `SeenItems` (Reconcile-backfilled, no `DATA_VERSION` bump) whose `Stamped` seed is one-way, stamped on the first load after this ships. See Added.
+- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). **Lootbox build (2026-09-03):** `Wallet` (four reasons) and `Telemetry` (one event) touched in all three places, verified by length + hash (`7719 B` / `663703730`, `28058 B` / `1779240489`); match-place mirror `DataService` and `TutorialDirector` across Redwater and Frostbite (`26512 B` / `1269809867`, `80703 B` / `1157972711`); the profile-template block and the launch-migration block are byte-identical in all three DataServices (`1220 B` / `237526912`, `2058 B` / `3057621043`). **New-item bubbles (2026-09-03):** none of the 20 mirrored modules was edited — `TitlesConfig` is only read — but the `SeenItems` template block was added to `DataService` in all three places and verified byte-identical by length + byte-sum (`1453 B` / `122758`). **Bubble polish + left-grid fix (2026-09-06):** none of the 20 touched — Bounty only, four client scripts and a handful of authored GUI instances. **Chest codes (2026-09-06):** none of the 20 touched either, but `CodeRedemptionService` — mirrored by hand, not on the list — had its `CODES` + `resolveCode` block verified byte-identical in all three places (`2682 B` / `439550909`). **Chest chime (2026-09-06):** none of the 20 touched — Bounty only, one client script and one new Sound template. **Daily reward overhaul (2026-09-06):** `DailyRewardConfig` touched in all three places, verified byte-identical (`6378 B`); non-mirrored `BoostService` and `DailyRewardService` edited identically in Redwater and Frostbite. **Level-up card + live XP (2026-09-06):** none of the 20 touched — match places only. Non-mirrored `ProgressionService` and `RoundController` edited identically in Redwater and Frostbite, and the new `LevelRewardClient` written identically, all three verified byte-identical by length **and** checksum after the pass (`21674 B` / `807935745`, `137606 B` / `1781566845`, `8691 B` / `274843250`).
+- **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed. **Lootbox build:** profile shape gains `Lootboxes` + `LootboxLaunchV1` (Reconcile-backfilled, no `DATA_VERSION` bump) and four Wallet reasons; the one-way launch migration (Level/XP reset, veteran bundle) is armed for the **DEV universe only** (`LOOTBOX_LAUNCH_ARMED = GameEnvironment.env == "Dev"`) and stays off on live until the launch publish flips it to `true`. See Added. **New-item bubbles:** profile shape gains `SeenItems` (Reconcile-backfilled, no `DATA_VERSION` bump) whose `Stamped` seed is one-way, stamped on the first load after this ships. See Added. **Live XP:** no schema change, but reverting does not claw back what it paid — round XP and Cash now land as they are earned, so anyone who left a round mid-way keeps earnings the old forfeit rule would have withheld. See Changed.
 
 ## Added
+
+- **Level-up card in Redwater Canyon and Frostbite Claim** (2026-09-06). A level-up now shows a card
+  on the left of the screen: a chest flies into a `ViewportFrame` and spins to a stop, the card
+  punches in behind it, holds 4.1s and slides off. New `StarterPlayer.StarterPlayerScripts.LevelRewardClient`
+  drives `StarterGui.LevelRewardGui` (DisplayOrder 8650); both are byte-identical across the two
+  match places. Nothing listened to the `LevelUp` remote before this, so level-ups were invisible
+  in a match.
+
+  Ported from the "Bounty - UI Update" prototype's `EyeCandy.Canvas.LevelRewardDisplay`. Its
+  persistent XP bar was **not** taken: that lives in the prototype's `In-gameGui`, a HUD neither
+  match place has. Two things were re-derived rather than copied, and both are rollback-relevant
+  because reverting them reintroduces a visible bug: the card is sized in height-scale under a
+  2.0928 `UIAspectRatioConstraint` (the prototype's two-axis scale carried its ~2.45:1 authoring
+  viewport and squashed on 16:9 and 4:3), and `HIDDEN_X` is off-screen (the prototype's off-screen
+  x was measured inside a 0.70-wide canvas and left the card 93% on screen, so the entrance popped
+  rather than slid). Verified on 1080p, iPhone 14 landscape and a 4:3 iPad.
+
+  **The card never promises a chest the profile is not owed.** `LevelUp` gained a second argument,
+  `chestEarned`, from a new `isChestOwed` in `ProgressionService` that keys off the same
+  `LootboxLaunchV1` stamp Bounty's `LootboxService.syncFreeChests` does. Pre-launch it is false for
+  every profile and the card reads "LEVEL UP / LEVEL n" with the chest viewport hidden; once the
+  launch arms, it reads "LEVEL n / CHEST EARNED". Nothing in a match place banks chests — the lobby
+  still pays them on the next join.
+
+  `SFX.Reward` (LevelUp / Award / Award2) added to both match places, carrying the `SFX` SoundGroup
+  the prototype's copies lacked. **The card needs `ReplicatedStorage.Lootbox.WorkingChest` in both
+  match places**; without it the card still fires, warns, and falls back to the no-chest layout.
 
 - **Lootbox chests: the LOOT tab is now a chest scene** (`LOOTBOX_SPEC.md`, built 2026-09-03). One
   free chest per account level plus a 100-Token chest bought inside the menu; a bought chest banks
@@ -402,6 +429,23 @@ which is the point.
 
 ## Changed
 
+- **Round XP and Cash are credited as they are earned, not at the buzzer** (2026-09-06, both match
+  places). `ProgressionService.addRewards` banked every round earn while `State.roundActive` and
+  `RoundController` paid it out through `flushPendingRewards` at the round end; XP has to land live
+  or the new level-up card could only ever fire after the match. **This removes the forfeit rule** —
+  leaving mid-round used to cost a player the whole round's XP and Cash and now costs them only the
+  round-completion bonus. That was deliberate ("play to the buzzer to get paid"), so reverting is a
+  design decision, not just a code one. `flushPendingRewards` is still called at the buzzer and is
+  still idempotent; it now normally finds an empty bucket and stays as a safety net.
+
+  **The tutorial's economy isolation was riding on the same flag** and had to be made explicit, or
+  un-gating would have paid out onboarding bot kills. `roundActive` is true during a lesson on
+  purpose (sprint gate, ultimate-charge reset), and the banking was what kept those kills out of the
+  wallet. New `ProgressionService.setEarningsHeld(player, held)`: `RoundController`'s tutorial
+  session holds that one player for the length of the lesson and lifts it in the wind-down, and
+  `TutorialDirector`'s existing `clearPendingRewards` calls still drop the bank unpaid. If you
+  revert only `RoundController`, tutorial kills start paying real XP and Cash.
+
 - **The Outlaw Starter Pack now includes three lootbox chests.** `BundleConfig`'s starter pack gains
   a `Chest` grant (`Count = 3`), `BundleService` a branch that banks it, and `LootboxService` a
   `grantChests` entry point that normalises the counters, adds to `Unopened` and pushes the LOOT tab.
@@ -441,6 +485,33 @@ which is the point.
   stores. The fixture's removal deadline moves with it: #20 now reads after 2026-09-05.
 
   **Not yet run** — it fires on its own at the boundary.
+
+- **Daily reward loot table overhauled and passive boost removed.** The seven-day streak rewards are
+  replaced wholesale: Day 1 → 250 Cash, Day 2 → 3 Crates, Day 3 → 1 XP Boost (30 min), Day 4 →
+  500 Cash, Day 5 → 2 Crates, Day 6 → 1 Cash Boost + 1 XP Boost (30 min each), Day 7 → 100 Tokens
+  + 5 Crates. The endless Day 8+ tail is now 1 Crate (was 10 Tokens). Crates are a new grant kind
+  (`"crate"`) backed by `LootboxService.grantChests` — banked as unopened chests, opened in the LOOT
+  tab. Boosts upgraded from 15-min to 30-min (`xp_25_30`, `cash_25_30`).
+
+  The +10% passive Cash & XP boost (earned at streak day 7, kept while the streak held) is removed
+  entirely. `BoostService.getMultiplier` no longer reads `DailyPermaBoost`, the Redwater/Frostbite
+  `DailyRewardService` no longer sets it, `FriendBonusService` no longer includes it in its
+  multiplier breakdown, and the lobby's `DailyLoginController` no longer shows it. The profile field
+  `DailyPermaBoost` stays in the schema as a dormant `false` default — `ensureData` still normalises
+  it and `applyLapse` still clears it, so any legacy `true` decays on the next streak break.
+
+  Scripts touched: `DailyRewardConfig` (mirrored, all 3), Bounty `DailyRewardService` (added
+  `LootboxService` require + `"crate"` grant handler, removed passive state push),
+  `DailyLoginController` (crate display + passive UI removal), `FriendBonusService` (passive
+  removal); Redwater + Frostbite `BoostService` (passive multiplier removal), `DailyRewardService`
+  (passive setter removal).
+
+  **Revert hazard:** none — code-only, no profile schema change. Reverting restores the old rewards
+  and re-enables the passive boost. Existing `DailyPermaBoost = true` values are harmless orphans on
+  a reverted place (BoostService reads them again).
+
+  **Verified:** syntax (`loadstring`) on all edited scripts in all three places; `DailyRewardConfig`
+  byte-identical across all three (`6378 B`). **Not yet playtested.**
 
 ## Fixed
 
