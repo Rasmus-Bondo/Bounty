@@ -183,9 +183,9 @@ which is the point.
 - **Chest scene, fifth round (owner, 2026-09-06): the emote reward plays in a ViewportFrame.**
   Bounty, `ChestController` only. Four rounds of the in-world Dust rig — simulated limbs chasing an
   anchored root the hover moved every frame — never settled into the clip. The reward is now a
-  portrait billboard card (`K.LOOT_EMOTE_CARD_*`) carrying a ViewportFrame whose WorldModel holds the
-  default Dust rig, root anchored only, the Trading Post EXTRAS-card recipe (`emoteCardVisual`). The
-  clip is prewarmed at build and played when the pop lands; the hover spin orbits the viewport
+  portrait rig card (`rigCardVisual`, `K.LOOT_RIG_CARD_*` / `K.LOOT_EMOTE_CARD_HEIGHT`): a
+  ViewportFrame whose WorldModel holds the default Dust rig, root anchored only, the Trading Post
+  EXTRAS-card recipe. The clip is prewarmed at build and played when the pop lands; the hover spin orbits the viewport
   camera and its key light so the emote turns with the 3D rewards beside it. The viewport sits in
   its own ScreenGui (`ChestLootViewports`, DisplayOrder -1, no insets), pinned to the invisible
   carrier every frame through `WorldToViewportPoint`, because a ViewportFrame inside a BillboardGui
@@ -256,8 +256,9 @@ which is the point.
 
   **Verified:** syntax (`loadstring`); in edit mode the WorldModel rig draws and redraws a stepped
   `electro_swing` pose (a hand moved 1.85 studs over 45 frames); the glow blow-up reproduced and
-  measured on a clone. **Not playtested** — the ScreenGui viewport (the Collection tiles' and shop
-  cards' proven path), runtime spin, lighting and framing need the owner's next run (#37).
+  measured on a clone. **Owner-checked in Studio** (2026-09-06): the level bar placement. The
+  ScreenGui rig cards (the Collection tiles' and shop cards' proven path), the chrome fade, the
+  title pill and the preview key have not been confirmed live yet (#37).
 
 - **Chest scene, sixth round (owner, 2026-09-06): the purchase panel is bigger and the LOOT chips
   actually draw on a phone.** Bounty, `ChestController` and `CurrencyHudController`.
