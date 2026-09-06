@@ -292,7 +292,7 @@ which is the point.
   buy (`poor` / `restricted` / `cooldown`) and a click the server never answers stay silent.
 
   **Revert hazard:** none; one client-side helper, no authored instance touched.
-  **Verified:** syntax (`loadstring`). **Not playtested** — the cue itself needs the owner's ear.
+  **Verified:** syntax (`loadstring`). **Playtested by the owner** (2026-09-06).
 
 - **New-item bubbles: a red dot chains from the COLLECTION button down to the individual tile**
   ([#34](https://github.com/Rasmus-Bondo/Bounty/issues/34), built 2026-09-03, Bounty). A player who
