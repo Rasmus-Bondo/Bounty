@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, combat, announcement, audio]
 path: game.StarterGui.EyeCandy.AnnouncementController
 type: LocalScript
-lines: 415
+lines: 408
 ---
 
 # AnnouncementController
@@ -10,8 +10,8 @@ lines: 415
 Drives the centre-screen combat moment: the `ELIMINATED <NAME>` title line with its killstreak word, and the `BOUNTY CLAIMED` header slam.
 
 ## What it does
-1. Resolves the two authored labels in `EyeCandy.Canvas` — `MainAnnouncement` (screen y 0.306..0.384) and `HeaderAnnouncement` (screen y 0.150..0.258) — plus the Studio-only `AnnouncementTestController` panel. Both labels are Teko SemiBold, `TextScaled`, `RichText`.
-2. Everything dispatches through the sibling `AnnouncementEvent` BindableEvent, so the three live triggers and the test panel share one code path and one suppression gate. Actions: `ELIMINATED`, `BOUNTY`, `ASSIST`, `RESET`.
+1. Resolves the two authored labels in `EyeCandy.Canvas` — `MainAnnouncement` (screen y 0.306..0.384) and `HeaderAnnouncement` (screen y 0.150..0.258). They are the only two children; both are Teko SemiBold, `TextScaled`, `RichText`.
+2. Everything dispatches through the sibling `AnnouncementEvent` BindableEvent, so all three live triggers share one code path and one suppression gate. Actions: `ELIMINATED`, `BOUNTY`, `ASSIST`, `RESET` — firing that bindable by hand is how the whole thing is driven without a kill.
 3. `showElimination(victimName)` — advances the client-side multi-kill counter (`MULTI_WINDOW` 8s), plays the kill stinger pitched `1 + min(killCount-1, 8) * 0.065`, writes `richLine` (white verb, `#F6E525` name, white streak word from `killWord`), then `punchIn` (slides in from +85px, overshoots, settles). At streak >= 2 it also runs `shakeAnnouncement` — `min(2 + (streak-2)*0.7, 5)` over 7 frames.
 4. `showBounty(headerText)` — plays `SFX.Reward.Bounty` through `playBountyStinger`, then `animateHeader`: two header clones fly in from x -0.1 and x 1.1, collide at centre, and `createImpactFlare` fires a light bar out of the impact.
 5. A `displayToken` generation counter guards every pending fade, so a newer announcement cancels an older one's `task.delay` instead of being hidden by it.
@@ -19,7 +19,6 @@ Drives the centre-screen combat moment: the `ELIMINATED <NAME>` title line with 
 7. `playBountyStinger` is separate: the 12.33s asset is held 2.6s then faded over 0.7s, so it ends with the header rather than running over the next two kills.
 8. Killstreak resets on the local `Humanoid.Died` and on any `RoundActive` change (round start and intermission both clear it).
 9. `RESET` clears the counter, both labels and any orphaned `_HeaderImpactClone` / `_HeaderImpactFlare`.
-10. The test panel is `Visible = RunService:IsStudio()` and offers ELIMINATE / BOUNTY / RESET. Its authored `Visible` is `false` so it never flashes on a live client.
 
 ## Scope
 
@@ -42,13 +41,15 @@ Suppressed wholesale while `workspace.TutorialMode` is set, read per event rathe
 ### BindableEvents
 | Bindable | Direction | Other script |
 |----------|-----------|-------------|
-| `AnnouncementEvent` | ← / → | `EyeCandy.AnnouncementEvent`, its own sibling — the single dispatch point for the three remote listeners and the test panel |
+| `AnnouncementEvent` | ← / → | `EyeCandy.AnnouncementEvent`, its own sibling — the single dispatch point for all three remote listeners |
 
 ### Direct require()
 None.
 
 ## Notes
 - `DisplayOrder` 8700 — above the combat feed it narrates (8500) and below the kill cam (9500) that should cover it.
+- The prototype's Studio-only ELIMINATE / BOUNTY / RESET panel was removed on the owner's call (2026-09-06) — it appeared in every playtest.
+- `SFX.Fight.KillEffectSound` plays at `Volume = 2`, not the 0.5 it was imported with. Both SoundGroups sit at 0.5, so 0.5 put the sting at an eighth of the `GunGui.HeadshotSound` hitmarker (2.0) landing on the same frame, and it was inaudible under gunfire.
 - The main line was raised out of the prototype's screen y 0.643. There it ran into the mobile button cluster on every 4:3 viewport, and sat exactly on Domination's capture bar (screen y 0.608..0.680).
 - The prototype's XP bar, level-up and chest reel are cut, not stubbed. They hard-required `PlayerGui["In-gameGui"].Canvas.PlayerFrame.PersistentXPBar`, which does not exist here — the match HUD is `ReworkedHunterGui.ScreenGui` — so those `WaitForChild` calls would have hung the whole script before a single announcement.
 - BountyMusicClient's own claim stinger is retired behind a flag so the two do not overlap on the same event.

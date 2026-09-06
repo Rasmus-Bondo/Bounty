@@ -1,11 +1,11 @@
 # Graph Report - LocalRedwaterCanyon  (2026-09-06)
 
 ## Corpus Check
-- 250 files · ~316,360 words
+- 250 files · ~316,289 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 245 nodes · 769 edges · 22 communities detected
+- 245 nodes · 769 edges · 21 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -14,11 +14,10 @@
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Combat|Combat]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
-- [[_COMMUNITY_UI & HUD|UI & HUD]]
+- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Round System|Round System]]
 - [[_COMMUNITY_UI & HUD|UI & HUD]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
-- [[_COMMUNITY_Chrono Networking|Chrono Networking]]
 - [[_COMMUNITY_Chrono Networking|Chrono Networking]]
 - [[_COMMUNITY_Chrono Networking|Chrono Networking]]
 - [[_COMMUNITY_Types|Types]]
@@ -75,9 +74,9 @@ Nodes (29): CardsClient, CombatChecker, FPSRevolverClient, HunterAutoReload, Hun
 Cohesion: 0.14
 Nodes (26): AnimationLoader, BramWorldIdleClient, CardsWorldVisualClient, EmoteConfig, FortunaCardsWorldIdleClient, HideLocalWorldGrudgekeeper, HideLocalWorldRevolver, HideLocalWorldSniper (+18 more)
 
-### Community 4 - "UI & HUD"
-Cohesion: 0.19
-Nodes (20): CharacterStateLockServer, CodeRedemptionService, DataService, HealthBarSpawner, HunterSelectionService, HunterSwitchClient, HunterSwitchService, LeaveToLobbyService (+12 more)
+### Community 4 - "Server Bootstrap"
+Cohesion: 0.16
+Nodes (25): BattlePassConfig, CharacterStateLockServer, CodeRedemptionService, DataService, GameEnvironment, HealthBarSpawner, HunterSelectionService, HunterSwitchClient (+17 more)
 
 ### Community 5 - "Round System"
 Cohesion: 0.25
@@ -92,58 +91,54 @@ Cohesion: 0.36
 Nodes (12): BattlePassService, BountyMusicClient, BountyService, CombatFeedClient, LevelRewardClient, ProgressionService, QuestConfig, QuestEvents (+4 more)
 
 ### Community 8 - "Chrono Networking"
-Cohesion: 0.29
-Nodes (8): BattlePassConfig, GameEnvironment, GamemodeConfig, MapCatalog, MatchDirectoryService, RankedService, SoftShutdown, VersionTagController
+Cohesion: 0.28
+Nodes (9): chrono, ChronoClientBootstrap, ChronoServerBootstrap, Config, Entity, GamemodeConfig, MapCatalog, MatchDirectoryService (+1 more)
 
 ### Community 9 - "Chrono Networking"
 Cohesion: 0.33
 Nodes (6): BoostConfig, BoostService, DailyRewardConfig, DailyRewardService, FriendBonusConfig, FriendBonusService
 
-### Community 10 - "Chrono Networking"
-Cohesion: 0.47
-Nodes (6): chrono, ChronoClientBootstrap, ChronoServerBootstrap, Config, Entity, Replicate
-
-### Community 11 - "Types"
+### Community 10 - "Types"
 Cohesion: 1.0
 Nodes (1): Types
 
-### Community 12 - "RevolverRemotes"
+### Community 11 - "RevolverRemotes"
 Cohesion: 1.0
 Nodes (1): RevolverRemotes
 
-### Community 13 - "HunterImplementationGuide"
+### Community 12 - "HunterImplementationGuide"
 Cohesion: 1.0
 Nodes (1): HunterImplementationGuide
 
-### Community 14 - "Health"
+### Community 13 - "Health"
 Cohesion: 1.0
 Nodes (1): Health
 
-### Community 15 - "CharacterStateLockClient"
+### Community 14 - "CharacterStateLockClient"
 Cohesion: 1.0
 Nodes (1): CharacterStateLockClient
 
-### Community 16 - "DamageVignetteClient"
+### Community 15 - "DamageVignetteClient"
 Cohesion: 1.0
 Nodes (1): DamageVignetteClient
 
-### Community 17 - "DisableDefaultHealthBar"
+### Community 16 - "DisableDefaultHealthBar"
 Cohesion: 1.0
 Nodes (1): DisableDefaultHealthBar
 
-### Community 18 - "DisableDefaultLeaderboard"
+### Community 17 - "DisableDefaultLeaderboard"
 Cohesion: 1.0
 Nodes (1): DisableDefaultLeaderboard
 
-### Community 19 - "FortunaCardsWorldVisibilityClient"
+### Community 18 - "FortunaCardsWorldVisibilityClient"
 Cohesion: 1.0
 Nodes (1): FortunaCardsWorldVisibilityClient
 
-### Community 20 - "Audio"
+### Community 19 - "Audio"
 Cohesion: 1.0
 Nodes (1): RbxCharacterSounds
 
-### Community 21 - "SlowVignetteClient"
+### Community 20 - "SlowVignetteClient"
 Cohesion: 1.0
 Nodes (1): SlowVignetteClient
 
@@ -176,11 +171,11 @@ Nodes (1): SlowVignetteClient
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Main` connect `UI & HUD` to `Combat`, `Server Bootstrap`, `Server Bootstrap`, `Round System`, `UI & HUD`, `Server Bootstrap`, `Chrono Networking`, `Chrono Networking`, `Chrono Networking`?**
+- **Why does `Main` connect `Server Bootstrap` to `Combat`, `Server Bootstrap`, `Server Bootstrap`, `Round System`, `UI & HUD`, `Server Bootstrap`, `Chrono Networking`, `Chrono Networking`?**
   _High betweenness centrality (0.128) - this node is a cross-community bridge._
 - **Why does `FPSRevolverClient` connect `Combat` to `Combat`, `Server Bootstrap`, `Server Bootstrap`, `Round System`, `UI & HUD`?**
   _High betweenness centrality (0.125) - this node is a cross-community bridge._
-- **Why does `RoundController` connect `Round System` to `Server Bootstrap`, `Server Bootstrap`, `UI & HUD`, `Server Bootstrap`, `Chrono Networking`, `Chrono Networking`, `Chrono Networking`?**
+- **Why does `RoundController` connect `Round System` to `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`, `Chrono Networking`, `Chrono Networking`?**
   _High betweenness centrality (0.091) - this node is a cross-community bridge._
 - **What connects `BoostConfig`, `FriendBonusConfig`, `QuestConfig` to the rest of the system?**
   _48 weakly-connected nodes found - possible documentation gaps or missing edges._
