@@ -210,8 +210,21 @@ which is the point.
     `refreshProgress` and the authored placeholder on `OddsFrame.6PityEpic.Text` (set through
     `execute_luau`, so not in the hook capture). The guarantee itself is still Epic-or-better.
 
-  **Revert hazard:** none; client-side presentation in one script. Reverting brings the flailing
-  rig back and the mid-open error.
+  - **The lobby chrome fades out on OPEN and back in once the loot has landed** (owner, same day):
+    every other ScreenGui under PlayerGui plus this menu's purchase panel and XP bar, over 0.35 s,
+    disabled at the end of the fade so invisible buttons take no clicks. Kept: the settings gear,
+    the version tag, the ping / FPS readout, the black-bar transition, the emote viewport layer and
+    the SHOOT button. Transparencies are snapshotted per element and restored; `resetChestState`
+    restores too, so a tab change or a timeout never leaves the lobby blank (the `Chrome` table).
+  - **Loot labels sit on a dark pill** (owner, same day: unreadable against the glow) — `NameBack` /
+    `SubBack` frames authored into `ReplicatedStorage.Lootbox.LootLabel` (toast surface `24,24,24`
+    at 0.45, 6 px corners; through `execute_luau`, so not in the hook capture), sized by
+    `attachLootLabel` from each line's `TextBounds` plus padding, the sub line's only while it has
+    text.
+
+  **Revert hazard:** none; client-side presentation in one script plus two frames in one template.
+  Reverting brings the flailing rig back, the mid-open error and the bare labels; the template's
+  frames are inert without the code.
 
   **Verified:** syntax (`loadstring`); in edit mode the WorldModel rig draws and redraws a stepped
   `electro_swing` pose (a hand moved 1.85 studs over 45 frames); the glow blow-up reproduced and

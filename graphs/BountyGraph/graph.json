@@ -11,7 +11,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "loadingscreen",
-      "community": 4,
+      "community": 3,
       "norm_label": "loadingscreen"
     },
     {
@@ -99,7 +99,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "gamemodeconfig",
-      "community": 3,
+      "community": 7,
       "norm_label": "gamemodeconfig"
     },
     {
@@ -110,7 +110,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "groupperkconfig",
-      "community": 5,
+      "community": 4,
       "norm_label": "groupperkconfig"
     },
     {
@@ -143,7 +143,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "mapcatalog",
-      "community": 3,
+      "community": 5,
       "norm_label": "mapcatalog"
     },
     {
@@ -253,7 +253,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "notificationmodule",
-      "community": 3,
+      "community": 7,
       "norm_label": "notificationmodule"
     },
     {
@@ -286,7 +286,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "collisionservice",
-      "community": 4,
+      "community": 3,
       "norm_label": "collisionservice"
     },
     {
@@ -297,7 +297,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "followjoinservice",
-      "community": 7,
+      "community": 5,
       "norm_label": "followjoinservice"
     },
     {
@@ -308,7 +308,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "friendjoinservice",
-      "community": 3,
+      "community": 5,
       "norm_label": "friendjoinservice"
     },
     {
@@ -319,7 +319,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "lobbyservice",
-      "community": 4,
+      "community": 3,
       "norm_label": "lobbyservice"
     },
     {
@@ -330,7 +330,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "main",
-      "community": 4,
+      "community": 3,
       "norm_label": "main"
     },
     {
@@ -341,7 +341,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "tutorialdispatchservice",
-      "community": 7,
+      "community": 5,
       "norm_label": "tutorialdispatchservice"
     },
     {
@@ -352,7 +352,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "tutorialreplayservice",
-      "community": 3,
+      "community": 7,
       "norm_label": "tutorialreplayservice"
     },
     {
@@ -363,7 +363,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "matchmakingservice",
-      "community": 3,
+      "community": 5,
       "norm_label": "matchmakingservice"
     },
     {
@@ -374,7 +374,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "partyservice",
-      "community": 3,
+      "community": 7,
       "norm_label": "partyservice"
     },
     {
@@ -385,7 +385,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "regionservice",
-      "community": 3,
+      "community": 7,
       "norm_label": "regionservice"
     },
     {
@@ -429,7 +429,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "coderedemptionservice",
-      "community": 4,
+      "community": 3,
       "norm_label": "coderedemptionservice"
     },
     {
@@ -462,7 +462,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "dataservice",
-      "community": 4,
+      "community": 3,
       "norm_label": "dataservice"
     },
     {
@@ -506,7 +506,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "mousesensitivityservice",
-      "community": 4,
+      "community": 3,
       "norm_label": "mousesensitivityservice"
     },
     {
@@ -517,7 +517,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "newitemservice",
-      "community": 4,
+      "community": 3,
       "norm_label": "newitemservice"
     },
     {
@@ -528,7 +528,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "playersettingsservice",
-      "community": 4,
+      "community": 3,
       "norm_label": "playersettingsservice"
     },
     {
@@ -539,7 +539,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "profileservice",
-      "community": 4,
+      "community": 3,
       "norm_label": "profileservice"
     },
     {
@@ -572,7 +572,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "telemetry",
-      "community": 7,
+      "community": 5,
       "norm_label": "telemetry"
     },
     {
@@ -880,7 +880,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "newitemclient",
-      "community": 4,
+      "community": 3,
       "norm_label": "newitemclient"
     },
     {
@@ -913,7 +913,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "friendsinmatchclient",
-      "community": 3,
+      "community": 5,
       "norm_label": "friendsinmatchclient"
     },
     {
@@ -924,7 +924,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "followjoinclient",
-      "community": 7,
+      "community": 5,
       "norm_label": "followjoinclient"
     },
     {
@@ -935,7 +935,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "gamemodeclient",
-      "community": 3,
+      "community": 7,
       "norm_label": "gamemodeclient"
     },
     {
@@ -990,7 +990,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "reworkedpartyclient",
-      "community": 3,
+      "community": 7,
       "norm_label": "reworkedpartyclient"
     },
     {
@@ -1001,7 +1001,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "settingscontroller",
-      "community": 4,
+      "community": 3,
       "norm_label": "settingscontroller"
     },
     {
@@ -1188,7 +1188,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "tutorialwelcomecontroller",
-      "community": 7,
+      "community": 5,
       "norm_label": "tutorialwelcomecontroller"
     },
     {
@@ -1210,7 +1210,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "carouselmath",
-      "community": 5,
+      "community": 4,
       "norm_label": "carouselmath"
     },
     {
@@ -1221,7 +1221,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "config",
-      "community": 5,
+      "community": 4,
       "norm_label": "config"
     },
     {
@@ -1232,7 +1232,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "hunterlist",
-      "community": 5,
+      "community": 4,
       "norm_label": "hunterlist"
     },
     {
@@ -1243,7 +1243,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "namegui",
-      "community": 5,
+      "community": 4,
       "norm_label": "namegui"
     },
     {
@@ -1254,7 +1254,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "previewmodel",
-      "community": 5,
+      "community": 4,
       "norm_label": "previewmodel"
     },
     {
@@ -1265,7 +1265,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "reel",
-      "community": 5,
+      "community": 4,
       "norm_label": "reel"
     },
     {
@@ -1276,7 +1276,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "surfaceanimator",
-      "community": 5,
+      "community": 4,
       "norm_label": "surfaceanimator"
     },
     {
@@ -1287,7 +1287,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "tween",
-      "community": 5,
+      "community": 4,
       "norm_label": "tween"
     },
     {
@@ -1298,7 +1298,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "viewporticon",
-      "community": 5,
+      "community": 4,
       "norm_label": "viewporticon"
     },
     {
@@ -1309,7 +1309,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "collectionclient",
-      "community": 5,
+      "community": 4,
       "norm_label": "collectionclient"
     },
     {
@@ -1364,7 +1364,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "mobile3dclickhandler",
-      "community": 3,
+      "community": 7,
       "norm_label": "mobile3dclickhandler"
     },
     {
@@ -1386,7 +1386,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "reworkeduiplay",
-      "community": 3,
+      "community": 7,
       "norm_label": "reworkeduiplay"
     },
     {
@@ -1397,7 +1397,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "telemetryclient",
-      "community": 7,
+      "community": 5,
       "norm_label": "telemetryclient"
     },
     {
