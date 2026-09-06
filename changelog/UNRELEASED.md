@@ -206,6 +206,10 @@ which is the point.
     `ChestFlow.run`, bumped by every `resetChestState`, and stop after any yield that finds it
     changed.
 
+  - **The Epic guarantee bar reads `EPIC GUARANTEED`, not `EPIC+`** (owner, same day) — the label in
+    `refreshProgress` and the authored placeholder on `OddsFrame.6PityEpic.Text` (set through
+    `execute_luau`, so not in the hook capture). The guarantee itself is still Epic-or-better.
+
   **Revert hazard:** none; client-side presentation in one script. Reverting brings the flailing
   rig back and the mid-open error.
 

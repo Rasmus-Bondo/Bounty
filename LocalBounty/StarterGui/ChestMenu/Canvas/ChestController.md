@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, lootbox, menu]
 path: game.StarterGui.ChestMenu.Canvas.ChestController
 type: LocalScript
-lines: 3183
+lines: 3184
 ---
 
 # ChestController
