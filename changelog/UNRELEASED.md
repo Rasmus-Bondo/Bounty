@@ -186,19 +186,27 @@ which is the point.
   portrait billboard card (`K.LOOT_EMOTE_CARD_*`) carrying a ViewportFrame whose WorldModel holds the
   default Dust rig, root anchored only, the Trading Post EXTRAS-card recipe (`emoteCardVisual`). The
   clip is prewarmed at build and played when the pop lands; the hover spin orbits the viewport
-  camera and its key light so the emote turns with the 3D rewards beside it. The card lives in
-  PlayerGui adorned to the invisible carrier — a ViewportFrame inside a Workspace-parented
-  BillboardGui renders nothing — and is destroyed with the carrier through `Destroying`. The old rig
-  path (root offsets in the hover, the label adorned to the root, `modelVisual`'s PrimaryPart
-  argument) is gone; `cardVisual` takes a width and height.
+  camera and its key light so the emote turns with the 3D rewards beside it. The viewport sits in
+  its own ScreenGui (`ChestLootViewports`, DisplayOrder -1, no insets), pinned to the invisible
+  carrier every frame through `WorldToViewportPoint`, because a ViewportFrame inside a BillboardGui
+  draws nothing in the live client — neither Workspace-parented nor PlayerGui-parented, though the
+  PlayerGui one rendered in an edit-mode screenshot and shipped invisible for one round (owner's
+  playtest, same day). It is destroyed with the carrier through `Destroying`. The old rig path
+  (root offsets in the hover, the label adorned to the root, `modelVisual`'s PrimaryPart argument)
+  is gone; `cardVisual` takes a width and height.
+  - **The rarity glow no longer fills the screen on a hero or weapon skin** (owner's screenshot,
+    same day): the rays' carrier was parented inside the reward, and a Model reward's pop is
+    `Model:ScaleTo`, which scaled the emitter 12.5x along with the model (measured 4.5 → 56.25
+    studs on a clone). The glow now sits beside the reward in Workspace and leaves with it through
+    `Destroying`.
 
   **Revert hazard:** none; client-side presentation in one script. Reverting brings the flailing
   rig back.
 
-  **Verified:** syntax (`loadstring`); in edit mode the same billboard + viewport + rig draws, and
-  redraws a stepped `electro_swing` pose (a hand moved 1.85 studs over 45 frames), when the
-  billboard is under StarterGui, and draws nothing under the Workspace part. **Not playtested** —
-  runtime spin, lighting and framing need the owner's next run (#37).
+  **Verified:** syntax (`loadstring`); in edit mode the WorldModel rig draws and redraws a stepped
+  `electro_swing` pose (a hand moved 1.85 studs over 45 frames); the glow blow-up reproduced and
+  measured on a clone. **Not playtested** — the ScreenGui viewport (the Collection tiles' and shop
+  cards' proven path), runtime spin, lighting and framing need the owner's next run (#37).
 
 - **New-item bubbles: a red dot chains from the COLLECTION button down to the individual tile**
   ([#34](https://github.com/Rasmus-Bondo/Bounty/issues/34), built 2026-09-03, Bounty). A player who
