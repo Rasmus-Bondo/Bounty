@@ -2,7 +2,7 @@
 tags: [shared, modulescript, combat, hit-pipeline]
 path: game.ReplicatedStorage.Hunters.Shared.HunterHitPipeline
 type: ModuleScript
-lines: 240
+lines: 255
 ---
 
 # HunterHitPipeline
@@ -18,7 +18,7 @@ OOP service that encapsulates the standard post-hit bookkeeping + UI feedback ch
    4. `DamageDirectionRemote:FireClient(victim, sourcePosition, isHeadshot, isBulletImpact)` — only if victim is a different player; source position resolves from attacker's `Head → HumanoidRootPart → PrimaryPart`. The trailing `isBulletImpact` flag carries `opts.PlayBulletHitSound` so `BulletImpactAudioClient` can suppress a near-miss whiz from the same shot
    5. `_playBulletHitSound(target, isHeadshot)` → [[BulletHitAudioService]]`.Play` — **only when the caller passes `opts.PlayBulletHitSound == true`**. Every basic weapon in the game passes it (`RevolverModule`, `SunspikeModule`, `StarfallSightModule`, `GrudgekeeperModule`); a caller that omits it leaves the victim with no impact sound and nothing errors
    6. `HealthBarRevealRemote:FireClient(attacker, target)` — visible only to the attacker
-   7. `HitConfirmRemote:FireClient(attacker, isHeadshot, didKill)`
+   7. `HitConfirmRemote:FireClient(attacker, isHeadshot, didKill, actualDamage, victimName, victimCharacter)` — the trailing three were added for the combat-feedback pass. It is the only event that reaches the attacker and nobody else while the emitter still holds the victim, so it carries both the floating damage number and the name for the centre-screen elimination line. `victimName` resolves the same way `_sendKillFeed` does (DisplayName for players, model name for bots), and the damage reported is `actualDamage`, already clamped to remaining health. Purely additive: `HitMarkScript` binds `function(isHeadshot, didKill)` and ignores the rest
    8. Award ultimate charge via the configured channel (`ChargeAwardEvent` or `ChargeService:AwardHit`)
    9. (if killed) `KillFeedRemote:FireAllClients(killerName, victimName, weaponName, isHeadshot)` and `KillCamRemote:FireClient(victim, attacker)`. The kill-feed fire is gated on [[KillFeedGate]]`.Claim(victimCharacter, ...)` so a death announced by any emitter cannot be announced a second time (launch issue #10); the claim sits **after** the `KillFeedRemote`/`killerPlayer`/`victimCharacter` nil-guard, so a suppressed row never consumes the claim. The kill cam is deliberately left ungated — it is fired to the victim only and a second one would land on a client already in the cam.
 
@@ -37,6 +37,8 @@ feed can colour each side.
 ## Connections
 ### RemoteEvents
 None directly — fires the 5 cross-hero remotes supplied at construction (from `Hunters.Shared.Remotes`, created by [[HunterSharedRemoteSetup]])
+
+`HitConfirm`'s attacker-side listeners are HitMarkScript (crosshair + hitmarker), DamageNumberClient (floating damage numbers) and AnnouncementController (the elimination line).
 
 ### BindableEvents
 None directly — fires `ChargeAwardEvent` if a caller still supplies one (no caller does after Phase 2)

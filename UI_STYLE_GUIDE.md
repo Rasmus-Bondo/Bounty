@@ -756,6 +756,7 @@ whole subtree travels with it. Reach for sibling order before reaching for a big
 | 100 | `PingFPSGui` |
 | 8500 / 8600 / 9000 | `CombatFeed` / `QuestToast`, `QuestCompleteNotification` / `KillFeed` |
 | 8650 | `LevelRewardGui` — the level-up / CHEST EARNED card, driven by `LevelRewardClient`. Above the quest toasts (8600) because a level-up is the rarer event, below the kill feed (9000). It sits left-of-centre at y 0.406 and the feeds run right of the crosshair, so the ordering is a tie-break rather than an overlap |
+| 8700 | `EyeCandy` — the centre-screen `ELIMINATED <NAME>` / `BOUNTY CLAIMED` announcement; above the `CombatFeed` (8500) it is narrating and below `KillCamGui` (9500), which should cover it |
 | 9500 / 9600 | `KillCamGui` / `SwapHunterGui` |
 | 99998 / 99999 / 100000 | `SlowVignette` / `DamageVignette` / `DamageDirection`, `HealthPackPickup`, `HealingVignetteGui`, `StunnedGui` |
 | **100001** | `ReworkedSettingsGui` **while open** — above every HUD and damage overlay |

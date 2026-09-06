@@ -2,7 +2,7 @@
 tags: [server, modulescript, combat, ultimate, damage]
 path: game.ReplicatedStorage.Hunters.Dust.Modules.HighNoonDamage
 type: ModuleScript
-lines: 358
+lines: 371
 ---
 
 # HighNoonDamage
@@ -13,7 +13,7 @@ OOP server-side damage handler for HighNoon ultimate shots with execute threshol
 1. Applies damage to targets. A **locked** shot (`isHeadshot`) is a guaranteed one-shot: damage comes from the injected `GetLockedShotDamage` (HighNoonServerConfig's `MaxHealth * LockedHealthPercent`, 100% by default) and falls back to the flat `HeadshotDamage` only when that isn't injected. A **body** shot (in-cone, not yet locked) is the flat quick damage (45) and still executes anyone already under the threshold (35 HP = damage equal to remaining health). Each `targetData` may carry a per-target `isHeadshot` override so one `ShootTargets` list can mix executes and body shots; when unset it falls back to the list-level flag
 2. A locked shot is a **true execute** and skips the victim's `DamageReductionPercent` when `LockedIgnoresDamageReduction` is set (the default) — otherwise Bram's Last Call 50% cut would carry a full-HP Bram through the kill. Body shots still respect the reduction, so mitigation can carry a low-health target through an unlocked finisher
 3. Creates a brief orange Highlight flash (0.16s) on hit characters for visual feedback (gold `HighNoonHitHighlight` — distinct from HunterHitPipeline's pink basic-hit flash)
-4. Fires `HitConfirm` RemoteEvent to the attacker with headshot and kill info
+4. Fires `HitConfirm` RemoteEvent to the attacker with `(isHeadshot, didKill, actualDamage, victimName, victimCharacter)`. The trailing three mirror `HunterHitPipeline:_sendHitConfirm` exactly. This is a parallel damage chain and had to be extended by hand — left alone, High Noon would have been the one weapon in the game with no damage numbers and no elimination announcement, which reads as the ultimate being broken. `actualDamage` is hoisted out of the `RoundStats` branch so the number on screen is the same health-clamped figure the stats record
 5. Plays the victim's bullet impact via [[BulletHitAudioService]]`.Play(character, isHeadshot)` in `:Apply`. Because this module runs its own post-hit chain instead of HunterHitPipeline, it has to make this call by hand — omitting it is what left a High Noon victim with **no sound at all** (launch issue #3), while the bot path in `BotCombat._applyUltimateHit` had always played it. Unconditional, matching the pipeline rather than BotCombat's player-only guard, so a bot body cracks the same way it does under the basic revolver. The dependency is `require`d rather than injected like the rest of the config, deliberately: an optional dependency can go missing without erroring, which is precisely how this went silent
 6. `ShootTargets` iterates through the resolved target list with 0.12s delay between shots, honoring each target's `isHeadshot` (execute vs body)
 7. Fires `HighNoonShot` RemoteEvent to all clients with muzzle and hit positions for visual replication
@@ -35,7 +35,7 @@ by side.
 ### RemoteEvents
 | Remote | Direction | Other script |
 |--------|-----------|-------------|
-| `HitConfirm` | → Client | [[HitMarkScript]] displays hit/kill feedback (cross-hero remote from `Hunters.Shared.Remotes`) |
+| `HitConfirm` | → Client | [[HitMarkScript]] displays hit/kill feedback (cross-hero remote from `Hunters.Shared.Remotes`). Its trailing payload also drives DamageNumberClient and AnnouncementController |
 | `HighNoonShot` | → All Clients | [[HighNoonClient]] plays shot VFX and laser beams |
 | `HealthBarReveal` | → Client | Fired to the attacker (only) on every landed shot; [[HealthBarSpawnerClient]] spawns a local-only overhead health bar on the victim (cross-hero remote from `Hunters.Shared.Remotes`) |
 | `DamageDirection` | → Client | Fired to the victim on every landed shot; [[DamageDirectionClient]] shows directional damage indicator (cross-hero remote from `Hunters.Shared.Remotes`). Carries the same trailing `isHeadshot, isBulletImpact` flags as HunterHitPipeline, the second always true here, so `BulletImpactAudioClient` can suppress a near-miss whiz from the same shot |

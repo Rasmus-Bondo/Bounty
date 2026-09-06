@@ -1,7 +1,12 @@
 # Spec — Combat feedback: kill announcement + damage numbers
 
-**Status:** NOT BUILT. Scope agreed 2026-09-06. Build in a session of its own — it is four
-coupled edits across Redwater **and** Frostbite, two of them in a mirrored shared module.
+**Status:** BUILT 2026-09-06, unreleased and not yet playtested. Two decisions were taken during the
+build and are the only places the shipped code departs from this document: the **bounty stinger is the
+prototype's `SFX.Reward.Bounty`** (§5's second option — `BountyMusicClient.playBountyClaimed` is held
+behind `BOUNTY_STINGER_ENABLED = false` and the new asset is faded at 2.6s), and the **killstreak
+breaks on death** (§7 trap 4). The announcement also moved off §2.4's `y = 0.8357`: it collided with
+the mobile button cluster on 4:3 and with Domination's capture bar, and now sits at screen y
+0.306–0.384. See `changelog/UNRELEASED.md` for what shipped and what still owes a playtest.
 
 **Where the prototypes are:** the 4th connected place, **"Bounty - UI Update"**
 (placeId `112014319307228`, see [[project_ui_design_place]]). They are demos, not features:

@@ -13,10 +13,52 @@ which is the point.
 
 ---
 
-- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). **Lootbox build (2026-09-03):** `Wallet` (four reasons) and `Telemetry` (one event) touched in all three places, verified by length + hash (`7719 B` / `663703730`, `28058 B` / `1779240489`); match-place mirror `DataService` and `TutorialDirector` across Redwater and Frostbite (`26512 B` / `1269809867`, `80703 B` / `1157972711`); the profile-template block and the launch-migration block are byte-identical in all three DataServices (`1220 B` / `237526912`, `2058 B` / `3057621043`). **New-item bubbles (2026-09-03):** none of the 20 mirrored modules was edited — `TitlesConfig` is only read — but the `SeenItems` template block was added to `DataService` in all three places and verified byte-identical by length + byte-sum (`1453 B` / `122758`). **Bubble polish + left-grid fix (2026-09-06):** none of the 20 touched — Bounty only, four client scripts and a handful of authored GUI instances. **Chest codes (2026-09-06):** none of the 20 touched either, but `CodeRedemptionService` — mirrored by hand, not on the list — had its `CODES` + `resolveCode` block verified byte-identical in all three places (`2682 B` / `439550909`). **Chest chime (2026-09-06):** none of the 20 touched — Bounty only, one client script and one new Sound template. **Daily reward overhaul (2026-09-06):** `DailyRewardConfig` touched in all three places, verified byte-identical (`6378 B`); non-mirrored `BoostService` and `DailyRewardService` edited identically in Redwater and Frostbite. **Level-up card + live XP (2026-09-06):** none of the 20 touched — match places only. Non-mirrored `ProgressionService` and `RoundController` edited identically in Redwater and Frostbite, and the new `LevelRewardClient` written identically, all three verified byte-identical by length **and** checksum after the pass (`21674 B` / `807935745`, `137606 B` / `1781566845`, `8691 B` / `274843250`).
+- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). **Lootbox build (2026-09-03):** `Wallet` (four reasons) and `Telemetry` (one event) touched in all three places, verified by length + hash (`7719 B` / `663703730`, `28058 B` / `1779240489`); match-place mirror `DataService` and `TutorialDirector` across Redwater and Frostbite (`26512 B` / `1269809867`, `80703 B` / `1157972711`); the profile-template block and the launch-migration block are byte-identical in all three DataServices (`1220 B` / `237526912`, `2058 B` / `3057621043`). **New-item bubbles (2026-09-03):** none of the 20 mirrored modules was edited — `TitlesConfig` is only read — but the `SeenItems` template block was added to `DataService` in all three places and verified byte-identical by length + byte-sum (`1453 B` / `122758`). **Bubble polish + left-grid fix (2026-09-06):** none of the 20 touched — Bounty only, four client scripts and a handful of authored GUI instances. **Chest codes (2026-09-06):** none of the 20 touched either, but `CodeRedemptionService` — mirrored by hand, not on the list — had its `CODES` + `resolveCode` block verified byte-identical in all three places (`2682 B` / `439550909`). **Chest chime (2026-09-06):** none of the 20 touched — Bounty only, one client script and one new Sound template. **Daily reward overhaul (2026-09-06):** `DailyRewardConfig` touched in all three places, verified byte-identical (`6378 B`); non-mirrored `BoostService` and `DailyRewardService` edited identically in Redwater and Frostbite. **Level-up card + live XP (2026-09-06):** none of the 20 touched — match places only. Non-mirrored `ProgressionService` and `RoundController` edited identically in Redwater and Frostbite, and the new `LevelRewardClient` written identically, all three verified byte-identical by length **and** checksum after the pass (`21674 B` / `807935745`, `137606 B` / `1781566845`, `8691 B` / `274843250`). **Kill announcement + damage numbers (2026-09-06):** none of the 20 touched — match places only. Non-mirrored `HunterHitPipeline`, `HighNoonDamage` and `BountyMusicClient` edited identically in Redwater and Frostbite, and the new `AnnouncementController` + `DamageNumberClient` written identically; confirmed by a full match-tier mirror walk rather than per-file checksums (`TOTAL dad63f23`, 9 of 9 roots resolved, both places).
 - **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed. **Lootbox build:** profile shape gains `Lootboxes` + `LootboxLaunchV1` (Reconcile-backfilled, no `DATA_VERSION` bump) and four Wallet reasons; the one-way launch migration (Level/XP reset, veteran bundle) is armed for the **DEV universe only** (`LOOTBOX_LAUNCH_ARMED = GameEnvironment.env == "Dev"`) and stays off on live until the launch publish flips it to `true`. See Added. **New-item bubbles:** profile shape gains `SeenItems` (Reconcile-backfilled, no `DATA_VERSION` bump) whose `Stamped` seed is one-way, stamped on the first load after this ships. See Added. **Live XP:** no schema change, but reverting does not claw back what it paid — round XP and Cash now land as they are earned, so anyone who left a round mid-way keeps earnings the old forfeit rule would have withheld. See Changed.
 
 ## Added
+
+- **Kill announcement and floating damage numbers, both match places** (`COMBAT_FEEDBACK_SPEC.md`,
+  built 2026-09-06). A kill now puts `ELIMINATED <NAME>` across the centre of the screen with a
+  killstreak word (`DOUBLE KILL` … `DECA KILL`, then `<N>X MULTI KILL`), pitched up a step per kill
+  off one stinger, shaking harder the longer the run. A bounty claim slams a `BOUNTY CLAIMED` header
+  in from both edges. Damage floats off whoever you hit — white body numbers drifting up, yellow
+  `N!` headshot numbers that split in half and fly apart.
+
+  New `StarterGui.EyeCandy` (DisplayOrder 8700) + `AnnouncementController`, and new
+  `StarterPlayer.StarterPlayerScripts.DamageNumberClient`; both byte-identical across the two match
+  places, with the GUI imported from the "Bounty - UI Update" prototype rather than re-authored.
+  `SFX.Fight.KillEffectSound` and `SFX.Reward.Bounty` are new in both places, and `SFX.Fight`'s two
+  pre-existing, previously unwired sounds (`KillSound`, `Assist`) gained the `SFX` SoundGroup they
+  were missing — all four set through `execute_luau`, so not in the hook capture.
+
+  **`HitConfirm` grew three trailing arguments** — `damage, victimName, victimCharacter` — in
+  `HunterHitPipeline` **and** in `HighNoonDamage`, which runs its own parallel damage chain. This is
+  the load-bearing change: it is the only event that reaches the attacker alone while the emitter
+  still holds the victim, and it feeds both features at once. Purely additive, so `HitMarkScript` is
+  untouched. Miss the `HighNoonDamage` copy and Dust's ultimate is the one weapon with no numbers
+  and no announcement.
+
+  **The bounty stinger is a swap, not an addition.** `BountyMusicClient.playBountyClaimed` is held
+  behind `BOUNTY_STINGER_ENABLED = false` because the new header plays `SFX.Reward.Bounty` on the
+  same event for the same one player. Reverting `BountyMusicClient` alone gives every claim two
+  overlapping stingers, one of them 12.33s long.
+
+  **Cut, not stubbed:** the prototype's XP bar, level-up and chest reel. They hard-required
+  `PlayerGui["In-gameGui"]`, which no match place has, and would have hung the controller before a
+  single announcement. Its reward lines and assist banner are gone too — the combat feed keeps the
+  ledger and the assist row; the assist only gained its sound.
+
+  **Revert hazard:** the two client scripts and the GUI are presentation only, but the `HitConfirm`
+  signature and the `BountyMusicClient` flag span both places and must ship together. Reverting one
+  place leaves it silently without numbers.
+
+  **Verified:** syntax (`loadstring`) on all five scripts in both places; byte-identical mirrors
+  (full match-tier walk, `TOTAL dad63f23`, 9/9 roots). First-draft device matrix (phone, 4:3 iPad,
+  1280x720, 640x480) caught the announcement running into the mobile sprint button at 4:3 and
+  sitting on Domination's capture bar; it was raised to screen y 0.306–0.384 and re-checked clear on
+  all four. **Not yet playtested** — the streak ladder, the stinger pitch, headshot splits and High
+  Noon specifically all need a live run.
 
 - **Level-up card in Redwater Canyon and Frostbite Claim** (2026-09-06). A level-up now shows a card
   on the left of the screen: a chest flies into a `ViewportFrame` and spins to a stop, the card
