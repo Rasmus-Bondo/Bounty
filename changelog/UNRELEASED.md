@@ -216,11 +216,15 @@ which is the point.
     the version tag, the ping / FPS readout, the black-bar transition, the emote viewport layer and
     the SHOOT button. Transparencies are snapshotted per element and restored; `resetChestState`
     restores too, so a tab change or a timeout never leaves the lobby blank (the `Chrome` table).
-  - **Loot labels sit on a dark pill** (owner, same day: unreadable against the glow) — `NameBack` /
-    `SubBack` frames authored into `ReplicatedStorage.Lootbox.LootLabel` (toast surface `24,24,24`
-    at 0.45, 6 px corners; through `execute_luau`, so not in the hook capture), sized by
-    `attachLootLabel` from each line's `TextBounds` plus padding, the sub line's only while it has
-    text.
+  - **A title reward's styled text sits on a dark pill** (owner, same day: the presets were
+    unreadable against the glow) — a `TitleBack` frame behind the title card's text (toast surface
+    `24,24,24` at 0.45, 6 px corners) sized from the text's `TextBounds` plus padding and re-fitted
+    as the billboard's pixel size changes with distance. Title cards only; the name label above
+    every reward stays bare (a first pass the same day put pills under those labels and was
+    reverted — the two frames it authored into `ReplicatedStorage.Lootbox.LootLabel` are removed
+    again, both through `execute_luau`, so neither is in the hook capture).
+  - **The shoot button reads `SHOOT TO OPEN`** while a landed chest waits for its five shots
+    (owner, same day); it read `SHOOT`.
 
   - **Hero skins reveal as rig cards too** (owner's screenshot, same day): the anchored,
     ScaleTo-shrunk world rig left Crimson Revenant's layered clothing undeformed in its T-pose
@@ -240,9 +244,8 @@ which is the point.
     chest consumed, no profile write. Gated on `RunService:IsStudio()`, so it is unreachable from any
     published place, DEV included.
 
-  **Revert hazard:** none; client-side presentation in one script plus two frames in one template.
-  Reverting brings the flailing rig back, the mid-open error and the bare labels; the template's
-  frames are inert without the code.
+  **Revert hazard:** none; client-side presentation in one script. Reverting brings the flailing
+  rig back, the mid-open error and the bare title text.
 
   **Verified:** syntax (`loadstring`); in edit mode the WorldModel rig draws and redraws a stepped
   `electro_swing` pose (a hand moved 1.85 studs over 45 frames); the glow blow-up reproduced and
