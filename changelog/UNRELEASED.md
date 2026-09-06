@@ -180,6 +180,26 @@ which is the point.
   **Not playtested** — the emote rig's physics and the chips' runtime re-lay need the owner's
   next run (#37).
 
+- **Chest scene, fifth round (owner, 2026-09-06): the emote reward plays in a ViewportFrame.**
+  Bounty, `ChestController` only. Four rounds of the in-world Dust rig — simulated limbs chasing an
+  anchored root the hover moved every frame — never settled into the clip. The reward is now a
+  portrait billboard card (`K.LOOT_EMOTE_CARD_*`) carrying a ViewportFrame whose WorldModel holds the
+  default Dust rig, root anchored only, the Trading Post EXTRAS-card recipe (`emoteCardVisual`). The
+  clip is prewarmed at build and played when the pop lands; the hover spin orbits the viewport
+  camera and its key light so the emote turns with the 3D rewards beside it. The card lives in
+  PlayerGui adorned to the invisible carrier — a ViewportFrame inside a Workspace-parented
+  BillboardGui renders nothing — and is destroyed with the carrier through `Destroying`. The old rig
+  path (root offsets in the hover, the label adorned to the root, `modelVisual`'s PrimaryPart
+  argument) is gone; `cardVisual` takes a width and height.
+
+  **Revert hazard:** none; client-side presentation in one script. Reverting brings the flailing
+  rig back.
+
+  **Verified:** syntax (`loadstring`); in edit mode the same billboard + viewport + rig draws, and
+  redraws a stepped `electro_swing` pose (a hand moved 1.85 studs over 45 frames), when the
+  billboard is under StarterGui, and draws nothing under the Workspace part. **Not playtested** —
+  runtime spin, lighting and framing need the owner's next run (#37).
+
 - **New-item bubbles: a red dot chains from the COLLECTION button down to the individual tile**
   ([#34](https://github.com/Rasmus-Bondo/Bounty/issues/34), built 2026-09-03, Bounty). A player who
   gains a cosmetic — level-up, purchase, battle-pass tier, chest, quest — now gets a bubble on the
