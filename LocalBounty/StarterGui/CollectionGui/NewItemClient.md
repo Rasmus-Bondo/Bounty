@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, collection, notifications]
 path: game.StarterGui.CollectionGui.NewItemClient
 type: LocalScript
-lines: 432
+lines: 468
 ---
 
 # NewItemClient

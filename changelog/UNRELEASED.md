@@ -13,7 +13,7 @@ which is the point.
 
 ---
 
-- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). **Lootbox build (2026-09-03):** `Wallet` (four reasons) and `Telemetry` (one event) touched in all three places, verified by length + hash (`7719 B` / `663703730`, `28058 B` / `1779240489`); match-place mirror `DataService` and `TutorialDirector` across Redwater and Frostbite (`26512 B` / `1269809867`, `80703 B` / `1157972711`); the profile-template block and the launch-migration block are byte-identical in all three DataServices (`1220 B` / `237526912`, `2058 B` / `3057621043`). **New-item bubbles (2026-09-03):** none of the 20 mirrored modules was edited — `TitlesConfig` is only read — but the `SeenItems` template block was added to `DataService` in all three places and verified byte-identical by length + byte-sum (`1453 B` / `122758`).
+- **Shared modules:** `GameEnvironment` touched in all three places (one DEV-only season row), verified byte-identical by length **and** djb2 checksum after the edit (`12552 B` / `3209512831`). Match-place mirror also — `HighNoonModule` and `BotCombat` across Redwater Canyon and Frostbite Claim, verified byte-identical by length **and** checksum after the sync (`16636 B` / `101943 B`). **Lootbox build (2026-09-03):** `Wallet` (four reasons) and `Telemetry` (one event) touched in all three places, verified by length + hash (`7719 B` / `663703730`, `28058 B` / `1779240489`); match-place mirror `DataService` and `TutorialDirector` across Redwater and Frostbite (`26512 B` / `1269809867`, `80703 B` / `1157972711`); the profile-template block and the launch-migration block are byte-identical in all three DataServices (`1220 B` / `237526912`, `2058 B` / `3057621043`). **New-item bubbles (2026-09-03):** none of the 20 mirrored modules was edited — `TitlesConfig` is only read — but the `SeenItems` template block was added to `DataService` in all three places and verified byte-identical by length + byte-sum (`1453 B` / `122758`). **Bubble polish + left-grid fix (2026-09-06):** none of the 20 touched — Bounty only, four client scripts and a handful of authored GUI instances.
 - **Data-affecting:** yes — the ranked-season payout mark changes key form in the profile. Harmless before 2026-09-12 (nothing has ever paid), a double-pay re-opener after it. See Fixed. **Lootbox build:** profile shape gains `Lootboxes` + `LootboxLaunchV1` (Reconcile-backfilled, no `DATA_VERSION` bump) and four Wallet reasons; the one-way launch migration (Level/XP reset, veteran bundle) is armed for the **DEV universe only** (`LOOTBOX_LAUNCH_ARMED = GameEnvironment.env == "Dev"`) and stays off on live until the launch publish flips it to `true`. See Added. **New-item bubbles:** profile shape gains `SeenItems` (Reconcile-backfilled, no `DATA_VERSION` bump) whose `Stamped` seed is one-way, stamped on the first load after this ships. See Added.
 
 ## Added
@@ -276,6 +276,14 @@ which is the point.
   fix, and the panel and chip geometry after it computed off those same measurements.
   **Playtested by the owner** (2026-09-06): chips drawing and both frames sized correctly.
 
+- **Buying a chest plays the store's purchase cue** (2026-09-06, Bounty, `ChestController`). Banking
+  a chest was silent. It now plays `SFX.UIButtonClick.UIPurchaseSucces` — the clip the Trading Post
+  plays on a buy — off the server's `purchaseResult = "ok"` push rather than the click, so a refused
+  buy (`poor` / `restricted` / `cooldown`) and a click the server never answers stay silent.
+
+  **Revert hazard:** none; one client-side helper, no authored instance touched.
+  **Verified:** syntax (`loadstring`). **Not playtested** — the cue itself needs the owner's ear.
+
 - **New-item bubbles: a red dot chains from the COLLECTION button down to the individual tile**
   ([#34](https://github.com/Rasmus-Bondo/Bounty/issues/34), built 2026-09-03, Bounty). A player who
   gains a cosmetic — level-up, purchase, battle-pass tier, chest, quest — now gets a bubble on the
@@ -312,8 +320,36 @@ which is the point.
   is what caught the first draft rendering rectangles instead of circles. **Not yet playtested** —
   hover-to-clear, the flush surviving a rejoin, and the Titles / Boosts / Emotes grids need a live run.
 
-  **Open:** Daily and Quest still show a `!` and the LOOT badge still uses the older darker red, so
-  the bottom-bar and side notifications are not yet one look — owner's call whether to align them.
+  **Open:** Daily and Quest still show a `!`, so the bottom-bar and side notifications are not yet
+  one look — owner's call whether to align them. The LOOT badge was aligned on 2026-09-06, below.
+
+- **New-item bubbles, first playtest round (owner, 2026-09-06).** Five changes to the unreleased
+  bubble chain, all in Bounty:
+  - **The LOOT and COLLECTION badges ride the bottom-bar press.** They were the one child
+    `MenuHandlerScript` left out of its lift / dip / overshoot set, so a badge hung still while the
+    tab rose and swelled underneath it.
+  - **Boost tiles show a bubble at all.** The dot was there the whole time, drawn *underneath*
+    `BoostsTab`'s owned-count badge, which is wider than it and sits above it. The count badge moved
+    to the tile's top **left** so the dot keeps the top-right corner every other grid uses, and
+    `dotFor` now derives the dot's ZIndex from its siblings so the next badge cannot bury it. The
+    "only the first time you get a given cash/XP duration" rule the owner asked for was already the
+    server's behaviour — an id is new until looked at once, and topping up a stack never re-badges.
+  - **The six Collection tab bubbles hang over the button's top-right corner.** They were parented
+    to the fixed grid cell and inset in *its* scale space; on a phone the button is ~45x20 with a
+    TextScaled label filling its height and 76% of its width, so an inset dot has no free corner and
+    landed mid-word. They now live inside the button's own `BackgroundFrame` — so they grow with its
+    selected-state UIScale — anchored at `(1, 0.25)`.
+  - **Title-row bubbles are bigger and in the corner.** A row is ~8:1, so the old `0.05` scale inset
+    was 21 px on X against 2.5 px on Y. Same corner rule as the tabs; 12 px to ~20 px on desktop.
+  - **The LOOT badge matches the rest of the chain:** the shared red (it was the older, duller
+    `217,44,44`), `0.28` to `0.22` so it reads as a pair with the COLLECTION dot beside it, and the
+    count nudged up 6% because Oswald draws a digit's ink low in the line box.
+
+  **Revert hazard:** the placements are authored instances but the count badge's corner is in
+  script — reverting `BoostsTab` alone puts the count straight back on top of the dot.
+
+  **Verified:** syntax on three scripts; every placement by screenshot at 800x360 and at desktop,
+  with the tab geometry also read back numerically. **Not yet playtested** in its final state.
 
 ## Changed
 
@@ -335,6 +371,26 @@ which is the point.
   **Not yet run** — it fires on its own at the boundary.
 
 ## Fixed
+
+- **The Collection's left grid no longer collapses to one column of full-width cards.** HUNTERS,
+  BOOSTS and EMOTES share one sizing pass, and it reserves a 12 px scrollbar lane unless
+  `Refs.isTouchOnly` — a flag latched at require time as `TouchEnabled and not KeyboardEnabled`,
+  which comes out **false** wherever a keyboard is reported: the Studio device emulator with the
+  developer's own keyboard, and handsets that report their on-screen one. A phone panel is only
+  ~110-140 px wide, so that lane is up to 11% of it, and losing it is exactly what drops the grid
+  under the 56 px tap-target floor. The lane is now given up before a column is; the floor is
+  unchanged. `fitLeftGrid` also re-measures when the ScreenGui is first enabled, because the grids
+  are built while it is still disabled and a disabled ScreenGui does not lay out.
+
+  Reported by the owner as intermittent, which is the flag: it depends on whether the device
+  reports a keyboard, so the emulator does it and a real handset usually does not.
+
+  **Revert hazard:** none — one client module, no authored instance, Bounty only.
+
+  **Verified:** syntax, plus the new arithmetic replayed across seven viewport widths — the emulator
+  at 705 and iPhone 7 at 667 flip from one column to two, and every wider device including desktop
+  keeps the lane and the exact cell sizes it had before. **Not yet playtested** — `fitLeftGrid` only
+  runs at runtime, so edit mode renders the authored scale cells instead.
 
 - **The ranked-season payout can no longer pay the same season twice.** The profile mark recording a
   paid season is now keyed by `tostring(season)` at both the read and the write, so it survives the

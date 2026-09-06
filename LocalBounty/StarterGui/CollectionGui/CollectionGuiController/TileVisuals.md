@@ -2,7 +2,7 @@
 tags: [client, modulescript, ui, collection, layout, sfx]
 path: game.StarterGui.CollectionGui.CollectionGuiController.TileVisuals
 type: ModuleScript
-lines: 266
+lines: 303
 ---
 
 # TileVisuals
@@ -24,7 +24,7 @@ Nothing in Studio is edited — the authored cell stays `0.4 × 0.125` scale and
 - **A scale cell resolves against the CANVAS, not the visible window,** and the canvas is authored two screens tall to hold four hunters. So `0.125` drew each card at a *quarter* of the panel height and `0.4` at 40% of its width. Converting the cell to pixels off the window lands at ~96% width and a **+35% card area**
 - **That two-screen canvas also let the player drag four hunters clean off the top** of the frame into the empty half below, leaving a blank panel with a scrollbar. Fitting the canvas to real content height means a grid that fits cannot be scrolled at all
 
-**Cell size derives from the window's WIDTH and the canvas from the content's HEIGHT, so neither feeds back into the other** — that is the trap, and the reason the emote-only ancestor of this function existed. Three load-bearing details: height is `1.08 ×` the cell *width* (never the panel height, since `IconDisplay` is `RelativeXX`); the scrollbar lane is reserved whether or not the bar shows (reserving it only when visible is a **loop** — hiding it widens the cells, which grows the content, which brings the bar back); and the grid drops to **one column** rather than let a tap target fall under 44px on the smallest handsets.
+**Cell size derives from the window's WIDTH and the canvas from the content's HEIGHT, so neither feeds back into the other** — that is the trap, and the reason the emote-only ancestor of this function existed. Three load-bearing details: height is `1.08 ×` the cell *width* (never the panel height, since `IconDisplay` is `RelativeXX`); the scrollbar lane is reserved whether or not the bar shows (reserving it only when *visible* is a **loop** — hiding it widens the cells, which grows the content, which brings the bar back), but the lane is given up whenever keeping it would cost the second column — both candidates are measured from the same settled window width, so that choice cannot oscillate; and the grid drops to **one column** rather than let a tap target fall under 44px on the smallest handsets.
 
 ## Dependencies
 - **Requires:** [[Refs]]

@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, menu, camera, shop]
 path: game.StarterGui.ReworkedMainMenuFolder.MainMenuGui.CanvasBottom.MenuHandlerScript
 type: LocalScript
-lines: 1400
+lines: 1419
 ---
 
 # MenuHandlerScript
@@ -13,7 +13,7 @@ Main menu bottom bar controller with animated tab selection, bird-flight camera 
 1. Manages 4 menu tabs: Home, Collection, BattlePass, TradingPost with hover/click/selected animations
 2. Moves camera between CameraParts using quadratic Bezier bird-flight curves with banking and motion blur
 3. Opens/closes the Trading Post overlay (the `StarterGui.Shop` ScreenGui since 2026-08-23 — `ReworkReworkedBuyMenu` is retired and kept disabled; the local is `tradingPostGui`, resolved with `playerGui:WaitForChild("Shop")`) with staggered slide-in animations for tabs and currency options
-4. Animates selection stroke pulse, icon scaling, position lifts, and color transitions on menu frames
+4. Animates selection stroke pulse, icon scaling, position lifts, and color transitions on menu frames. The animated set is `Background` / `Icon` / `TextLabel` **plus any `*NotifFrame` child**, so LOOT's and COLLECTION's notification bubbles lift and grow with the tab instead of hanging still while it rises underneath them
 5. Creates BlurEffects in Lighting for camera motion and shop overlay
 6. Handles close button hover effects with UIScale tweens
 7. Queues camera targets during active flight and resolves after completion

@@ -2,7 +2,7 @@
 tags: [client, modulescript, ui, collection, boosts]
 path: game.StarterGui.CollectionGui.CollectionGuiController.BoostsTab
 type: ModuleScript
-lines: 503
+lines: 508
 ---
 
 # BoostsTab
@@ -11,7 +11,7 @@ The BOOSTS view: the left grid is six potion/coin tiles, the right panel a hero 
 
 ## What it does
 1. `build()` — clones `HuntersFrame` → `BoostsFrame` (retitled "BOOSTS") and `SkinFrame` → `BoostInfoFrame` (grid removed), **once at startup while both source frames are still pristine** (before viewports render into the hunter tiles). Publishes both frames for Panels to toggle
-2. Fills the grid with one tile per [[BoostConfig]] id (XP 15/30/60 then Cash 15/30/60), each showing that boost's potion/coin artwork inside the authored round `IconDisplay` ring, plus a `kind · duration` caption and a top-right `CountBadge` (`xN` owned). **`BOOST_ICONS` is derived from the catalog** (`entry.icon`) rather than holding its own asset ids — BattlePassClient paints the same art on reward cards, so the ids live on the catalog entry and both readers pick up a new boost automatically
+2. Fills the grid with one tile per [[BoostConfig]] id (XP 15/30/60 then Cash 15/30/60), each showing that boost's potion/coin artwork inside the authored round `IconDisplay` ring, plus a `kind · duration` caption and a top-**left** `CountBadge` (`xN` owned) — left, because the tile's top-right corner belongs to NewItemClient's new-item bubble on every grid in this menu, and this badge is wider than it. **`BOOST_ICONS` is derived from the catalog** (`entry.icon`) rather than holding its own asset ids — BattlePassClient paints the same art on reward cards, so the ids live on the catalog entry and both readers pick up a new boost automatically
 3. `updateInfo()` — the right panel: a **hero medallion** (`BoostArtHolder` → `BoostArtRing` → `BoostArtIcon`) cloning the grid tile's own `IconDisplay` ring so stroke and gradients match, held square by a `UIAspectRatioConstraint` (the ring's `UICorner` is a full 1-scale radius, so a non-square frame smears the circle into an ellipse) and wearing the ring's *selected* gradient. Below it a rounded card holds the wrapped description, the owned count and an active/time-remaining line
 4. `useSelected()` — fires `ActivateBoost` only when usable
 5. Registers the `"Boosts"` EQUIP pair, the `BoostStateEvent` handler and the startup warm-up
