@@ -244,8 +244,15 @@ which is the point.
     chest consumed, no profile write. Gated on `RunService:IsStudio()`, so it is unreachable from any
     published place, DEV included.
 
-  **Revert hazard:** none; client-side presentation in one script. Reverting brings the flailing
-  rig back, the mid-open error and the bare title text.
+  - **The level bar hugs the top edge at 0.8x** (owner, same day): `ChestMenu.ChestProgress` is
+    anchored `(0.5, 0)` at `y 0.035`, size `0.16 x 0.029` (was centred at `y 0.1`, `0.2 x 0.036`),
+    and the chest icon is `RelativeYY` at 2.6x the bar's height instead of `RelativeXX` at 0.25 of
+    its width, so its overhang above the bar is a share of screen height too and one position puts
+    the icon's top 4–12 px from the screen top on every aspect (800x360 through 1920x1014). Authored
+    values set through `execute_luau`, so not in the hook capture.
+
+  **Revert hazard:** none; client-side presentation in one script and one authored frame. Reverting
+  brings the flailing rig back, the mid-open error and the bare title text.
 
   **Verified:** syntax (`loadstring`); in edit mode the WorldModel rig draws and redraws a stepped
   `electro_swing` pose (a hand moved 1.85 studs over 45 frames); the glow blow-up reproduced and
