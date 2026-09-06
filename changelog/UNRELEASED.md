@@ -222,6 +222,16 @@ which is the point.
     `attachLootLabel` from each line's `TextBounds` plus padding, the sub line's only while it has
     text.
 
+  - **Hero skins reveal as rig cards too** (owner's screenshot, same day): the anchored,
+    ScaleTo-shrunk world rig left Crimson Revenant's layered clothing undeformed in its T-pose
+    shell at runtime and put the Model-adorned labels studs away from their rigs (Frostveil Vesper's
+    over the next slot, Bluefrost Dust's off-screen) — none of which the same templates show in the
+    Collection tiles' WorldModels. A hero skin now goes through the same `rigCardVisual` as the
+    emote: WorldModel rig, root anchored, the lobby idle (`rbxassetid://507766666`) playing, label
+    and glow on the carrier, `K.LOOT_RIG_CARD_HEIGHT` 3.8 studs. The remaining Model rewards
+    (weapon skins) adorn their label to a `LabelAnchor` part at the pivot instead of the Model,
+    whose adornee point is the bounding box.
+
   **Revert hazard:** none; client-side presentation in one script plus two frames in one template.
   Reverting brings the flailing rig back, the mid-open error and the bare labels; the template's
   frames are inert without the code.

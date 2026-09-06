@@ -88,7 +88,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "gameenvironment",
-      "community": 6,
+      "community": 7,
       "norm_label": "gameenvironment"
     },
     {
@@ -99,7 +99,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "gamemodeconfig",
-      "community": 7,
+      "community": 6,
       "norm_label": "gamemodeconfig"
     },
     {
@@ -165,7 +165,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "rankrewardsconfig",
-      "community": 6,
+      "community": 7,
       "norm_label": "rankrewardsconfig"
     },
     {
@@ -253,7 +253,7 @@
       "script_type": "ModuleScript",
       "side": "client",
       "id": "notificationmodule",
-      "community": 7,
+      "community": 6,
       "norm_label": "notificationmodule"
     },
     {
@@ -352,7 +352,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "tutorialreplayservice",
-      "community": 7,
+      "community": 6,
       "norm_label": "tutorialreplayservice"
     },
     {
@@ -374,7 +374,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "partyservice",
-      "community": 7,
+      "community": 6,
       "norm_label": "partyservice"
     },
     {
@@ -385,7 +385,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "regionservice",
-      "community": 7,
+      "community": 6,
       "norm_label": "regionservice"
     },
     {
@@ -583,7 +583,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "testergrantservice",
-      "community": 6,
+      "community": 7,
       "norm_label": "testergrantservice"
     },
     {
@@ -616,7 +616,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "rankleaderboardservice",
-      "community": 6,
+      "community": 7,
       "norm_label": "rankleaderboardservice"
     },
     {
@@ -627,7 +627,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "rankseasonrewardservice",
-      "community": 6,
+      "community": 7,
       "norm_label": "rankseasonrewardservice"
     },
     {
@@ -638,7 +638,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "softshutdown",
-      "community": 6,
+      "community": 7,
       "norm_label": "softshutdown"
     },
     {
@@ -935,7 +935,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "gamemodeclient",
-      "community": 7,
+      "community": 6,
       "norm_label": "gamemodeclient"
     },
     {
@@ -946,7 +946,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "giftpopupclient",
-      "community": 6,
+      "community": 7,
       "norm_label": "giftpopupclient"
     },
     {
@@ -968,7 +968,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "rankleaderboardclient",
-      "community": 6,
+      "community": 7,
       "norm_label": "rankleaderboardclient"
     },
     {
@@ -990,7 +990,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "reworkedpartyclient",
-      "community": 7,
+      "community": 6,
       "norm_label": "reworkedpartyclient"
     },
     {
@@ -1364,7 +1364,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "mobile3dclickhandler",
-      "community": 7,
+      "community": 6,
       "norm_label": "mobile3dclickhandler"
     },
     {
@@ -1386,7 +1386,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "reworkeduiplay",
-      "community": 7,
+      "community": 6,
       "norm_label": "reworkeduiplay"
     },
     {
@@ -1419,7 +1419,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "versiontagcontroller",
-      "community": 6,
+      "community": 7,
       "norm_label": "versiontagcontroller"
     }
   ],

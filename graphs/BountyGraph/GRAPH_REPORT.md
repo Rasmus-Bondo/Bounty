@@ -1,7 +1,7 @@
 # Graph Report - LocalBounty  (2026-09-06)
 
 ## Corpus Check
-- 129 files · ~157,563 words
+- 129 files · ~157,614 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -79,12 +79,12 @@ Cohesion: 0.29
 Nodes (10): FollowJoinClient, FollowJoinService, FriendJoinService, FriendsInMatchClient, MapCatalog, MatchmakingService, Telemetry, TelemetryClient (+2 more)
 
 ### Community 6 - "Server Bootstrap"
-Cohesion: 0.28
-Nodes (9): GameEnvironment, GiftPopupClient, RankLeaderboardClient, RankLeaderboardService, RankRewardsConfig, RankSeasonRewardService, SoftShutdown, TesterGrantService (+1 more)
-
-### Community 7 - "Server Bootstrap"
 Cohesion: 0.31
 Nodes (9): GameModeClient, GamemodeConfig, Mobile3DClickHandler, NotificationModule, PartyService, RegionService, ReworkedPartyClient, ReworkedUIPlay (+1 more)
+
+### Community 7 - "Server Bootstrap"
+Cohesion: 0.28
+Nodes (9): GameEnvironment, GiftPopupClient, RankLeaderboardClient, RankLeaderboardService, RankRewardsConfig, RankSeasonRewardService, SoftShutdown, TesterGrantService (+1 more)
 
 ### Community 8 - "Server Bootstrap"
 Cohesion: 0.4
