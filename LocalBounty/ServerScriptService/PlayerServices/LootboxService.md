@@ -2,7 +2,7 @@
 tags: [server, modulescript, lootbox, economy, data]
 path: game.ServerScriptService.PlayerServices.LootboxService
 type: ModuleScript
-lines: 817
+lines: 873
 ---
 
 # LootboxService
@@ -12,7 +12,7 @@ Server half of the lootbox chests (LOOTBOX_SPEC.md). Owns `profile.Lootboxes`, s
 ## What it does
 1. Creates five remotes in `ReplicatedStorage.Events` and so **starts in Main's upper block** beside BoostService / CollectionService / BundleService — the chest client `WaitForChild`s on them and its join-state listener has to exist before the profile-load push
 2. **Join handshake:** pushes `LootboxStateEvent` (`unopened`, `superUnopened`, `superPending`, `level`, `xpInto` / `xpNeeded`, `restricted`, pity counters, `price`, `tokens`, `launched`) once the profile loads, and answers `RequestLootboxState` — never empty, never debounced away (the SkinDataEvent lesson). A state push is idempotent
-3. **Free chests:** `syncFreeChests` computes `owed = Level - LevelClaimed` from persisted XP on every push, so a level earned in Redwater pays on the next lobby push with no match-place hook. Hooked to `PlayerStats.XP.Changed`, which every lobby XP writer reaches through `DataService.updateLeaderstats`. **Gated on the `LootboxLaunchV1` stamp** — until the launch migration has reset a profile to level 1 there is no baseline, and `Level - 0` chests to an unmigrated veteran would be a silent handout. Level 1 never pays
+3. **Free chests:** `syncFreeChests` computes `owed = Level - LevelClaimed` from persisted XP on every push, so a level earned in Redwater pays on the next lobby push with no match-place hook. Hooked to `PlayerStats.XP.Changed`, which every lobby XP writer reaches through `DataService.updateLeaderstats`. **Gated on the `LootboxLaunchV1` stamp** — until the launch migration has reset a profile to level 1 there is no baseline, and `Level - 0` chests to an unmigrated veteran would be a silent handout. Level 1 never pays. Since 2026-09-07 `syncFreeChests` also takes the player and remembers what it banked in a weak-keyed `arrivalPending`, sent out as `earnedPending` on **every** state push until `ChestArrivalSeen` retires it: the push that banks the chests routinely lands before [[ChestArrivalClient]] is listening, so a one-shot field on the banking push would be dropped. Held in memory, never on the profile — a disconnect mid-flight costs an animation, never a chest — and the ack is subtractive, so a level earned while chests are flying keeps its own
 4. **Region gate:** `PolicyService:GetPolicyInfoForPlayerAsync(player).ArePaidRandomItemsRestricted`, read once per player on join (first use of PolicyService in the codebase), cached, **fails closed**. Blocks only the Token purchase; free and super chests are not paid random items. Enforced in the spend handler — the client's UNAVAILABLE IN YOUR REGION label is presentation
 5. **Purchase:** policy gate, then `Wallet.spend(Tokens, PRICE, "lootbox_tokens")` — two returns, `false` when too poor with nothing deducted — then `Unopened += 1` and a push carrying `purchaseResult` (`ok` / `poor` / `restricted`). A click the busy flag or `REMOTE_COOLDOWN` rejects is **answered too** (`purchaseResult = "cooldown"`), because the client holds its own busy flag until a push carrying `purchaseResult` arrives
 6. **Open** (`boxType` `"standard"` / `"super"`; the server validates the matching counter, the client's word only picks which): `rollTier` applies and advances the pity counters, `rollStandardItems` walks `LootboxConfig.DROPS`, each item rolled by weighted category then uniformly within (`rollItem`). The super chest rolls one weapon skin from `SUPER_WEAPON_SKINS` **preferring an unowned one** plus three skin-free fillers, and always reports stage 5. Then grant, `updateLeaderstats`, one `Telemetry.log("LootboxOpen", 1, tier, "Standard" | "PityEpic" | "PityLegendary" | "Super")`, and `LootboxResultEvent` `{ ok, boxType, tier, stage, items, forced }`. A rejected open (cooldown / empty / no data) is still **answered** with `ok = false` + reason, because the client is waiting on that reply
@@ -36,6 +36,9 @@ Server half of the lootbox chests (LOOTBOX_SPEC.md). Owns `profile.Lootboxes`, s
 | `PurchaseLootboxEvent` | ← Client | [[ChestController]] buys one chest (banks it) |
 | `OpenLootboxEvent` | ← Client | [[ChestController]] opens a standard or super chest |
 | `LootboxResultEvent` | → Client | [[ChestController]] replays the resolved tier and items |
+| `LootboxStateEvent` | → Client | [[ChestArrivalClient]] `earnedPending`, the chests to fly into the LOOT tab |
+| `RequestLootboxState` | ← Client | [[ChestArrivalClient]] its own pull, so it does not depend on the chest GUI loading |
+| `ChestArrivalSeen` | ← Client | [[ChestArrivalClient]] retires the flown chests from `arrivalPending` |
 
 ### BindableEvents
 None
