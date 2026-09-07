@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, combat, announcement, audio, rewards]
 path: game.StarterGui.EyeCandy.AnnouncementController
 type: LocalScript
-lines: 777
+lines: 888
 ---
 
 # AnnouncementController
@@ -20,6 +20,16 @@ The centre-screen combat surface, and since 2026-09-07 the only place a personal
 8. **Notices** carry the two rows the retired feed held about *other* players — `X IS ON A SPREE`, `X TOOK DOWN Y`. They never interrupt the player's own beat: one is held in a single pending slot and shown when the card clears, and a notice that has waited longer than `NOTICE_STALE_AFTER` (6s) is dropped rather than arriving late.
 9. `playSfx` clones the template to `SoundService` and self-destructs on `Ended`, with a `max(TimeLength + 1, 8)` backstop because `Ended` never fires for a sound whose asset failed to load. `playBountyStinger` is separate: the 12.33s asset is held 2.6s then faded over 0.7s so it ends with the header rather than running over the next two kills.
 10. Killstreak resets on the local `Humanoid.Died` and on any `RoundActive` change. `RESET` clears both counters, all five labels and any orphaned `_HeaderImpactClone` / `_HeaderImpactFlare` / `_RewardFlyer` / `_RewardTrail`.
+
+## Fade ownership, and why a new row used to show nothing
+
+**A generation token only ever guards a pending `task.delay`. It does not stop a tween that has already started.** `fadeTweens` holds the fade currently running on each label so it can be cancelled, `wake(label)` cancels it and restores full opacity, and `hideLabel` cancels it and hides. Every path that writes text to a label goes through one of them.
+
+This is the second bug the owner reported, and it is a different mechanism from the stuck text above. A row arriving during the stack's 0.5s fade was written correctly and then faded out anyway, because the fade tween was still interpolating that label to `TextTransparency` 1 and a raw property assignment made mid-tween is overwritten again on the next frame. Confirmed in isolation rather than assumed — an edit-mode probe on a throwaway label: assigning transparency 0 mid-tween ends at **1.000**, cancelling first ends at **0.000**.
+
+Starting a *new* tween on the same property does cancel the old one, which is why the paths that call `punchIn` happened to survive and the ones that only assigned text (the multi-kill retext, the sub-line retext, `flyDelta`'s count-up) did not. That is far too subtle to keep relying on, hence the explicit ownership.
+
+`beat.fading` is the other half. It is raised the instant the stack *starts* fading, not when it finishes, and a new event arriving in that window gets a **fresh card** rather than being folded into one that is leaving — otherwise a stale main line would sit above the new row. A kill continuing a streak still carries its running totals across the boundary, because the 8s multi-kill window is more than twice the 3.4s the card is up, so the second kill of a double lands on a fading card more often than not.
 
 ## Two tokens, and why the text used to stick
 
