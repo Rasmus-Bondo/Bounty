@@ -41,7 +41,7 @@ which is the point.
   hinge and backboard, no sheriff badge, no buckles. The orbit angle is world yaw and `WorkingChest`
   is authored turned ~40°, so a start of 0 was never pointed at anything in particular. It starts
   from the model's own facing instead, so re-authoring the chest's angle cannot put the flight back
-  on its rear. Confirmed by the framing maths, not by eye; the `K` rehearsal shows it.
+  on its rear. **Owner-checked in Studio** (2026-09-07) through the `K` rehearsal.
 
   **Revert hazard: none beyond the feature.** The server half is additive — one field on an existing
   push, one new remote — and its counter lives in memory, never on the profile, so a revert leaves
