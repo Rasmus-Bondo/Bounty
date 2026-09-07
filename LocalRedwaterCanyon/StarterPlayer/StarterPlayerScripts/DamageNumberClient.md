@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, combat, billboard]
 path: game.StarterPlayer.StarterPlayerScripts.DamageNumberClient
 type: LocalScript
-lines: 233
+lines: 263
 ---
 
 # DamageNumberClient
@@ -11,12 +11,13 @@ Floating damage numbers over whoever the local player just hit — white body nu
 
 ## What it does
 1. Listens on the shared `HitConfirm` remote, which reaches the attacker and nobody else, and reads its trailing `(damage, victimName, victimCharacter)` payload.
-2. `acquireLayer(victimCharacter)` returns one `BillboardGui` per victim, cached in a weak-keyed table — a five-shot burst reuses one billboard instead of building five. Adornee is the victim's `Head`, `AlwaysOnTop`, `MaxDistance` 600, `StudsOffsetWorldSpace` (0, 2.25, 0), `Size` 330x190 offset.
+2. `acquireLayer(victimCharacter)` returns one `BillboardGui` per victim, cached in a weak-keyed table — a five-shot burst reuses one billboard instead of building five. Adornee is the victim's `Head`, `AlwaysOnTop`, `MaxDistance` 600, `StudsOffsetWorldSpace` (0, 2.25, 0), `Size` 330x190 offset at full scale.
 3. Under StreamingEnabled a character can replicate as an empty container, so a nil `Head` skips the number rather than yielding for a part that may never arrive.
 4. `AncestryChanged` clears the cache entry when the billboard leaves the DataModel, so the next hit on a respawned character builds a fresh one instead of handing back a destroyed layer.
-5. **Body hit** — white `GothamBlack` 43px with a (2,3) shadow at `TextTransparency` 0.22; scale 0.35 → 1.08 → 1, drifts up 58px over 0.78s with a random ±3° tilt, fades from 0.48s, destroyed at 0.82s.
-6. **Headshot** — yellow (255,214,52) at 56px reading `<N>!`, scale 0.12 → 1.34 → 1. At 0.17s the single label is hidden and replaced by two halves — the leading digits and the last digit + `!` — which fly to (-68,-48) rotated -15° and (+76,-37) rotated +13°.
-7. A running `zCounter` stacks each number over the previous one.
+5. **Device scale** — `getPlateScale()` returns `clamp(viewportY / 800, 0.45, 1)`, resolved on every hit rather than cached (`ViewportSize` reads (1,1) before the first frame, and a windowed PC can be resized). Every authored pixel below — plate size, label sizes, `TextSize`, shadow offsets, spawn jitter and the drift/split targets — is multiplied by it, so a phone gets roughly half-size numbers and a desktop is unchanged. Same rule and reference height as `VictoryShowcaseClient`'s podium plates.
+6. **Body hit** — white `GothamBlack` 43px with a (2,3) shadow at `TextTransparency` 0.22; scale 0.35 → 1.08 → 1, drifts up 58px over 0.78s with a random ±3° tilt, fades from 0.48s, destroyed at 0.82s.
+7. **Headshot** — yellow (255,214,52) at 56px reading `<N>!`, scale 0.12 → 1.34 → 1. At 0.17s the single label is hidden and replaced by two halves — the leading digits and the last digit + `!` — which fly to (-68,-48) rotated -15° and (+76,-37) rotated +13°.
+8. A running `zCounter` stacks each number over the previous one.
 
 ## Scope
 
@@ -42,4 +43,4 @@ None.
 
 ## Notes
 - The prototype's 180-stud `MaxDistance` was tuned on a dummy at close range; Vesper hits from far enough that a scoped shot would have drawn nothing, and the number is the only confirmation at a range where the hit flash is a few pixels wide.
-- `BillboardGui` offset sizes are absolute screen pixels and do not shrink with distance, so the numbers stay full size while the target shrinks. Offsets inside one billboard share its pixel space, so the burst spread is device-independent.
+- `BillboardGui` offset sizes are absolute screen pixels and shrink with neither distance nor viewport — the numbers stay full size while the target shrinks, and a plate tuned on a monitor covered half a phone's screen until the device scale in item 5 was added. Offsets inside one billboard share its pixel space, so the burst spread within a plate is device-independent.
