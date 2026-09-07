@@ -953,9 +953,11 @@ which is the point.
 
   **Verified:** both scripts compile; the shrunk card was screenshot-checked against the authored
   one in edit mode, and the authored instances are untouched (the layout is computed at runtime and
-  restores exactly when the flag clears). **Not playtested against a real restricted account** —
-  Studio's policy answers unrestricted, so the end-to-end check is forcing
-  `LootboxService.isPaidRandomRestricted` to `true` for one playtest.
+  restores exactly when the flag clears). **Playtested (owner, 2026-09-07)** by forcing
+  `LootboxService.isPaidRandomRestricted` to `true` for one run — Studio's policy always answers
+  unrestricted, so that override is the only way to reach this state; it was removed straight after
+  and the function verified byte-for-byte back to its published shape. Never exercised against a
+  genuinely restricted account, which no one here has.
 
 - **The Collection panels no longer sit under the bottom bar on a 4:3 screen.** The left panel's
   HUNTERS/EMOTES/BOOSTS tab row hangs 11% of the panel's height *below* the panel, and the HOME
