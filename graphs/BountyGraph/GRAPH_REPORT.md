@@ -1,7 +1,7 @@
 # Graph Report - LocalBounty  (2026-09-07)
 
 ## Corpus Check
-- 133 files · ~164,681 words
+- 133 files · ~164,728 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
