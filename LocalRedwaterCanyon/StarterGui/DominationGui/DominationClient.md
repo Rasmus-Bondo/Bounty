@@ -7,7 +7,7 @@ tags:
   - gamemode
 path: game.StarterGui.DominationGui.DominationClient
 type: LocalScript
-lines: 448
+lines: 453
 ---
 
 # DominationClient
@@ -85,30 +85,38 @@ the state an owned pad rests in for most of a round.
 
 ## Layout
 
-### The capture bar is lifted at runtime on a tall viewport (2026-09-07)
+### The capture bar is lifted at runtime, on every device (2026-09-07)
 
 `CaptureBar` is authored at `y = 0.6436`, which is square on top of the centre announcement's first
 line. Capturing a point pays a reward, so the bar and the reward card are on screen **together on
-every single capture** — this was not an edge case. On the owner's call the bar now moves up to
-`0.568` and the announcement stack drops to meet it, so the bar sits *above* the text.
+every single capture** — this was not an edge case. On the owner's call the bar now lifts and the
+announcement stack drops to meet it, so the bar sits *above* the text.
 
-`resolveCaptureBarY` writes `Position` at boot and on every `ViewportSize` change; the **authored
-value is left alone** and is the fallback, so nothing has to be undone to revert this.
+`resolveCaptureBarY` writes `Position` at boot and whenever `TouchEnabled` changes; the **authored
+value is left alone** and is what a revert lands on, so there is no authored instance to put back.
 
-The lift only happens where both fit. Measured as fractions of viewport height: the crosshair dot
-ends at `0.5031`, the highest painted HUD pixel is `0.7771` (`WeaponFrame.GunDisplayImage`, well
-above the HUD canvas bound of `0.7670`), and bar + gap + the four-line stack needs `0.239` of the
-`0.274` between them. Lifted, the bar occupies `0.5321..0.6039` — clear of the crosshair dot by
-`0.029` and of the announcement's top line by `0.011`, with `0.006` left under the stack.
+**The test is `TouchEnabled`, and it is a test of WHICH HUD IS ON SCREEN rather than of device
+class.** The floor is the whole constraint and the two HUDs differ: `ReworkedHunterGui.ScreenGui`
+paints from `0.777` of height, `HunterGuiMobile` from `0.830`. A tablet runs the mobile HUD and so
+wants the touch profile — which is why the first attempt, gated on `height >= 500`, was wrong twice:
+it grouped tablets with desktop and read the wrong floor for them, and it excluded phones on the
+belief they had no room.
 
-It **does** overlap the `0.44..0.56` kill-skull band, and that is the deliberate half of the trade:
-a capture and a kill rarely coincide, a capture and its own reward line always do.
+| profile | bar y | headroom | needed | verified on |
+|---|---|---|---|---|
+| desktop (`TouchEnabled` false) | 0.568 | 185.8 px | 154 px | 1658x678 |
+| touch (phones and tablets) | 0.5936 | 99.9 px | 83 px | 705x338 |
 
-**The test is viewport HEIGHT (`>= 500`), not `TouchEnabled`** — a tablet is touch and has the room,
-a phone is touch and does not, and a short windowed PC correctly falls back to the phone layout
-because the constraint is space, not device. Below the threshold the bar stays authored and keeps the
-old overlap, which the owner accepted. AnnouncementController runs the **same test with the same
-constant**; change one and you must change the other.
+Headroom is measured from the bottom of the crosshair **dot** to the first *painted* HUD pixel —
+`WeaponFrame.GunDisplayImage` on desktop, `AmmoCount` on mobile. Both HUD canvases have dead space at
+the top that the bounding box hides (8 px of it on the mobile canvas), so measure the paint, not the
+frame.
+
+The bar **does** overlap the kill-skull band in both profiles, and that is the deliberate half of the
+trade: a capture and a kill rarely coincide, a capture and its own reward line always do.
+
+AnnouncementController runs the **same touch test** and drops its stack to meet this; the two are one
+layout and must be changed together.
 
 ### The dial row
 The dial row sits between the two score panels, and the gap is held open by `Canvas.Spacer` rather
