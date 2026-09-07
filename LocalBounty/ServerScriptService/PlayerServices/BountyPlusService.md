@@ -2,7 +2,7 @@
 tags: [server, modulescript, bountyplus, gamepass, economy, monetisation]
 path: game.ServerScriptService.PlayerServices.BountyPlusService
 type: ModuleScript
-lines: 271
+lines: 324
 ---
 
 # BountyPlusService
@@ -14,10 +14,10 @@ Owns the BOUNTY+ game pass in the lobby: resolves ownership, stamps the profile,
 2. Retries the web call up to 3 times with doubling backoff, but only on an ERROR — a successful `false` is a real answer and re-asking it just delays the join
 3. Moves ownership nil/false → true ONLY. A pass is permanent short of a Roblox refund, so a failed call is never treated as revocation
 4. Sets the `OwnsBountyPlus` player attribute: `true` when owned, `false` on a definitive negative, and left NIL when the question went unanswered — the panel needs that difference
-5. Pays the one-time grant: 1000 Tokens through the Wallet, 5 chests through `LootboxService.grantChests` (the region-gated entry point, correct here because these chests are Robux-bought), and all four GOLDEN OUTLAW title ids
+5. Pays the one-time grant: 1000 Tokens through the Wallet, 5 chests through `LootboxService.grantChests` (the region-gated entry point, correct here because these chests are Robux-bought — an account `ArePaidRandomItemsRestricted` covers is banked 0 and keeps the Tokens, the boosts and the title), and all four GOLDEN OUTLAW title ids
 6. Marks each part of the grant as it lands (`TokensPaid` / `ChestsPaid` / `TitlesPaid`) and only then sets `Granted`. A single end-stamp would retry a half-failure by re-paying the Tokens; per-part marks make the retry finish only what is missing
 7. Holds an in-memory busy flag so the join back-fill and a purchase landing in the same instant cannot both pay
-8. Fires `GiftNotice` once the grant completes, so a back-filled player (bought on the website, or before this shipped) is told where 1000 Tokens and five chests came from
+8. Fires `GiftNotice` once the grant completes, so a back-filled player (bought on the website, or before this shipped) is told where 1000 Tokens and five chests came from. Since 2026-09-07 the detail line names chests only when chests were actually banked — a restricted buyer reads "GOLDEN OUTLAW unlocked", because this popup is the only account of what arrived. The count is read from the region gate rather than from `grantChests`' return value: on a RETRIED grant the chest step is skipped as already paid, and a skipped step has no count to report
 9. On `PromptGamePassPurchaseFinished` with `wasPurchased`, trusts that answer instead of re-asking the web — an immediate `UserOwnsGamePassAsync` can return false off a stale ownership cache and skip the grant just paid for
 10. Serves the panel's state over `BountyPlusStateEvent`, paired with a `RequestBountyPlusState` pull so a push landing before the listener exists is not lost
 11. Exposes `owns(player)` for callers that hold a player but not their profile

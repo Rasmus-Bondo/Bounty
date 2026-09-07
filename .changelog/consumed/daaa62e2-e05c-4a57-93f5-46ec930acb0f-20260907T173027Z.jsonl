@@ -1,0 +1,2 @@
+{"ts":"2026-09-07T19:26:23.7269413+02:00","tool":"insert_script_lines","target":"game.StarterGui.ChestMenu.Canvas.ChestController","place":"instance:6ck-rky"}
+{"ts":"2026-09-07T19:26:36.3686505+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.BountyPlusService","place":"instance:6ck-rky"}
