@@ -539,6 +539,15 @@ which is the point.
 
 ## Changed
 
+- **The Fortuna bundle's featured countdown runs two more weeks** (2026-09-07, Bounty). Its deadline
+  had elapsed on 2026-09-05, so the FEATURED tab was drawing `OFFER ENDED` with nothing failing
+  anywhere. `DEADLINE_UNIX` moves 1788566400 → 1789776000 (Sat 2026-09-19 00:00 UTC / 02:00 CEST) in
+  both copies — `ShopFeaturedTab` (what players see) and the parked `TradingPostController`, which
+  carries it so a rollback to the old Trading Post does not land on a dead offer. Reverting either
+  copy alone re-opens the offer expired. The authored placeholder strings were re-typed to match
+  (`11D 22H LEFT` / `ENDS IN 11D 22H 15M`); both are overwritten in the countdown loop's first frame,
+  so they are edit-mode cosmetics only. **Not playtested** — constant change, verified by compile.
+
 - **Round XP and Cash are credited as they are earned, not at the buzzer** (2026-09-06, both match
   places). `ProgressionService.addRewards` banked every round earn while `State.roundActive` and
   `RoundController` paid it out through `flushPendingRewards` at the round end; XP has to land live

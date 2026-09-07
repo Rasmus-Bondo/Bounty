@@ -13,7 +13,7 @@ The FEATURED tab of the Trading Post — the Fortuna bundle panel, the Prestige 
 1. API: `park / revealOnOpen(delayLeft, delayRight) / show / transitionOut / hideRoot / fadeOut / isBusy`
 2. Bundle panel: `OwnsFortuna` → `OWNED`; else price via `Core.getProductPrice(StoreConfig.DeveloperProducts.Fortuna.ProductId)` (the bundle product, `TokenBonus 400`), `PURCHASE` → `MarketplaceService:PromptProductPurchase` + `UIPurchaseButtonPrompt`; a token burst plays on `purchaseSuccess` for that product id
 3. Prestige panel (`LimitedStockConfig.Items.PrestigeCard`): `AmountLeft` as `n / Cap` from the `limited` signal, `PURCHASE` → `RequestLimitedPurchaseEvent(itemId)`, `OWNED` / `SOLD OUT` states; hover tween in/out (friend's review comments 1 and 3)
-4. `EndSaleTimer` counts down to `DEADLINE_UNIX` (1788566400 — Sat 2026-09-05 00:00 UTC / 02:00 CEST, extended a week on 2026-08-29 from 1787961600, which had already elapsed); the Featured out-transition fades both panels before the next tab shows
+4. `EndSaleTimer` (authored placeholder `11D 22H LEFT`, overwritten in the first frame) counts down to `DEADLINE_UNIX` (1789776000 — Sat 2026-09-19 00:00 UTC / 02:00 CEST, extended two weeks on 2026-09-07 from 1788566400, which had already elapsed); the Featured out-transition fades both panels before the next tab shows
 
 ## Dependencies
 - **Requires:** [[ShopCore]], [[ShopState]], [[StoreConfig]], [[LimitedStockConfig]], [[AnimationLoader]]
