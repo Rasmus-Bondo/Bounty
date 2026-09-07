@@ -1,12 +1,16 @@
 # Spec — Combat feedback: kill announcement + damage numbers
 
-**Status:** BUILT 2026-09-06, unreleased and not yet playtested. Two decisions were taken during the
-build and are the only places the shipped code departs from this document: the **bounty stinger is the
-prototype's `SFX.Reward.Bounty`** (§5's second option — `BountyMusicClient.playBountyClaimed` is held
-behind `BOUNTY_STINGER_ENABLED = false` and the new asset is faded at 2.6s), and the **killstreak
-breaks on death** (§7 trap 4). The announcement also moved off §2.4's `y = 0.8357`: it collided with
-the mobile button cluster on 4:3 and with Domination's capture bar, and now sits at screen y
-0.306–0.384. See `changelog/UNRELEASED.md` for what shipped and what still owes a playtest.
+**Status:** BUILT 2026-09-06, **substantially revised 2026-09-07 after the owner played it** — see the
+reversal at the top of §0, which is the single most important thing on this page. The announcement is
+now the whole personal-reward surface and `CombatFeedClient` is switched off. Unreleased; still owes a
+playtest.
+
+Decisions taken during the original build that still hold: the **bounty stinger is the prototype's
+`SFX.Reward.Bounty`** (§5's second option — `BountyMusicClient.playBountyClaimed` is held behind
+`BOUNTY_STINGER_ENABLED = false` and the new asset is faded at 2.6s), and the **killstreak breaks on
+death** (§7 trap 4). The announcement briefly sat at screen y 0.306–0.384 rather than §2.4's
+`y = 0.8357`; the 2026-09-07 pass put it back to the prototype's placement. See
+`changelog/UNRELEASED.md` for what shipped and what still owes a playtest.
 
 **Where the prototypes are:** the 4th connected place, **"Bounty - UI Update"**
 (placeId `112014319307228`, see [[project_ui_design_place]]). They are demos, not features:
@@ -20,11 +24,41 @@ its stinger, the `BOUNTY CLAIMED` slam, and floating damage numbers over the tar
 
 ## 0. Decisions taken, and the options rejected
 
-Do not re-litigate these. They were settled with the owner on 2026-09-06.
+Do not re-litigate these. They were settled with the owner on 2026-09-06 — **except the first row,
+which the owner reversed on 2026-09-07. Read the reversal below before the table.**
+
+### REVERSED 2026-09-07 — the announcement replaces the feed outright
+
+The owner played the shipped build and asked for the prototype's full behaviour: the assist banner,
+the reward lines, and the combat text "replaced" rather than duplicated. Asked directly where the
+split should fall, the answer was *"We are removing the right side combat feed and replacing it with
+this new system."*
+
+So the row below reads backwards now. What is true instead:
+
+- **`CombatFeedClient` is `Disabled`** (not deleted — it is 1000 lines of per-viewport layout tuning
+  and flipping the flag back is the whole of the rollback).
+- **Every row it carried moved to the announcement**: eliminations, assists, the Domination objective
+  rows, bounty claim and spree bonus, the tutorial instalment, and the two other-player rows
+  (`X IS ON A SPREE`, `X TOOK DOWN Y`) as ambient notices that wait for the player's own card to clear.
+- **The reward numbers came back** — `SubAnnouncement`, `RewardAnnouncementCash` and
+  `RewardAnnouncementXP` were cloned across from the prototype, and §2.2's cuts of `showRewards` /
+  `addRewards` / `flyDelta` / `rewardText` / `showAssist` are undone.
+- **§2.3's "no assist-side event carries the victim's name" is fixed rather than worked around**:
+  `fireCombatReward` gained a trailing `subject` argument and `awardKill` / `awardAssist` an optional
+  `victimName`. Both call sites already held the victim. That also let the announcement stop
+  listening to `HitConfirm` — `awardKill` is the crediting authority and fires on kills the hit
+  pipeline never sees, so one event now carries the line *and* its numbers with no race.
+- **The placement went back to the prototype's** `y = 0.8357` (screen 0.643), with the Domination
+  capture-bar and `SwapHunterFrame` overlaps accepted explicitly. A four-line stack no longer fits
+  above the crosshair, which is what the lifted position was for.
+- **§9's "any change to `CombatFeedClient`'s rows" is no longer out of scope.**
+
+The rest of the table stands.
 
 | Decision | Rejected alternative, and why |
 |---|---|
-| **The announcement is the moment; `CombatFeedClient` stays the ledger.** EyeCandy shows only the title line (`ELIMINATED <NAME>` + streak word) and the `BOUNTY CLAIMED` header. The right-hand feed keeps every `+250 XP / +$120` row, unchanged. | *EyeCandy replaces the kill rows* — would mean surgery on 1021 lines of `CombatFeedClient` that are tuned per-viewport down to a 3px hinting allowance. *Port it whole and sort it in playtest* — every kill announced twice, in two places, in two type sizes. |
+| ~~**The announcement is the moment; `CombatFeedClient` stays the ledger.**~~ **REVERSED — see above.** EyeCandy showed only the title line and the header; the right-hand feed kept every `+250 XP / +$120` row. | *EyeCandy replaces the kill rows* — was rejected as surgery on 1021 lines of per-viewport tuning, and as announcing every kill twice in two type sizes. **This is what shipped in the end**, and neither cost was paid: the feed was switched off whole rather than edited, so nothing is announced twice and none of its tuning had to be touched. |
 | **Damage numbers ship in both styles** — white body numbers drifting up, yellow `N!` headshot numbers splitting apart. | *Body only.* The split reads as deliberate here: `HitMarkScript` already splits its kill skull into `SkullMarkUpper`/`SkullMarkLower`, so the language is established. |
 | **`KillCounterGui` stays parked.** | Building it out. It is `Enabled = false`, has no source for its count, and no agreed HUD slot. |
 | **`AnnouncerGui` is ignored.** | Redwater's `DominationGui` already does objective announcements. |

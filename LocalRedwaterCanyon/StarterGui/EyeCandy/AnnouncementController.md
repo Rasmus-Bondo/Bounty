@@ -1,30 +1,37 @@
 ---
-tags: [client, localscript, ui, combat, announcement, audio]
+tags: [client, localscript, ui, combat, announcement, audio, rewards]
 path: game.StarterGui.EyeCandy.AnnouncementController
 type: LocalScript
-lines: 408
+lines: 777
 ---
 
 # AnnouncementController
 
-Drives the centre-screen combat moment: the `ELIMINATED <NAME>` title line with its killstreak word, and the `BOUNTY CLAIMED` header slam.
+The centre-screen combat surface, and since 2026-09-07 the only place a personal reward is reported: the `ELIMINATED <NAME>` line with its killstreak word, a sub-line for whatever else landed in the same beat, the running `+CASH` / `+XP` pair, and the `BOUNTY CLAIMED` header slam.
 
 ## What it does
-1. Resolves the two authored labels in `EyeCandy.Canvas` — `MainAnnouncement` (screen y 0.306..0.384) and `HeaderAnnouncement` (screen y 0.150..0.258). They are the only two children; both are Teko SemiBold, `TextScaled`, `RichText`.
-2. Everything dispatches through the sibling `AnnouncementEvent` BindableEvent, so all three live triggers share one code path and one suppression gate. Actions: `ELIMINATED`, `BOUNTY`, `ASSIST`, `RESET` — firing that bindable by hand is how the whole thing is driven without a kill.
-3. `showElimination(victimName)` — advances the client-side multi-kill counter (`MULTI_WINDOW` 8s), plays the kill stinger pitched `1 + min(killCount-1, 8) * 0.065`, writes `richLine` (white verb, `#F6E525` name, white streak word from `killWord`), then `punchIn` (slides in from +85px, overshoots, settles). At streak >= 2 it also runs `shakeAnnouncement` — `min(2 + (streak-2)*0.7, 5)` over 7 frames.
-4. `showBounty(headerText)` — plays `SFX.Reward.Bounty` through `playBountyStinger`, then `animateHeader`: two header clones fly in from x -0.1 and x 1.1, collide at centre, and `createImpactFlare` fires a light bar out of the impact.
-5. A `displayToken` generation counter guards every pending fade, so a newer announcement cancels an older one's `task.delay` instead of being hidden by it.
-6. `playSfx` clones the template to `SoundService` and self-destructs on `Ended`, with a `max(TimeLength + 1, 8)` backstop because `Ended` never fires for a sound whose asset failed to load.
-7. `playBountyStinger` is separate: the 12.33s asset is held 2.6s then faded over 0.7s, so it ends with the header rather than running over the next two kills.
-8. Killstreak resets on the local `Humanoid.Died` and on any `RoundActive` change (round start and intermission both clear it).
-9. `RESET` clears the counter, both labels and any orphaned `_HeaderImpactClone` / `_HeaderImpactFlare`.
+1. Resolves five authored labels in `EyeCandy.Canvas` — `HeaderAnnouncement` (screen y 0.150..0.258), `MainAnnouncement` (centre y 0.643), `SubAnnouncement` (0.669), `RewardAnnouncementCash` (0.690, or 0.706 when a sub-line is showing) and `RewardAnnouncementXP` (0.727 / 0.738). All Teko SemiBold, `TextScaled`, `RichText`. The three lower labels were cloned across from the prototype rather than re-typed, per UI_STYLE_GUIDE 1.1.
+2. **A beat is the unit of display, not an event.** One moment of combat — the kill, plus whatever else was credited in the same breath, plus the running totals for all of it — shares one card. `startBeat` opens it, `extendBeat` folds a later event into the card already on screen, and one `fadeStack` takes the whole thing away.
+3. **`KINDS` maps every reward kind to a verb and a priority.** `kill` (5, "ELIMINATED") > `bounty_survived` / `domination_capture` / `tutorial_step` (4) > `domination_neutralise` (3) > `assist` (2, "ASSISTED ON") > `domination_defend` / default (1). Inside a beat the higher priority owns the main line and the other drops to the sub-line, which is how a kill and the assist or objective defence that share its instant read as `ELIMINATED X` over `ASSISTED ON Y`.
+4. `bounty_claim` is in `REWARD_ONLY_KINDS` and takes no line at all: `BountyClaimed` is already slamming `BOUNTY CLAIMED` across the header on the same instant and the kill owns main, so it contributes only its numbers.
+5. **Rewards accumulate rather than replace.** The first numbers of a beat punch in showing their total (`showRewards`); later ones fly in as a `+7 CASH` flyer while the line's own figure counts up to meet it over 0.42s (`flyDelta` / `addRewards`). Cash and Tokens share the upper line — only the onboarding instalment ever pays Tokens, so the two cannot contend.
+6. Multi-kill: `MULTI_WINDOW` 8s, counted client-side. A second kill inside a live beat retexts main with the new streak word from `killWord` and lets the totals climb rather than restarting the card; the kill stinger is pitched `1 + min(killCount-1, 8) * 0.065` and `shakeAnnouncement` runs at streak >= 2.
+7. `showHeader` drives the header slam — `animateHeader` flies two header clones in from x -0.1 and x 1.1 to collide at centre, and `createImpactFlare` fires a light bar out of the impact. Used for `BOUNTY CLAIMED` (with the stinger) and `BOUNTY ON YOU` (without).
+8. **Notices** carry the two rows the retired feed held about *other* players — `X IS ON A SPREE`, `X TOOK DOWN Y`. They never interrupt the player's own beat: one is held in a single pending slot and shown when the card clears, and a notice that has waited longer than `NOTICE_STALE_AFTER` (6s) is dropped rather than arriving late.
+9. `playSfx` clones the template to `SoundService` and self-destructs on `Ended`, with a `max(TimeLength + 1, 8)` backstop because `Ended` never fires for a sound whose asset failed to load. `playBountyStinger` is separate: the 12.33s asset is held 2.6s then faded over 0.7s so it ends with the header rather than running over the next two kills.
+10. Killstreak resets on the local `Humanoid.Died` and on any `RoundActive` change. `RESET` clears both counters, all five labels and any orphaned `_HeaderImpactClone` / `_HeaderImpactFlare` / `_RewardFlyer` / `_RewardTrail`.
+
+## Two tokens, and why the text used to stick
+
+`stackToken` and `headerToken` are separate generation counters. They were a single `displayToken` until 2026-09-07, and that was the cause of the reported stuck-text bug: a bounty kill fires the kill announcement and the header within the same frame, so whichever ran second bumped the shared token and the first one's pending fade failed its `token ~= displayToken` check and returned — leaving its label on screen until the next round boundary. Independent events need independent clocks.
+
+`extendBeat` still bumps `stackToken` even though the card on screen is unchanged, because the beat's previous fade is already armed on the old token and would fire at the original deadline, hiding the addition that just landed. The `beat` table carries the card's identity; the token only ever gates a pending fade or shake.
 
 ## Scope
 
-It shows the **title line only**. Every `+XP` / `+cash` row stays in the right-hand combat feed, which owns the ledger — the prototype announced the same kill in both surfaces at once. Assists get the sound and their existing feed row, but no banner: no assist-side event carries the victim's name.
+It is now the **whole** personal-reward surface. `CombatFeedClient` is `Disabled` (2026-09-07, owner's call) and every row it carried — eliminations, assists, objectives, bounty rewards, the spree bonus, the tutorial instalment and the two bounty notices — arrives here instead. `COMBAT_FEEDBACK_SPEC.md` section 0 records the reversal of the earlier "the feed owns the numbers" decision.
 
-Suppressed wholesale while `workspace.TutorialMode` is set, read per event rather than at boot because a live server resolves the mode from MemoryStore after this client starts. `RESET` is exempt so the counter still clears.
+Suppressed wholesale while `workspace.TutorialMode` is set, read per event rather than at boot because a live server resolves the mode from MemoryStore after this client starts. `tutorial_step` is the one kind exempt from that gate — it is the feedback for the thing the lesson's banner just asked the player to do. `RESET` is exempt too so the counter still clears.
 
 ## Dependencies
 - **Requires:** Nothing
@@ -34,22 +41,22 @@ Suppressed wholesale while `workspace.TutorialMode` is set, read per event rathe
 ### RemoteEvents
 | Remote | Direction | Other script |
 |--------|-----------|-------------|
-| `HitConfirm` | ← Server | [[HunterHitPipeline]] fires it for every weapon; [[HighNoonDamage]] fires its own for Dust's ultimate. Only `didKill` triggers an announcement — the victim name rides the same payload as the damage number |
-| `BountyClaimed` | ← Server | [[BountyService]] `FireAllClients(killerName, victimName, killerUserId, xp, cash, victimUserId)`; gated on `killerUserId == player.UserId` |
-| `CombatReward` | ← Server | [[ProgressionService]] `fireCombatReward`; only `kind == "assist"` is read, for the assist sound |
+| `CombatReward` | ← Server | [[ProgressionService]] `fireCombatReward(player, kind, xp, cash, tokens, subject)` — the single wire for every reward kind, and since 2026-09-07 it carries the victim name as `subject` so the line and its numbers arrive together |
+| `BountyClaimed` | ← Server | [[BountyService]] `FireAllClients(killerName, victimName, killerUserId, ...)`; the header when `killerUserId == player.UserId`, a notice otherwise |
+| `BountyPlaced` | ← Server | [[BountyService]] `FireAllClients(targetName, targetUserId)`; a notice about everyone else's bounty. Your own arrives as the `bounty_placed` reward kind instead |
 
 ### BindableEvents
 | Bindable | Direction | Other script |
 |----------|-----------|-------------|
-| `AnnouncementEvent` | ← / → | `EyeCandy.AnnouncementEvent`, its own sibling — the single dispatch point for all three remote listeners |
+| `AnnouncementEvent` | ← / → | `EyeCandy.AnnouncementEvent`, its own sibling — the single manual entry point, so a throwaway button or an `execute_luau` fire drives the whole surface without a test panel |
 
 ### Direct require()
 None.
 
 ## Notes
-- `DisplayOrder` 8700 — above the combat feed it narrates (8500) and below the kill cam (9500) that should cover it.
-- The prototype's Studio-only ELIMINATE / BOUNTY / RESET panel was removed on the owner's call (2026-09-06) — it appeared in every playtest.
-- `SFX.Fight.KillEffectSound` plays at `Volume = 2`, not the 0.5 it was imported with. Both SoundGroups sit at 0.5, so 0.5 put the sting at an eighth of the `GunGui.HeadshotSound` hitmarker (2.0) landing on the same frame, and it was inaudible under gunfire.
-- The main line was raised out of the prototype's screen y 0.643. There it ran into the mobile button cluster on every 4:3 viewport, and sat exactly on Domination's capture bar (screen y 0.608..0.680).
-- The prototype's XP bar, level-up and chest reel are cut, not stubbed. They hard-required `PlayerGui["In-gameGui"].Canvas.PlayerFrame.PersistentXPBar`, which does not exist here — the match HUD is `ReworkedHunterGui.ScreenGui` — so those `WaitForChild` calls would have hung the whole script before a single announcement.
+- `DisplayOrder` 8700, unchanged. The feed it used to sit above (8500) is retired; the kill cam (9500) still covers it.
+- **It no longer listens to `HitConfirm`.** `ProgressionService.awardKill` is the crediting authority and fires on every credited kill, including ones the hit pipeline never sees, so driving the line from `CombatReward` cannot under-report — and it ends the two-event race for one card. DamageNumberClient still uses `HitConfirm` and is untouched.
+- **Placement is the prototype's**, screen y 0.643..0.738, chosen by the owner on 2026-09-07 with both collisions on the table: it overlaps Domination's capture bar (0.608..0.680) and the `SwapHunterFrame` prompt (0.709..0.795). The earlier lifted position does not fit a four-line stack. If it reads badly in a Domination playtest, move the capture bar, not this.
+- **Announcement cue levels sit in the house 2.0-2.5 band**, not the 0.5 default: `KillEffectSound` and `Assist` at 2.0, `Reward.Award` at 2.0, `Reward.Bounty` at 1.5. The reference points are `TutorialGui.StepCompleteSound` (2.5), Domination's objective cues (2.5) and the `GunGui.HeadshotSound` hitmarker (2.0) that lands on the same frame as a kill. `Assist` and `Award` were still at 0.5 — an eighth of that band — which is why they read as not playing at all.
+- The prototype's XP bar, level-up and chest reel are cut, not stubbed. They hard-required `PlayerGui["In-gameGui"].Canvas.PlayerFrame.PersistentXPBar`, which does not exist here — the match HUD is `ReworkedHunterGui.ScreenGui` — so those `WaitForChild` calls would have hung the whole script. The chest half shipped separately as LevelRewardGui.
 - BountyMusicClient's own claim stinger is retired behind a flag so the two do not overlap on the same event.

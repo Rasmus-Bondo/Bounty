@@ -13,6 +13,16 @@ lines: 1022
 
 Unified rolling feed for the local player's combat rewards and for server-wide bounty announcements.
 
+## RETIRED — `Disabled = true` since 2026-09-07
+
+The owner replaced the right-hand feed with the centre-screen announcement. Every row described below now arrives through AnnouncementController instead: eliminations and assists as the `ELIMINATED` / `ASSISTED ON` lines, the objective and bounty rows as their own verbs, the reward figures as the running `+CASH` / `+XP` pair, and the two other-player rows (`X IS ON A SPREE`, `X TOOK DOWN Y`) as its ambient notices.
+
+**Disabled, not deleted, and that is deliberate.** This is 1000 lines of per-viewport layout tuning — a derived scale curve, a measured lane, segment boxes and truncation budgets — none of which is cheap to recreate. Flipping `Disabled` back is the whole of the rollback; nothing else was removed to make room for the announcement.
+
+**One consumer notices it is gone.** KillCamClient reads the `FeedBaseYScale` attribute this script published on its `CombatFeedGui` to bottom-anchor the "KILLED BY" card. It resolves the GUI with `FindFirstChild` and falls back to `FEED_BASE_Y_FALLBACK` (0.565) when it is absent, so the card simply parks at the old desktop constant rather than breaking. If the feed stays retired, that fallback becomes the real value and the attribute plumbing is dead code worth removing.
+
+Everything below describes the script as written and is kept for that rollback. It is not what a player sees today.
+
 ## What it does
 1. Listens to three remotes and pushes each into one shared rolling feed: `CombatReward` (kind, xp, cash) from [[ProgressionService]], and `BountyPlaced` / `BountyClaimed` from [[BountyService]]. Bounty announcements about the local player are filtered out — they already got the personal `bounty_claim` / `bounty_placed` reward row
 2. Eight styles (`kill` → "ELIMINATION", `assist` → "ASSIST", `bounty_claim`, `bounty_survived`, `bounty_placed`, `bounty_news`, `bounty_taken`, `tutorial_step` → "STEP COMPLETE", plus a "REWARD" default), each a colored title followed by a warm-white detail. `tutorial_step` (2026-08-17) is green rather than the feed's usual warm gold, because the player has already been taught that colour by the step-complete cue — TutorialClient flashes the healing vignette on the same instant the row arrives

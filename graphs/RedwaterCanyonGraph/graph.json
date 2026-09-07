@@ -3980,17 +3980,6 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "LocalRedwaterCanyon/StarterGui/EyeCandy/AnnouncementController.md",
-      "weight": 1.0,
-      "_src": "announcementcontroller",
-      "_tgt": "highnoondamage",
-      "source": "highnoondamage",
-      "target": "announcementcontroller"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "LocalRedwaterCanyon/StarterPlayer/StarterPlayerScripts/DamageNumberClient.md",
       "weight": 1.0,
       "_src": "damagenumberclient",
@@ -6285,17 +6274,6 @@
       "_tgt": "hunterhitpipeline",
       "source": "hunterhitpipeline",
       "target": "sunspikemodule"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "LocalRedwaterCanyon/StarterGui/EyeCandy/AnnouncementController.md",
-      "weight": 1.0,
-      "_src": "announcementcontroller",
-      "_tgt": "hunterhitpipeline",
-      "source": "hunterhitpipeline",
-      "target": "announcementcontroller"
     },
     {
       "relation": "calls",
@@ -10514,12 +10492,12 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "LocalRedwaterCanyon/StarterPlayer/StarterPlayerScripts/CombatFeedClient.md",
+      "source_file": "LocalRedwaterCanyon/StarterGui/EyeCandy/AnnouncementController.md",
       "weight": 1.0,
-      "_src": "combatfeedclient",
+      "_src": "announcementcontroller",
       "_tgt": "progressionservice",
       "source": "progressionservice",
-      "target": "combatfeedclient"
+      "target": "announcementcontroller"
     },
     {
       "relation": "calls",
@@ -10591,23 +10569,23 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "LocalRedwaterCanyon/StarterGui/EyeCandy/AnnouncementController.md",
-      "weight": 1.0,
-      "_src": "announcementcontroller",
-      "_tgt": "progressionservice",
-      "source": "progressionservice",
-      "target": "announcementcontroller"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "LocalRedwaterCanyon/StarterGui/StatMenuGui/StatMenuScript.md",
       "weight": 1.0,
       "_src": "statmenuscript",
       "_tgt": "progressionservice",
       "source": "progressionservice",
       "target": "statmenuscript"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "LocalRedwaterCanyon/StarterPlayer/StarterPlayerScripts/CombatFeedClient.md",
+      "weight": 1.0,
+      "_src": "combatfeedclient",
+      "_tgt": "progressionservice",
+      "source": "progressionservice",
+      "target": "combatfeedclient"
     },
     {
       "relation": "calls",
