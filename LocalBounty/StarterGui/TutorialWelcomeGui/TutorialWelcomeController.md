@@ -4,7 +4,7 @@ tags:
   - localscript
 path: game.StarterGui.TutorialWelcomeGui.TutorialWelcomeController
 type: LocalScript
-lines: 142
+lines: 156
 ---
 
 # TutorialWelcomeController
@@ -15,7 +15,8 @@ The onboarding OFFER: shows a first-time player what the training run pays and t
 
 1. **It is a choice again as of 2026-08-17.** The card offered START TRAINING / "skip for now" with a 4s auto-advance sliver until 2026-08-11, was reduced to a non-interactive "Teleporting to tutorial match..." hold between then and now, and is an offer once more — this time with no timer and no auto-advance at all. The tutorial is not mandatory: the only two things that close this card are its own two buttons.
 2. On `TutorialInvite` with a reward payload, fills the reward row, waits out the lobby intro, then shows the buttons and enables the ScreenGui. On `TutorialInvite("failed")` (reserve or teleport ladder gave up) it closes to the normal lobby.
-3. **The reward numbers come from the server, never from here.** The payload is `{ cash, tokens }`; the script writes `CashAmount.Text` / `TokenAmount.Text` and nothing else. The figures are paid in Redwater from `RoundSystem.Config`, so a payout change there cannot leave this card advertising a stale one — the only copy to keep in step is TutorialDispatchService's `REWARD_CASH` / `REWARD_TOKENS`, which is where the payload is built. A payload carrying nothing drops the row **and** swaps the sentence that introduces it, rather than promising a reward of zero.
+3. **The reward numbers come from the server, never from here.** The payload is `{ cash, tokens, chest }`; the script writes `CashAmount.Text` / `TokenAmount.Text` and toggles the chest chip, and nothing else. The figures are paid in Redwater from `RoundSystem.Config`, so a payout change there cannot leave this card advertising a stale one — the only copy to keep in step is TutorialDispatchService's `REWARD_CASH` / `REWARD_TOKENS`, which is where the payload is built. A payload carrying nothing drops the row **and** swaps the sentence that introduces it, rather than promising a reward of zero.
+3a. **The chest chip is a boolean, not an amount** (2026-09-07). `chest` is true when the account has not yet been paid the tutorial super chest, which TutorialDispatchService reads off `Lootboxes.TutorialChestPaid` at the moment it builds the offer — so a replaying account is offered the two currencies alone rather than a second chest it will never be given. Three instances move together (`PlusLabel2`, `ChestAmount`, `ChestIcon`): hiding the icon without its separator would end the row on a dangling `+`. The `1` is authored, not written by the script, because the grant is fixed at one per account; if that ever stops being true the count has to start arriving in the payload like the other two.
 4. **The dropped-push race is answered with a PULL, which is what let the choice come back.** A `FireClient` at a client whose listener has not connected yet is dropped silently, and that is the whole reason the dispatch was made server-driven in the first place — a teleport waiting on the client could simply never happen with nothing reporting it. This script connects `OnClientEvent` first and *then* fires `TutorialInviteResponse("__request")`; the server re-sends the invite if the offer is still open. Either arrival raises the card and `showCard` runs once, so the ordering of the two no longer matters.
 5. **The `BountyIntroComplete` wait is back** (25s cap). It went with the choice in August and had to return with it: this ScreenGui is `DisplayOrder` 80 and the loading screen is 1000, so a card raised during the cinematic offers a decision the player can neither see nor press. Waited out rather than raced; the cap is so a cinematic that never reports still gets the offer on screen. A hold card could skip this wait because it delayed nothing but the news — an offer cannot.
 6. **One answer per session**, guarded by a flag rather than by disabling the buttons, so a double-tap cannot fire `"start"` twice and have the server reserve two private Redwater servers.
@@ -31,11 +32,13 @@ The `Dialog` was reshaped for the taller content on 2026-08-17: `Size` height `0
 
 `Header` is **"WELCOME TO BOUNTY"**, shortened from "WELCOME TO BULLETS AND BOUNTY" in the same pass and matching the in-lesson welcome card's copy. Not a style preference: the long version wraps to two lines inside its plaque and then renders *smaller than the body copy underneath it*, which is the type-hierarchy inversion `UI_STYLE_GUIDE.md` §3.3 warns about. The short line is height-bound at 34px on a phone against the body's 17.
 
-`RewardRow` is an authored horizontal `UIListLayout` reading `250 [cash] and 50 [token]` — amount before icon, so the row reads as the end of the sentence above it. Icons are `UIAspectRatioConstraint` 1 / `ScaleWithParentSize` / `DominantAxis` Height, so each is square at the row height whatever the viewport. The three labels' width fractions (`0.115` / `0.09` / `0.085`) are their measured natural widths plus ~12%: that keeps every one **height-bound**, which is the only way `TextScaled` renders them at the same size, without leaving dead slack that would push the centred group off-centre. Safe to hardcode because the `Dialog`'s aspect constraint makes the row's shape viewport-independent.
+`RewardRow` is an authored horizontal `UIListLayout` reading `250 [cash] + 50 [token] + 1 [chest]` — amount before icon, so the row reads as the end of the sentence above it. The chest chip landed 2026-09-07 and the separator changed with it: the row held one `and` joining a pair, and a three-item list joined by two `and`s reads worse than one joined by two `+`s, so `AndLabel` became `PlusLabel` (text `+`, width `0.09 → 0.055` now that it is one glyph) and `PlusLabel2` is its clone. The chest art is the LOOT tab's own icon (`rbxassetid://121242329495518`), so the card names the tab the chest lands in. Icons are `UIAspectRatioConstraint` 1 / `ScaleWithParentSize` / `DominantAxis` Height, so each is square at the row height whatever the viewport. The five labels' width fractions (`CashAmount` 0.115 / `PlusLabel` 0.055 / `TokenAmount` 0.085 / `PlusLabel2` 0.055 / `ChestAmount` 0.055) are their measured natural widths plus ~12%: that keeps every one **height-bound**, which is the only way `TextScaled` renders them at the same size, without leaving dead slack that would push the centred group off-centre. Safe to hardcode because the `Dialog`'s aspect constraint makes the row's shape viewport-independent.
 
 **`TextScaled` requires `TextWrapped`.** Assigning `TextWrapped = false` after `TextScaled = true` silently clears `TextScaled`, which left every amount rendering at the authored `TextSize` of 8 — a row of 8px digits beside 28px icons. Both amounts and the "and" carry `TextWrapped = true` for that reason alone, not because a one-word label wants to wrap.
 
-Screenshot-verified on desktop 1658x678, Samsung Galaxy A06 800x360 and iPad 9th gen 1080x810. The `Backdrop` scrim (black @ 0.45, `Active = true`) was A/B captured against the same viewport with the card off — it dims and it swallows input, so the menu behind cannot be reached while the offer stands.
+Measured after the chest chip: content is 87% of the row width (was 61% before it), and every label is height-bound at the same `TextBounds.Y`, so all five render at one size. The fractions are safe to hardcode and cannot spill from text metrics — `TextScaled` shrinks inside a fixed box rather than pushing its siblings.
+
+Screenshot-verified on desktop 1658x678, Samsung Galaxy A06 800x360, iPad 6th gen 1024x768 and a windowed 640x480 desktop. The `Backdrop` scrim (black @ 0.45, `Active = true`) was A/B captured against the same viewport with the card off — it dims and it swallows input, so the menu behind cannot be reached while the offer stands.
 
 ## Dependencies
 
@@ -48,7 +51,7 @@ Screenshot-verified on desktop 1658x678, Samsung Galaxy A06 800x360 and iPad 9th
 
 | Remote | Direction | Other script |
 |--------|-----------|-------------|
-| `TutorialInvite` | ← Server | [[TutorialDispatchService]] sends `{ cash, tokens }` to open the offer, or `"failed"` to close it |
+| `TutorialInvite` | ← Server | [[TutorialDispatchService]] sends `{ cash, tokens, chest }` to open the offer, or `"failed"` to close it |
 | `TutorialInviteResponse` | → Server | [[TutorialDispatchService]] receives `"start"`, `"skip"` and the `"__request"` pull |
 
 ### BindableEvents
