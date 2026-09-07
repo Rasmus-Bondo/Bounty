@@ -1,0 +1,12 @@
+{"ts":"2026-08-29T19:58:54.6064095+02:00","tool":"insert_script_lines","target":"game.ReplicatedStorage.Config.BundleConfig","place":"place:131701626847012"}
+{"ts":"2026-08-29T19:59:03.6756238+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.BundleConfig","place":"place:131701626847012"}
+{"ts":"2026-08-29T19:59:07.1591117+02:00","tool":"insert_script_lines","target":"game.ReplicatedStorage.Config.BundleConfig","place":"place:131701626847012"}
+{"ts":"2026-08-29T19:59:14.0609878+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.PlayerServices.DataService","place":"place:131701626847012"}
+{"ts":"2026-08-29T20:00:33.4563221+02:00","tool":"set_script_source","target":"game.ServerScriptService.PlayerServices.BundleService","place":"place:131701626847012"}
+{"ts":"2026-08-29T20:01:38.7844045+02:00","tool":"set_script_source","target":"game.StarterGui.Shop.Modules.ShopState","place":"place:131701626847012"}
+{"ts":"2026-08-29T20:02:08.7774088+02:00","tool":"edit_script_lines","target":"game.StarterGui.Shop.Modules.ShopBundlesTab","place":"place:131701626847012"}
+{"ts":"2026-08-29T20:02:12.4438395+02:00","tool":"edit_script_lines","target":"game.StarterGui.Shop.Modules.ShopBundlesTab","place":"place:131701626847012"}
+{"ts":"2026-08-29T20:02:16.6823830+02:00","tool":"edit_script_lines","target":"game.StarterGui.Shop.Modules.ShopBundlesTab","place":"place:131701626847012"}
+{"ts":"2026-08-29T20:02:20.3804951+02:00","tool":"edit_script_lines","target":"game.StarterGui.Shop.Modules.ShopBundlesTab","place":"place:131701626847012"}
+{"ts":"2026-08-29T20:02:25.9368804+02:00","tool":"edit_script_lines","target":"game.StarterGui.Shop.Modules.ShopBundlesTab","place":"place:131701626847012"}
+{"ts":"2026-08-29T20:02:31.3476707+02:00","tool":"edit_script_lines","target":"game.StarterGui.Shop.Modules.ShopBundlesTab","place":"place:131701626847012"}

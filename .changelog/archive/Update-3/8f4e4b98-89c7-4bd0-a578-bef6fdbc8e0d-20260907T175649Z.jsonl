@@ -1,0 +1,6 @@
+{"ts":"2026-09-07T09:07:43.2277647+02:00","tool":"edit_script_lines","target":"game.StarterGui.Shop.Modules.ShopFeaturedTab","place":"instance:6ac-t4r"}
+{"ts":"2026-09-07T09:07:45.2460699+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkReworkedBuyMenu.TradingPostController","place":"instance:6ac-t4r"}
+{"ts":"2026-09-07T09:07:48.5363284+02:00","tool":"edit_script_lines","target":"game.StarterGui.ReworkReworkedBuyMenu.TradingPostController","place":"instance:6ac-t4r"}
+{"ts":"2026-09-07T09:09:24.3626326+02:00","tool":"set_properties","target":"game.StarterGui.Shop.Canvas.Content.FeaturedCanvas.CanvasLeft.EndSaleTimer","place":"instance:6ac-t4r"}
+{"ts":"2026-09-07T09:09:25.1742595+02:00","tool":"set_properties","target":"game.StarterGui.ReworkReworkedBuyMenu.Canvas.FeaturedFrame.Canvas.InfoFrame.EndTimer","place":"instance:6ac-t4r"}
+{"ts":"2026-09-07T09:09:31.9406031+02:00","tool":"edit_script_lines","target":"game.StarterGui.Shop.Modules.ShopFeaturedTab","place":"instance:6ac-t4r"}
