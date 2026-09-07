@@ -646,9 +646,17 @@ which is the point.
   `GunGui.HeadshotSound` hitmarker that lands on the same frame as a kill at 2.0. `SFX.Fight.Assist`
   and `SFX.Reward.Award` were still at the 0.5 import default — an eighth of that band, through a 0.5
   `SFX` group — which is why the assist read as playing no sound at all. Now `Assist` 2.0,
-  `Reward.Award` 2.0, `Reward.Bounty` 1.5; `Fight.KillEffectSound` stays at the 2.0 it was already
-  raised to. **Ear-tuned against a documented reference, not measured** — worth a pass in the first
-  playtest.
+  `Reward.Award` 2.0, `Reward.Bounty` 1.5. **Ear-tuned against a documented reference, not measured.**
+
+  **`Fight.KillEffectSound` then went 2.0 → 6.0** (owner, same day, after a playtest: at 2.0 it still
+  could not be heard). That is effective 3.0 through the group and makes it the loudest cue in the
+  game by a wide margin, which is the point — alone among these cues it fires *under the gunshot that
+  caused the kill*, on the same frame as the 1.0-effective hitmarker, so a level that reads fine in
+  isolation is buried in that stack. Nothing sweeps `SoundService` and the clone path was verified
+  intact first, so this was a level problem and not a dropped cue. Ceiling is 10 if it is still short.
+  If the **character** is wrong rather than the level, `SFX.Fight.KillSound` (`124954333259876`) sits
+  in the same folder wired to nothing and the swap is one property — the current asset is a 4.22s
+  tail, so volume raises its wash as much as its impact.
 
 - **The Fortuna bundle's featured countdown runs two more weeks** (2026-09-07, Bounty). Its deadline
   had elapsed on 2026-09-05, so the FEATURED tab was drawing `OFFER ENDED` with nothing failing
