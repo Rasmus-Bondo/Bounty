@@ -10,7 +10,7 @@ lines: 230
 Drives the bottom-right "active multiplier" panel and the Invite Friends button.
 
 ## What it does
-1. Renders the Cash / XP multipliers streamed by [[FriendBonusService]] (`MultiplierStateEvent`) — the combined friend-group bonus + active boost potions + daily-streak passive — with a small scale-pop when a value changes
+1. Renders the Cash / XP multipliers streamed by [[FriendBonusService]] (`MultiplierStateEvent`) — the combined friend-group bonus + active boost potions + daily-streak passive + BOUNTY+ game pass — with a small scale-pop when a value changes
 2. Fires `RequestMultiplierState` on startup (with retry) to get an initial state
 3. Invite Friends button opens the native Roblox game-invite prompt (`SocialService:PromptGameInvite`), guarded by `CanSendGameInviteAsync`; shows brief inline feedback if invites are unavailable
 4. **Visibility gate:** the `InviteFriendsGui` ScreenGui starts `Enabled = false` and is only shown when BOTH the intro/loading screen has finished (the `BountyIntroComplete` attribute on ReplicatedStorage set by LoadingScreen) AND the player is on the **Home** tab. A 12s fallback reveals it if the intro flag is ever missed

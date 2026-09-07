@@ -1703,6 +1703,17 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "LocalBounty/ServerScriptService/PlayerServices/FriendBonusService.md",
+      "weight": 1.0,
+      "_src": "friendbonusservice",
+      "_tgt": "bountyplusconfig",
+      "source": "bountyplusconfig",
+      "target": "friendbonusservice"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "LocalBounty/ServerScriptService/PlayerServices/LootboxService.md",
       "weight": 1.0,
       "_src": "lootboxservice",

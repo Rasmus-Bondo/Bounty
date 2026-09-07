@@ -1,11 +1,11 @@
 # Graph Report - LocalBounty  (2026-09-07)
 
 ## Corpus Check
-- 133 files · ~164,728 words
+- 133 files · ~164,858 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 133 nodes · 448 edges · 14 communities detected
+- 133 nodes · 449 edges · 14 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -52,7 +52,7 @@
 ## Communities
 
 ### Community 0 - "Server Bootstrap"
-Cohesion: 0.16
+Cohesion: 0.17
 Nodes (29): BattlePassClient, BattlePassConfig, BattlePassService, BoostConfig, BoostService, BountyPlusConfig, BountyPlusService, BundleHomeController (+21 more)
 
 ### Community 1 - "Server Bootstrap"
@@ -131,7 +131,7 @@ Nodes (1): TumbleweedSpawner
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `DataService` connect `Server Bootstrap` to `Server Bootstrap`, `Main Menu`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`?**
-  _High betweenness centrality (0.300) - this node is a cross-community bridge._
+  _High betweenness centrality (0.298) - this node is a cross-community bridge._
 - **Why does `PartyService` connect `Server Bootstrap` to `Server Bootstrap`, `Main Menu`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`?**
   _High betweenness centrality (0.110) - this node is a cross-community bridge._
 - **Why does `CollectionClient` connect `Server Bootstrap` to `Server Bootstrap`, `Server Bootstrap`, `Main Menu`?**

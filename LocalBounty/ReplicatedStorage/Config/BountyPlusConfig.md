@@ -22,7 +22,7 @@ Shared catalog for the BOUNTY+ game pass — the id, the perk percentages, the o
 
 ## Dependencies
 - **Requires:** Nothing
-- **Required by:** BountyPlusService (ownership, grant amounts), BoostService (the third additive term, match places only), QuestService, DailyRewardService, LootboxService, ChestController, QuestClient, DailyLoginController
+- **Required by:** BountyPlusService (ownership, grant amounts), BoostService (the third additive term, match places only), FriendBonusService (same term in the lobby multiplier preview), QuestService, DailyRewardService, LootboxService, ChestController, QuestClient, DailyLoginController
 
 ## Connections
 ### RemoteEvents
