@@ -694,6 +694,8 @@ which is the point.
   `250 [cash] and 50 [token]` and the return toast paid out the same two. The offer row is now
   `250 [cash] + 50 [token] + 1 [chest]` and the toast `REWARD [cash]250 [token]50 [chest]1`, using
   the LOOT tab's own art (`121242329495518`) so both cards name the tab the chest lands in.
+  `TutorialWelcomeController` and `TutorialCompleteController` only toggle the new chips; the rows
+  themselves are authored instances, cloned off the token chip rather than re-typed.
 
   **The chest is a stamped flag, not an inference from `tutorialComplete`.** The grant is once per
   account (`Lootboxes.TutorialChestPaid`), so a replay banks nothing and must not be told it did.
