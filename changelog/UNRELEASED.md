@@ -672,13 +672,14 @@ which is the point.
   and all eight play it. `BountyMusicClient.cloneLocalSound` deliberately does not — it is a factory
   that hands the caller a silent sound to fade up.
 
-  **Levels reset now that they can be heard**: `KillEffectSound`, `Assist` and `Reward.Award` at 2.0
-  (effective 1.0 through the 0.5 `SFX` group, matching the `GunGui.HeadshotSound` hitmarker that
-  lands on the same frame as a kill), and `Reward.Bounty` back to its shipped 0.5 — it is the one cue
-  that was always audible, so the only one whose level anybody has actually judged. **Every other
-  number here is a first guess against a cue nobody had heard; expect to move them.** If a cue is
-  wrong in character rather than level, `SFX.Fight.KillSound` (`124954333259876`) sits unused in the
-  same folder and the swap is one property.
+  **Levels then set by ear on the first playtest where they actually played**: `KillEffectSound`,
+  `Assist` and `Reward.Award` at **1.2** (effective 0.6 through the 0.5 `SFX` group), and
+  `Reward.Bounty` at its shipped 0.5. They went to 2.0 first — effective 1.0, matching the
+  `GunGui.HeadshotSound` hitmarker that lands on the same frame as a kill — and the owner judged that
+  a little too loud. The three move together because they share `playSfx` and sat at one level; if
+  the kill sting later needs to sit above the other two, split them rather than moving all three. If
+  a cue is wrong in character rather than level, `SFX.Fight.KillSound` (`124954333259876`) sits
+  unused in the same folder and the swap is one property.
 
 - **The Fortuna bundle's featured countdown runs two more weeks** (2026-09-07, Bounty). Its deadline
   had elapsed on 2026-09-05, so the FEATURED tab was drawing `OFFER ENDED` with nothing failing
