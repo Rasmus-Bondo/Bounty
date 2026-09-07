@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, combat, announcement, audio, rewards]
 path: game.StarterGui.EyeCandy.AnnouncementController
 type: LocalScript
-lines: 895
+lines: 937
 ---
 
 # AnnouncementController
@@ -66,7 +66,13 @@ None.
 ## Notes
 - `DisplayOrder` 8700, unchanged. The feed it used to sit above (8500) is retired; the kill cam (9500) still covers it.
 - **It no longer listens to `HitConfirm`.** `ProgressionService.awardKill` is the crediting authority and fires on every credited kill, including ones the hit pipeline never sees, so driving the line from `CombatReward` cannot under-report — and it ends the two-event race for one card. DamageNumberClient still uses `HitConfirm` and is untouched.
-- **Placement is the prototype's**, screen y 0.643..0.738, chosen by the owner on 2026-09-07 with both collisions on the table: it overlaps Domination's capture bar (0.608..0.680) and the `SwapHunterFrame` prompt (0.709..0.795). The earlier lifted position does not fit a four-line stack. If it reads badly in a Domination playtest, move the capture bar, not this.
+- **Placement is the prototype's**, screen y 0.643..0.738, chosen by the owner on 2026-09-07 over lifting it above the crosshair, which a four-line stack no longer fits above.
+- **On a tall viewport the whole stack drops by `STACK_DROP` (0.017 canvas units, ~0.011 of height) and Domination's capture bar lifts to meet it** — owner's call after playing Domination, where the bar sat square on the top line. Capturing pays a reward, so the two were on screen together on every capture. Positions are resolved by `resolveLayout()` rather than being constants, and re-resolve on `ViewportSize` / `CurrentCamera` changes; a card already showing keeps the placement it opened with rather than jumping mid-display.
+
+  Measured as fractions of viewport height: the crosshair dot ends at `0.5031`, the highest painted HUD pixel is `0.7771` (`WeaponFrame.GunDisplayImage` — **not** the HUD canvas bound of `0.7670`, which is 0.010 of free space the bounding box hides), and bar + gap + stack needs `0.239` of the `0.274` between them. After the split: bar `0.5321..0.6039`, main top `0.6154` (a `0.0115` gap), stack bottom `0.7714` (a `0.0057` gap). Verified by applying both moves and re-measuring, not by arithmetic alone.
+
+  **The test is viewport HEIGHT (`>= 500`), not `TouchEnabled`** — a tablet is touch and has the room, a phone is touch and does not, and a short windowed PC correctly falls back because the constraint is space, not device. Below the threshold both stay where they were and keep the old overlap, which the owner accepted. DominationClient runs the **same test with the same constant**; change one and you must change the other.
+- The `SwapHunterFrame` prompt (0.709..0.795) still shares the stack's band. It is a transient mid-match prompt rather than a permanent HUD element, and was not part of the Domination fix.
 - **`playSfx` did not call `sound:Play()` between 2026-09-06 and 2026-09-07.** Parenting a Sound to `SoundService` does not start it. The line was dropped when the prototype's helper was ported, so **every cue routed through `playSfx` — kill, assist, reward — was silent for the whole life of the feature.** Fixed 2026-09-07.
 
   It presented as a mixing problem and is worth remembering as one: `playBountyStinger` has its own player and its own `:Play()`, so the bounty header kept working throughout. One cue audible and three not reads as "those three are too quiet", and two rounds of volume raising were spent on it before anyone read the helper. **`SoundService` is where a dead Sound goes to look alive** — it is parented, grouped, `IsLoaded`, has a `TimeLength`, and is doing nothing. When a cue is inaudible, confirm `:Play()` is reached before touching a level.

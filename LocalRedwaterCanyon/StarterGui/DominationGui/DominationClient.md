@@ -7,7 +7,7 @@ tags:
   - gamemode
 path: game.StarterGui.DominationGui.DominationClient
 type: LocalScript
-lines: 410
+lines: 448
 ---
 
 # DominationClient
@@ -84,6 +84,33 @@ full dial short-circuits all of it — the `Circle`'s own background with both g
 the state an owned pad rests in for most of a round.
 
 ## Layout
+
+### The capture bar is lifted at runtime on a tall viewport (2026-09-07)
+
+`CaptureBar` is authored at `y = 0.6436`, which is square on top of the centre announcement's first
+line. Capturing a point pays a reward, so the bar and the reward card are on screen **together on
+every single capture** — this was not an edge case. On the owner's call the bar now moves up to
+`0.568` and the announcement stack drops to meet it, so the bar sits *above* the text.
+
+`resolveCaptureBarY` writes `Position` at boot and on every `ViewportSize` change; the **authored
+value is left alone** and is the fallback, so nothing has to be undone to revert this.
+
+The lift only happens where both fit. Measured as fractions of viewport height: the crosshair dot
+ends at `0.5031`, the highest painted HUD pixel is `0.7771` (`WeaponFrame.GunDisplayImage`, well
+above the HUD canvas bound of `0.7670`), and bar + gap + the four-line stack needs `0.239` of the
+`0.274` between them. Lifted, the bar occupies `0.5321..0.6039` — clear of the crosshair dot by
+`0.029` and of the announcement's top line by `0.011`, with `0.006` left under the stack.
+
+It **does** overlap the `0.44..0.56` kill-skull band, and that is the deliberate half of the trade:
+a capture and a kill rarely coincide, a capture and its own reward line always do.
+
+**The test is viewport HEIGHT (`>= 500`), not `TouchEnabled`** — a tablet is touch and has the room,
+a phone is touch and does not, and a short windowed PC correctly falls back to the phone layout
+because the constraint is space, not device. Below the threshold the bar stays authored and keeps the
+old overlap, which the owner accepted. AnnouncementController runs the **same test with the same
+constant**; change one and you must change the other.
+
+### The dial row
 The dial row sits between the two score panels, and the gap is held open by `Canvas.Spacer` rather
 than by layout padding. The row is sized off screen **height** (`0.0284H + 19`, which is what keeps
 the dials the same size on every aspect) while a `UIGridLayout`'s padding can only be a fraction of
