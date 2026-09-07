@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, bounty, hud, viewport]
 path: game.StarterGui.BountyListGui.BountyListClient
 type: LocalScript
-lines: 687
+lines: 743
 ---
 
 # BountyListClient
@@ -15,6 +15,12 @@ Reworked on 2026-08-05 from a text list at the upper-left into a portrait row at
 
 **The 60px is a pixel pin measured against `RoundStatusGui`, and it has to be.** That GUI's timer stack occupies y 0–58, pinned in offsets; a scale-based y here would drift into it as the viewport shortens. Both ScreenGuis are `ScreenInsets = DeviceSafeInsets` with `IgnoreGuiInset = true`, so the two coordinate spaces are directly comparable — that is the only reason a number copied from one means anything in the other. The 2px is structural only: the `ZoneLabel` above and the card's name label below are both `TextScaled`, and a `TextScaled` box carries a few px of unused font padding at each end, so the rendered gap is comfortably larger than 2px.
 
+**In TDM the script overrides that pin at runtime, because 60 is the worst case of three modes and only two of them need it.** Deathmatch stacks `RoundStatusGui`'s `ZoneLabel` *above* the match timer while the fire wall runs, which drops the timer row from 45px to ~67px; domination parks its A/B/C capture dials at y 40–76, dead centre, exactly where the middle card goes. TDM declares `usesZone = false` and has no pads, so there the 60 is pure dead space — and on a phone, where the HUD is small and the gap is not, the strip visibly floats. `refreshCanvasPosition` re-pins the row off the `workspace.Gamemode` attribute at `Position {0.5, 0}, {-0.035875, 49}`.
+
+**The negative scale is the mechanism, not a trick.** It cancels the card's own headroom: the name label starts 20.5% down a card that is itself 17.5% of viewport height, so the transparent gap above the first glyph *grows* with the screen — 16px on a phone, ~39px at 1080 tall. Pinning the box top would leave the text drifting down on big screens; cancelling that fraction pins the first line of **text** at 49px — 4px under the 45px timer slot, 10px under the TDM score chips — on every device. Measured lift: 23px at 338 tall, 27px on a phone, 50px at 1080. The attribute is nil until MatchDirectoryService publishes it, which can land after this script runs, so the authored 60 is the fallback and the change signal corrects it. Everything outside `CROWDED_TOP_BAND` gets the lift, so a **new mode that draws anything top-centre must be added to that table** — the default is to move up.
+
+`PhaseAnnounce` does not follow the lift and must not be made to: it is driven off `ZonePhaseName`, which only the zone sets, so it never appears in a mode that lifts.
+
 **`RoundStatusGui.PhaseAnnounce` moved out of the way rather than this row moving down.** The banner used to sit at y 66–114, and parking the cards under it left an obvious band of dead space between the timer and the row. The banner is transient (~4s per phase change) and the row is permanent, so the permanent element takes the slot; `PhaseAnnounce` is now authored at `{0.5, 0}, {0.175, 68}` — **the same 0.175 slope as this row**, offset by this row's y (60) plus an 8px gap, so it tracks the row at a constant 8px on every device. Nothing in `RoundStatusGui` reads this panel's geometry and nothing should: KillFeedClient used to track it and was carried across the screen when it moved. The coupling is a **number kept in step by hand** — change `Canvas`'s `0.175` or its y offset and the banner must move in the same pass.
 
 **Size is pure scale, with no `UISizeConstraint` at all.** `Size {0.34, 0}, {0.175, 0}` plus a `UIAspectRatioConstraint` (2.8, `ScaleWithParentSize`, `DominantAxis = Height`) that derives the width from the height. The row is therefore **17.5% of viewport height on every device** — the proportion that already looked right in a ~680px window.
@@ -25,13 +31,14 @@ Measured across ten viewport heights from 320 to 1440: **17.5% at every one**, b
 
 **`BountyHolderFrame` uses a horizontal `UIListLayout`, not a `UIGridLayout`, and that is a fix rather than a preference.** The grid it replaced wrapped into a single column: three 0.3 cells plus two 0.05 gaps computed to 278.84px inside a 279px row, and a `UIGridLayout` wraps on any overflow at all. A list layout cannot wrap, and `HorizontalAlignment = Center` centres one or two cards as happily as three — which is the common case, since most rounds never have three bounties up at once. The slots were authored at 100×100 **offset** and relied on the grid to overwrite that; each now carries `Size {0.3, 0}, {1, 0}` of its own.
 
-Card bands are name `0.00–0.19`, portrait `0.22–0.78`, cash `0.81–1.00`. The 0.03 gutters either side of the portrait are what stop the cash label sitting flush on the ring at the 92px floor.
+Card bands, measured off the live instances, are name `0.205–0.395`, portrait `0.22–0.78`, cash `0.81–1.00` — the name overlaps the top of the portrait band, and its 0.205 of empty headroom is exactly what the TDM re-pin above cancels. The 0.03 gutters either side of the portrait are what stop the cash label sitting flush on the ring at the 92px floor.
 
 **Nothing positions itself off this panel, and the move freed the left edge.** KillFeedClient used to anchor the desktop kill feed to `Canvas` and was un-hooked when the panel moved left in 2026-07-30; both platforms now pin the feed to the top-right from screen coordinates alone. The mobile SPRINT button, which the old left-edge position squeezed to a 6.3px gap on a Galaxy A06, no longer shares a band with anything here.
 
 ## What it does
 1. Waits for `Canvas` → `BountyHolderFrame`, registers the three authored slots, disables `ResetOnSpawn`, and enables the gui. Slots are authored `Visible = false` so the pre-script frame cannot flash three empty rings and placeholder text at top-centre.
 1a. Seeds every `UIStroke`'s **authored** transparency into a `BountyVisibleTransparency` attribute at registration, before any fade can touch it. `getStrokeVisibleTransparency` otherwise floors that at `STROKE_VISIBLE_TRANSPARENCY` (0.82), which is correct for the two text hairlines — authored 0.82 — and would have pinned the portrait ring, authored fully opaque, at 82% transparent for the rest of the session on the first fade.
+1b. Re-pins `Canvas` vertically for the active gamemode (`refreshCanvasPosition`, re-run when the `Gamemode` attribute changes) — see *Where it sits, and why* above.
 2. Subscribes to three RemoteEvents under `ReplicatedStorage.Events.BountyEvents`: `BountyListUpdated` (full snapshot), `BountyClaimed`, and `BountyRemoved`.
 3. `applySnapshot` (BountyListUpdated): takes the server's array **in the order it arrives**, fills a slot per holder from the first three, sets name + formatted cash, dresses the portrait, and hides any slot no longer present in the snapshot. It does **not** sort — see *Rank order is decided server-side* below.
 3a. Dresses the portrait ring from the entry's `team` id via [[TeamView]] (see *Reading as a bounty* below) — assigned every snapshot rather than on change, because the occupant of a slot can swap between two republishes.
