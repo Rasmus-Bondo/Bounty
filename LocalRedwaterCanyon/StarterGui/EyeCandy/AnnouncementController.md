@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, combat, announcement, audio, rewards]
 path: game.StarterGui.EyeCandy.AnnouncementController
 type: LocalScript
-lines: 888
+lines: 895
 ---
 
 # AnnouncementController
@@ -67,8 +67,13 @@ None.
 - `DisplayOrder` 8700, unchanged. The feed it used to sit above (8500) is retired; the kill cam (9500) still covers it.
 - **It no longer listens to `HitConfirm`.** `ProgressionService.awardKill` is the crediting authority and fires on every credited kill, including ones the hit pipeline never sees, so driving the line from `CombatReward` cannot under-report — and it ends the two-event race for one card. DamageNumberClient still uses `HitConfirm` and is untouched.
 - **Placement is the prototype's**, screen y 0.643..0.738, chosen by the owner on 2026-09-07 with both collisions on the table: it overlaps Domination's capture bar (0.608..0.680) and the `SwapHunterFrame` prompt (0.709..0.795). The earlier lifted position does not fit a four-line stack. If it reads badly in a Domination playtest, move the capture bar, not this.
-- **Announcement cue levels.** `Assist` 2.0, `Reward.Award` 2.0, `Reward.Bounty` 1.5 — the house band for a "something just happened" cue, set by `TutorialGui.StepCompleteSound` (2.5) and Domination's objective cues (2.5). All three were still at the 0.5 import default, an eighth of that band through the 0.5 `SFX` group, which is why they read as not playing at all.
-- **`KillEffectSound` is deliberately outside that band, at 6.0** (owner, 2026-09-07, raised from 2.0 after a playtest — it still could not be heard). Effective 3.0 through the group. It is the loudest cue in the game by a wide margin, and it has to be: unlike every other cue it fires **under the gunshot that caused the kill**, on the same frame as the `GunGui.HeadshotSound` hitmarker (2.0 in the 0.5 `HitSound` group, so 1.0 effective). A level that reads fine in isolation is buried in that stack. Ceiling is 10; there is headroom left if it is still short.
-- If it is the **character** rather than the level, the swap is one property: `SFX.Fight.KillSound` (`124954333259876`, 3.79s) sits in the same folder wired to nothing. The current asset is a 4.22s tail, so raising its volume raises the wash as much as the impact.
+- **`playSfx` did not call `sound:Play()` between 2026-09-06 and 2026-09-07.** Parenting a Sound to `SoundService` does not start it. The line was dropped when the prototype's helper was ported, so **every cue routed through `playSfx` — kill, assist, reward — was silent for the whole life of the feature.** Fixed 2026-09-07.
+
+  It presented as a mixing problem and is worth remembering as one: `playBountyStinger` has its own player and its own `:Play()`, so the bounty header kept working throughout. One cue audible and three not reads as "those three are too quiet", and two rounds of volume raising were spent on it before anyone read the helper. **`SoundService` is where a dead Sound goes to look alive** — it is parented, grouped, `IsLoaded`, has a `TimeLength`, and is doing nothing. When a cue is inaudible, confirm `:Play()` is reached before touching a level.
+
+  `Sound.PlaybackLoudness` is not the way to check this from edit mode — it reports 0 for every sound there, playing or not, so it cannot tell a silent asset from a healthy one.
+
+- **Cue levels, now that they can be heard.** `KillEffectSound`, `Assist` and `Reward.Award` at 2.0 — effective 1.0 through the 0.5 `SFX` group, matching the `GunGui.HeadshotSound` hitmarker that lands on the same frame as a kill. `Reward.Bounty` is back to its shipped 0.5, because it is the one cue that was always audible and so the only one whose level anybody has actually judged. **Every other number here is a first guess against a cue nobody had heard** — expect to move them after a playtest.
+- If a cue turns out to be wrong in **character** rather than level, `SFX.Fight.KillSound` (`124954333259876`, 3.79s) sits in the same folder wired to nothing and the swap is one property. The current kill asset is a 4.22s tail, so volume raises its wash as much as its impact.
 - The prototype's XP bar, level-up and chest reel are cut, not stubbed. They hard-required `PlayerGui["In-gameGui"].Canvas.PlayerFrame.PersistentXPBar`, which does not exist here — the match HUD is `ReworkedHunterGui.ScreenGui` — so those `WaitForChild` calls would have hung the whole script. The chest half shipped separately as LevelRewardGui.
 - BountyMusicClient's own claim stinger is retired behind a flag so the two do not overlap on the same event.
