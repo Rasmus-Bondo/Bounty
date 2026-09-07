@@ -2,7 +2,7 @@
 tags: [client, modulescript, ui, collection, navigation, animation]
 path: game.StarterGui.CollectionGui.CollectionGuiController.Panels
 type: ModuleScript
-lines: 547
+lines: 695
 ---
 
 # Panels
@@ -17,10 +17,13 @@ WHICH view is showing, and whether the menu is open at all. Everything here is c
 5. `setOpen(open)` — reveals after `REVEAL_DELAY` (1.8s, matching MenuHandlerScript's camera flight) or reverses over 0.24s Quad-in. Resets to HUNTERS + SKINS, resets selection to equipped, and force-hides the emote shop button (which shares PREVIEW's slot and would otherwise strand a PURCHASE button under the hunters view)
 6. Owns the six menu-tab button connections and `Shop.closeMenu`
 7. `init()` — the bottom-bar wiring
+8. `fitPanels()` — the **narrow-screen fit**, run once at require time (before the home snapshot) and again on `ViewportSize` / `AbsoluteSize`. Squeezes `CanvasLeft`, `CanvasRight` and `AbilityPanelNew` in Y until the left tab row — which hangs below the panel and is the only part of this menu the bottom bar can swallow — lands at `0.775` of the gui (the HOME diamond's topmost visible pixel, not `CanvasBottom`'s empty top edge at `0.75`), and multiplies the panels' sub-pixel `UIStroke` so the top border draws. Interpolated on aspect: at 16:9 and wider it writes the authored Position/Size back from a snapshot, untouched
 
 ⚠ **Open/close follows the `SelectedMenuFrame` attribute** on `MainMenuGui`, which MenuHandlerScript publishes from `selectMenuFrame` — the one function **every** navigation route passes through (tab press, black-bar transition, trading-post cinematic, the `MenuNavigateRequested` bindable other panels fire). It used to hook the other four tabs' buttons instead, which only fire for navigation that *starts* on the bottom bar, so any hand-off left these panels on screen over the page underneath. The `3CollectionFrame` button hook is kept for the re-press case: pressing Collection while already on Collection changes no attribute. `setOpen` early-returns when the state already matches, so the two cannot fight.
 
 ⚠ **`init()` is called LAST by the controller, not at require time.** `task.spawn` runs its function synchronously until it yields, and `WaitForChild` returns **without yielding** when the child already exists — so if the whole main-menu tree is present this would run `applySelection()` during require, calling `setOpen(true)` before any grid had been built. The single-file version had this block at the very end of the file for the same reason.
+
+⚠ **The fit runs BEFORE the home snapshot, and a refit retakes it.** `reveal.leftHome` / `rightHome` / `abilitiesHome` are what every open and close tweens back to, so a fit that landed after them would be undone by the next slide. The aspect is read off `Camera.ViewportSize`, never off the ScreenGui: this menu is disabled whenever it is closed, and a disabled ScreenGui keeps a stale 800x600 AbsoluteSize — exactly 4:3, which would fit a desktop as an iPad.
 
 ⚠ **The three home positions are snapshotted at startup**, not read live and not hardcoded. `setOpen(false)` can fire mid-entrance, and a home read off a still-sliding panel would strand it away from its authored spot; hardcoded copies would silently revert any layout nudge made in Studio.
 
