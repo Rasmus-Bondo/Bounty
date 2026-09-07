@@ -562,23 +562,16 @@ which is the point.
 ## Changed
 
 - **The bounty card strip sits under the timer in TDM, both match places** (2026-09-07, owner's
-  report from a phone playtest). `BountyListGui.Canvas`'s authored `{0, 60}` top offset is the worst
-  case of three gamemodes and only two need it: deathmatch stacks `RoundStatusGui.ZoneLabel` above the
-  match timer while the fire wall runs (timer row 45px → ~67px), and domination's A/B/C capture dials
-  hold y 40–76 dead centre. TDM has neither, so the strip floated a card's height below the clock.
+  report from a phone playtest). The authored 60px top offset on `BountyListGui.Canvas` is the worst
+  case of three gamemodes and only two need it — deathmatch stacks a zone label above the match timer,
+  domination holds the same band with its capture dials — so in TDM the strip floated a card's height
+  below the clock. `BountyListClient` re-pins the canvas off the `workspace.Gamemode` attribute for
+  every mode outside `CROWDED_TOP_BAND`, landing the first line of card text 4px under the timer slot
+  on any viewport: 27px of lift on a phone, 50px at 1080.
 
-  `BountyListClient` now re-pins the canvas off the `workspace.Gamemode` attribute at
-  `{-0.035875, 49}` for any mode outside `CROWDED_TOP_BAND = { deathmatch, domination }`. The negative
-  scale cancels the card's own headroom — the name label starts 20.5% down a card that is 17.5% of
-  viewport height, so the empty gap above the first glyph grows with the screen — which pins the first
-  line of **text** at 49px, 4px under the timer slot, on every device instead of only on the viewport
-  it was eyeballed at. Lift: 23px at 338 tall, 27px on a phone, 50px at 1080.
-
-  **Rollback risk: low, cosmetic, one script.** Nothing else reads the canvas's position — the
-  `PhaseAnnounce` banner tracks the authored 0.175/60 pair by hand but only ever renders in a zone
-  mode, which is exactly the mode that keeps the authored value. A new gamemode that draws anything
-  top-centre must be added to `CROWDED_TOP_BAND`: the default is to lift. **Verified** by arithmetic
-  across four viewport heights and a compile check; not yet seen in a live round.
+  **Rollback risk: low, cosmetic, one script, no authored instance changed.** A new gamemode that
+  draws anything top-centre must be added to `CROWDED_TOP_BAND` — the default is to lift.
+  **Verified:** owner playtest on a phone, 2026-09-07.
 
 - **The centre announcement replaces the right-hand combat feed, both match places** (2026-09-07,
   owner's call after playing the 2026-09-06 build). `COMBAT_FEEDBACK_SPEC.md` §0's "the announcement
