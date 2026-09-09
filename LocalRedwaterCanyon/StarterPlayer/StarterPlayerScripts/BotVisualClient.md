@@ -7,7 +7,7 @@ tags:
   - bots
 path: game.StarterPlayer.StarterPlayerScripts.BotVisualClient
 type: LocalScript
-lines: 1477
+lines: 1520
 ---
 
 # BotVisualClient
@@ -42,8 +42,17 @@ they are the client mirrors of the player-rig copies:
   teams rather than as noise.
 - The bounty glow, which takes the **team colour** when the clone carries a `Team` attribute and
   stays gold in FFA. It also wins the rig over the team outline while it is up.
+- `TutorialOutline` (2026-09-09) -- the onboarding lesson's first-takedown pair, drawn when the
+  SOURCE rig carries a `TutorialOutline` attribute. Structurally identical to `TeamOutline`
+  (outline only, `Occluded`, `OutlineTransparency = 0.45`) but a fixed `TeamView.WORLD.red`
+  rather than a relative colour, because the lesson has no teams for TeamView to resolve and
+  those two bots are simply "the enemy" for one step. Deliberately NOT the bounty style, which
+  is `AlwaysOnTop` and reads through rock -- a different signal the lesson teaches two steps
+  later. Read off the source rig rather than the attribute copied onto the clone, and watched
+  with `GetAttributeChangedSignal`, so a director that stamps the rig a frame after the bot
+  spawns still lands.
 
-Both colours come from [[TeamView]] and are therefore **relative** — the viewer's own side is blue
+The first two colours come from [[TeamView]] and are therefore **relative** — the viewer's own side is blue
 and every other side red, so the same bot is painted differently on the two halves of the server.
 There is no pair to keep in step any more: the player-rig copies went the same way, into
 TeamVisualClient, and TeamView is the only module that holds one.
