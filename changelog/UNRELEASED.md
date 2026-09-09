@@ -17,7 +17,7 @@ which is the point.
   verified ✅ (29005 bytes / checksum 1995265427, identical in all three places).
 - **Mirrored gamemode code** (Redwater ↔ Frostbite, not part of the 21): `TutorialDirector`,
   `TutorialClient`, `BotVisualClient`, and `StarterGui.TutorialGui`'s `CountdownLabel`. Verified ✅
-  — 87856 / 114528 / 60316 bytes, checksums 190455553 / 1296378694 / 32834051, identical in both.
+  — 88231 / 114838 / 60316 bytes, checksums 959985489 / 1312282086 / 32834051, identical in both.
 - **Data-affecting:** no. The tutorial's payout totals are unchanged (250 Cash / 50 Tokens); only
   the per-step instalment moves, 25/5 over 10 steps to 31/6 over 8 with the 2/2 remainder settled
   in `payOut`. Nothing on the profile changes shape.
@@ -94,6 +94,16 @@ which is the point.
   a clean before/after across the cut, which is the point of making it. The cost: step 8 blends
   "Free The Cursor" before 2026-09-09 with "Live Fire" after it, and steps 9-11 stop reporting —
   **read step 8 by date.**
+
+- **The opening logo card is one second shorter** — `TutorialClient.WELCOME_HOLD` 4.4 → 3.4 and
+  `TutorialDirector.WELCOME_HOLD` 6 → 5. The card (Bounty logo, gold rule, "The tutorial will show
+  you the game mechanics") now runs pop 0.45 + 3.4 + fade 0.6 = 4.45s against a 5s gate, so the
+  ~0.55s of clear screen before the first instruction is exactly what it was.
+  **The pair moves together or not at all.** The server's hold is what gates step 1 and firing
+  early does not fade the card, it *cuts* it (`presentStep` calls `hideWelcome` first thing);
+  cutting the client's alone leaves the logo fading to an empty canyon before step 1 lands.
+  **Rollback risk:** none beyond the timing. **Verified:** syntax + mirror checksums.
+  **NOT playtested.**
 
 - **The tutorial teleports home 2.4s sooner** — `TutorialDirector.OUTRO_HOLD` 5.4 → 3.0, so the
   wait after the last step is `STEP_BEAT + 3.0` = 5.0s instead of 7.4s. The thank-you card pops at
