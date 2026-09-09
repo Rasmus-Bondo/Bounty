@@ -17,7 +17,7 @@ which is the point.
   verified ✅ (29005 bytes / checksum 1995265427, identical in all three places).
 - **Mirrored gamemode code** (Redwater ↔ Frostbite, not part of the 21): `TutorialDirector`,
   `TutorialClient`, `BotVisualClient`, and `StarterGui.TutorialGui`'s `CountdownLabel`. Verified ✅
-  — 87294 / 113735 / 60316 bytes, checksums 485986420 / 1651700463 / 32834051, identical in both.
+  — 87856 / 114528 / 60316 bytes, checksums 190455553 / 1296378694 / 32834051, identical in both.
 - **Data-affecting:** no. The tutorial's payout totals are unchanged (250 Cash / 50 Tokens); only
   the per-step instalment moves, 25/5 over 10 steps to 31/6 over 8 with the 2/2 remainder settled
   in `payOut`. Nothing on the profile changes shape.
@@ -61,6 +61,11 @@ which is the point.
   `ProgressLabel` — the "6 / 10" counter retired on 2026-08-10 — was renamed `CountdownLabel` and
   repurposed rather than a new label being authored. The client owns the clock and starts it when
   the line pops, which is the instant the server's own deadline is set from.
+  **It reads `TIME LEFT: 14`, not a bare number** — under EXIT TRAINING a lone figure reads as a
+  score or as a count of something still to do, rather than as the fight running out. 13 glyphs
+  makes the box width-bound at every size, so it is sized in three authored pairs: 300×44 PC,
+  280×38 tablet, 220×26 phone (the phone pair matches `TOUCH_STEP_LABEL_HEIGHT` deliberately — a
+  countdown taller than the instruction above it reads as the headline).
   **The countdown sits under EXIT TRAINING**, reparented out of the banner onto the gui root.
   `layoutCountdown` owns its rect *and* the banner's touch position together, both derived from
   the button's live height — the number goes between the two, so they cannot drift apart. On
@@ -89,5 +94,16 @@ which is the point.
   a clean before/after across the cut, which is the point of making it. The cost: step 8 blends
   "Free The Cursor" before 2026-09-09 with "Live Fire" after it, and steps 9-11 stop reporting —
   **read step 8 by date.**
+
+- **The tutorial teleports home 2.4s sooner** — `TutorialDirector.OUTRO_HOLD` 5.4 → 3.0, so the
+  wait after the last step is `STEP_BEAT + 3.0` = 5.0s instead of 7.4s. The thank-you card pops at
+  `STEP_BEAT` + 0.3 and the teleport was landing 5.1s after that: five seconds of a finished
+  lesson holding the player on a line they read in two, with the teleport's own load still to come
+  on top. Now ~2.7s of card. Reported from a playtest.
+  **`TutorialClient.OUTRO_HOLD` (9.1) deliberately did NOT move with it.** It is a ceiling, not a
+  match — the card must outlast the server's wait or it fades to an empty canyon as the last thing
+  the tutorial shows — so cutting the server's hold widens that margin rather than narrowing it.
+  **Rollback risk:** none beyond the timing. **Verified:** syntax + mirror checksums.
+  **NOT playtested** — and this is the one change whose entire point is how it feels.
 
 ## Fixed
