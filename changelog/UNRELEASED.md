@@ -17,7 +17,7 @@ which is the point.
   verified ✅ (29005 bytes / checksum 1995265427, identical in all three places).
 - **Mirrored gamemode code** (Redwater ↔ Frostbite, not part of the 21): `TutorialDirector`,
   `TutorialClient`, `BotVisualClient`, and `StarterGui.TutorialGui`'s `CountdownLabel`. Verified ✅
-  — 88231 / 114838 / 60316 bytes, checksums 959985489 / 1312282086 / 32834051, identical in both.
+  — 89714 / 114838 / 60316 bytes, checksums 1986257727 / 1312282086 / 32834051, identical in both.
 - **Data-affecting:** no. The tutorial's payout totals are unchanged (250 Cash / 50 Tokens); only
   the per-step instalment moves, 25/5 over 10 steps to 31/6 over 8 with the 2/2 remainder settled
   in `payOut`. Nothing on the profile changes shape.
@@ -74,8 +74,15 @@ which is the point.
   all eight steps; `applyTouchLayout` reads the same flag, so a viewport change mid-countdown
   re-applies the shift instead of quietly undoing it.
   **The walk-in problem went with the move to area 2.** The five bots now spawn on the area-2
-  ultimate line, 44-78 studs out and 3-5s in, rather than the area-3 free-roam ring at 100-125
-  studs and 6-9s — so 20s is ~15-17s of real fighting instead of ~11-14. `FreeRoamBotSpawn` is
+  ultimate line, 42-61 studs out and 3-4s in, rather than the area-3 free-roam ring at 100-125
+  studs and 6-9s — so 20s is ~16-17s of real fighting instead of ~11-14.
+  **A height filter on that line is load-bearing, not defensive** (`MAX_SPAWN_HEIGHT_ABOVE_PAD`,
+  20 studs). The line has six markers and one sits 40 studs up on a ledge, where
+  `PathfindingService` answers **NoPath** to this pad — correct for the ultimate line it was
+  authored for, whose bots stand still and want the elevation for High Noon's cone, and fatal for
+  a walk-in. It is also the FURTHEST of the six, so the distance sort picked it first every time:
+  without the filter one of the five would have stood on a rock for the whole fight, and nothing
+  would have errored. Caught by an edit-mode path sweep before publishing, not in a playtest. `FreeRoamBotSpawn` is
   unused by the lesson now: from area 2, five of its eight markers are 21-73 studs away on every
   bearing (21 being the ambush spawn the distance rule exists to prevent) and the other three sit
   behind the area-3 wall. If area-2 free-roam markers are ever authored, revisit the choice.
@@ -83,7 +90,9 @@ which is the point.
   place reverted past the rename degrades quietly instead of erroring.
   **Verified:** device matrix at 1080p, 640×480 windowed and a Galaxy A06 after the move — the
   number sits under the button and clears the banner at all three, by 16px on the phone, which is
-  the tightest of them. Tablet is the same arithmetic with more room. **NOT playtested.**
+  the tightest of them. Tablet is the same arithmetic with more room. All five chosen spawn
+  markers path-verified to the pad in edit mode: Success, zero jump waypoints, 42-61 studs.
+  **NOT playtested.**
 
 - **The `Tutorial` funnel is 8 rows, down from 11** (`Telemetry.TUTORIAL_FUNNEL_STEPS`, mirrored).
   "Free The Cursor" and "Stats Panel" went with their steps; "Completed Training" was cut because
