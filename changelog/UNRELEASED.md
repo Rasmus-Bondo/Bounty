@@ -40,7 +40,8 @@ which is the point.
 - **Instant respawn from the kill cam (both match places, every gamemode).** From 1s after death,
   Space on PC or a tap on the world on touch respawns the player instead of waiting out
   `RESPAWN_DELAY` (5s). The killer card gained an authored `RespawnPrompt` row — "PRESS SPACE TO
-  RESPAWN" / "TAP ANYWHERE TO RESPAWN" — under its lowest visible line (Container 108 → 138px).
+  RESPAWN" / "TAP ANYWHERE TO RESPAWN", 32px on every device, the owner's pick from 24/28/32 —
+  under its lowest visible line (Container 108 → 146px).
   Server-authoritative: `RoundController` issues one respawn ticket per death, armed after the new
   `Config.EARLY_RESPAWN_ARM_DELAY` and mirrored to the client as the `RespawnReady` attribute, and
   spent by either the new `RequestRespawn` remote or the timer, never both; a live character is
