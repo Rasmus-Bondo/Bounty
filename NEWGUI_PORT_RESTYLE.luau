@@ -62,7 +62,7 @@ local SLATE_800 = hex("181C26")
 local SLATE_700 = hex("252A36")
 local TEXT = hex("E5E8EE")
 local YELLOW = hex("F6E525")
-local PINK = hex("F427BA") -- ready underline only since the first look; the skill fill is WHITE (firstLookFixes)
+local PINK = hex("F427BA") -- no longer on the skill tiles since the first look (fill WHITE, underline SLATE_900: firstLookFixes)
 local ULT_CARD = hex("282614")
 local HEALTH_BACK = hex("080A0F")
 local VIEWPORT_BG = hex("1E2026")
@@ -962,7 +962,7 @@ end
 -- First-look fixes (owner, 2026-09-13, after the build above). Idempotent; run AFTER "hud" in
 -- each match place. Records what was changed by hand in Studio that day so a rebuild lands on
 -- the signed-off state:
---   * skill tiles: WHITE fill (pink stays on the ready underline), drawn with a positive-height
+--   * skill tiles: WHITE fill with a BLACK (SLATE_900) ready underline, drawn with a positive-height
 --     CooldownBar anchored to the tile's bottom (HunterHudCooldown READY_SIZE is +1 since the
 --     same day; a negative-height frame did not render mid-fill), ClipsDescendants on, and a
 --     dark copy of the icon INSIDE the fill (CooldownBar.ModernFillContent.ModernAbilityOver,
@@ -1019,6 +1019,7 @@ local function firstLookFixes()
 			iconOver.ZIndex = 1
 			iconOver.ImageColor3 = SLATE_900
 			mf.ModernReadyAccent.ZIndex = 9
+			mf.ModernReadyAccent.BackgroundColor3 = SLATE_900 -- black underline on the white tile (owner, second note)
 			label.ZIndex = 10
 			label.TextColor3 = TEXT
 			label.TextStrokeColor3 = SLATE_900

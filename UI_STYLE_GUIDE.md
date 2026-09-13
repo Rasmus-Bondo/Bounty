@@ -208,8 +208,8 @@ the EyeCandy announcement and the level card. **Lobby panels stay brown/gold (§
 | `ULT_CARD` | `#282614` | `40, 38, 20` | Ultimate card body (gradient `#363114 → #0E1118`) |
 | `TEXT` | `#E5E8EE` | `229, 232, 238` | Every HUD glyph and label; ability icons are tinted to it |
 | `YELLOW` | `#F6E525` | `246, 229, 37` | Ultimate fill, ultimate badge text, the portrait / slab accents. Same yellow as the EyeCandy `+CASH` line |
-| `PINK` | `#F427BA` | `244, 39, 186` | The ready underline on the skill tiles. Same pink as the EyeCandy `+XP` line |
-| Skill fill | `#FFFFFF` | `255, 255, 255` | The skill cooldown fill (white since the owner's first look, 2026-09-13; it was pink). The icon is `TEXT` under the fill and `SLATE_900` where the fill covers it — the two-layer recipe is documented in `HunterHudCooldown`'s header |
+| `PINK` | `#F427BA` | `244, 39, 186` | The EyeCandy `+XP` line only. It was the skill fill and ready underline until the owner's first look (2026-09-13); the skill tiles no longer use it |
+| Skill fill | `#FFFFFF` | `255, 255, 255` | The skill cooldown fill (white since the owner's first look, 2026-09-13; it was pink). The icon is `TEXT` under the fill and `SLATE_900` where the fill covers it — the two-layer recipe is documented in `HunterHudCooldown`'s header. The skill ready underline is `SLATE_900`; the ultimate's stays `YELLOW` |
 | `HEALTH_BACK` | `#080A0F` | `8, 10, 15` | Health-bar backing |
 | Health segments | `#FFFFFF` · `#BE3037` · `#343842` | — | Full · damage trail · empty (`SegmentedHealthManager` constants match) |
 | `BUTTON_FACE` | `#131415` | `19, 20, 21` | The five touch cluster buttons, opaque (FIRE keeps its red) |
