@@ -1,9 +1,19 @@
 # NEWGUI port — moving the "Bounty - UI Update" redesign into Redwater Canyon and Frostbite Claim
 
-**Status:** plan, 2026-09-13, **all twelve decisions resolved with the owner the same day (§2)**.
-Nothing has been built. Surveyed live against three connected places: `Bounty - UI Update`
-(`place:112014319307228`, the design scratch place), Redwater Canyon and Frostbite Claim. Written so
-a cold session can build from it without asking anything further.
+**Status:** **BUILT in both match places, 2026-09-13** (phases 1–5, plus the Frostbite re-run of
+phase 6), by `NEWGUI_PORT_RESTYLE.luau` next to this file. **Awaiting the owner's visual
+sign-off** — vault `.md` updates, the graph rebuild and the Frostbite `/mirror` report are held
+until then (see `changelog/UNRELEASED.md` for what changed and what deviated). Deviations from
+the plan below, recorded here so the spec is not read as the build: the ability grid needed
+`CellSize 0.485` beside the 0.015 padding (0.5 wraps); the weapon content sits at ZIndex 4 so the
+slab does not paint over it; the mobile HUD has ONE slab (`ModernPlayerPanel`) because its
+WeaponFrame lies inside the PlayerFrame's rect, and `WeaponFrame.ZIndex` is 2; the D10 impulse
+UIScales sit on `AbilityFrame` / `UltimateFrame` (centre-anchored) rather than the (0, 0)-anchored
+holders; the kill-cam template lives in a Folder (`StarterGui.KillCamGuiTemplate`) so the round
+sweep cannot force-show it; the health-segment colours followed the design and the
+`SegmentedHealthManager` constants with them. All twelve decisions were resolved with the owner
+the same day (§2). Surveyed live against three connected places: `Bounty - UI Update`
+(`place:112014319307228`, the design scratch place), Redwater Canyon and Frostbite Claim.
 
 **Scope:** everything under `StarterGui.NEWGUI` in the design place (12 ScreenGuis), plus the
 owner's follow-up request: a jump effect on parts of the HUD when the player jumps and a bounce when

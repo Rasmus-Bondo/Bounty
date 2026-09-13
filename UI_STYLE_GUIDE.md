@@ -133,9 +133,11 @@ if you must add one, add it to this table in the same pass.
 | `TEAM_BLUE` | `48, 92, 180` | TDM blue team — score chip plates, team accents. The pads' Navy lifted for HUD contrast; never reuse for anything non-team. |
 
 The TDM score chips (`RoundStatusGui.TeamScoreRed` / `TeamScoreBlue`, flanking the match timer at
-fixed ±56px from center) are the reference use: team-color plate at `BackgroundTransparency 0.15`,
-sharp corners, dark `38,38,38` stroke, white Bold `TextScaled` number with the timer's own dark text
-stroke. On touch they dim with the timers (text/stroke to 0.3, plate +0.2) — see `RoundStatusClient`.
+fixed ±56px from center) are the reference use: an **opaque** team-color plate, `UICorner (0.15, 0)`,
+black 2px stroke, white Bold `TextScaled` number with a near-black text stroke (the NEWGUI port,
+2026-09-13 — before it the plate was at `0.15`, sharp-cornered, with a `38,38,38` stroke). The
+`TeamAssignBanner` carries the same corner. On touch they dim with the timers (text/stroke to 0.3,
+plate +0.2 off whatever is authored) — see `RoundStatusClient`.
 
 ### 2.5 Gradients (copy these verbatim)
 
@@ -189,6 +191,39 @@ UIGradient.Rotation = 85
 0.00 → (154, 52, 40)
 1.00 → (104, 31, 31)
 ```
+
+### 2.6 The Modern palette (match HUD only)
+
+The "Bounty - UI Update" redesign, ported into the match HUD on 2026-09-13
+(`NEWGUI_PORT_SPEC.md`, built by `NEWGUI_PORT_RESTYLE.luau`). Flat slate cards with one coloured
+accent each — **no gold rope, no shadow stroke, no inner rim on the HUD tiles or the portrait**
+(the D4 exception, §10). It applies to the **match HUD** (`ReworkedHunterGui`, both templates),
+the EyeCandy announcement and the level card. **Lobby panels stay brown/gold (§2.1–2.5).**
+
+| Token | Hex | RGB | Where |
+|---|---|---|---|
+| `SLATE_900` | `#0E1118` | `14, 17, 24` | Panel slabs (`ModernWeaponPanel`, `ModernPlayerPanel`), keybind badge |
+| `SLATE_800` | `#181C26` | `24, 28, 38` | Ability card body; gradient top of the slabs |
+| `SLATE_700` | `#252A36` | `37, 42, 54` | Gradient top of an ability card |
+| `ULT_CARD` | `#282614` | `40, 38, 20` | Ultimate card body (gradient `#363114 → #0E1118`) |
+| `TEXT` | `#E5E8EE` | `229, 232, 238` | Every HUD glyph and label; ability icons are tinted to it |
+| `YELLOW` | `#F6E525` | `246, 229, 37` | Ultimate fill, ultimate badge text, the portrait / slab accents. Same yellow as the EyeCandy `+CASH` line |
+| `PINK` | `#F427BA` | `244, 39, 186` | Ability fill and ready underline. Same pink as the EyeCandy `+XP` line |
+| `HEALTH_BACK` | `#080A0F` | `8, 10, 15` | Health-bar backing |
+| Health segments | `#FFFFFF` · `#BE3037` · `#343842` | — | Full · damage trail · empty (`SegmentedHealthManager` constants match) |
+| `BUTTON_FACE` | `#131415` | `19, 20, 21` | The five touch cluster buttons, opaque (FIRE keeps its red) |
+
+Corners on the HUD are **offset** radii: 14 px card, 18 px ultimate card, 10 px fill, 7 px badge,
+12 px slab / viewport, 3 px accent lines, 2 px health segment. Type is the primary family in
+**Bold Italic** for the ammo count, the player name and the keybind badges. The cooldown fill
+draws **above** the card (D3): ready = a full-colour tile, cooling = the colour draining upward
+off the slate. A `ModernReadyAccent` underline is toggled `Visible` by `HunterHudCooldown` and
+`UltimateReadyFX` and is never visible on a tile that is not ready.
+
+**On touch the geometry is frozen.** `HunterGuiMobile` took this palette as paint only — every
+`Size` / `Position` / `AnchorPoint` / constraint is byte-identical to before the port, proven by
+the restyle script's before/after snapshot diff and by absolute-rect equality at five device
+presets. The one touch-geometry change in the whole port is `BountyListGui`'s 0.242 canvas.
 
 ---
 
@@ -757,7 +792,7 @@ whole subtree travels with it. Reach for sibling order before reaching for a big
 | 8500 / 8600 / 9000 | `CombatFeed` / `QuestToast`, `QuestCompleteNotification` / `KillFeed` |
 | 8650 | `LevelRewardGui` — the level-up / CHEST EARNED card, driven by `LevelRewardClient`. Above the quest toasts (8600) because a level-up is the rarer event, below the kill feed (9000). It sits left-of-centre at y 0.406 and the feeds run right of the crosshair, so the ordering is a tie-break rather than an overlap |
 | 8700 | `EyeCandy` — the centre-screen `ELIMINATED <NAME>` / `BOUNTY CLAIMED` announcement; above the `CombatFeed` (8500) it is narrating and below `KillCamGui` (9500), which should cover it |
-| 9500 / 9600 | `KillCamGui` / `SwapHunterGui` |
+| 9500 / 9600 | `KillCamGui` / `SwapHunterGui`. `KillCamGui` is cloned per death from the authored template `StarterGui.KillCamGuiTemplate.KillCamGui` (a **Folder** wrapper, like `ReworkedHunterGui`, so `RoundClientController`'s sweep never force-shows the template on respawn) |
 | 99998 / 99999 / 100000 | `SlowVignette` / `DamageVignette` / `DamageDirection`, `HealthPackPickup`, `HealingVignetteGui`, `StunnedGui` |
 | **100001** | `ReworkedSettingsGui` **while open** — above every HUD and damage overlay |
 
@@ -900,3 +935,4 @@ Fix these opportunistically; never extend them.
 | Bounty `MainMenuGui.TeleportOverlay` | `GothamSSm/Bold`, and `StatusLabel.TextColor3` is `(65025, 65025, 65025)` — a 255× overflow that happens to clamp to white. |
 | Both places | `PANEL` `(47,32,23)` vs `PANEL_ALT` `(48,33,23)` are a 1-unit split with no meaning. Converge on `(47,32,23)`. |
 | Bounty lobby | Scale-based `UICorner` radii (`0.05`, `0.025`, `0.15`) resolve against the smaller axis and so read inconsistently across differently-shaped elements. |
+| Redwater / Frostbite match HUD | **Deliberate, not debt — the D4 exception (2026-09-13).** The ability tiles, the ultimate tile, the keybind badges and the hunter portrait carry **no** gold rope, shadow stroke or inner rim: the Modern palette (§2.6) is flat slate with one coloured accent. Every other panel in both places keeps the rope. `UltimateReadyFX` lights the `ReadyGlow` layers instead of the (absent) strokes. Do not "restore" the strokes on these tiles. |
