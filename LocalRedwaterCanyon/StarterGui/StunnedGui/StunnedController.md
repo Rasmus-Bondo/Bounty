@@ -7,7 +7,7 @@ tags:
   - combat
 path: game.StarterGui.StunnedGui.StunnedController
 type: LocalScript
-lines: 597
+lines: 599
 ---
 
 # StunnedController
@@ -48,8 +48,8 @@ Frostbite Claim.
 6. Clones `Canvas.TextLabel` into the authored `StunOverlay` frame and sizes the clone in pixels
    from `Canvas.AbsoluteSize`, falling back to 300x90 if the layout has not settled (the ScreenGui
    is disabled during intermission, and a disabled ScreenGui reports zero). The label is cloned
-   rather than built: its UIStroke carries a sub-pixel Thickness that is an artefact of how it was
-   drawn and is not reproducible by assigning the property.
+   rather than built. Since 2026-09-13 it is flat white with no UIStroke or UIGradient, per the
+   NEWGUI design; its outline is the legacy text stroke that the alpha helpers drive.
 7. Scales each copy's box width by its character count against `STUN_TEXT`. The label is
    `TextScaled` inside a box authored for the 7-character STUNNED, so the 6-character PINNED in an
    unscaled box would draw about 16% taller than the word it hands over to — the text would appear

@@ -26,7 +26,8 @@
 		             __NewGuiStaging.Proof.<template>.<preset> on the first run and asserts
 		             equality on the next (spec 5.2). config.preset names the preset.
 		"firstlook"  The owner's first-look fixes of 2026-09-13 (white skill fill with the two-layer
-		             icon, mobile slab flush with the portrait). Run AFTER "hud"; needs no staging.
+		             icon, mobile slab flush with the portrait, flat white STUNNED/PINNED
+		             label). Run AFTER "hud"; needs no staging.
 		"cleanup"    Deletes ReplicatedStorage.__NewGuiStaging and any proof harness.
 
 	Everything except "cleanup" needs ReplicatedStorage.__NewGuiStaging, imported from
@@ -973,6 +974,10 @@ end
 --     clipped) and gets a dark text stroke instead.
 --   * the mobile ModernPlayerPanel slab is flush with the portrait's top and bottom (0.76 tall
 --     at y 0.5) so its corner no longer peeks out above the portrait.
+--   * the STUNNED / PINNED label (StunnedGui.Canvas.TextLabel) is flat white: the gold fill
+--     UIGradient and the UIStroke + its UIGradient are removed, as in the design place's copy
+--     (added the same evening). StunnedController's setAlpha drives TextStrokeTransparency to 0,
+--     so at runtime the label gets the legacy thin black outline the UIStroke used to hide.
 --   * TOUCH GEOMETRY EXCEPTIONS, owner-approved: CooldownBar's AnchorPoint/Position/Size on the
 --     two skill tiles (same resolved rect at rest), and the slab (a port-created instance).
 -- The Vesper / Bram gun boxes and the Domination bounty placement live in their scripts.
@@ -1034,6 +1039,13 @@ local function firstLookFixes()
 	if slab then
 		slab.Size = UDim2.fromScale(0.75, 0.76)
 		slab.Position = UDim2.fromScale(0.625, 0.5)
+	end
+	local stunLabel = game.StarterGui.StunnedGui.Canvas.TextLabel
+	for _, child in ipairs(stunLabel:GetChildren()) do
+		if child:IsA("UIStroke") or child:IsA("UIGradient") then
+			child:Destroy()
+			log("StunnedGui label: -%s", child.ClassName)
+		end
 	end
 	log("first-look fixes applied")
 end

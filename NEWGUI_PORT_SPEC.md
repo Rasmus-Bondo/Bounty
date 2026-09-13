@@ -66,7 +66,7 @@ both match places.
 | `BountyListGui` | both places, `BountyListClient` byte-identical (30100 B) | Transferred earlier; the **design carries a later restyle** and the **live copy carries later fixes** (gilded stroke gradient + label shadow, 2026-08-29; TDM re-pin, 2026-09-07). | Property merge — §6.3 |
 | `DominationGui` | both places, `DominationClient` byte-identical (19853 B) | Transferred 2026-08-29. Design differs only in a flat-black treatment (shadows off, `#000000` bars/circles); live has extra gradients + a stroke. Direction ambiguous. | Decision D7 — §6.4 |
 | `RoundStatusGui` | both places, script identical | Transferred. Design adds three `UICorner (0.15,0)` and hardens the team-score strokes. | Tiny merge — §6.5 |
-| `StunnedGui` | both places, script identical | Transferred 2026-08-29. **Live is newer** (gradient stroke on the STUNNED label). | Nothing to port. |
+| `StunnedGui` | both places, script identical | Transferred 2026-08-29. **The design is newer**, not live: its copy carries the current 22,471 B controller yet no stroke or gradients on the STUNNED label, so they were removed after the copy. | **Ported 2026-09-13 (evening):** the label's fill `UIGradient` and `UIStroke` (+ its gradient) removed in both places — flat white text; `firstlook` part. |
 | `HunterFireGui`, `HunterJumpGui`, `HunterReloadGui`, `HunterSprintGui`, `VesperScopeGui` | both places | These were copied **into** the design place as context (design-only attribute `MobileHunterHudCompanion=true`). Only delta: opaque `#131415` faces (`BackgroundTransparency` 0 vs live 0.35/0.5) and a second white ring on SCOPE. | Decision D6 — §6.6; it is a **module-constant** change, not an instance change. |
 
 Two things in the design copies are preview state, not design intent, and must not be ported:
@@ -577,6 +577,7 @@ GUI in the §7 registry; a pointer from §5 to the §3 shape contract in this fi
   `ModernReworkVersion` attributes, the placeholder rig in the viewport, and
   `PlayerFrame.PersistentXPBar` / `PlayerLevel` (D5).
 - `AnnouncerGui` as an instance — only its label style is copied into `EyeCandy.Canvas` (D9).
-- The design's stale `StunnedGui`, `DominationGui` (unless D7), and mobile-button instance copies
+- The design's stale `DominationGui` (unless D7) and mobile-button instance copies, and every
+  `StunnedGui` delta except the flat label style (its `Canvas.Visible = true` is preview state)
   (`MobileHunterHudCompanion` attribute).
 - The design place itself is never edited, published or mirrored (ui-design-place memory).

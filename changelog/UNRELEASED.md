@@ -93,4 +93,14 @@ which is the point.
   (the instances are only recoverable from the place version). Edit-mode captures at six
   viewports; not playtested. Still awaiting the owner's second look.
 
+- **NEWGUI — flat white STUNNED / PINNED label (both match places, 2026-09-13 evening).** Removed
+  the gold fill `UIGradient` and the `UIStroke` (+ its `UIGradient`) from
+  `StarterGui.StunnedGui.Canvas.TextLabel`, matching the design place's copy; the spec had
+  wrongly marked that copy stale. PINNED is the same label with its word swapped, so both change.
+  At runtime `StunnedController` drives `TextStrokeTransparency` to 0, so the legacy thin black
+  outline now shows. `StunnedController` changed comments only (22,471 → 22,568 B, identical in
+  both places, compiles). Added to the `firstlook` part. Done through `execute_luau`, so not in
+  the capture. Revert: the pre-change label is only in the previous place version. Owner
+  approved an edit-mode before/after render over Redwater terrain; not playtested.
+
 ## Fixed
