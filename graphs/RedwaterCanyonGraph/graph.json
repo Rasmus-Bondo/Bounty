@@ -10998,6 +10998,17 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "LocalRedwaterCanyon/StarterPlayer/StarterPlayerScripts/KillCamClient.md",
+      "weight": 1.0,
+      "_src": "killcamclient",
+      "_tgt": "roundcontroller",
+      "source": "roundcontroller",
+      "target": "killcamclient"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "LocalRedwaterCanyon/StarterPlayer/StarterPlayerScripts/MapVoteClient.md",
       "weight": 1.0,
       "_src": "mapvoteclient",

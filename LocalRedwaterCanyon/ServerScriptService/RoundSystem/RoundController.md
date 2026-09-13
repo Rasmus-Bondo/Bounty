@@ -5,7 +5,7 @@ tags:
   - analytics
 path: game.ServerScriptService.RoundSystem.RoundController
 type: ModuleScript
-lines: 3326
+lines: 3399
 ---
 
 # RoundController
@@ -46,6 +46,7 @@ Core round lifecycle manager for Redwater Canyon FFA deathmatch.
 5. Tracks kills via `LastDamager` attribute on victim characters (set by RevolverModule) and awards kill rewards via ProgressionService
 6. On kill, checks if victim had a bounty and calls BountyService.claimBounty, then registers the kill streak via BountyService.registerKill
 7. Tracks deaths, awards death tracking via ProgressionService, resets kill streaks via BountyService.registerDeath, and **on every player death calls [[RoundStatsService]] `ResolveDeath(character, killerPlayer, killerBotId)` — resolving `killerPlayer` from `LastDamager` and passing `LastDamagerBotId` — to credit the killer's stat kill/streak and grant an assist to every recent contributor, then awards assist XP/Cash via [[ProgressionService]] `awardAssist` for each returned UserId. This is the universal per-death assist + stat-kill crediting point (mirrored for bots in [[BotService]]), so finishers that bypass the hunter pipelines — zone/firewall, fall damage, a bot's killing blow — still resolve assists that the old in-pipeline `RegisterKill` path silently dropped.** **Zone exception:** when the victim's `KilledByZone` attribute is set (see [[ZoneService]]), the kill block is skipped entirely (no `State.playerKills`, no `awardKill`, no bounty) and `ResolveDeath` is called with no killer, so a firewall death awards assists to recent contributors but credits a kill to nobody. Respawns players after a configurable delay via `SkinService.loadCharacter` (preserving their selected skin)
+7a. **Early respawn** (2026-09-13). Every in-round death issues a per-player **ticket** in `pendingRespawns`, spent by whichever comes first: the `RESPAWN_DELAY` timer or a `RequestRespawn` from the client. `Config.EARLY_RESPAWN_ARM_DELAY` (1s) after the death the ticket is armed and published as the `RespawnReady` player attribute, which drives KillCamClient's prompt; a request is honoured only on an armed ticket, during a live round, for a player whose character is not alive. `hookCharacter` drops any outstanding ticket, so a character built by another path retires it too. No arm in the tutorial, whose delay is 0
 8. Resets all bounties at round start via BountyService.resetAll
 9. Awards bounty survivor bonuses at round end via BountyService.awardSurvivorBonuses
 10. When the round timer expires, runs the round-end payout loop over every player still on the server: first [[ProgressionService]] `flushPendingRewards`, then `awardRoundCompletion` for the flat end-of-round bonus, then [[DailyRewardService]] `registerPlay` (the "finished a round" trigger; the reward itself is claimed later in the Bounty lobby). **Since 2026-09-06 the flush normally finds an empty bucket** — round earnings are credited the moment they are earned so the level-up card can fire mid-match, and leaving early no longer forfeits them; the call stays as the safety net for an earnings hold that was never lifted. It runs before `buildPostGameStats()` so the stat card's `roundXPEarned`/`roundCashEarned` and the showcase XP bar animate over the whole round's earnings. Guarded by a `typeof` check plus a per-player `pcall` so a stale/broken ProgressionService warns instead of aborting the round-end sequence
@@ -130,6 +131,7 @@ the capture/accrual loop lives in the rules module, started in its `PrepareRound
 | `GameplayVisibility` | -> Client | Toggles HUD/viewmodel visibility during intermission, handled by [[RoundClientController]] |
 | `PostGameStats` | dead | No longer fired; superseded by `VictoryShowcase`. See [[PostGameScript]] |
 | `RespawnCountdown` | -> Client | Sends respawn delay to dying player (if event exists) |
+| `RequestRespawn` | <- Client | [[KillCamClient]] asks to respawn now (Space / tap). Created here if absent; honoured only on an armed respawn ticket, see item 7a |
 | `MapVote` | -> Client / <- Client | [[MapVoteClient]] — `"Start"`/`"Tally"`/`"Result"`/`"Clear"` out; a single map id string in per ballot. Created here if absent, like every other round remote |
 
 ### Direct require()

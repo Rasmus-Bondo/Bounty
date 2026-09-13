@@ -1,11 +1,11 @@
 # Graph Report - LocalRedwaterCanyon  (2026-09-13)
 
 ## Corpus Check
-- 251 files · ~323,822 words
+- 251 files · ~324,238 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 246 nodes · 769 edges · 17 communities detected
+- 246 nodes · 770 edges · 17 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -29,7 +29,7 @@
 - [[_COMMUNITY_SlowVignetteClient|SlowVignetteClient]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `RoundController` - 35 edges
+1. `RoundController` - 36 edges
 2. `Main` - 32 edges
 3. `FPSRevolverClient` - 30 edges
 4. `RevolverModule` - 29 edges
@@ -152,11 +152,11 @@ Nodes (1): SlowVignetteClient
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Main` connect `UI & HUD` to `Server Bootstrap`, `Server Bootstrap`, `Combat`?**
-  _High betweenness centrality (0.131) - this node is a cross-community bridge._
+  _High betweenness centrality (0.130) - this node is a cross-community bridge._
 - **Why does `FPSRevolverClient` connect `Combat` to `Server Bootstrap`, `Server Bootstrap`, `Combat`?**
   _High betweenness centrality (0.125) - this node is a cross-community bridge._
-- **Why does `TutorialDirector` connect `Server Bootstrap` to `Server Bootstrap`, `Combat`, `Combat`, `UI & HUD`?**
-  _High betweenness centrality (0.091) - this node is a cross-community bridge._
+- **Why does `RoundController` connect `Server Bootstrap` to `Server Bootstrap`, `Combat`, `UI & HUD`, `Combat`?**
+  _High betweenness centrality (0.094) - this node is a cross-community bridge._
 - **What connects `BoostConfig`, `BountyPlusConfig`, `FriendBonusConfig` to the rest of the system?**
   _48 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Server Bootstrap` be split into smaller, more focused modules?**

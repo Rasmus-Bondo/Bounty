@@ -37,6 +37,18 @@ which is the point.
   behind a kill card. `DominationAudioClient` fires it beside its claimed / lost cues with relative
   wording: "YOUR TEAM IS NOW CONTROLLING A POINT" / "ENEMY TEAM IS NOW CONTROLLING A POINT" /
   "YOUR TEAM LOST A POINT" (the last is a first draft for the owner). Not playtested.
+- **Instant respawn from the kill cam (both match places, every gamemode).** From 1s after death,
+  Space on PC or a tap on the world on touch respawns the player instead of waiting out
+  `RESPAWN_DELAY` (5s). The killer card gained an authored `RespawnPrompt` row — "PRESS SPACE TO
+  RESPAWN" / "TAP ANYWHERE TO RESPAWN" — under its lowest visible line (Container 108 → 138px).
+  Server-authoritative: `RoundController` issues one respawn ticket per death, armed after the new
+  `Config.EARLY_RESPAWN_ARM_DELAY` and mirrored to the client as the `RespawnReady` attribute, and
+  spent by either the new `RequestRespawn` remote or the timer, never both; a live character is
+  refused. Buttons and the open hunter-card panel swallow taps; drags still orbit. The tutorial
+  is unaffected. The template row was added through `execute_luau`, so it is not in the capture.
+  Revert: each half degrades on its own to the old 5s wait (no remote → the client does nothing;
+  no prompt row → input still works); no data. Scripts byte-identical in Redwater and Frostbite,
+  compile, edit-mode matrix at four viewports; owner playtested it working 2026-09-13.
 
 ## Changed
 

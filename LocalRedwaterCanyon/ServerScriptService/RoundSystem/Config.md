@@ -4,7 +4,7 @@ tags:
   - modulescript
 path: game.ServerScriptService.RoundSystem.Config
 type: ModuleScript
-lines: 352
+lines: 356
 ---
 
 # Config
@@ -13,7 +13,7 @@ Shared configuration constants for the round system and progression.
 
 ## What it does
 
-1. Defines round timing constants (countdown, round duration, respawn delay)
+1. Defines round timing constants (countdown, round duration, respawn delay, and `EARLY_RESPAWN_ARM_DELAY` — 1s, how long a player must be down before RoundController accepts an early respawn)
 2. Defines player settings (max health, min players)
 2a. Defines the join-gating numbers read by MatchDirectoryService and published to the Bounty lobby on every heartbeat, so this file stays their single source of truth. **Three** ceilings as of 2026-08-03, not two, and they are deliberately different:
    - `MATCH_PLAYER_CAP` (7) — the matchmade **party** ceiling. A party of 2-4 that does not fit under it is turned away and seeds a fresh server. A denied party still has a fine game, and parties are what *creates* the half-full matches solos need
