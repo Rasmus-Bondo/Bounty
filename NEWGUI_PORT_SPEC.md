@@ -9,6 +9,16 @@ a cold session can build from it without asking anything further.
 owner's follow-up request: a jump effect on parts of the HUD when the player jumps and a bounce when
 they land (§7).
 
+> **The rule that overrides everything below — on touch, geometry is frozen and only paint changes.**
+> The live `HunterGuiMobile`, the five cluster buttons and their runtime scalers are placed and
+> sized correctly on phones and tablets **today**, tuned on real devices over several weeks. This
+> port does not re-open that. Every `Size`, `Position`, `AnchorPoint`, constraint and layout on an
+> existing touch instance stays byte-identical, **enforced by a before/after snapshot diff inside the
+> restyle script that fails the build if anything moved** (§5.1). New decorations are sized in scale
+> inside existing frames. The device matrix and geometry assertions run **once, at the end, as
+> proof** — not as an iteration loop — and the owner looks at one phone once (§5.2). Owner's hard
+> requirement, 2026-09-13.
+
 ---
 
 ## 1. Inventory — what is in NEWGUI and what has already been transferred
@@ -231,14 +241,28 @@ draft if it reads as empty.
 Write the restyle as **one idempotent `execute_luau` script** that takes a template
 (`ScreenGui` or `HunterGuiMobile`) and a profile (`desktop` / `mobile`) and:
 
+0. **Snapshots geometry first** — for every existing descendant, keyed by path: `Size`,
+   `Position`, `AnchorPoint`, `SizeConstraint`, `AutomaticSize`, `Rotation`, `Visible`, and every
+   `UIAspectRatioConstraint`, `UISizeConstraint`, `UIGridLayout`, `UIListLayout`, `UIPadding`
+   value. Serialised to strings so the comparison in step 5 is exact.
 1. Clones the design's new subtrees from a staging folder (`ReplicatedStorage.__NewGuiStaging`,
    filled by `export_rbxm` from the design place → `import_rbxm`; each subtree is well under the
    ~45 KB import cap) into their parents, skipping any that already exist.
-2. Assigns the property deltas of §4.1–§4.5 (colours, sizes, positions, fonts, transparencies,
-   corner radii). Gradients and corners are cloned, not typed — UI_STYLE_GUIDE §1.1.
-3. Removes the strokes/shadows listed under D4.
+2. Assigns the property deltas. **In the `mobile` profile the whitelist is paint only** —
+   `BackgroundColor3`, `BackgroundTransparency`, `ImageColor3`, `ImageTransparency`, `TextColor3`,
+   `TextTransparency`, `FontFace`, `ZIndex`, `UICorner.CornerRadius`, `UIGradient`, `UIStroke`,
+   `UIShadow`. Nothing in the step-0 set is ever written to an existing instance on mobile; §4.1's
+   frame geometry applies to the **desktop** template only. In the `desktop` profile the §4.1–§4.5
+   geometry is written as well. Gradients and corners are cloned, not typed — UI_STYLE_GUIDE §1.1.
+3. Removes the strokes/shadows listed under D4 (paint — removing a stroke moves nothing).
 4. Leaves untouched everything in the §3 contract that the design lacks.
-5. Deletes the staging folder when both templates are done.
+5. **Re-reads the step-0 set and asserts zero deltas on every pre-existing instance** (both
+   profiles — on desktop the §4.1 writes are the *expected* deltas and are listed explicitly; any
+   other delta fails). Then checks every new instance: sized in `Scale` of its parent (px offsets
+   only on the 3–4 px accent lines) and its absolute rect inside its parent frame's rect. The
+   script **errors with the offending path** instead of leaving a moved frame for a screenshot to
+   catch. A build that fails here is reverted, not patched.
+6. Deletes the staging folder when both templates are done.
 
 Keep that script in the repo next to this file (`NEWGUI_PORT_RESTYLE.luau`) — **Frostbite is then a
 re-run, not an import**: the whole `ReworkedHunterGui` folder is ~1,234 instances with two rigs and
@@ -251,12 +275,16 @@ for this work is written by hand from this spec.
 
 ## 5. The HUD — touch (mobile twin)
 
-The design has **no** mobile `In-gameGui`; the mobile HUD is built by running the same restyle
-against the live `HunterGuiMobile`, which already carries the touch layout that was tuned on device.
-"Convert to the current touch layout" therefore means: **keep every placement below and restyle
-inside it.**
+The design has **no** mobile `In-gameGui`, and none is authored from scratch. The mobile HUD is
+the live `HunterGuiMobile` — whose placement and sizing were tuned on real phones and tablets over
+several weeks and are **known correct today** — with the design's paint applied inside it.
+"Convert to the current touch layout" therefore means exactly this: **every existing touch instance
+keeps its geometry byte-for-byte; only colours, fonts, corners, gradients, strokes and
+transparencies change; every new instance is sized in scale inside an existing frame.** This is the
+owner's hard requirement (2026-09-13): built right the first time and proven by an automated diff,
+not by repeated phone and tablet checks.
 
-What `HunterGuiMobile` does differently from the desktop template today (all of this stays):
+What `HunterGuiMobile` does differently from the desktop template today (all of this is frozen):
 
 | | Value | Why |
 |---|---|---|
@@ -272,38 +300,79 @@ What `HunterGuiMobile` does differently from the desktop template today (all of 
 | `CooldownBar` | BgT 0.45; `Ability` icon `ImageTransparency 0.15` | translucent cards so the scene reads through (the 2026-08-15 mobile-card change) |
 | `PlayerFrame` | (0.29, 1) @ (0.145, 0.5); `PlayerHunterFrame` anchor (0, 0.5) at x 0 | |
 
-Mobile-specific decisions while restyling:
+### 5.1 Frozen on touch — the contract and how it is enforced
 
-- `ModernWeaponPanel` must be re-fitted to the mobile `WeaponFrame` (a 0.245 × 0.36 box, very
-  different from the desktop 0.21 × 0.82): size it to wrap `AmmoCount` + `BulletCounter` only.
-- With the XP bar and level out (D5), the 0.29-wide `PlayerFrame` only has to fit the portrait,
-  the health bar, the name and `ModernPlayerPanel`. If anything ever needs a phone/tablet split,
-  the one sanctioned test is `TABLET_MIN_SHORT_EDGE = 600` (UI_STYLE_GUIDE §4.6).
-- Keep the card translucency (`CooldownBar` 0.45) — with the design's darker card colour the
-  translucency may need re-tuning; D3 applies here too.
-- **Do not change the canvas shape.** If it must change, re-derive `CANVAS_PER_JUMP` in
-  `HunterMobileSprintButton` from the new canvas and re-check the 4:3 iPad row scale (~0.82).
-- **Never put a `UIScale` on `Canvas`, `AbilityFrame` or `UltimateFrame`:** `scaleAbilityRow`
-  writes the frames' `Size`, and `HunterIntroTags` measures tile `AbsoluteSize` which already
-  includes any UIScale — it would scale twice.
-- Cluster clearance: FIRE clears the intro-tag band by ~2 pt on a phone today. The ability row
-  slides right only as far as the lowest cluster button in its band allows (JUMP). Growing the tiles
-  or the tag band pulls FIRE into the band and steps the row ~40 pt left. Measure, don't reason.
-- `DominationClient` / `AnnouncementController` mobile paint line (0.830) only changes if the
-  canvas does.
+**Frozen** (never written by the restyle in the mobile profile; the step-0/step-5 diff in §4.7
+proves it):
 
-Verification for both templates — the §9 order of UI_STYLE_GUIDE, and specifically:
+- Every existing instance's `Size`, `Position`, `AnchorPoint`, `SizeConstraint`, `AutomaticSize`,
+  `Rotation`, and every `UIAspectRatioConstraint`, `UISizeConstraint`, `UIGridLayout`,
+  `UIListLayout`, `UIPadding` under `HunterGuiMobile` — the table above and everything beneath it,
+  including the tile `MainFrame` sizes (0.78 / 0.73), the `BulletCounter` grid and the 8.5
+  health-bar aspect.
+- The `Canvas` shape (0.95 × 0.23, aspect 7.4, y 0.875) and the ScreenGui's `ScreenInsets None`,
+  `IgnoreGuiInset true`, `DisplayOrder 2`, `MobileHunterHud` attribute.
+- `Visible` on `GunDisplayImage` (false) and on every `CooldownFrame` badge (false).
+- The five cluster buttons' `Size`, `Position`, `UISizeConstraint`, `UIAspectRatioConstraint`,
+  `Icon` size — owned by `HunterMobileClusterLayout`; D6 changes colour constants only.
+- The runtime scalers — `HunterMobileClusterLayout`, `HunterMobileSprintButton.scaleAbilityRow`
+  with `CANVAS_PER_JUMP = 1.1504`, `HunterIntroTags` — **no edits**. They measure the frozen
+  frames, so frozen frames keep them correct on every device they are correct on today.
+- `DominationClient` / `AnnouncementController` mobile paint line (0.830) — stays, because the
+  canvas does not move.
 
-1. Screenshot the FIRST draft with `capture_device_matrix` on `samsung_galaxy_a06` (800 × 360,
-   landscape), `iphone_XR` (landscape), `ipad_6th_generation`, `vga` (640 × 480 windowed) and
-   `hd_1080`. `orientation` only on the phone/tablet entries.
-2. Geometry assertions at 800 × 360 and 1024 × 768: no tile overlaps the cluster (FIRE / SPRINT
-   rects vs the ability row rect, in absolute px — the two GUIs are in the same `None` inset space);
-   `PlayerName.TextBounds` inside `ModernPlayerPanel`; `AmmoCount` not clipped by
-   `ModernWeaponPanel`; nothing off-screen.
-3. Mid-match hunter switch (`HunterSwitchClient`) rebuilds the HUD from the template — confirm the
+**Allowed** (paint): `BackgroundColor3`, `BackgroundTransparency`, `ImageColor3`,
+`ImageTransparency`, `TextColor3`, `TextTransparency`, `FontFace`, `ZIndex`,
+`UICorner.CornerRadius`, `UIGradient`, `UIStroke` (add / remove / recolour), `UIShadow`.
+`FontFace` changes weight only (same family) and every label is already `TextScaled`, so a bolder
+face re-fits its frozen box — assert `TextFits` at 800 × 360 rather than resizing any box.
+Keep the mobile card translucency (`CooldownBar` 0.45, icon 0.15) and apply D3 (fill above the
+card) here too; re-tune the *transparency* if the darker slate reads wrong, never the size.
+
+**New instances** (`ModernWeaponPanel` + `Accent`, `ModernPlayerPanel`, `ModernReadyAccent` × 3,
+`ModernAccent`, `ModernCorner`s, the D10 `ImpactScale`s at rest 1): each sized in `Scale` of its
+parent (px offsets only on the 3–4 px accent lines), parented **inside** an existing frozen frame,
+never past that frame's rect. Nothing new is parented directly under `Canvas`, and nothing new
+changes a holder's or `MainFrame`'s `AbsoluteSize` — decorations must never become the thing a
+scaler measures. **Never a `UIScale` on `Canvas`, `AbilityFrame` or `UltimateFrame`** (the sprint
+module writes their `Size`; `HunterIntroTags` measures tile `AbsoluteSize`, which includes any
+ancestor UIScale, and would scale twice).
+
+`ModernWeaponPanel` on touch: the mobile `WeaponFrame` is a 0.245 × 0.36 box with `AmmoCount`
+left-anchored and `BulletCounter` at (0.25, 0.7). Size the panel in scale to wrap those two
+(roughly (1, 0.9) @ the frame's centre) with the yellow `Accent` on its right edge. It does **not**
+get the desktop (0.88, 0.58) numbers — those were authored for a 0.21 × 0.82 frame.
+
+With the XP bar and level out (D5), the 0.29-wide `PlayerFrame` only has to fit the portrait, the
+health bar, the name and `ModernPlayerPanel`, all at their frozen rects.
+
+### 5.2 Proof — once, at the end, automated
+
+The builder proves the result; the owner does not iterate. Runtime-resolved values are proven the
+same way as authored ones: **measure before the restyle, measure after, assert equal.**
+
+1. Before touching `HunterGuiMobile`, at each preset below, record with one `execute_luau`: the
+   absolute rects of the five cluster buttons, the three tile `MainFrame`s, `WeaponFrame`,
+   `PlayerFrame`, `Canvas`; the FIRE-to-intro-tag-band clearance; the value `scaleAbilityRow`
+   resolves to (1.00 on phones, ~0.82 on a 4:3 tablet).
+2. After the restyle (step-5 zero-delta assertion already passed), re-run the same block at the
+   same presets and assert every recorded number is **equal**, plus: no new panel extends past its
+   parent; `AmmoCount` / `PlayerName` / the `Cooldown` labels `TextFits`; nothing off-screen; the
+   three tiles do not overlap FIRE / SPRINT / JUMP rects (absolute px — both GUIs are in the same
+   `None` inset space).
+3. Presets: `samsung_galaxy_a06` (800 × 360, landscape), `iphone_XR` (landscape),
+   `ipad_6th_generation`, `vga` (640 × 480 windowed) and `hd_1080`. `orientation` only on the
+   phone/tablet entries. `set_device_simulator` then the assertion block, five rounds, one pass.
+4. One `capture_device_matrix` at those presets for the owner to look at — the visual sign-off.
+5. Mid-match hunter switch (`HunterSwitchClient`) rebuilds the HUD from the template — confirm the
    clone/rename contract still resolves every §3 name for all four hunters.
-4. Owner sign-off on the visual **before** vault, graph or changelog work.
+6. **One owner look on one phone, once**, at the end of Phase 3. If it needs a second look, the
+   build broke the rule above and is fixed in the script and re-proven, not nudged by hand.
+7. Owner sign-off on the visual **before** vault, graph or changelog work.
+
+(The canvas shape does not change in this port. If a future redesign ever must change it,
+`CANVAS_PER_JUMP` is re-derived from the new canvas and the 4:3 iPad row scale re-checked — out of
+scope here.)
 
 ---
 
@@ -358,8 +427,14 @@ Design deltas (apply to all three card holders; the live-only `UIGradient`/`UISh
 | `IconDisplay` **new** `UIShadow` | — | black, T 0.5, blur 20 px |
 | `BountyStamp` | (0.9, 0.32) @ (0.5, 0.9), `#FFE2AA`, stroke `#461E00` | (0.9, 0.298) @ (0.5, 0.986), white, stroke `#565656` |
 
-Verify at 800 × 360 in TDM and Domination (the strip's phone placement was an owner bug report on
-2026-09-07).
+**This is the only touch-geometry change in the whole port** (the 0.34 → 0.242 canvas width and the
+`BountyName` move, D11), on a GUI whose phone placement was an owner bug report on 2026-09-07. It
+gets the §5.2 treatment, not a look: at `samsung_galaxy_a06`, `iphone_XR` and
+`ipad_6th_generation`, in FFA, TDM and Domination (`workspace.Gamemode`), assert the three cards
+fit the canvas, no card overlaps `RoundStatusGui.Container` or `DominationGui.Canvas`, and every
+label `TextFits`. If the owner would rather keep touch geometry untouched everywhere, the
+alternative is the "portrait style only" variant (square portrait, ring, shadow, stamp colours at
+the current 0.34 canvas) — the restyle script carries it behind a flag.
 
 ### 6.4 `DominationGui` (D7) — confirmed: flat black, live gradients stay
 
@@ -385,7 +460,10 @@ modes).
 | `VesperScopeController` / `VesperScopeGui` | authored face + strokes | `#282828`, 0.5, one 0.02 Border stroke | `#131415`, 0, 2 px Contextual ring T 0.45 + second 2 px ring — **note** 2 px here is an authored pixel stroke on a button that is resized by `HunterMobileClusterLayout`; prefer the fraction the other four use |
 
 Also set the same values on the authored instances so an edit-mode screenshot matches. Do not touch
-`Size`, `Position`, `UISizeConstraint` — the layout module owns them (mobile-button-layout memory).
+`Size`, `Position`, `UISizeConstraint`, `UIAspectRatioConstraint` or `Icon.Size` — the layout
+module owns them (mobile-button-layout memory) and §5.1 freezes them. The SCOPE ring: express it as
+the same fraction the other four buttons' strokes use, not the design's 2 px, so it scales with the
+button on tablets.
 
 ---
 
@@ -438,7 +516,7 @@ templates (five authored UIScales each), possibly `CardsClient`. Vault: `HunterH
 | 0 | Owner answers D1–D12 | — |
 | 1 | Quick wins, each with a device matrix: §6.5 RoundStatus, §6.3 BountyList, §6.4 Domination flat-black, §6.6 button constants (both places) | screenshots at the four presets |
 | 2 | §4 desktop HUD restyle on `ReworkedHunterGui.ScreenGui` (Redwater), paint-line constants | **owner sign-off on the visual** |
-| 3 | §5 mobile twin on `HunterGuiMobile` | device matrix + geometry asserts + tablet row scale |
+| 3 | §5 mobile twin on `HunterGuiMobile` | §4.7 step-5 zero-delta assertion passes; §5.2 before/after proof equal at five presets; one matrix; **one** owner phone look |
 | 4 | §7 jump / land | live playtest tune |
 | 5 | §6.1 KilledBy into the kill cam; §6.2 objective line in EyeCandy | owner wording sign-off |
 | 6 | Frostbite: re-run the restyle script; `/mirror`; vault `.md` updates; `python update_redwater_canyon_graph.py`; UI_STYLE_GUIDE additions; `/changelog` by hand for the `execute_luau` edits; `/preflight`; publish all three places together | — |
