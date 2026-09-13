@@ -7,7 +7,7 @@ tags:
   - cards
 path: game.StarterPlayer.StarterPlayerScripts.Fortuna.CardsHunterGuiClient
 type: LocalScript
-lines: 599
+lines: 580
 ---
 
 # CardsHunterGuiClient
@@ -16,11 +16,11 @@ Fortuna's HUD: ammo pips, Recall/Ability1 cooldown fills, and ultimate charge di
 
 ## What it does
 1. Requires [[HunterClientRuntime]] + the [[Manifest|Fortuna Manifest]] and calls `HunterClientRuntime.Start(fortunaManifest)`; if not on Fortuna, the runtime returns nil and the script silently exits. The local `events` variable now aliases `runtime.ClientEvents` so the 10+ `events.Foo:Fire()` / `events.Foo.Event:Connect(...)` call sites further down resolve to the same instances the runtime ensured
-2. Clones `StarterGui.ReworkedHunterGui` into the player's GUI *named* `FortunaGameGui` — `HunterGuiMobile` on touch, `ScreenGui` otherwise — destroying any other hero's GUI clone (Template/Bram/Iris) first, then overwrites the ability icons with Fortuna's art. The name is the only thing left of the old per-hunter art: `StarterGui.HunterGui.Fortuna.FortunaGameGui` still exists with the pre-rework `Ultimate > FrameBorder` shape but is no longer cloned. The runtime shape is `UltimateFrame > MainFrame > {Background, CooldownBar, Ability, Cooldown, CooldownFrame}`
+2. Clones `StarterGui.ReworkedHunterGui` into the player's GUI *named* `FortunaGameGui` — `HunterGuiMobile` on touch, `ScreenGui` otherwise — destroying any other hero's GUI clone (Template/Vesper/Bram/Iris) first, then overwrites the ability icons and the GunDisplayImage with Fortuna's art. The name is the only thing left of the old per-hunter art: `StarterGui.HunterGui.Fortuna.FortunaGameGui` still exists with the pre-rework `Ultimate > FrameBorder` shape but is no longer cloned. The runtime shape is `UltimateFrame > MainFrame > {Background, CooldownBar, Ability, Cooldown, CooldownFrame}`
 3. Listens to `AmmoChanged`/`Reloaded` BindableEvents to animate the 3 bullet-pip icons (hide/show with a back-ease scale tween) and pulse the ammo count text
 4. Listens to `RecallCooldownStarted`/`Ability1CooldownStarted` and forwards the seconds into [[HunterHudCooldown]], which owns the cooldown-fill tween, the countdown label, the countdown thread and the expiry pop for both skill tiles; intentionally ignores `UltimateCooldownStarted` since the ultimate UI only shows charge percent, not a cooldown timer
 5. Listens to `UltimateChargeChanged` to fill the ultimate frame, show "READY" at 100%, light the [[UltimateReadyFX]] ember halo, and pop the tile via [[HunterHudBump]] on the rising edge to full charge. Unlike Vesper and Bram this is the *only* place the halo is driven — Fortuna's HUD has no ult-active guard, so spending the ultimate clears it via the charge reset the server pushes rather than through an explicit handler. That single drive point is the one under suspicion for the stuck-halo issue in `changelog/OPEN-ITEMS.md`: a live Fortuna client was seen with the halo lit while this handler was writing an 88% label, i.e. calling `SetReady(false)` every tick
-6. Creates three [[HunterMobileAbilityButton]] instances (one per skill frame, mirroring the `FrameBorder`/`FrameBorderCooldown` child) that fire the corresponding `*Requested` BindableEvent (consumed by [[CardsClient]]); replaces former inline `createMobileButton` helper
+6. Creates three [[HunterMobileAbilityButton]] instances (one per skill frame, mirroring the `Background`/`CooldownBar` shape) that fire the corresponding `*Requested` BindableEvent (consumed by [[CardsClient]]); replaces former inline `createMobileButton` helper
 7. Creates the visible mobile FIRE button via [[HunterMobileFireButton]] in **hold** style — press fires `FireRequested:Fire(true)`, release fires `FireRequested:Fire(false)` — so mobile mirrors Fortuna's PC click-and-hold auto-repeat throw. [[CardsClient]] consumes it (replacing the old delayed `UserInputService.TouchTap` mobile shoot path)
 
 ## CharacterAdded re-renders the cached ultimate charge, it does not zero it

@@ -2,7 +2,7 @@
 tags: [client, localscript, ui, combat, announcement, audio, rewards]
 path: game.StarterGui.EyeCandy.AnnouncementController
 type: LocalScript
-lines: 937
+lines: 969
 ---
 
 # AnnouncementController
@@ -10,16 +10,16 @@ lines: 937
 The centre-screen combat surface, and since 2026-09-07 the only place a personal reward is reported: the `ELIMINATED <NAME>` line with its killstreak word, a sub-line for whatever else landed in the same beat, the running `+CASH` / `+XP` pair, and the `BOUNTY CLAIMED` header slam.
 
 ## What it does
-1. Resolves five authored labels in `EyeCandy.Canvas` — `HeaderAnnouncement` (screen y 0.150..0.258), `MainAnnouncement` (centre y 0.643), `SubAnnouncement` (0.669), `RewardAnnouncementCash` (0.690, or 0.706 when a sub-line is showing) and `RewardAnnouncementXP` (0.727 / 0.738). All Teko SemiBold, `TextScaled`, `RichText`. The three lower labels were cloned across from the prototype rather than re-typed, per UI_STYLE_GUIDE 1.1.
+1. Resolves six authored labels in `EyeCandy.Canvas` — `HeaderAnnouncement`, `MainAnnouncement`, `SubAnnouncement`, `RewardAnnouncementCash`, `RewardAnnouncementXP`, and `ObjectiveAnnouncement` (falls back to `MainAnnouncement` on a canvas without it). The first five form the combat card; the objective label takes main's slot in the notice lane for pad-claimed/lost text. All `TextScaled`, `RichText`.
 2. **A beat is the unit of display, not an event.** One moment of combat — the kill, plus whatever else was credited in the same breath, plus the running totals for all of it — shares one card. `startBeat` opens it, `extendBeat` folds a later event into the card already on screen, and one `fadeStack` takes the whole thing away.
 3. **`KINDS` maps every reward kind to a verb and a priority.** `kill` (5, "ELIMINATED") > `bounty_survived` / `domination_capture` / `tutorial_step` (4) > `domination_neutralise` (3) > `assist` (2, "ASSISTED ON") > `domination_defend` / default (1). Inside a beat the higher priority owns the main line and the other drops to the sub-line, which is how a kill and the assist or objective defence that share its instant read as `ELIMINATED X` over `ASSISTED ON Y`.
 4. `bounty_claim` is in `REWARD_ONLY_KINDS` and takes no line at all: `BountyClaimed` is already slamming `BOUNTY CLAIMED` across the header on the same instant and the kill owns main, so it contributes only its numbers.
 5. **Rewards accumulate rather than replace.** The first numbers of a beat punch in showing their total (`showRewards`); later ones fly in as a `+7 CASH` flyer while the line's own figure counts up to meet it over 0.42s (`flyDelta` / `addRewards`). Cash and Tokens share the upper line — only the onboarding instalment ever pays Tokens, so the two cannot contend.
 6. Multi-kill: `MULTI_WINDOW` 8s, counted client-side. A second kill inside a live beat retexts main with the new streak word from `killWord` and lets the totals climb rather than restarting the card; the kill stinger is pitched `1 + min(killCount-1, 8) * 0.065` and `shakeAnnouncement` runs at streak >= 2.
 7. `showHeader` drives the header slam — `animateHeader` flies two header clones in from x -0.1 and x 1.1 to collide at centre, and `createImpactFlare` fires a light bar out of the impact. Used for `BOUNTY CLAIMED` (with the stinger) and `BOUNTY ON YOU` (without).
-8. **Notices** carry the two rows the retired feed held about *other* players — `X IS ON A SPREE`, `X TOOK DOWN Y`. They never interrupt the player's own beat: one is held in a single pending slot and shown when the card clears, and a notice that has waited longer than `NOTICE_STALE_AFTER` (6s) is dropped rather than arriving late.
+8. **Notices** carry the two rows the retired feed held about *other* players — `X IS ON A SPREE`, `X TOOK DOWN Y` — and the `OBJECTIVE` action's text (pad-claimed / pad-lost cues from DominationAudioClient). Notices never interrupt the player's own beat: one is held in a single pending slot and shown when the card clears, and a notice that has waited longer than `NOTICE_STALE_AFTER` (6s) is dropped rather than arriving late. The `OBJECTIVE` action draws on the `ObjectiveAnnouncement` label rather than `main`; `showNotice` hides whichever label is not in use so a lane change cannot leave the other standing.
 9. `playSfx` clones the template to `SoundService` and self-destructs on `Ended`, with a `max(TimeLength + 1, 8)` backstop because `Ended` never fires for a sound whose asset failed to load. `playBountyStinger` is separate: the 12.33s asset is held 2.6s then faded over 0.7s so it ends with the header rather than running over the next two kills.
-10. Killstreak resets on the local `Humanoid.Died` and on any `RoundActive` change. `RESET` clears both counters, all five labels and any orphaned `_HeaderImpactClone` / `_HeaderImpactFlare` / `_RewardFlyer` / `_RewardTrail`.
+10. Killstreak resets on the local `Humanoid.Died` and on any `RoundActive` change. `RESET` clears both counters, all labels (including `ObjectiveAnnouncement` when present) and any orphaned `_HeaderImpactClone` / `_HeaderImpactFlare` / `_RewardFlyer` / `_RewardTrail`.
 
 ## Fade ownership, and why a new row used to show nothing
 
@@ -59,6 +59,7 @@ Suppressed wholesale while `workspace.TutorialMode` is set, read per event rathe
 | Bindable | Direction | Other script |
 |----------|-----------|-------------|
 | `AnnouncementEvent` | ← / → | `EyeCandy.AnnouncementEvent`, its own sibling — the single manual entry point, so a throwaway button or an `execute_luau` fire drives the whole surface without a test panel |
+| `AnnouncementEvent` | ← | [[DominationAudioClient]] fires `OBJECTIVE` action with relative wording beside each claimed/lost cue |
 
 ### Direct require()
 None.
@@ -69,14 +70,14 @@ None.
 - **Placement is the prototype's**, screen y 0.643..0.738, chosen by the owner on 2026-09-07 over lifting it above the crosshair, which a four-line stack no longer fits above.
 - **The whole stack drops by `STACK_DROP` and Domination's capture bar lifts to meet it, on every device** — owner's call after playing Domination, where the bar sat square on the top line. Capturing pays a reward, so the two were on screen together on every capture. Positions are resolved by `resolveLayout()` rather than being constants.
 
-  **The test is `TouchEnabled`, and it is a test of WHICH HUD IS ON SCREEN, not of device class.** The floor is the whole constraint and the two HUDs differ: `ReworkedHunterGui.ScreenGui` paints from `0.777` of height, `HunterGuiMobile` from `0.830`. A tablet runs the mobile HUD and therefore wants the touch profile — which is why the first attempt, gated on `height >= 500`, was wrong twice over: it grouped tablets with desktop and read the wrong floor for them, and it excluded phones on the belief they had no room.
+  **The test is `TouchEnabled`, and it is a test of WHICH HUD IS ON SCREEN, not of device class.** The floor is the whole constraint and the two HUDs differ: `ReworkedHunterGui.ScreenGui` paints from `~0.806` of height (portrait ViewportFrame), `HunterGuiMobile` from `~0.819` (ModernPlayerPanel slab). A tablet runs the mobile HUD and therefore wants the touch profile — which is why the first attempt, gated on `height >= 500`, was wrong twice over: it grouped tablets with desktop and read the wrong floor for them, and it excluded phones on the belief they had no room.
 
   | profile | stack drop | bar y | verified on |
   |---|---|---|---|
   | desktop (`TouchEnabled` false) | 0.017 canvas units | 0.568 | 1658x678 |
   | touch (phones and tablets) | 0.075 canvas units | 0.5936 | 705x338 |
 
-  **Phones do have the room**, which is the correction that made the touch profile possible: measured on 705x338 there is 99.9px between the crosshair dot (ends 180.5) and the first *painted* mobile-HUD pixel — `AmmoCount` at 280.4, **not** the canvas top at 272.8 — against the 83px the bar, its gap and the four-line stack need. Same trap as the desktop HUD, where the bounding box hid 0.010 of height.
+  **Phones do have the room**, which is the correction that made the touch profile possible: measured on 705x338 there is 96.5px between the crosshair dot (ends 180.5) and the first *painted* mobile-HUD pixel — `ModernPlayerPanel` at 277.0, **not** the canvas top at 272.8 — against the 83px the bar, its gap and the four-line stack need. Same trap as the desktop HUD, where the bounding box hides dead space at the top.
 
   Both profiles were verified by applying the moves and re-measuring rather than by arithmetic. Desktop: bar `0.5321..0.6039`, main top `0.6154`, stack bottom `0.7714`. Touch: `+8.0px` below the crosshair dot, `+8.0px` below the bar, `+6.9px` above the HUD.
 

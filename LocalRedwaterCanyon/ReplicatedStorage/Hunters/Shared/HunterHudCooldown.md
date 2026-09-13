@@ -2,18 +2,19 @@
 tags: [shared, modulescript, client, ui, ability]
 path: game.ReplicatedStorage.Hunters.Shared.HunterHudCooldown
 type: ModuleScript
-lines: 276
+lines: 325
 ---
 
 # HunterHudCooldown
 
-Shared OOP controller for a hunter HUD's two **skill** cooldown tiles: the draining bar, the tenths countdown label, the countdown thread and the readiness pop. One instance per HUD, created once. Extracted from the four HUD clients on 2026-08-06 per `HUNTER_HUD_COOLDOWN_REFACTOR.md`, which is now closed.
+Shared OOP controller for a hunter HUD's two **skill** cooldown tiles: the draining bar, the tenths countdown label, the countdown thread, the readiness pop, and since the NEWGUI port (2026-09-13) the two-layer icon paint and the ready underline. One instance per HUD, created once. Extracted from the four HUD clients on 2026-08-06 per `HUNTER_HUD_COOLDOWN_REFACTOR.md`, which is now closed.
 
 ## What it does
-1. `.new(canvas, names)` — resolves both tiles off the canvas (`AbilityFrame → 1Ability/2Ability → MainFrame → {CooldownBar, Cooldown}`) and builds a [[HunterHudBump]] per tile. `names` is in **HUD order**, so `names[1]` is the Q slot and `names[2]` the E slot. Returns `nil` (with a warn naming the missing slot) if the authored shape is not there, so every call site guards with a plain `if cooldowns then`
-2. `:Start(name, seconds)` — retires whatever was running for that name, snaps the bar to empty, then Linear-tweens it to full over `seconds` while a `task.wait(0.05)` loop writes `%.1f` into the label. Pops the tile at natural expiry
-3. `:SetReady(name)` — retires the countdown and forces the resting state (bar full, label blank). **Does not pop**
-4. `:Destroy()` — retires every countdown and calls `Destroy` on each tile's bump, which writes the authored `BumpScale` value back. Idempotent, and `Start` / `SetReady` no-op afterwards
+1. `.new(canvas, names)` — resolves both tiles off the canvas (`AbilityFrame → 1Ability/2Ability → MainFrame → {CooldownBar, Cooldown}`), builds a [[HunterHudBump]] per tile, resolves the `ModernReadyAccent` underline (nil-tolerant) and wires the two-layer icon mirror. `names` is in **HUD order**, so `names[1]` is the Q slot and `names[2]` the E slot. Returns `nil` (with a warn naming the missing slot) if the authored shape is not there, so every call site guards with a plain `if cooldowns then`
+2. **Two-layer icon paint** (first-look fix, 2026-09-13). The skill fill is white and draws above the card, so a light glyph vanishes the moment the fill reaches it. Each tile carries two copies of the icon: `Ability` in the HUD text colour below the fill, and `ModernAbilityOver` in dark slate inside `CooldownBar.ModernFillContent` (a full-tile square pinned to the bottom, `RelativeXX`, clipped by the bar). The constructor mirrors `Ability.Image` onto the dark copy via a property-changed signal so no HUD client has to know the dark copy exists. A template without one (the ultimate tile, an older clone) simply has nothing to mirror. The countdown label is not layered: it is authored rotated and a rotated descendant is not clipped by its ancestor
+3. `:Start(name, seconds)` — retires whatever was running for that name, shows the bar from empty, hides the `ModernReadyAccent`, then Linear-tweens the bar to full over `seconds` while a `task.wait(0.05)` loop writes `%.1f` into the label. Pops the tile at natural expiry. The bar is bottom-anchored with a positive Y scale (`READY_SIZE` full, `START_SIZE` zero); before 2026-09-13 it was top-anchored with a negative scale, but a negative-height frame did not render mid-fill
+4. `:SetReady(name)` — retires the countdown and forces the resting state: bar **hidden** (`Visible = false`), label blank, `ModernReadyAccent` shown. A ready tile is the dark card with the light icon, exactly as the design place shows it. **Does not pop**
+5. `:Destroy()` — retires every countdown, disconnects every icon-mirror signal, and calls `Destroy` on each tile's bump, which writes the authored `BumpScale` value back. Idempotent, and `Start` / `SetReady` no-op afterwards
 
 ## Destroy isolates the two slots on purpose
 The tile loop takes **one `pcall` per tile**, and `self._tiles` is dropped *before* it runs rather than after. Both matter because `Destroy` is called from inside each HUD client's own `pcall` during a live hunter swap: a throw on slot 1 would otherwise abandon slot 2 — leaving its countdown thread running and its `BumpScale` off its authored value — with the error swallowed upstream and nothing on screen to show for it. Clearing `_tiles` first means a partial teardown still leaves the controller reading as dead instead of answering calls.

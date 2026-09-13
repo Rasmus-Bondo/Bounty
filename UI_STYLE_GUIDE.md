@@ -749,6 +749,13 @@ Dark translucent card, `bg (24,24,24) @ 0.65`, `UICorner 0.05`, `UIShadow`, an o
 pair, a title line in `(206,134,41)` primary/SemiBold, a body line in white, and a status line in
 `SUCCESS`. Slides/fades in over ~0.18–0.25s and holds. See `QuestCompleteNotification`.
 
+### 5.7 Match HUD tiles (pointer)
+
+The Redwater / Frostbite match HUD is **not** built from the recipes above. Its cards, slabs, fills
+and badges follow the Modern palette (§2.6), and the shape every hunter's HUD client relies on —
+the instance names, the frozen touch geometry, the paint-line floor — is the shape contract in
+`NEWGUI_PORT_SPEC.md` §3. Read that before adding or moving anything under `ReworkedHunterGui`.
+
 ---
 
 ## 6. Motion

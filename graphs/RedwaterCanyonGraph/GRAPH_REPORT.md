@@ -1,11 +1,11 @@
-# Graph Report - LocalRedwaterCanyon  (2026-09-09)
+# Graph Report - LocalRedwaterCanyon  (2026-09-13)
 
 ## Corpus Check
-- 251 files · ~322,432 words
+- 251 files · ~323,818 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 246 nodes · 768 edges · 17 communities detected
+- 246 nodes · 769 edges · 17 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -123,7 +123,7 @@ Cohesion: 1.0
 Nodes (1): SlowVignetteClient
 
 ## Knowledge Gaps
-- **49 isolated node(s):** `BoostConfig`, `BountyPlusConfig`, `FriendBonusConfig`, `QuestConfig`, `TitleStyles` (+44 more)
+- **48 isolated node(s):** `BoostConfig`, `BountyPlusConfig`, `FriendBonusConfig`, `QuestConfig`, `TitleStyles` (+43 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **Thin community `Chrono Networking`** (1 nodes): `Types`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -155,10 +155,10 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.131) - this node is a cross-community bridge._
 - **Why does `FPSRevolverClient` connect `Combat` to `Server Bootstrap`, `Server Bootstrap`, `Combat`?**
   _High betweenness centrality (0.125) - this node is a cross-community bridge._
-- **Why does `RoundController` connect `Server Bootstrap` to `Server Bootstrap`, `Combat`, `UI & HUD`?**
+- **Why does `TutorialDirector` connect `Server Bootstrap` to `Server Bootstrap`, `Combat`, `Combat`, `UI & HUD`?**
   _High betweenness centrality (0.091) - this node is a cross-community bridge._
 - **What connects `BoostConfig`, `BountyPlusConfig`, `FriendBonusConfig` to the rest of the system?**
-  _49 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _48 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Server Bootstrap` be split into smaller, more focused modules?**
   _Cohesion score 0.1 - nodes in this community are weakly interconnected._
 - **Should `Server Bootstrap` be split into smaller, more focused modules?**

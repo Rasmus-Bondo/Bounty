@@ -7,12 +7,12 @@ tags:
   - teams
 path: game.StarterPlayer.StarterPlayerScripts.DominationAudioClient
 type: LocalScript
-lines: 125
+lines: 155
 ---
 
 # DominationAudioClient
 
-The two Domination objective cues — a pad claimed, a pad lost. Built 2026-08-23.
+The Domination objective cues — a pad claimed, a pad lost — plus the centre-screen objective line. Built 2026-08-23; the line added 2026-09-13.
 
 ## What it does
 1. Reads the same workspace attributes the HUD does and fires nothing of its own, so there is no
@@ -28,6 +28,11 @@ The two Domination objective cues — a pad claimed, a pad lost. Built 2026-08-2
    pad on the map is neutral at the buzzer, so it otherwise fired three times in the opening seconds
    of a match (owner, 2026-08-23). Theirs to neutral is silent for a different reason: that is your
    own team half way through a steal, and the claim cue lands a few seconds later.
+3a. Each transition that plays a sound also fires a centre-screen line through `EyeCandy.AnnouncementEvent`
+   with an `OBJECTIVE` action. The wording is relative: "YOUR TEAM IS NOW CONTROLLING A POINT" (claimed),
+   "ENEMY TEAM IS NOW CONTROLLING A POINT" (taken from you), "YOUR TEAM LOST A POINT" (neutralised).
+   The `OBJECTIVE` action queues behind a kill card via AnnouncementController's notice lane, so a
+   capture reward and its line never draw over each other.
 4. Distinguishes `nil` from `""`. `EndRound` **removes** the `Dom*` attributes, and reading that
    teardown as "every pad went neutral" would play a lost cue for each pad you held as the match
    ends, so a nil forgets the pad instead of firing.
@@ -58,7 +63,9 @@ drives the HUD's CONTESTED readout; nothing here reads it.
 None
 
 ### BindableEvents
-None
+| Bindable | Direction | Other script |
+|----------|-----------|-------------|
+| `AnnouncementEvent` | → | [[AnnouncementController]] fires `OBJECTIVE` action with relative wording beside each claimed/lost cue; queued behind a kill card via the notice lane |
 
 ### Direct require()
 | Target | Function | Purpose |

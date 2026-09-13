@@ -71,7 +71,11 @@ which is the point.
   the two HUD templates and the quick-win GUIs hash equal. `DominationGui` differs only in
   pre-existing runtime leftovers (capture-bar text, sweep gate colours), not in the port's edits.
   `execute_luau` edits are not captured by the changelog hook — this entry is hand-written from
-  the spec.
+  the spec. Match-tier `/mirror` after the owner's sign-off (2026-09-13 evening): all 306 scripts
+  fold equal; the only drift is non-script — four unwired weapon-skin models
+  (`Hunters.*.Weapon.Viewmodel.Skins`: `MoltenGrudgekeeper`, `CinderSix-Shooter`, `InfernoHand`,
+  `EmberpiecerRifle`) exist in Redwater only, referenced by no script. Not part of this port;
+  push them with an `.rbxm` swap when they are wired.
 
 - **NEWGUI first look, round 1 (owner, 2026-09-13, both places).** Skill tiles fill **white**
   while loading and rest as the plain dark card with the light icon, as the design place shows

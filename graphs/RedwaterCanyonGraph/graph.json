@@ -11042,6 +11042,17 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "LocalRedwaterCanyon/StarterPlayer/StarterPlayerScripts/DominationAudioClient.md",
+      "weight": 1.0,
+      "_src": "dominationaudioclient",
+      "_tgt": "announcementcontroller",
+      "source": "announcementcontroller",
+      "target": "dominationaudioclient"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "LocalRedwaterCanyon/StarterPlayer/StarterPlayerScripts/Bram/GrudgekeeperClient.md",
       "weight": 1.0,
       "_src": "grudgekeeperclient",

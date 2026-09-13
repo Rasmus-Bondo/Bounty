@@ -2,7 +2,7 @@
 tags: [shared, modulescript, client, ui, mobile, layout]
 path: game.ReplicatedStorage.Hunters.Shared.HunterMobileSprintButton
 type: ModuleScript
-lines: 1026
+lines: 1063
 ---
 
 # HunterMobileSprintButton

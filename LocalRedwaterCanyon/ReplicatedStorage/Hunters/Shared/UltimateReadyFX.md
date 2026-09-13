@@ -2,21 +2,21 @@
 tags: [shared, modulescript, client, ui, ultimate]
 path: game.ReplicatedStorage.Hunters.Shared.UltimateReadyFX
 type: ModuleScript
-lines: 511
+lines: 524
 ---
 
 # UltimateReadyFX
 
-Shared OOP class that lights the "charged" state on a hunter's ultimate icon: at full charge a soft gold light breathes out from behind the whole ult tile. The look is selected by a named preset.
+Shared OOP class that lights the "charged" state on a hunter's ultimate icon: at full charge a soft gold light breathes out from behind the whole ult tile, and the `ModernReadyAccent` underline shows. The look is selected by a named preset.
 
 **Status: VERIFIED by the owner in a live playtest, 2026-08-06; the mobile mask verified the same way 2026-08-07.** The look is signed off. Two things those playtests do *not* cover are called out where they belong below — the stuck-glow defect (root cause still unknown) and phone performance of the 24-layer stack (never measured on a handset).
 
 ## What it does
-1. `.new(ultimateMainFrame)` — reads the active preset, then resolves `Background.UIStroke` (and `InnerStroke` only if the preset asks for it) plus every `UIShadow` under `ReadyGlow`, capturing each one's authored values. Returns `nil` (with a warn) if the `Background` is missing, the preset name is unknown, or there is nothing to light — so every call site can guard with a plain `if fx then`
+1. `.new(ultimateMainFrame)` — reads the active preset, then resolves `Background.UIStroke` (and `InnerStroke` only if the preset asks for it) plus every `UIShadow` under `ReadyGlow`, capturing each one's authored values. Also resolves the `ModernReadyAccent` underline (nil-tolerant, added by the NEWGUI port D2, 2026-09-13). Returns `nil` (with a warn) if the `Background` is missing, the preset name is unknown, or there is nothing to light — so every call site can guard with a plain `if fx then`
 2. Also captures `ReadyGlow` itself as the **glow mask**, along with the colour of `CooldownBar` to tint it with. Only when there are layers to mask
 3. `:SetReady(isReady)` — idempotent, and deliberately so: callers drive it from their charge handler, which fires several times a second while the bar fills
-4. `_ignite` — solves the per-layer falloff, sets the rest keyframe, then plays a `RepeatCount = -1, Reverses = true` Sine tween to the peak. Costs no per-frame Lua, which matters far more on phones than the extra tween objects do. Then makes the mask opaque, which clips the glow to a rim
-5. `_extinguish` — cancels the tweens and writes every captured authored value back, mask included. Restoring from the capture rather than from hardcoded values is load-bearing: the mobile HUD authors its strokes at transparency 0.25 / 0.40 where the desktop one authors 0
+4. `_ignite` — shows the `ModernReadyAccent` underline, solves the per-layer falloff, sets the rest keyframe, then plays a `RepeatCount = -1, Reverses = true` Sine tween to the peak. Costs no per-frame Lua, which matters far more on phones than the extra tween objects do. Then makes the mask opaque, which clips the glow to a rim
+5. `_extinguish` — hides the `ModernReadyAccent`, cancels the tweens and writes every captured authored value back, mask included. Restoring from the capture rather than from hardcoded values is load-bearing: the mobile HUD authors its strokes at transparency 0.25 / 0.40 where the desktop one authors 0
 6. `:Destroy()` — extinguishes and drops the captured references
 
 ## The glow is a stack of UIShadows, and that is not incidental
@@ -52,7 +52,7 @@ Verified numerically: 24 layers composite to 0.1000 against a 0.10 target, and 0
 `Heavy` is the original shipped look, retained only so the change is one word to reverse — it reads as a fat gold slab.
 
 ## Where it sits — an explicit design decision, not an accident
-The glow is hosted on `MainFrame.ReadyGlow`, an authored transparent Frame at **`ZIndex 0`**, present in both `ReworkedHunterGui.ScreenGui` and `HunterGuiMobile`. `MainFrame` orders its children `ReadyGlow 0 → CooldownBar 1 → Background 2 → Ability 3 → Cooldown 6`, and the ScreenGui is `ZIndexBehavior = Sibling`, which orders whole **subtrees** by their root's ZIndex. At 0 the glow sits beneath the charge fill, so it renders behind the **entire** tile: the interior keeps its authored dark, the ability glyph is untouched, and light escapes only around the outside. On mobile that last part needs a mask to be true — see "Behind the tile only works if the tile is opaque" below.
+The glow is hosted on `MainFrame.ReadyGlow`, an authored transparent Frame at **`ZIndex 0`**, present in both `ReworkedHunterGui.ScreenGui` and `HunterGuiMobile`. Since the NEWGUI port (2026-09-13, D3) `MainFrame` orders its children `ReadyGlow 0 → Background 5 → CooldownBar 6 → ModernReadyAccent 7 → Ability 8 → Cooldown 9 → CooldownFrame 10` (before the port the order was `ReadyGlow 0 → CooldownBar 1 → Background 2 → Ability 3`), and the ScreenGui is `ZIndexBehavior = Sibling`, which orders whole **subtrees** by their root's ZIndex. At 0 the glow sits beneath the card and the charge fill, so it renders behind the **entire** tile: the interior keeps its authored dark, the ability glyph is untouched, and light escapes only around the outside. The card has no strokes since that port (D4), so the stroke half of every preset finds nothing and only the layers light. On mobile that last part needs a mask to be true — see "Behind the tile only works if the tile is opaque" below.
 
 The alternative — hosting it inside `Background` (ZIndex 2), above the fill and below the glyph, so the tile *face* lights amber — is **measurably more visible** on Redwater's terrain and was still rejected: the brief is that the light must sit behind the ability icon, not tint the tile. Both were rendered over the live map and compared before the call was made. The consequence to respect is that this layer has less area to work with and is therefore an inherently quieter effect.
 

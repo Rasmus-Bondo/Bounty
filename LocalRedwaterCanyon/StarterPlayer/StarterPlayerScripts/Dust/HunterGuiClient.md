@@ -7,7 +7,7 @@ tags:
   - dust
 path: game.StarterPlayer.StarterPlayerScripts.Dust.HunterGuiClient
 type: LocalScript
-lines: 443
+lines: 424
 ---
 
 # HunterGuiClient
@@ -18,7 +18,7 @@ Client-side HUD controller for Dust: ammo counter, bullet icons, skill cooldown 
 
 1. Requires [[HunterClientRuntime]] + the [[Manifest|Dust Manifest]] and calls `HunterClientRuntime.Start(dustManifest)`; if not on Dust, the runtime returns nil and the script silently exits
 2. Aliases the 7 [[Manifest|manifest]]-declared ClientEvents from `runtime.ClientEvents`: AmmoChanged, Reloaded, DashCooldownStarted, Skill2CooldownStarted, DashRequested, Skill2Requested, FireRequested (the runtime owns ensure-or-create — no more inline bindable boilerplate)
-3. Clones the TemplateGameGui from HunterGui template into PlayerGui (or reuses existing)
+3. Clones the ScreenGui (desktop) or HunterGuiMobile (touch) template from StarterGui.ReworkedHunterGui into PlayerGui as TemplateGameGui, removing any other hero's GUI clone, then overwrites the three ability tile icons with Dust's art
 4. Manages ammo display: rich-text ammo counter with pulse animation on change, 6 bullet icons that shrink/fade on use and pop back on reload
 5. Manages skill cooldown UI: `DashCooldownStarted`/`Skill2CooldownStarted` forward their seconds into [[HunterHudCooldown]], which owns the animated fill bar, the countdown timer text, the countdown thread and the expiry pop for the Skill1 (dash) and Skill2 tiles. **The ultimate tile is not driven here**: Dust's charge state lives in `HighNoonChargeUI`, which owns that tile's pop
 6. Creates invisible mobile touch buttons overlaying each skill frame (only visible on `TouchEnabled` devices) that fire DashRequested / Skill2Requested

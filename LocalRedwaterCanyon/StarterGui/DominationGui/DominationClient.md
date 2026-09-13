@@ -7,7 +7,7 @@ tags:
   - gamemode
 path: game.StarterGui.DominationGui.DominationClient
 type: LocalScript
-lines: 453
+lines: 458
 ---
 
 # DominationClient
@@ -97,7 +97,8 @@ value is left alone** and is what a revert lands on, so there is no authored ins
 
 **The test is `TouchEnabled`, and it is a test of WHICH HUD IS ON SCREEN rather than of device
 class.** The floor is the whole constraint and the two HUDs differ: `ReworkedHunterGui.ScreenGui`
-paints from `0.777` of height, `HunterGuiMobile` from `0.830`. A tablet runs the mobile HUD and so
+paints from `~0.806` of height (portrait ViewportFrame), `HunterGuiMobile` from `~0.819`
+(ModernPlayerPanel slab). A tablet runs the mobile HUD and so
 wants the touch profile — which is why the first attempt, gated on `height >= 500`, was wrong twice:
 it grouped tablets with desktop and read the wrong floor for them, and it excluded phones on the
 belief they had no room.
@@ -108,9 +109,8 @@ belief they had no room.
 | touch (phones and tablets) | 0.5936 | 99.9 px | 83 px | 705x338 |
 
 Headroom is measured from the bottom of the crosshair **dot** to the first *painted* HUD pixel —
-`WeaponFrame.GunDisplayImage` on desktop, `AmmoCount` on mobile. Both HUD canvases have dead space at
-the top that the bounding box hides (8 px of it on the mobile canvas), so measure the paint, not the
-frame.
+the portrait ViewportFrame on desktop, `ModernPlayerPanel` on mobile. Both HUD canvases have dead
+space at the top that the bounding box hides, so measure the paint, not the frame.
 
 The bar **does** overlap the kill-skull band in both profiles, and that is the deliberate half of the
 trade: a capture and a kill rarely coincide, a capture and its own reward line always do.

@@ -2,12 +2,12 @@
 tags: [client, localscript, gui, bram]
 path: game.StarterPlayer.StarterPlayerScripts.Bram.BramHunterGuiClient
 type: LocalScript
-lines: 713
+lines: 697
 ---
 
 # BramHunterGuiClient
 
-Bram's HUD. GUI-only; input/combat logic lives in [[GrudgekeeperClient]]. Mirrors VesperHunterGuiClient, cloning `StarterGui.ReworkedHunterGui` as `BramGameGui` (`HunterGuiMobile` on touch, `ScreenGui` otherwise) and destroying other heroes' GUIs. Not the older `StarterGui.HunterGui.Template.TemplateGameGui`, which still exists on the pre-rework `Ultimate > FrameBorder` shape but is no longer cloned by anything. Exits early via [[HunterClientRuntime]] when the local player isn't Bram.
+Bram's HUD. GUI-only; input/combat logic lives in [[GrudgekeeperClient]]. Mirrors VesperHunterGuiClient, cloning `StarterGui.ReworkedHunterGui` as `BramGameGui` (`HunterGuiMobile` on touch, `ScreenGui` otherwise) and destroying other heroes' GUIs. Overwrites the ability tile icons and weapon display with Bram's art; on desktop, sizes a GunDisplayImage Fit box inside the weapon slab for the shotgun and shifts the AbilityFrame left; mobile hides the weapon image. Not the older `StarterGui.HunterGui.Template.TemplateGameGui`, which still exists on the pre-rework `Ultimate > FrameBorder` shape but is no longer cloned by anything. Exits early via [[HunterClientRuntime]] when the local player isn't Bram.
 
 ## What it does
 1. Ammo: 2 of the template's 6 bullet pips (spares hidden) + the pulsing RichText counter

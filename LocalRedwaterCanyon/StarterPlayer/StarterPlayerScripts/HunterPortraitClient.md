@@ -4,7 +4,7 @@ tags:
   - localscript
 path: game.StarterPlayer.StarterPlayerScripts.HunterPortraitClient
 type: LocalScript
-lines: 198
+lines: 197
 ---
 
 # HunterPortraitClient

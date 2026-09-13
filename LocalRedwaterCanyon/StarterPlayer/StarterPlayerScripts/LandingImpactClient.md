@@ -2,7 +2,7 @@
 tags: [client, localscript, camera, ui, feedback]
 path: game.StarterPlayer.StarterPlayerScripts.LandingImpactClient
 type: LocalScript
-lines: 174
+lines: 180
 ---
 
 # LandingImpactClient
@@ -11,7 +11,7 @@ Short camera kick when the local character lands, plus the HUD's landing shake, 
 
 ## What it does
 1. Tracks `workspace.CurrentCamera`, rebinding on `GetPropertyChangedSignal("CurrentCamera")` so a camera swap (kill cam, victory showcase) does not leave a stale reference.
-2. On `Humanoid.StateChanged`, records that the character was airborne on `Freefall`/`Jumping`, and fires the kick only on a `Landed` that follows one — `Landed` alone also fires for stepping off a kerb.
+2. On `Humanoid.StateChanged`, records that the character was airborne on `Freefall`/`Jumping`, and fires the kick only on a `Landed` that follows one — `Landed` alone also fires for stepping off a kerb. On the `Jumping` edge (not `Freefall`), also calls `HunterHudShake.Jump` for a take-off stretch on the HUD panels — stepping off a ledge enters `Freefall` first, so only real jumps stretch. Fortuna's air jump raises `Jumping` too, so her double jump stretches twice.
 3. `playCameraShake` connects a plain `RenderStepped` loop for `DURATION` (0.08s) and multiplies `camera.CFrame` by a random XY offset that fades to zero. An `isShaking` guard stops overlapping landings from stacking loops.
 4. `STRENGTH` is 0.0515, not either historical value. This effect was previously produced by two `JumpImpact` LocalScripts inside the deleted `StarterGui.HunterGui` folder, which fired **together** on every landing (0.045/0.08s and 0.025/0.07s) writing independent random offsets to the same camera. Their amplitudes added in quadrature, so a single emitter at 0.045 read noticeably weaker; `sqrt(0.045^2 + 0.025^2)` reproduces the shipped feel from one place.
 5. On the same `Landed` edge, calls `HunterHudShake.Play` with the local `PlayerGui` — the HUD bob and the mobile button pulse. **Landings only, never the dash below:** the dash already moves the camera twice (here and in FPSRevolverClient), and a HUD that shook on every dash in a chain would be the loudest thing on the screen.
@@ -43,4 +43,5 @@ None.
 | Target | Function | Purpose |
 |--------|----------|---------|
 | [[HunterGate]] | `HunterGate.IsHunter(player, "Dust")` | Gate the dash listener so only Dust wires it |
-| [[HunterHudShake]] | `HunterHudShake.Play(playerGui)` | The HUD half of the landing feedback |
+| [[HunterHudShake]] | `HunterHudShake.Jump(playerGui)` | The take-off stretch on the HUD panels — jump edge only |
+| [[HunterHudShake]] | `HunterHudShake.Play(playerGui)` | The HUD squash on landing |

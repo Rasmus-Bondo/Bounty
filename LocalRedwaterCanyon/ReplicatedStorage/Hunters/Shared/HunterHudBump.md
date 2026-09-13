@@ -2,7 +2,7 @@
 tags: [shared, modulescript, client, ui, ability, ultimate]
 path: game.ReplicatedStorage.Hunters.Shared.HunterHudBump
 type: ModuleScript
-lines: 127
+lines: 126
 ---
 
 # HunterHudBump
