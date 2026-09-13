@@ -1,9 +1,9 @@
 # NEWGUI port — moving the "Bounty - UI Update" redesign into Redwater Canyon and Frostbite Claim
 
-**Status:** plan, 2026-09-13. Nothing has been built. Surveyed live against three connected places:
-`Bounty - UI Update` (`place:112014319307228`, the design scratch place), Redwater Canyon and
-Frostbite Claim. Written so a cold session can build from it; the owner decisions in §2 must be
-answered first.
+**Status:** plan, 2026-09-13, **all twelve decisions resolved with the owner the same day (§2)**.
+Nothing has been built. Surveyed live against three connected places: `Bounty - UI Update`
+(`place:112014319307228`, the design scratch place), Redwater Canyon and Frostbite Claim. Written so
+a cold session can build from it without asking anything further.
 
 **Scope:** everything under `StarterGui.NEWGUI` in the design place (12 ScreenGuis), plus the
 owner's follow-up request: a jump effect on parts of the HUD when the player jumps and a bounce when
@@ -54,57 +54,52 @@ deltas onto it**. The design's genuinely new instances are cloned in from the de
 
 ---
 
-## 2. Decisions the owner must make before the build
+## 2. Decisions — resolved with the owner, 2026-09-13
 
-Recommended answer first. Everything in §3–§7 assumes the recommendation unless the owner says
-otherwise.
+The decision is the first sentence of each line. The alternatives that were on the table are kept
+in brackets so nobody re-opens them.
 
-- **D1 — HUD method:** merge design deltas onto the live `ReworkedHunterGui` templates
-  (recommended) vs import the design GUI and re-add the six missing pieces by hand. Merge keeps every
-  tuned stroke/glow/segment and every script contract; import re-creates ~40 instances blind.
-- **D2 — Readiness cue:** keep `ReadyGlow` + `BumpScale` (shipped, device-verified) **and** wire the
-  design's `ModernReadyAccent` underline as an extra element that shows only when ready
-  (recommended), vs replace the glow with the accent.
-- **D3 — Tile fill visibility:** in the design the coloured `CooldownBar` (pink `#F427BA` abilities,
-  yellow `#F6E525` ult) sits **behind** a 92 %-opaque `Background` (ZIndex 4 under 5), so the drain
-  reads as a faint tint — it renders that way in the design place today. While draining that is
-  hard to read mid-fight. Recommend: fill above the card, or card at ~0.35 transparency; owner looks
-  at the first draft and picks.
-- **D4 — Gold rope strokes:** drop them on the tiles and portrait as the design does (recommended,
-  it is the point of the restyle). They stay on every other panel in the game; note it in
-  UI_STYLE_GUIDE §10 as the sanctioned exception.
-- **D5 — XP bar + level in the match HUD:** include `PersistentXPBar` / `PlayerLevel`
-  (recommended — the design's signature addition), fed from `Player` attributes `XP` / `Level`
-  that `DataService` already sets (lines 660–661). The fill fraction needs XP-to-next-level; the
-  curve is duplicated three times across the project, so **publish a `LevelProgress` (0–1)
-  attribute from `ProgressionService`** rather than re-implement it a fourth time client-side.
-  Alternative: leave both out (the Update 3 level-up card already exists).
-- **D6 — Mobile button faces:** adopt opaque `#131415` faces and the SCOPE white ring
-  (recommended — translucent faces are what let the ult glow bleed through the FIRE button,
-  see the `ultimate ready glow` memory). It is a constant change in `HunterMobileFireButton`,
+- **D1 — HUD method: merge the design deltas onto the live `ReworkedHunterGui` templates.**
+  Keeps every tuned stroke/glow/segment and every script contract. [Rejected: import the design GUI
+  and re-add the six missing pieces by hand.]
+- **D2 — Readiness cue: keep `ReadyGlow` + `BumpScale` AND wire the design's `ModernReadyAccent`
+  underline as an extra element that shows only when ready.** [Rejected: accent replaces the glow;
+  glow only.]
+- **D3 — Cooldown fill: draw the coloured `CooldownBar` ABOVE the card.** In the design it sits
+  behind a 92 %-opaque `Background` (ZIndex 4 under 5) and reads as a faint tint; swap the order so
+  the drain is readable mid-fight. Ready = full colour. [Rejected: tint as designed; translucent
+  card; decide on the first draft.]
+- **D4 — Gold rope strokes: drop them on the tiles and portrait, as the design does.** Flat slate
+  cards with coloured accents. They stay on every other panel; record the exception in
+  UI_STYLE_GUIDE §10.
+- **D5 — XP bar and level: NOT ported.** `PersistentXPBar` and `PlayerLevel` stay in the design
+  place; the Update 3 level-up card remains the only in-match XP feedback. No `LevelProgress`
+  attribute, no `HunterHudProgress` module. [Rejected: server-fed bar; client-computed curve.]
+- **D6 — Mobile button faces: adopt the opaque `#131415` faces and the SCOPE white ring, all five
+  buttons.** A constant change in `HunterMobileFireButton` (FIRE keeps its red, transparency → 0),
   `HunterMobileJumpButton`, `HunterMobileReloadButton`, `HunterMobileSprintButton` (`INACTIVE_BG`
-  / `ACTIVE_BG` pair) and `VesperScopeController`, in **both** places — the modules rewrite the
-  colour at runtime, so editing the instances alone does nothing.
-- **D7 — DominationGui flat-black treatment:** the design turns the shadow images off and paints
-  bars/circles pure black; live has `#232323` plus gradients added 2026-08-29. Which is current
-  intent? Recommend: leave Domination alone unless the owner confirms the flat look.
-- **D8 — KilledByGui:** replace `KillCamClient`'s code-built `Title` / `KillerName` labels with the
-  authored card, keeping the `KillerTitle` cosmetic-title slot and the feed-clearance placement
-  (recommended). Alternative: add it as a separate element.
-- **D9 — AnnouncerGui:** what fires it, and where does it sit? The line is a Domination
-  objective event. Two viable homes: (a) a new label in `EyeCandy.Canvas` driven through the
-  existing `AnnouncementEvent` bindable — one announcement lane, no new ScreenGui; (b) its own
-  ScreenGui at the design's position (y ≈ 0.22, where it sits behind the bounty cards today).
-  Recommend (a). Feed: `workspace` attribute `DomOwner_<letter>` changes — the same source
-  `DominationAudioClient` already reacts to — with relative team wording ("YOUR TEAM" / "ENEMY
-  TEAM", never a colour name; see the relative-team-colours memory).
-  **Placement is the owner's call** — do not pick a band without sign-off.
-- **D10 — Jump / land bounce targets and amplitude:** proposal in §7; the owner tunes it in a live
-  playtest.
-- **D11 — BountyList restyle:** adopt (square portraits with a black ring and drop shadow,
-  narrower 0.242 canvas, name label raised)? Recommend yes.
-- **D12 — RoundStatus corners:** adopt the three `UICorner (0.15,0)` + opaque strokes. Trivial,
-  recommend yes.
+  / `ACTIVE_BG` pair) and `VesperScopeController`, in **both** places, plus the authored instances —
+  the modules rewrite the colour at runtime, so editing the instances alone does nothing.
+  [Rejected: keep translucent; FIRE alone translucent.]
+- **D7 — DominationGui: adopt the flat-black look, keeping the live gradients and stroke.** Shadow
+  images off, bars and pad circles black; the 2026-08-29 `ProgressText` / `BarFill` gradients and
+  the capture-bar stroke stay. [Rejected: leave live; full design look without gradients.]
+- **D8 — KilledByGui: replace `KillCamClient`'s code-built `Title` / `KillerName` labels with the
+  authored card**, keeping the `KillerTitle` cosmetic-title slot and the feed-clearance placement.
+  [Rejected: separate card; skip.]
+- **D9 — AnnouncerGui: fold into the EyeCandy announcement lane.** A new label in
+  `EyeCandy.Canvas` driven through the existing `AnnouncementEvent` bindable, fed by the
+  `DomOwner_<letter>` attribute changes `DominationAudioClient` already watches, with relative team
+  wording ("YOUR TEAM" / "ENEMY TEAM", never a colour name). No new ScreenGui. [Rejected: own
+  ScreenGui at the design's y ≈ 0.22; own ScreenGui placed later; skip.]
+- **D10 — Jump / land targets: the portrait panel, the weapon/ammo panel, and the ability +
+  ultimate tiles (scaled via their holders).** No whole-canvas lift on takeoff — the existing
+  landing bob stays as the only canvas motion. Amplitudes are tuned in a live playtest (§7).
+- **D11 — BountyList: full restyle.** Square portraits, black ring + drop shadow, 0.242 canvas,
+  raised name label, darker reward stroke; the live gilded stroke gradient and label shadow stay.
+  [Rejected: portrait style only; leave live.]
+- **D12 — RoundStatus: adopt all of it.** Three `UICorner (0.15, 0)` plus the opaque strokes and
+  backgrounds on the team scores. [Rejected: corners only; leave live.]
 
 ---
 
@@ -198,7 +193,7 @@ live `Horizontal` grid and only add the 0.015 padding; re-check the render.
 |---|---|---|
 | `MainFrame` | 0.64 @ (0.5, 0.5) | 0.63 @ (0.5, 0.47) |
 | `Background` | BgT 1, four strokes/shadows | `#181C26` BgT 0.08, ZIndex 5, `ModernCorner` 14 px, gradient `#252A36→#0E1118`; strokes removed (D4) |
-| `CooldownBar` | `#3F3F3F` opaque | `#F427BA` BgT 0.12, `ModernCorner` 10 px — see D3 for ZIndex |
+| `CooldownBar` | `#3F3F3F` opaque | `#F427BA` BgT 0.12, `ModernCorner` 10 px, **ZIndex raised above `Background`** (D3 — the design has it behind the card) |
 | `Ability` icon | 0.8 @ (0.5, 0.5), white | 0.68 @ (0.5, 0.46), `#E5E8EE` |
 | `CooldownFrame` (keybind badge) | 0.4 × 0.4 @ (0.5, 1), `#242424`, strokes, shadow | 0.38 × 0.30 @ (0.5, 0.94), `#0E1118`, `ModernCorner` 7 px, label Bold/Italic `#E5E8EE` |
 | `Cooldown` label, `BumpScale` | present | **absent — keep the live ones** |
@@ -220,20 +215,16 @@ Same as 4.3 with: `MainFrame` 0.7 @ (0.5, 0.47); `Background` `#282614`, gradien
 | `ViewportFrame` | (1, 0.996), BgT 1 | (0.94, 0.94) @ centre, `#1E2026` BgT 0.08, `ModernCorner` 12 px. The authored rig is a placeholder — `HunterPortraitClient` swaps it |
 | `PlayerName` | (0.383, 0.2) @ (0.618, 0.727), Regular, white, gradient + stroke | (0.43, 0.18) @ (0.53, 0.72), Bold/Italic, `#E5E8EE`, gradient white→`#585858`, no stroke |
 | **new** `ModernPlayerPanel` | — | (0.811, 0.68) @ (0.495, 0.54), ZIndex 1, `#0E1118` BgT 0.14, corner 12 px, gradient |
-| **new** `PersistentXPBar` | — | (0.521, 0.053) @ (0.61, 0.599), ZIndex 12, `#303541` BgT 0.18, `UICorner (1,0)`, `ClipsDescendants`; children `ImpactScale` (UIScale 1), `ProgressTrail` (0.6 × 1, white BgT 0.58), `Fill` (0.6 × 1, `#F6E525`, gradient →`#FFF582`) |
-| **new** `PlayerLevel` | — | (0.14, 0.18) @ (0.82, 0.72), ZIndex 12, "LV. 12", `#F6E525`, Bold/Italic, right-aligned |
+| `PersistentXPBar`, `PlayerLevel` | — | **not ported (D5)** — leave them in the design place |
 
-### 4.6 Data feed for the new elements (D5)
+### 4.6 Not ported: XP bar and level (D5)
 
-- `PlayerLevel.Text` ← `player:GetAttribute("Level")` (already published by `DataService`).
-- `PersistentXPBar.Fill.Size.X` ← a new `LevelProgress` attribute (0–1) published by
-  `ProgressionService` wherever it recomputes Level; `ProgressTrail` lags it by a tween. On the
-  `LevelUp` remote (already listened to by `LevelRewardClient`) pop `ImpactScale` 1.045 → Back/Out
-  1, exactly the tween the design's prototype controller used (design `AnnouncementController`
-  lines 422–424).
-- Owner: a small shared `HunterHudProgress` module in `Hunters.Shared`, started by each HUD client
-  after `getOrCreateGameGui()`, torn down in the hunter-switch teardown like everything else there.
-  It must find the HUD by **structure**, never by the name `In-gameGui` — that name will not exist.
+`PersistentXPBar` and `PlayerLevel` stay in the design place. If they are ever revisited, the feed
+is `Player` attributes `XP` / `Level` (published by `DataService`, lines 660–661) plus a
+server-published progress fraction — the level curve is already duplicated three times and must not
+get a client-side fourth copy. Without the bar, the design's `HealthBarFrame` (y 0.44) and
+`PlayerName` (y 0.72) leave a gap inside `ModernPlayerPanel`; re-centre the health bar on the first
+draft if it reads as empty.
 
 ### 4.7 Build method
 
@@ -285,10 +276,9 @@ Mobile-specific decisions while restyling:
 
 - `ModernWeaponPanel` must be re-fitted to the mobile `WeaponFrame` (a 0.245 × 0.36 box, very
   different from the desktop 0.21 × 0.82): size it to wrap `AmmoCount` + `BulletCounter` only.
-- `PersistentXPBar` and `PlayerLevel` must fit a 0.29-wide `PlayerFrame` beside a left-anchored
-  portrait; expect the bar to shrink to ~0.4 of the frame or move under the name. If it does not fit
-  a Galaxy A06 legibly, drop it on phones and keep it on tablets (`TABLET_MIN_SHORT_EDGE = 600`,
-  the one sanctioned test — UI_STYLE_GUIDE §4.6).
+- With the XP bar and level out (D5), the 0.29-wide `PlayerFrame` only has to fit the portrait,
+  the health bar, the name and `ModernPlayerPanel`. If anything ever needs a phone/tablet split,
+  the one sanctioned test is `TABLET_MIN_SHORT_EDGE = 600` (UI_STYLE_GUIDE §4.6).
 - Keep the card translucency (`CooldownBar` 0.45) — with the design's darker card colour the
   translucency may need re-tuning; D3 applies here too.
 - **Do not change the canvas shape.** If it must change, re-derive `CANVAS_PER_JUMP` in
@@ -309,8 +299,8 @@ Verification for both templates — the §9 order of UI_STYLE_GUIDE, and specifi
    `hd_1080`. `orientation` only on the phone/tablet entries.
 2. Geometry assertions at 800 × 360 and 1024 × 768: no tile overlaps the cluster (FIRE / SPRINT
    rects vs the ability row rect, in absolute px — the two GUIs are in the same `None` inset space);
-   `PlayerName.TextBounds` inside `ModernPlayerPanel`; XP bar inside the panel; `AmmoCount` not
-   clipped by `ModernWeaponPanel`; nothing off-screen.
+   `PlayerName.TextBounds` inside `ModernPlayerPanel`; `AmmoCount` not clipped by
+   `ModernWeaponPanel`; nothing off-screen.
 3. Mid-match hunter switch (`HunterSwitchClient`) rebuilds the HUD from the template — confirm the
    clone/rename contract still resolves every §3 name for all four hunters.
 4. Owner sign-off on the visual **before** vault, graph or changelog work.
@@ -334,14 +324,23 @@ the new template in UI_STYLE_GUIDE §7. Keep the "YOU DIED" fallback text.
 
 ### 6.2 `AnnouncerGui` → objective line (D9)
 
+Home (D9): a new label in `EyeCandy.Canvas`, styled from the design's `AnnouncementText` (+ its
+`UIShadow`), shown through the existing `AnnouncementEvent` bindable so it queues with the kill and
+bounty cards instead of drawing over them. `AnnouncementController` already runs the Domination
+touch test against the capture bar (its lines ~94–185, "the two are one layout") — the new line
+joins that stack rather than adding a band.
+
 Feed: `workspace.AttributeChanged` for `DomOwner_<letter>` (A/B/C), resolved through `TeamView`
 for relative wording — the exact pattern `DominationAudioClient` uses (lines 53–121). Copy:
-"YOUR TEAM IS NOW CONTROLLING A POINT" / "ENEMY TEAM IS NOW CONTROLLING A POINT" (and the losing
-side's line — owner to confirm wording). Home: per D9. Gate on `workspace.Gamemode == "domination"`
-and `RoundActive`. If it becomes its own ScreenGui it needs a `DisplayOrder` from the registry
-(0 collides with the hunter HUD) and an entry in `RoundClientController.SWEEP_EXEMPT_GUI_NAMES`
-if it is authored `Enabled = false` and shown by its controller — the same trap `DominationGui`,
-`MapVoteGui` and `TutorialGui` each hit.
+"YOUR TEAM IS NOW CONTROLLING A POINT" / "ENEMY TEAM IS NOW CONTROLLING A POINT"; the losing
+side's line is the owner's wording call on the first draft. Gate on
+`workspace.Gamemode == "domination"` and `RoundActive`. Emit from the client that already watches
+the attribute (`DominationAudioClient`, or a sibling `DominationAnnounceClient` if the audio script
+should stay single-purpose) by firing `AnnouncementEvent` — no server change.
+
+`AnnouncerGui` itself is not imported. (Had it become its own ScreenGui it would have needed a
+`DisplayOrder` from the registry and a `RoundClientController.SWEEP_EXEMPT_GUI_NAMES` entry — the
+trap `DominationGui`, `MapVoteGui` and `TutorialGui` each hit.)
 
 ### 6.3 `BountyListGui` (D11) — property merge, keep the live script
 
@@ -362,10 +361,11 @@ Design deltas (apply to all three card holders; the live-only `UIGradient`/`UISh
 Verify at 800 × 360 in TDM and Domination (the strip's phone placement was an owner bug report on
 2026-09-07).
 
-### 6.4 `DominationGui` (D7) — only if confirmed
+### 6.4 `DominationGui` (D7) — confirmed: flat black, live gradients stay
 
 `BackgroundShadow.ImageTransparency` 0 → 1 (three of them), `BackgroundBar` `#232323` → `#000000`
-(two), `CapturePointClaimed.<pad>.Circle` white → black (three). Nothing else differs.
+(two), `CapturePointClaimed.<pad>.Circle` white → black (three). The live-only `ProgressText` /
+`BarFill` gradients and the capture-bar `UIStroke` are kept. Nothing else differs. Both places.
 
 ### 6.5 `RoundStatusGui` (D12)
 
@@ -400,17 +400,23 @@ subliminal (0.012 read as too loud in a playtest).
 **Proposal.**
 
 1. **Jump** — new `HunterHudShake.Jump(playerGui)`, called from `LandingImpactClient` when the
-   state becomes `Jumping` (not `Freefall`: stepping off a ledge is not a jump). Motion: the canvas
-   lifts (negative Y, ~0.006) over ~0.12 s and eases back over ~0.2 s; the portrait and weapon panel
-   stretch to ~1.04 on their own `UIScale` and settle. No button motion on takeoff — the thumb is on
-   the button.
-2. **Land** — keep `Play` as the base, add a heavier squash on the same two elements
+   state becomes `Jumping` (not `Freefall`: stepping off a ledge is not a jump). Motion: the three
+   target groups below stretch to ~1.04 on their `ImpactScale` over ~0.12 s and settle Back/Out over
+   ~0.2 s. **No canvas motion on takeoff** (D10) and no button motion — the thumb is on the button.
+2. **Land** — keep `Play` as the base (canvas bob + button dip), add a squash on the same targets
    (`ImpactScale` 0.94 → Back/Out to 1) and let the owner raise `BOB` if the bounce should read
    louder. Bunny-hop restarts the motion rather than stacking (existing `activeId` pattern).
-3. **Targets** — author `ImpactScale` UIScales on `PlayerFrame.PlayerHunterFrame` and
-   `WeaponFrame.ModernWeaponPanel` in both templates (and Frostbite). Not on the ability tiles: they
-   carry `BumpScale`, and only one UIScale per object applies. Not on `Canvas` (§5 rule). The XP
-   bar's `ImpactScale` is left to the level-up pop.
+3. **Targets (D10)** — author `ImpactScale` UIScales, in both templates and Frostbite, on:
+   `PlayerFrame.PlayerHunterFrame` (portrait + `ModernAccent`); `WeaponFrame` itself (so
+   `ModernWeaponPanel`, `AmmoCount`, `BulletCounter` and `GunDisplayImage` move as one — they are
+   siblings, not children of the panel); and the tile **holders** `AbilityFrame.1Ability`,
+   `AbilityFrame.2Ability` and `UltimateFrame` — never `MainFrame`, which owns `BumpScale` (only one
+   UIScale per object applies). Never `Canvas` (§5 rule).
+   *Touch hazard:* `HunterMobileSprintButton` positions the ability row off measured tile and tag
+   rects, and `HunterIntroTags` sizes tags off tile `AbsoluteSize` — both include ancestor UIScales,
+   so a 6 % squash on the holders can make the row step or the tags flicker for ~0.3 s. Verify on a
+   phone in the first playtest; if it steps, exclude the tile holders on touch (`TouchEnabled`
+   branch) and keep them on desktop.
 4. **Fortuna's double jump** — verify whether her air jump raises `Humanoid` `Jumping`; if not,
    `CardsClient` calls `Jump` itself (it already owns her touch-jump subscription).
 5. **Constraints** — cluster button scales must stay inside the 0.38 s window before
@@ -420,7 +426,7 @@ subliminal (0.012 read as too loud in a playtest).
    (iterate-against-live-playtest memory). Record the final numbers in the module header, once.
 
 Files: `HunterHudShake` (new `Jump`, second surface), `LandingImpactClient` (hook), both HUD
-templates (two authored UIScales), possibly `CardsClient`. Vault: `HunterHudShake.md`,
+templates (five authored UIScales each), possibly `CardsClient`. Vault: `HunterHudShake.md`,
 `LandingImpactClient.md`.
 
 ---
@@ -430,11 +436,11 @@ templates (two authored UIScales), possibly `CardsClient`. Vault: `HunterHudShak
 | Phase | Work | Gate |
 |---|---|---|
 | 0 | Owner answers D1–D12 | — |
-| 1 | Quick wins, each with a device matrix: §6.5 RoundStatus, §6.3 BountyList, §6.6 button constants (both places) | screenshots at the four presets |
-| 2 | §4 desktop HUD restyle on `ReworkedHunterGui.ScreenGui` (Redwater), `LevelProgress` attribute + `HunterHudProgress`, paint-line constants | **owner sign-off on the visual** |
+| 1 | Quick wins, each with a device matrix: §6.5 RoundStatus, §6.3 BountyList, §6.4 Domination flat-black, §6.6 button constants (both places) | screenshots at the four presets |
+| 2 | §4 desktop HUD restyle on `ReworkedHunterGui.ScreenGui` (Redwater), paint-line constants | **owner sign-off on the visual** |
 | 3 | §5 mobile twin on `HunterGuiMobile` | device matrix + geometry asserts + tablet row scale |
 | 4 | §7 jump / land | live playtest tune |
-| 5 | §6.1 KilledBy into the kill cam; §6.2 objective line | owner placement sign-off |
+| 5 | §6.1 KilledBy into the kill cam; §6.2 objective line in EyeCandy | owner wording sign-off |
 | 6 | Frostbite: re-run the restyle script; `/mirror`; vault `.md` updates; `python update_redwater_canyon_graph.py`; UI_STYLE_GUIDE additions; `/changelog` by hand for the `execute_luau` edits; `/preflight`; publish all three places together | — |
 
 Vault files that will need their "What it does" or Connections updated (all exist today):
@@ -443,8 +449,10 @@ Vault files that will need their "What it does" or Connections updated (all exis
 `KillCamClient.md`, `HunterPortraitClient.md`, `Dust/HunterGuiClient.md`,
 `Fortuna/CardsHunterGuiClient.md`, `Vesper/VesperHunterGuiClient.md`, `Bram/BramHunterGuiClient.md`;
 `StarterGui/DominationGui/DominationClient.md`, `EyeCandy/AnnouncementController.md`,
-`BountyListGui/BountyListClient.md`. New `.md` only for genuinely new scripts (`HunterHudProgress`,
-an announcer controller if D9 picks (b)). No wikilinks for structure-matching or attribute reads.
+`BountyListGui/BountyListClient.md`, `StarterPlayerScripts/DominationAudioClient.md` (gains the
+`AnnouncementEvent` bindable connection if it emits the objective line). New `.md` only if a
+genuinely new script appears (a `DominationAnnounceClient`). No wikilinks for structure-matching or
+attribute reads.
 
 UI_STYLE_GUIDE additions: the Modern palette as a token block in §2 (slate/yellow/pink/text) with
 the rule for where it applies (match HUD, EyeCandy announcement, level card) and where it does not
@@ -457,7 +465,9 @@ GUI in the §7 registry; a pointer from §5 to the §3 shape contract in this fi
 
 - `Enabled` / `Visible` preview states on every design GUI (§1).
 - `In-gameGui` ScreenGui properties: `DisplayOrder 20`, `DeviceSafeInsets`, `VisualStyle` /
-  `ModernReworkVersion` attributes, the placeholder rig in the viewport.
+  `ModernReworkVersion` attributes, the placeholder rig in the viewport, and
+  `PlayerFrame.PersistentXPBar` / `PlayerLevel` (D5).
+- `AnnouncerGui` as an instance — only its label style is copied into `EyeCandy.Canvas` (D9).
 - The design's stale `StunnedGui`, `DominationGui` (unless D7), and mobile-button instance copies
   (`MobileHunterHudCompanion` attribute).
 - The design place itself is never edited, published or mirrored (ui-design-place memory).
