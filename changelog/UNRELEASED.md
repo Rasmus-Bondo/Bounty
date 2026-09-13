@@ -74,7 +74,9 @@ which is the point.
   the spec.
 
 - **NEWGUI first look, round 1 (owner, 2026-09-13, both places).** Skill tiles fill **white**
-  with a **black** (`SLATE_900`) ready underline; pink is gone from the tiles: `CooldownBar` is now bottom-anchored with a positive
+  while loading and rest as the plain dark card with the light icon, as the design place shows
+  them (`HunterHudCooldown.rest` hides the bar; authored hidden). Ready underline **black**
+  (`SLATE_900`); pink is gone from the tiles. `CooldownBar` is now bottom-anchored with a positive
   height (`HunterHudCooldown.READY_SIZE` +1 — a negative-height frame did not render mid-fill),
   clips a dark icon copy (`ModernFillContent.ModernAbilityOver`, mirrored off `Ability.Image` by
   `HunterHudCooldown`) so the glyph reads on both halves, and the countdown label gets a dark

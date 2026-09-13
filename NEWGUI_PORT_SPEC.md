@@ -16,8 +16,10 @@ the same day (§2). Surveyed live against three connected places: `Bounty - UI U
 (`place:112014319307228`, the design scratch place), Redwater Canyon and Frostbite Claim.
 
 **First-look fixes, 2026-09-13 (owner, after the PC / iPhone 7 / iPad sim look):** (1) the skill
-fill is **white** and the ready underline **black** (`SLATE_900`, matching the keybind badge; pink is
-gone from the skill tiles) — and the tile is painted in two layers so
+fill is **white** and shows **only while loading**: a ready tile is the dark card with the light icon,
+exactly as the design place shows it (`HunterHudCooldown.rest` hides the bar; the template authors it
+hidden). The ready underline is **black** (`SLATE_900`; pink is gone from the skill tiles) — and
+while loading the tile is painted in two layers so
 the glyph reads on both halves: `Ability` light below the fill, a dark `ModernAbilityOver` clipped
 inside `CooldownBar.ModernFillContent`, mirrored by `HunterHudCooldown`; the countdown label keeps
 a single light copy with a dark text stroke (it is authored rotated, and rotated descendants are

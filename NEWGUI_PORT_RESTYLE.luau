@@ -962,7 +962,9 @@ end
 -- First-look fixes (owner, 2026-09-13, after the build above). Idempotent; run AFTER "hud" in
 -- each match place. Records what was changed by hand in Studio that day so a rebuild lands on
 -- the signed-off state:
---   * skill tiles: WHITE fill with a BLACK (SLATE_900) ready underline, drawn with a positive-height
+--   * skill tiles: a READY tile is the dark card with the light icon, as in the design place (the
+--     fill is hidden at rest by HunterHudCooldown and authored hidden here). While LOADING a WHITE
+--     fill rises, with a BLACK (SLATE_900) ready underline, drawn with a positive-height
 --     CooldownBar anchored to the tile's bottom (HunterHudCooldown READY_SIZE is +1 since the
 --     same day; a negative-height frame did not render mid-fill), ClipsDescendants on, and a
 --     dark copy of the icon INSIDE the fill (CooldownBar.ModernFillContent.ModernAbilityOver,
@@ -1011,6 +1013,7 @@ local function firstLookFixes()
 			bar.Size = UDim2.fromScale(1, 1)
 			bar.BackgroundColor3 = WHITE
 			bar.ClipsDescendants = true
+			bar.Visible = false -- a loading indicator only; HunterHudCooldown shows it between Start and expiry
 			mf.Background.ZIndex = 5
 			icon.ZIndex = 6
 			icon.ImageColor3 = TEXT

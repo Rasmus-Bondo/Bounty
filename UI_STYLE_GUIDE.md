@@ -209,7 +209,7 @@ the EyeCandy announcement and the level card. **Lobby panels stay brown/gold (§
 | `TEXT` | `#E5E8EE` | `229, 232, 238` | Every HUD glyph and label; ability icons are tinted to it |
 | `YELLOW` | `#F6E525` | `246, 229, 37` | Ultimate fill, ultimate badge text, the portrait / slab accents. Same yellow as the EyeCandy `+CASH` line |
 | `PINK` | `#F427BA` | `244, 39, 186` | The EyeCandy `+XP` line only. It was the skill fill and ready underline until the owner's first look (2026-09-13); the skill tiles no longer use it |
-| Skill fill | `#FFFFFF` | `255, 255, 255` | The skill cooldown fill (white since the owner's first look, 2026-09-13; it was pink). The icon is `TEXT` under the fill and `SLATE_900` where the fill covers it — the two-layer recipe is documented in `HunterHudCooldown`'s header. The skill ready underline is `SLATE_900`; the ultimate's stays `YELLOW` |
+| Skill fill | `#FFFFFF` | `255, 255, 255` | The skill cooldown fill (white since the owner's first look, 2026-09-13; it was pink), shown only while loading — a ready skill tile is the plain dark card with the light icon, as in the design place. The icon is `TEXT` under the fill and `SLATE_900` where the fill covers it — the two-layer recipe is documented in `HunterHudCooldown`'s header. The skill ready underline is `SLATE_900`; the ultimate's stays `YELLOW` |
 | `HEALTH_BACK` | `#080A0F` | `8, 10, 15` | Health-bar backing |
 | Health segments | `#FFFFFF` · `#BE3037` · `#343842` | — | Full · damage trail · empty (`SegmentedHealthManager` constants match) |
 | `BUTTON_FACE` | `#131415` | `19, 20, 21` | The five touch cluster buttons, opaque (FIRE keeps its red) |
@@ -217,8 +217,8 @@ the EyeCandy announcement and the level card. **Lobby panels stay brown/gold (§
 Corners on the HUD are **offset** radii: 14 px card, 18 px ultimate card, 10 px fill, 7 px badge,
 12 px slab / viewport, 3 px accent lines, 2 px health segment. Type is the primary family in
 **Bold Italic** for the ammo count, the player name and the keybind badges. The cooldown fill
-draws **above** the card (D3): ready = a full white skill tile / full yellow ultimate tile, cooling =
-the colour draining upward off the slate. The skill `CooldownBar` is bottom-anchored with a
+draws **above** the card (D3): a ready skill tile is the dark card (the fill is hidden at rest), a
+full-charge ultimate is a full yellow tile, cooling = the colour rising up the slate. The skill `CooldownBar` is bottom-anchored with a
 positive height and `ClipsDescendants` on, clipping the dark icon copy; the ultimate's bar keeps
 the older negative-height convention. A `ModernReadyAccent` underline is toggled `Visible` by `HunterHudCooldown` and
 `UltimateReadyFX` and is never visible on a tile that is not ready.
