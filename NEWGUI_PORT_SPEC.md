@@ -15,6 +15,24 @@ sweep cannot force-show it; the health-segment colours followed the design and t
 the same day (§2). Surveyed live against three connected places: `Bounty - UI Update`
 (`place:112014319307228`, the design scratch place), Redwater Canyon and Frostbite Claim.
 
+**First-look fixes, 2026-09-13 (owner, after the PC / iPhone 7 / iPad sim look):** (1) the skill
+fill is **white** — pink stays on the ready underline — and the tile is painted in two layers so
+the glyph reads on both halves: `Ability` light below the fill, a dark `ModernAbilityOver` clipped
+inside `CooldownBar.ModernFillContent`, mirrored by `HunterHudCooldown`; the countdown label keeps
+a single light copy with a dark text stroke (it is authored rotated, and rotated descendants are
+not clipped). The skill `CooldownBar` is now bottom-anchored with a **positive** height
+(`READY_SIZE` +1; a negative-height frame did not render mid-fill) — the one touch-geometry
+exception on an existing instance, same resolved rect at rest. The ultimate tile is untouched.
+(2) Vesper's rifle and Bram's shotgun Fit boxes sit inside the desktop slab
+(`VesperHunterGuiClient` / `BramHunterGuiClient`: 0.39 × 0.56 at (0.295, 0.56); rifle aspect 2.4).
+(3) In Domination `BountyListClient` measures `DominationGui.CapturePointClaimed` and hangs the
+strip 2 px under its bottom edge on every screen (the names ran through the dials everywhere,
+worst on 4:3). (4) The mobile `ModernPlayerPanel` slab is flush with the portrait (0.76 tall at
+y 0.5) so its corner no longer peeks out above it — a port-created instance, so no frozen
+geometry moved. Applied by hand in both places and recorded as the `firstlook` part of
+`NEWGUI_PORT_RESTYLE.luau`. Verified by edit-mode captures at 1920×1080, 1664×681, iPhone 7,
+Galaxy A06, iPad 6 and Tab A8; the vault / graph work stays held for the second look.
+
 **Scope:** everything under `StarterGui.NEWGUI` in the design place (12 ScreenGuis), plus the
 owner's follow-up request: a jump effect on parts of the HUD when the player jumps and a bounce when
 they land (§7).

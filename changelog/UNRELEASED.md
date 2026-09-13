@@ -73,4 +73,18 @@ which is the point.
   `execute_luau` edits are not captured by the changelog hook — this entry is hand-written from
   the spec.
 
+- **NEWGUI first look, round 1 (owner, 2026-09-13, both places).** Skill tiles fill **white**
+  (pink stays on the ready underline): `CooldownBar` is now bottom-anchored with a positive
+  height (`HunterHudCooldown.READY_SIZE` +1 — a negative-height frame did not render mid-fill),
+  clips a dark icon copy (`ModernFillContent.ModernAbilityOver`, mirrored off `Ability.Image` by
+  `HunterHudCooldown`) so the glyph reads on both halves, and the countdown label gets a dark
+  text stroke. Ultimate tile untouched. Vesper's rifle / Bram's shotgun Fit boxes moved inside
+  the desktop slab (`VesperHunterGuiClient` / `BramHunterGuiClient`). `BountyListClient` in
+  Domination measures `DominationGui.CapturePointClaimed` and hangs the strip 2px under it
+  (names ran through the dials on every screen). Mobile `ModernPlayerPanel` flush with the
+  portrait (0.76 tall at y 0.5). Recorded as the `firstlook` part of `NEWGUI_PORT_RESTYLE.luau`.
+  Revert: the four scripts to their 2026-09-13 morning versions and re-run the port's `hud` part
+  (the instances are only recoverable from the place version). Edit-mode captures at six
+  viewports; not playtested. Still awaiting the owner's second look.
+
 ## Fixed

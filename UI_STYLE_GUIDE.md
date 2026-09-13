@@ -208,7 +208,8 @@ the EyeCandy announcement and the level card. **Lobby panels stay brown/gold (§
 | `ULT_CARD` | `#282614` | `40, 38, 20` | Ultimate card body (gradient `#363114 → #0E1118`) |
 | `TEXT` | `#E5E8EE` | `229, 232, 238` | Every HUD glyph and label; ability icons are tinted to it |
 | `YELLOW` | `#F6E525` | `246, 229, 37` | Ultimate fill, ultimate badge text, the portrait / slab accents. Same yellow as the EyeCandy `+CASH` line |
-| `PINK` | `#F427BA` | `244, 39, 186` | Ability fill and ready underline. Same pink as the EyeCandy `+XP` line |
+| `PINK` | `#F427BA` | `244, 39, 186` | The ready underline on the skill tiles. Same pink as the EyeCandy `+XP` line |
+| Skill fill | `#FFFFFF` | `255, 255, 255` | The skill cooldown fill (white since the owner's first look, 2026-09-13; it was pink). The icon is `TEXT` under the fill and `SLATE_900` where the fill covers it — the two-layer recipe is documented in `HunterHudCooldown`'s header |
 | `HEALTH_BACK` | `#080A0F` | `8, 10, 15` | Health-bar backing |
 | Health segments | `#FFFFFF` · `#BE3037` · `#343842` | — | Full · damage trail · empty (`SegmentedHealthManager` constants match) |
 | `BUTTON_FACE` | `#131415` | `19, 20, 21` | The five touch cluster buttons, opaque (FIRE keeps its red) |
@@ -216,8 +217,10 @@ the EyeCandy announcement and the level card. **Lobby panels stay brown/gold (§
 Corners on the HUD are **offset** radii: 14 px card, 18 px ultimate card, 10 px fill, 7 px badge,
 12 px slab / viewport, 3 px accent lines, 2 px health segment. Type is the primary family in
 **Bold Italic** for the ammo count, the player name and the keybind badges. The cooldown fill
-draws **above** the card (D3): ready = a full-colour tile, cooling = the colour draining upward
-off the slate. A `ModernReadyAccent` underline is toggled `Visible` by `HunterHudCooldown` and
+draws **above** the card (D3): ready = a full white skill tile / full yellow ultimate tile, cooling =
+the colour draining upward off the slate. The skill `CooldownBar` is bottom-anchored with a
+positive height and `ClipsDescendants` on, clipping the dark icon copy; the ultimate's bar keeps
+the older negative-height convention. A `ModernReadyAccent` underline is toggled `Visible` by `HunterHudCooldown` and
 `UltimateReadyFX` and is never visible on a tile that is not ready.
 
 **On touch the geometry is frozen.** `HunterGuiMobile` took this palette as paint only — every

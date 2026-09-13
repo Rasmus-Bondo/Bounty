@@ -25,6 +25,8 @@
 		             measures rects / TextFits / containment, stores the geometry under
 		             __NewGuiStaging.Proof.<template>.<preset> on the first run and asserts
 		             equality on the next (spec 5.2). config.preset names the preset.
+		"firstlook"  The owner's first-look fixes of 2026-09-13 (white skill fill with the two-layer
+		             icon, mobile slab flush with the portrait). Run AFTER "hud"; needs no staging.
 		"cleanup"    Deletes ReplicatedStorage.__NewGuiStaging and any proof harness.
 
 	Everything except "cleanup" needs ReplicatedStorage.__NewGuiStaging, imported from
@@ -60,7 +62,7 @@ local SLATE_800 = hex("181C26")
 local SLATE_700 = hex("252A36")
 local TEXT = hex("E5E8EE")
 local YELLOW = hex("F6E525")
-local PINK = hex("F427BA")
+local PINK = hex("F427BA") -- ready underline only since the first look; the skill fill is WHITE (firstLookFixes)
 local ULT_CARD = hex("282614")
 local HEALTH_BACK = hex("080A0F")
 local VIEWPORT_BG = hex("1E2026")
@@ -957,6 +959,81 @@ local function proof()
 	end
 end
 
+-- First-look fixes (owner, 2026-09-13, after the build above). Idempotent; run AFTER "hud" in
+-- each match place. Records what was changed by hand in Studio that day so a rebuild lands on
+-- the signed-off state:
+--   * skill tiles: WHITE fill (pink stays on the ready underline), drawn with a positive-height
+--     CooldownBar anchored to the tile's bottom (HunterHudCooldown READY_SIZE is +1 since the
+--     same day; a negative-height frame did not render mid-fill), ClipsDescendants on, and a
+--     dark copy of the icon INSIDE the fill (CooldownBar.ModernFillContent.ModernAbilityOver,
+--     mirrored off Ability.Image by HunterHudCooldown) so the glyph reads on both halves. The
+--     countdown label stays single (it is authored rotated, and rotated descendants are not
+--     clipped) and gets a dark text stroke instead.
+--   * the mobile ModernPlayerPanel slab is flush with the portrait's top and bottom (0.76 tall
+--     at y 0.5) so its corner no longer peeks out above the portrait.
+--   * TOUCH GEOMETRY EXCEPTIONS, owner-approved: CooldownBar's AnchorPoint/Position/Size on the
+--     two skill tiles (same resolved rect at rest), and the slab (a port-created instance).
+-- The Vesper / Bram gun boxes and the Domination bounty placement live in their scripts.
+local function firstLookFixes()
+	local WHITE = Color3.fromRGB(255, 255, 255)
+	local sg = game.StarterGui.ReworkedHunterGui
+	for _, tname in ipairs({ "ScreenGui", "HunterGuiMobile" }) do
+		local canvas = sg[tname].Canvas
+		for _, holder in ipairs({ "1Ability", "2Ability" }) do
+			local mf = canvas.AbilityFrame[holder].MainFrame
+			local icon, label, bar = mf.Ability, mf.Cooldown, mf.CooldownBar
+			local content = bar:FindFirstChild("ModernFillContent")
+			if not content then
+				content = Instance.new("Frame")
+				content.Name = "ModernFillContent"
+				content.BackgroundTransparency = 1
+				content.BorderSizePixel = 0
+				content.SizeConstraint = Enum.SizeConstraint.RelativeXX -- the bar's width never changes
+				content.Size = UDim2.fromScale(1, 1)
+				content.AnchorPoint = Vector2.new(0.5, 1)
+				content.Position = UDim2.fromScale(0.5, 1)
+				content.Parent = bar
+				log("%s/%s: +ModernFillContent", tname, holder)
+			end
+			local iconOver = content:FindFirstChild("ModernAbilityOver")
+			if not iconOver then
+				iconOver = icon:Clone()
+				iconOver.Name = "ModernAbilityOver"
+				iconOver.Parent = content
+				log("%s/%s: +ModernAbilityOver", tname, holder)
+			end
+			local stale = content:FindFirstChild("ModernCooldownOver")
+			if stale then
+				stale:Destroy()
+			end
+			bar.AnchorPoint = Vector2.new(0.5, 1)
+			bar.Position = UDim2.fromScale(0.5, 1)
+			bar.Size = UDim2.fromScale(1, 1)
+			bar.BackgroundColor3 = WHITE
+			bar.ClipsDescendants = true
+			mf.Background.ZIndex = 5
+			icon.ZIndex = 6
+			icon.ImageColor3 = TEXT
+			bar.ZIndex = 8
+			content.ZIndex = 1
+			iconOver.ZIndex = 1
+			iconOver.ImageColor3 = SLATE_900
+			mf.ModernReadyAccent.ZIndex = 9
+			label.ZIndex = 10
+			label.TextColor3 = TEXT
+			label.TextStrokeColor3 = SLATE_900
+			label.TextStrokeTransparency = 0.15
+			mf.CooldownFrame.ZIndex = 11
+		end
+	end
+	local slab = sg.HunterGuiMobile.Canvas.PlayerFrame:FindFirstChild("ModernPlayerPanel")
+	if slab then
+		slab.Size = UDim2.fromScale(0.75, 0.76)
+		slab.Position = UDim2.fromScale(0.625, 0.5)
+	end
+	log("first-look fixes applied")
+end
+
 -- ---------------------------------------------------------------------------------------------
 
 if PART == "hud" then
@@ -970,6 +1047,8 @@ elseif PART == "killcam" then
 	authorKillCam()
 elseif PART == "eyecandy" then
 	authorObjectiveLine()
+elseif PART == "firstlook" then
+	firstLookFixes()
 elseif PART == "proof" then
 	proof()
 elseif PART == "cleanup" then
