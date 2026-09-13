@@ -2446,6 +2446,17 @@
       "norm_label": "hunterswitchclient"
     },
     {
+      "label": "HunterXPBarClient",
+      "file_type": "code",
+      "source_file": "LocalRedwaterCanyon/StarterPlayer/StarterPlayerScripts/HunterXPBarClient.md",
+      "source_location": "game.StarterPlayer.StarterPlayerScripts.HunterXPBarClient",
+      "script_type": "LocalScript",
+      "side": "client",
+      "id": "hunterxpbarclient",
+      "community": 15,
+      "norm_label": "hunterxpbarclient"
+    },
+    {
       "label": "KillCamClient",
       "file_type": "code",
       "source_file": "LocalRedwaterCanyon/StarterPlayer/StarterPlayerScripts/KillCamClient.md",
@@ -2530,7 +2541,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "rbxcharactersounds",
-      "community": 15,
+      "community": 16,
       "norm_label": "rbxcharactersounds"
     },
     {
@@ -2552,7 +2563,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "slowvignetteclient",
-      "community": 16,
+      "community": 17,
       "norm_label": "slowvignetteclient"
     },
     {

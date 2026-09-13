@@ -1,11 +1,11 @@
 # Graph Report - LocalRedwaterCanyon  (2026-09-13)
 
 ## Corpus Check
-- 251 files · ~324,238 words
+- 252 files · ~324,752 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 246 nodes · 770 edges · 17 communities detected
+- 247 nodes · 770 edges · 18 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -25,6 +25,7 @@
 - [[_COMMUNITY_DisableDefaultHealthBar|DisableDefaultHealthBar]]
 - [[_COMMUNITY_DisableDefaultLeaderboard|DisableDefaultLeaderboard]]
 - [[_COMMUNITY_FortunaCardsWorldVisibilityClient|FortunaCardsWorldVisibilityClient]]
+- [[_COMMUNITY_Player Data|Player Data]]
 - [[_COMMUNITY_Audio|Audio]]
 - [[_COMMUNITY_SlowVignetteClient|SlowVignetteClient]]
 
@@ -114,16 +115,20 @@ Nodes (1): DisableDefaultLeaderboard
 Cohesion: 1.0
 Nodes (1): FortunaCardsWorldVisibilityClient
 
-### Community 15 - "Audio"
+### Community 15 - "Player Data"
+Cohesion: 1.0
+Nodes (1): HunterXPBarClient
+
+### Community 16 - "Audio"
 Cohesion: 1.0
 Nodes (1): RbxCharacterSounds
 
-### Community 16 - "SlowVignetteClient"
+### Community 17 - "SlowVignetteClient"
 Cohesion: 1.0
 Nodes (1): SlowVignetteClient
 
 ## Knowledge Gaps
-- **48 isolated node(s):** `BoostConfig`, `BountyPlusConfig`, `FriendBonusConfig`, `QuestConfig`, `TitleStyles` (+43 more)
+- **49 isolated node(s):** `BoostConfig`, `BountyPlusConfig`, `FriendBonusConfig`, `QuestConfig`, `TitleStyles` (+44 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **Thin community `Chrono Networking`** (1 nodes): `Types`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -143,6 +148,8 @@ Nodes (1): SlowVignetteClient
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `FortunaCardsWorldVisibilityClient`** (1 nodes): `FortunaCardsWorldVisibilityClient`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Player Data`** (1 nodes): `HunterXPBarClient`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Audio`** (1 nodes): `RbxCharacterSounds`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `SlowVignetteClient`** (1 nodes): `SlowVignetteClient`
@@ -152,13 +159,13 @@ Nodes (1): SlowVignetteClient
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Main` connect `UI & HUD` to `Server Bootstrap`, `Server Bootstrap`, `Combat`?**
-  _High betweenness centrality (0.130) - this node is a cross-community bridge._
+  _High betweenness centrality (0.129) - this node is a cross-community bridge._
 - **Why does `FPSRevolverClient` connect `Combat` to `Server Bootstrap`, `Server Bootstrap`, `Combat`?**
-  _High betweenness centrality (0.125) - this node is a cross-community bridge._
+  _High betweenness centrality (0.124) - this node is a cross-community bridge._
 - **Why does `RoundController` connect `Server Bootstrap` to `Server Bootstrap`, `Combat`, `UI & HUD`, `Combat`?**
-  _High betweenness centrality (0.094) - this node is a cross-community bridge._
+  _High betweenness centrality (0.093) - this node is a cross-community bridge._
 - **What connects `BoostConfig`, `BountyPlusConfig`, `FriendBonusConfig` to the rest of the system?**
-  _48 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _49 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Server Bootstrap` be split into smaller, more focused modules?**
   _Cohesion score 0.1 - nodes in this community are weakly interconnected._
 - **Should `Server Bootstrap` be split into smaller, more focused modules?**

@@ -50,6 +50,21 @@ which is the point.
   Revert: each half degrades on its own to the old 5s wait (no remote → the client does nothing;
   no prompt row → input still works); no data. Scripts byte-identical in Redwater and Frostbite,
   compile, edit-mode matrix at four viewports; owner playtested it working 2026-09-13.
+- **HUD XP bar and level (both match places) — reverses NEWGUI decision D5.** The design place's
+  `PersistentXPBar` sits under the health bar and `PlayerLevel` ("LV. 12") beside the name, in
+  both `ReworkedHunterGui` templates, cloned from the design (`backups/xpbar-staging.rbxm`) by the
+  new `xpbar` part of `NEWGUI_PORT_RESTYLE.luau`. Desktop uses the design's rects. On touch the bar
+  is 4px in the gap under the health bar and the level shares the name row. **Touch-geometry
+  exception, owner-approved:** the mobile `PlayerName` narrows 0.3825 → 0.3385 with its left edge
+  fixed (short names unchanged, a 16-character name shrinks ~10 %). New
+  `HunterXPBarClient` animates it the way the prototype did (trail, fill, pop, level-up flash and
+  restart; silent — the level-up card keeps the sound). `ProgressionService` publishes the new
+  `LevelProgress` Player attribute so the client never copies the curve. Revert: delete the
+  client, the two instances per template and the two `ProgressionService` blocks; the name box is
+  only recoverable from the previous place version; no data. Scripts and templates are
+  byte-identical in both places and compile; the client's state machine was exercised against a
+  stub player in edit mode; edit-mode matrix at five viewports; owner signed off on a playtest
+  look 2026-09-13. The instances were added through `execute_luau`, so they are not in the capture.
 
 ## Changed
 

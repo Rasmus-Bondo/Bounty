@@ -113,9 +113,12 @@ in brackets so nobody re-opens them.
 - **D4 — Gold rope strokes: drop them on the tiles and portrait, as the design does.** Flat slate
   cards with coloured accents. They stay on every other panel; record the exception in
   UI_STYLE_GUIDE §10.
-- **D5 — XP bar and level: NOT ported.** `PersistentXPBar` and `PlayerLevel` stay in the design
-  place; the Update 3 level-up card remains the only in-match XP feedback. No `LevelProgress`
-  attribute, no `HunterHudProgress` module. [Rejected: server-fed bar; client-computed curve.]
+- **D5 — XP bar and level: REVERSED 2026-09-13 evening — ported, server-fed.** Originally not
+  ported. The owner asked for it after the sign-off: `PersistentXPBar` + `PlayerLevel` in both
+  templates (the `xpbar` part of `NEWGUI_PORT_RESTYLE.luau`), driven by `HunterXPBarClient` off
+  `Level` + a `LevelProgress` attribute that `ProgressionService` publishes. On touch the level
+  shares the name row, which narrows the mobile `PlayerName` — an owner-approved touch-geometry
+  exception. §4.5, §4.6 and §5.1 below describe the plan before the reversal.
 - **D6 — Mobile button faces: adopt the opaque `#131415` faces and the SCOPE white ring, all five
   buttons.** A constant change in `HunterMobileFireButton` (FIRE keeps its red, transparency → 0),
   `HunterMobileJumpButton`, `HunterMobileReloadButton`, `HunterMobileSprintButton` (`INACTIVE_BG`

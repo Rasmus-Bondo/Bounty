@@ -226,7 +226,9 @@ the older negative-height convention. A `ModernReadyAccent` underline is toggled
 **On touch the geometry is frozen.** `HunterGuiMobile` took this palette as paint only — every
 `Size` / `Position` / `AnchorPoint` / constraint is byte-identical to before the port, proven by
 the restyle script's before/after snapshot diff and by absolute-rect equality at five device
-presets. The one touch-geometry change in the whole port is `BountyListGui`'s 0.242 canvas.
+presets. The owner-approved touch-geometry exceptions are `BountyListGui`'s 0.242 canvas and the
+mobile `PlayerName` narrowed to 0.3385 to share its row with the level label (XP bar, 2026-09-13).
+The XP bar fill is `YELLOW` under a white 0.58 trail, both full pills.
 
 ---
 

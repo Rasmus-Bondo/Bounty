@@ -1,0 +1,10 @@
+{"ts":"2026-09-13T19:50:41.7697269+02:00","tool":"import_rbxm","target":"(unspecified)","place":"instance:j8a-cv5"}
+{"ts":"2026-09-13T19:50:43.1253412+02:00","tool":"import_rbxm","target":"(unspecified)","place":"instance:oss-ekx"}
+{"ts":"2026-09-13T19:55:05.3845119+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.ProgressionService","place":"instance:j8a-cv5"}
+{"ts":"2026-09-13T19:55:07.6047242+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.ProgressionService","place":"instance:j8a-cv5"}
+{"ts":"2026-09-13T19:56:47.1754897+02:00","tool":"set_script_source","target":"game.StarterPlayer.StarterPlayerScripts.HunterXPBarClient","place":"instance:j8a-cv5"}
+{"ts":"2026-09-13T19:58:41.4462726+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.ProgressionService","place":"instance:oss-ekx"}
+{"ts":"2026-09-13T19:58:43.8392860+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.ProgressionService","place":"instance:oss-ekx"}
+{"ts":"2026-09-13T19:59:18.8980259+02:00","tool":"set_script_source","target":"game.StarterPlayer.StarterPlayerScripts.HunterXPBarClient","place":"instance:oss-ekx"}
+{"ts":"2026-09-13T20:02:48.6159389+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.HunterXPBarClient","place":"instance:j8a-cv5"}
+{"ts":"2026-09-13T20:02:51.2976474+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.HunterXPBarClient","place":"instance:oss-ekx"}

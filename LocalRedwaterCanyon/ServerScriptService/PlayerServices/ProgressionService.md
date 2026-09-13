@@ -2,7 +2,7 @@
 tags: [server, modulescript, progression, economy]
 path: game.ServerScriptService.PlayerServices.ProgressionService
 type: ModuleScript
-lines: 607
+lines: 646
 ---
 
 # ProgressionService
@@ -31,6 +31,7 @@ Awards XP, Cash, and level-ups for kills, assists, deaths, round completion, and
 12. Runs a time-alive reward loop (every 10s tick, awards every TIME_REWARD_INTERVAL seconds of alive time). It pays on `sessionData.TimeAlive` minus a per-player high-water mark in `timeRewardTracker`, **which is why `snapshotRoundStart` must clear that table** — see 34a
 13. `sendStats(player)` builds the M / Stats menu payload: merged persistent + per-match data, with Level/CurrentLevelXP/XPNeeded/XPProgress derived from the curve rather than stored. Two callers — the `RequestStats` RemoteEvent (the player opened the menu) and `sendStatsToAll()`, fired at round start so a panel left **open** across the round boundary repaints itself instead of holding the previous round's numbers until it is closed and reopened. The menu pulls on open and never again, so without the push there is no other way for it to notice the reset
 14. `getProgressionSummary(player)` returns a round-end stat card payload including `xpSegments` (a `{[tostring(level)] = xpNeeded}` map covering startLevel..currentLevel) so VictoryShowcaseClient can animate multi-level XP bar fills accurately
+14a. **Publishes the `LevelProgress` Player attribute** (2026-09-13), 0..1 through the current level, for the HUD XP bar (HunterXPBarClient). Recomputed from `getXPInfoFromTotalXP` whenever the `XP` attribute changes, so every writer that syncs through DataService `updateLeaderstats` moves the bar, not just the earns routed through here. Hooked on `PlayerAdded` plus the players already in the server at `Start`
 15. Cleans up time reward tracker on player removal
 16. At each reward hook (`awardKill`, `awardAssist`, `awardRoundCompletion`, `awardBountyKill`, `notifyBountyPlaced`) also calls the matching [[BattlePassService]] `on*` hook (guarded) to award battle-pass XP and track BP weekly quests — separate from the account XP/Cash awarded here
 29. The single reward primitive `addRewards` multiplies awarded XP and Cash by [[BoostService]] `getMultiplier(player, "xp"/"cash")` (active boost consumables) before crediting, rounding `floor(base*mult + 0.5)`; code redemption opts out via a `noBoost` flag. It returns the boosted amounts so `awardKill`/`awardAssist`/`awardBountyKill`/`awardBountySurvival` fire `CombatReward` with the real (boosted) numbers

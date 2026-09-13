@@ -28,6 +28,9 @@
 		"firstlook"  The owner's first-look fixes of 2026-09-13 (white skill fill with the two-layer
 		             icon, mobile slab flush with the portrait, flat white STUNNED/PINNED
 		             label). Run AFTER "hud"; needs no staging.
+		"xpbar"      PersistentXPBar + PlayerLevel from the design place, both templates (reverses
+		             D5, 2026-09-13). Run AFTER "hud"; needs ReplicatedStorage.__XPBarStaging
+		             from backups/xpbar-staging.rbxm, not __NewGuiStaging.
 		"cleanup"    Deletes ReplicatedStorage.__NewGuiStaging and any proof harness.
 
 	Everything except "cleanup" needs ReplicatedStorage.__NewGuiStaging, imported from
@@ -1050,6 +1053,70 @@ local function firstLookFixes()
 	log("first-look fixes applied")
 end
 
+-- XP bar + level label (owner, 2026-09-13 late -- reverses D5). The design place's
+-- PlayerFrame.PersistentXPBar / PlayerLevel, cloned from ReplicatedStorage.__XPBarStaging
+-- (backups/xpbar-staging.rbxm, exported from NEWGUI.In-gameGui) into BOTH templates. Run AFTER
+-- "hud"; idempotent. HunterXPBarClient drives them off the LevelProgress / Level attributes.
+--   * desktop: the design's rects verbatim -- the desktop PlayerFrame is the design's shape.
+--   * touch bar: sized in scale inside the frozen PlayerFrame. It sits in the gap between the health bar's bottom (0.570) and the name box's top (0.627), measured at
+--     800x360; 0.048 tall is 4 px there. The design's 0.2x-the-health-bar ratio is 2.5 px on a
+--     phone, too thin to read. Centred under the health bar at the design's 0.855 of its width.
+--   * touch level label SHARES THE NAME ROW (owner's choice, 2026-09-13): the design's spot right
+--     of the name is 22 px wide on a phone. Box 0.18 wide (32 px at 800x360, where the name draws
+--     at ~16 px and "LV. 99" is 29 px), right edge on the health bar's end, same height and y as
+--     the name so both scale to one text size. TOUCH GEOMETRY EXCEPTION, owner-approved: the
+--     mobile PlayerName narrows 0.3825 -> 0.3385 with its left edge (0.4265) fixed, so short
+--     names are unchanged and a 16-character name shrinks ~10 %.
+--   * rest state is authored empty (no fill, trail hidden, LV. 1) so a HUD cloned before the
+--     attributes arrive never shows the design's placeholder 60 % / LV. 12.
+local function authorXPBar()
+	local stage = ReplicatedStorage:FindFirstChild("__XPBarStaging")
+	assert(stage, "ReplicatedStorage.__XPBarStaging is missing -- import backups/xpbar-staging.rbxm first")
+	for _, tname in ipairs({ "ScreenGui", "HunterGuiMobile" }) do
+		local root = StarterGui.ReworkedHunterGui[tname]
+		local isMobile = tname == "HunterGuiMobile"
+		local before = snapshot(root)
+		local playerFrame = root.Canvas.PlayerFrame
+
+		local bar = playerFrame:FindFirstChild("PersistentXPBar")
+		if not bar then
+			bar = stage.PersistentXPBar:Clone()
+			bar.Parent = playerFrame
+			log("%s: +PersistentXPBar", tname)
+		end
+		if isMobile then
+			set(bar, { Size = UDim2.fromScale(0.496, 0.048), Position = UDim2.fromScale(0.6702, 0.6) })
+		end
+		bar.Fill.Size = UDim2.fromScale(0, 1)
+		bar.ProgressTrail.Size = UDim2.fromScale(0, 1)
+		bar.ProgressTrail.BackgroundTransparency = 1
+		bar.ImpactScale.Scale = 1
+
+		local level = playerFrame:FindFirstChild("PlayerLevel")
+		if not level then
+			level = stage.PlayerLevel:Clone()
+			level.Parent = playerFrame
+			log("%s: +PlayerLevel", tname)
+		end
+		level.Text = "LV. 1"
+		local expected = {}
+		if isMobile then
+			set(level, { Size = UDim2.fromScale(0.18, 0.2), Position = UDim2.fromScale(0.865, 0.7268) })
+			set(playerFrame.PlayerName, { Size = UDim2.fromScale(0.3385, 0.2), Position = UDim2.fromScale(0.5957, 0.7268) })
+			expected["Canvas/PlayerFrame/PlayerName"] = true
+		end
+
+		-- Nothing else pre-existing may move: apart from the declared name box, both are additions.
+		local after = snapshot(root)
+		for path, was in pairs(before) do
+			if after[path] ~= was and not expected[path] then
+				error("GEOMETRY MOVED on " .. tname .. "/" .. path .. "\n    was " .. was .. "\n    now " .. tostring(after[path]))
+			end
+		end
+		log("%s: 0 frozen violations", tname)
+	end
+end
+
 -- ---------------------------------------------------------------------------------------------
 
 if PART == "hud" then
@@ -1065,6 +1132,8 @@ elseif PART == "eyecandy" then
 	authorObjectiveLine()
 elseif PART == "firstlook" then
 	firstLookFixes()
+elseif PART == "xpbar" then
+	authorXPBar()
 elseif PART == "proof" then
 	proof()
 elseif PART == "cleanup" then
