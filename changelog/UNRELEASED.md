@@ -23,3 +23,9 @@ which is the point.
 ## Changed
 
 ## Fixed
+
+- **Frostbite Claim: phones could rotate into portrait.** `StarterGui.ScreenOrientation` `Sensor` →
+  `LandscapeSensor`, matching Redwater (no script sets orientation in either place). Set via
+  `execute_luau`, so it is not in the capture. Rollback: set it back to `Sensor`; no data impact.
+  Verified by property read-back only; needs a phone check after publish. Bounty's value is unchecked
+  (place was not open).
