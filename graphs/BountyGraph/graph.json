@@ -664,6 +664,17 @@
       "norm_label": "softshutdown"
     },
     {
+      "label": "PreflightGates",
+      "file_type": "code",
+      "source_file": "LocalBounty/ServerStorage/PreflightGates.md",
+      "source_location": "game.ServerStorage.PreflightGates",
+      "script_type": "ModuleScript",
+      "side": "shared",
+      "id": "preflightgates",
+      "community": 6,
+      "norm_label": "preflightgates"
+    },
+    {
       "label": "BattlePassRigAnimationClient",
       "file_type": "code",
       "source_file": "LocalBounty/StarterGui/BattlepassGui/BattlePassRigAnimationClient.md",
@@ -671,7 +682,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "battlepassriganimationclient",
-      "community": 6,
+      "community": 7,
       "norm_label": "battlepassriganimationclient"
     },
     {
@@ -715,7 +726,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "abilitiespanelclient",
-      "community": 7,
+      "community": 8,
       "norm_label": "abilitiespanelclient"
     },
     {
@@ -902,7 +913,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "collectionsoundclient",
-      "community": 8,
+      "community": 9,
       "norm_label": "collectionsoundclient"
     },
     {
@@ -935,7 +946,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "viewportriganimationclient",
-      "community": 9,
+      "community": 10,
       "norm_label": "viewportriganimationclient"
     },
     {
@@ -1210,7 +1221,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "tutorialcompletecontroller",
-      "community": 10,
+      "community": 11,
       "norm_label": "tutorialcompletecontroller"
     },
     {
@@ -1375,7 +1386,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "disabledefaultleaderboard",
-      "community": 11,
+      "community": 12,
       "norm_label": "disabledefaultleaderboard"
     },
     {
@@ -1386,7 +1397,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "disableresetcharacter",
-      "community": 12,
+      "community": 13,
       "norm_label": "disableresetcharacter"
     },
     {
@@ -1452,7 +1463,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "tumbleweedspawner",
-      "community": 13,
+      "community": 14,
       "norm_label": "tumbleweedspawner"
     },
     {

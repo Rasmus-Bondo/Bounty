@@ -20,6 +20,26 @@ which is the point.
 
 ## Added
 
+- **Tooling: `ServerStorage.PreflightGates` in all three places (not game code).** One ModuleScript
+  holding every Studio-side `/preflight` gate — universe mirror fold, whole-place syntax sweep,
+  BotConfig / RoundSystem.Config, weapon-skin contract with its accepted lines, clip parity, version
+  line — plus the `/mirror` walker, run as `loadstring(game.ServerStorage.PreflightGates.Source)().run(print)`
+  instead of pasting ~5 KB of Luau per place per run. Canonical source and `.rbxm` live in
+  `.claude/skills/preflight/`; installed in Redwater by `set_script_source`, in Bounty and Frostbite
+  by `import_rbxm`. Nothing requires it and ServerStorage never replicates, so it ships inert with the
+  next publish. Rollback: delete the module; no data. Verified: all three copies hash `c0d9be94`
+  (= the git file); `run(print)` PASSes in all three; universe fold `37fc6c87` reproduces Hotfix 3.2's
+  recorded post-bump fold, and clip sum `169085011` and match-tier StarterGui fold `03d26673` match
+  their recorded values.
+- **Tooling: faster `/preflight`.** Steps 1–3 are one parallel batch; the skill drops from 719 to 275
+  lines, with Steps 9–11 moved to `after-publish.md`. `changelog-capture.ps1` gains `-Roll` (rename +
+  header + Next link + fresh `UNRELEASED.md` + index row) and `-SyncIndex` (index row derived from the
+  release header), and `-Coverage` now lists every capture file and groups names by place. The capture
+  hook records `import_rbxm` targets and resolves instance ids to place names from
+  `get_connected_instances` — **inert until that tool is added to the hook matcher in
+  `.claude/settings.json`**. Scripts tested on a sandbox copy of `changelog/`; the new gate flow ran
+  end to end on the live places; not yet used for a real release.
+
 ## Changed
 
 ## Fixed

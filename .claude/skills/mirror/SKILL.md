@@ -41,208 +41,40 @@ run proves nothing and reads like a pass.
 
 ## Step 1 — Run the walker in each place
 
-Paste the block below into `execute_luau` (`target: "edit"`) once per place, changing **only** the
-two knobs on the first two lines. Compare the outputs **line by line**; the rows are sorted and
-line-aligned by construction, so equal files sit on equal lines.
-
-Each row is `path · scripts · instances · sourceBytes · fold`. **The fold is the gate** — the counts
-are there to tell you *how* something drifted once the fold has told you *that* it did.
-`811c9dc5` is the fold of an empty set: a root showing it is present but empty, not absent.
+The walker lives in Studio, in `ServerStorage.PreflightGates` (canonical source and install recipe:
+`.claude/skills/preflight/PreflightGates.luau` and that skill's "Changing the gate module"). **Never
+paste a walker** — send one line per place, all places in **one message**:
 
 ```lua
--- ============================ MIRROR WALKER ============================
-local TIER   = "match"   -- "match" = Redwater <-> Frostbite (full trees) | "universe" = all 3 places (shared modules)
-local PREFIX = ""        -- "" = top level. Else a displayed path, e.g. "ReplicatedStorage.Hunters", to expand one level deeper.
--- =======================================================================
-
-local PRIME = 16777619
-local function hashStr(s, h)
-	h = h or 2166136261
-	local n, i = #s, 1
-	while i <= n do
-		local j = if i + 3999 < n then i + 3999 else n
-		local b = { string.byte(s, i, j) }
-		for k = 1, #b do
-			local x = bit32.bxor(h, b[k])
-			local lo = x % 65536
-			h = ((lo * PRIME) % 4294967296 + (((x - lo) / 65536 * PRIME) % 65536) * 65536) % 4294967296
-		end
-		i = j + 1
-	end
-	return h
-end
-
-local SP  = game:GetService("StarterPlayer")
-local RS  = game:GetService("ReplicatedStorage")
-local SSS = game:GetService("ServerScriptService")
-
--- ALLOWLIST of synced roots (spec §7.1). Workspace / Terrain / Lighting / MaterialService /
--- ServerStorage are absent by construction and never denylisted (spec §12).
--- Root labels must not contain "." -- the label is one path segment.
-local ROOTS
-if TIER == "match" then
-	ROOTS = {
-		{ "ServerScriptService", SSS },
-		{ "ReplicatedStorage", RS },
-		{ "ReplicatedFirst", game:GetService("ReplicatedFirst") },
-		{ "StarterGui", game:GetService("StarterGui") },
-		{ "StarterPlayerScripts", SP:FindFirstChild("StarterPlayerScripts") },
-		{ "StarterCharacterScripts", SP:FindFirstChild("StarterCharacterScripts") },
-		{ "StarterPlayer/Folder", SP:FindFirstChild("Folder") },
-		{ "SoundService", game:GetService("SoundService") },
-		{ "TextChatService", game:GetService("TextChatService") },
-	}
-else
-	-- The 21 universe modules, each addressed by its FULL path rather than a bare name.
-	--
-	-- These moved once already: on 2026-08-21 a preflight found twelve of them had been
-	-- restructured out of the ReplicatedStorage root into RS.Config / RS.Modules, and the
-	-- stale list did not fail -- it PASSED. An unresolved name folds as <MISSING>, which is
-	-- the SAME string in every place, so all three printed an identical TOTAL while only
-	-- 7 of 19 modules were actually being compared. A gate that goes green when it cannot
-	-- find the thing it guards is worse than no gate. Hence two rules here:
-	--   1. full paths, so a move breaks resolution loudly instead of quietly;
-	--   2. the unresolved count is printed SEPARATELY from the fold (see below) -- never
-	--      trust matching TOTALs without also reading "resolved N of N".
-	ROOTS = {}
-	local function add(label, base, ...)
-		local inst = base
-		for _, seg in ipairs({ ... }) do
-			inst = inst and inst:FindFirstChild(seg)
-		end
-		table.insert(ROOTS, { label, inst })
-	end
-	for _, n in ipairs({
-		"GameEnvironment", "MapCatalog", "GamemodeConfig", "BattlePassConfig", "BoostConfig",
-		"EmoteConfig", "QuestConfig", "TitlesConfig", "DailyRewardConfig", "FriendBonusConfig",
-		"TitleStyles", "BountyPlusConfig",
-	}) do add("RS/Config/" .. n, RS, "Config", n) end
-	add("RS/Modules/TitleRenderer", RS, "Modules", "TitleRenderer")
-	add("RS/Modules/AnimationLoader", RS, "Modules", "AnimationLoader")
-	add("SSS/PlayerServices/Wallet", SSS, "PlayerServices", "Wallet")
-	add("SSS/PlayerServices/TesterGrantService", SSS, "PlayerServices", "TesterGrantService")
-	add("SSS/PlayerServices/Telemetry", SSS, "PlayerServices", "Telemetry")
-	add("SSS/PlayerServices/ProfileService", SSS, "PlayerServices", "ProfileService")
-	add("SSS/SoftShutdown", SSS, "SoftShutdown")
-	add("SPS/VersionTagController", SP, "StarterPlayerScripts", "VersionTagController")
-	add("SPS/TelemetryClient", SP, "StarterPlayerScripts", "TelemetryClient")
-end
-
--- Map-specific instances living inside a synced root: never compared (spec §7.2/§7.3).
--- This key is a DISPLAYED path and must track the live tree. It read "ReplicatedStorage.MapConfig"
--- until 2026-08-21, by which point MapConfig had moved under RS.Config -- so it matched nothing and
--- the match tier compared the one file that is SUPPOSED to differ per place, reporting permanent
--- false drift in ReplicatedStorage. Same stale-path root cause as the universe list above, failing
--- the opposite way round.
-local EXCLUDE = { ["ReplicatedStorage.Config.MapConfig"] = true }
-
--- One entry per instance. The key folds path + class, plus size + source hash for script
--- containers -- so an edit, a rename, a reclass and a missing GUI child all move the fold.
-local entries = {}
-local function visit(inst, segs)
-	local path = table.concat(segs, ".")
-	if EXCLUDE[path] then return end
-	local key, isScript, bytes = path .. "|" .. inst.ClassName, false, 0
-	if inst:IsA("LuaSourceContainer") then
-		local src = inst.Source
-		isScript, bytes = true, #src
-		key = key .. "|" .. bytes .. "|" .. string.format("%08x", hashStr(src))
-	end
-	table.insert(entries, { segs = segs, path = path, key = key, isScript = isScript, bytes = bytes })
-	for _, c in ipairs(inst:GetChildren()) do
-		local child = table.clone(segs)
-		table.insert(child, c.Name)
-		visit(c, child)
-	end
-end
-for _, r in ipairs(ROOTS) do
-	if r[2] then
-		if r[2]:IsA("LuaSourceContainer") then
-			visit(r[2], { r[1] })                    -- universe tier: the root IS the module
-		else
-			for _, c in ipairs(r[2]:GetChildren()) do visit(c, { r[1], c.Name }) end
-		end
-	else
-		table.insert(entries, { segs = { r[1] }, path = r[1], key = r[1] .. "|<MISSING>", isScript = false, bytes = 0 })
-	end
-end
-
-local depth = 1
-if PREFIX ~= "" then
-	for _ in string.gmatch(PREFIX, "%.") do depth += 1 end
-	depth += 1
-end
-local groups, order = {}, {}
-local function group(name)
-	local g = groups[name]
-	if not g then
-		g = { keys = {}, scripts = 0, insts = 0, bytes = 0 }
-		groups[name] = g
-		table.insert(order, name)
-	end
-	return g
-end
--- Seed a row per root so an EMPTY root still prints. Without this a root with no children emits
--- no line at all, and the drift shows up as an absent row rather than a differing one -- exactly
--- the kind of miss a gate is supposed to make impossible.
-if PREFIX == "" then
-	for _, r in ipairs(ROOTS) do group(r[1]) end
-end
-for _, e in ipairs(entries) do
-	if PREFIX == "" or e.path == PREFIX or string.sub(e.path, 1, #PREFIX + 1) == PREFIX .. "." then
-		local g = group(table.concat(e.segs, ".", 1, math.min(depth, #e.segs)))
-		table.insert(g.keys, e.key)
-		g.insts += 1
-		g.bytes += e.bytes
-		if e.isScript then g.scripts += 1 end
-	end
-end
-table.sort(order)
-
-local allKeys, tS, tI, tB = {}, 0, 0, 0
-for _, name in ipairs(order) do
-	local g = groups[name]
-	table.sort(g.keys)
-	local h = 2166136261
-	for _, k in ipairs(g.keys) do h = hashStr(k, h) end
-	print(string.format("%-46s %4d %5d %8d  %08x", name, g.scripts, g.insts, g.bytes, h))
-	for _, k in ipairs(g.keys) do table.insert(allKeys, k) end
-	tS += g.scripts; tI += g.insts; tB += g.bytes
-end
-table.sort(allKeys)
-local th = 2166136261
-for _, k in ipairs(allKeys) do th = hashStr(k, th) end
-print(string.format("%-46s %4d %5d %8d  %08x", "TOTAL", tS, tI, tB, th))
-
--- Resolution is reported SEPARATELY from the fold, because an unresolved root folds to the
--- literal "<MISSING>" -- identical in every place -- and therefore cannot be caught by comparing
--- TOTALs. Read this line first; matching folds mean nothing for a root that was never found.
-local unresolved = {}
-for _, r in ipairs(ROOTS) do
-	if not r[2] then table.insert(unresolved, r[1]) end
-end
-print(string.format("resolved %d of %d roots", #ROOTS - #unresolved, #ROOTS))
-for _, label in ipairs(unresolved) do
-	print("  !! UNRESOLVED: " .. label .. "  -- path is stale or the instance is gone; FIX BEFORE TRUSTING THE FOLD")
-end
+loadstring(game.ServerStorage.PreflightGates.Source)().mirror("match", "", print)      -- /mirror
+loadstring(game.ServerStorage.PreflightGates.Source)().mirror("universe", "", print)   -- /mirror universe
+loadstring(game.ServerStorage.PreflightGates.Source)().mirror("match", "ReplicatedStorage.Hunters", print)  -- drill-down
 ```
 
-**The gate is two lines, not one: `resolved N of N` AND a matching `TOTAL` fold.** When both agree
-across every place the tier is in sync and there is nothing to eyeball row by row.
+Always `loadstring`, never `require` — the plugin's require cache is stale — and always pass `print`:
+`execute_luau` captures only its own chunk's `print`, so without it the walk returns nothing. If the module is missing,
+`import_rbxm` `.claude/skills/preflight/PreflightGates.rbxm` into `game.ServerStorage` first.
 
-**A matching `TOTAL` on its own proves nothing.** An unresolved root folds to the literal
-`<MISSING>`, which is the same in every place, so a stale path produces three identical TOTALs and a
-green gate over modules nobody compared. Read `resolved N of N` first, every time — if it is short,
-the fold below it is answering a smaller question than you asked. Any `!! UNRESOLVED` line means fix
-the path list and re-run; it is never a "that module is legitimately absent" result, because every
-module on this list is required in all three places.
+Compare the outputs **line by line**; rows are sorted and line-aligned by construction, so equal files
+sit on equal lines. Each row is `path · scripts · instances · sourceBytes · fold · s=scriptsFold`.
+**The fold is the gate** — the counts say *how* something drifted once the fold has said *that* it did.
+`s=` folds the script entries only, so it separates "the code agrees" from non-script drift such as
+unwired art or a stray Frame. `811c9dc5` is the fold of an empty set: a root showing it is present but
+empty, not absent. The module's `rootsFor` holds the allowlisted roots and the 21 universe modules, and
+its comments carry why each is there.
+
+**The gate is two lines, not one: `resolved N of N` AND a matching `TOTAL` fold.** An unresolved root
+folds to the literal `<MISSING>`, identical in every place, so a stale path produces matching TOTALs
+over modules nobody compared. Read `resolved N of N` first. Any `!! UNRESOLVED` line means fix the path
+list in the module and re-run — never "that module is legitimately absent", because every module on the
+list is required in all three places.
 
 ---
 
 ## Step 2 — Drill down
 
-For each row whose fold differs, re-run with `PREFIX` set to that row's path. `depth` follows the
-prefix automatically, so each run descends exactly one level. Repeat until you reach individual
+For each row whose fold differs, re-run with that row's path as the second argument. The depth follows
+the prefix automatically, so each run descends exactly one level. Repeat until you reach individual
 scripts, where the row's `bytes` and fold identify the file.
 
 The rollup is self-consistent: a subtree's `TOTAL` at depth *n+1* equals its row at depth *n*. If it

@@ -1,0 +1,9 @@
+{"ts":"2026-09-14T09:14:53.4851033+02:00","tool":"set_script_source","target":"game.ServerStorage.PreflightGates","place":"instance:jo1-3cf"}
+{"ts":"2026-09-14T09:15:50.2801803+02:00","tool":"edit_script_lines","target":"game.ServerStorage.PreflightGates","place":"instance:jo1-3cf"}
+{"ts":"2026-09-14T09:15:54.1041853+02:00","tool":"edit_script_lines","target":"game.ServerStorage.PreflightGates","place":"instance:jo1-3cf"}
+{"ts":"2026-09-14T09:15:57.4993793+02:00","tool":"edit_script_lines","target":"game.ServerStorage.PreflightGates","place":"instance:jo1-3cf"}
+{"ts":"2026-09-14T09:16:00.8635293+02:00","tool":"edit_script_lines","target":"game.ServerStorage.PreflightGates","place":"instance:jo1-3cf"}
+{"ts":"2026-09-14T09:16:04.0649182+02:00","tool":"edit_script_lines","target":"game.ServerStorage.PreflightGates","place":"instance:jo1-3cf"}
+{"ts":"2026-09-14T09:16:23.8353715+02:00","tool":"edit_script_lines","target":"game.ServerStorage.PreflightGates","place":"instance:jo1-3cf"}
+{"ts":"2026-09-14T09:16:43.0004146+02:00","tool":"import_rbxm","target":"game.ServerStorage","place":"instance:rgv-ati"}
+{"ts":"2026-09-14T09:16:44.1299678+02:00","tool":"import_rbxm","target":"game.ServerStorage","place":"instance:jny-u6w"}

@@ -1907,6 +1907,17 @@
       "norm_label": "revolverworldmodelserver"
     },
     {
+      "label": "PreflightGates",
+      "file_type": "code",
+      "source_file": "LocalRedwaterCanyon/ServerStorage/PreflightGates.md",
+      "source_location": "game.ServerStorage.PreflightGates",
+      "script_type": "ModuleScript",
+      "side": "shared",
+      "id": "preflightgates",
+      "community": 9,
+      "norm_label": "preflightgates"
+    },
+    {
       "label": "BountyListClient",
       "file_type": "code",
       "source_file": "LocalRedwaterCanyon/StarterGui/BountyListGui/BountyListClient.md",
@@ -2002,7 +2013,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "health",
-      "community": 9,
+      "community": 10,
       "norm_label": "health"
     },
     {
@@ -2101,7 +2112,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "characterstatelockclient",
-      "community": 10,
+      "community": 11,
       "norm_label": "characterstatelockclient"
     },
     {
@@ -2156,7 +2167,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "damagevignetteclient",
-      "community": 11,
+      "community": 12,
       "norm_label": "damagevignetteclient"
     },
     {
@@ -2167,7 +2178,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "disabledefaulthealthbar",
-      "community": 12,
+      "community": 13,
       "norm_label": "disabledefaulthealthbar"
     },
     {
@@ -2178,7 +2189,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "disabledefaultleaderboard",
-      "community": 13,
+      "community": 14,
       "norm_label": "disabledefaultleaderboard"
     },
     {
@@ -2332,7 +2343,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "fortunacardsworldvisibilityclient",
-      "community": 14,
+      "community": 15,
       "norm_label": "fortunacardsworldvisibilityclient"
     },
     {
@@ -2453,7 +2464,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "hunterxpbarclient",
-      "community": 15,
+      "community": 16,
       "norm_label": "hunterxpbarclient"
     },
     {
@@ -2541,7 +2552,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "rbxcharactersounds",
-      "community": 16,
+      "community": 17,
       "norm_label": "rbxcharactersounds"
     },
     {
@@ -2563,7 +2574,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "slowvignetteclient",
-      "community": 17,
+      "community": 18,
       "norm_label": "slowvignetteclient"
     },
     {

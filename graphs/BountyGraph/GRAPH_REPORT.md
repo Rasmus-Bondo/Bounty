@@ -1,11 +1,11 @@
-# Graph Report - LocalBounty  (2026-09-09)
+# Graph Report - LocalBounty  (2026-09-14)
 
 ## Corpus Check
-- 133 files · ~166,585 words
+- 134 files · ~166,925 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 133 nodes · 449 edges · 14 communities detected
+- 134 nodes · 449 edges · 15 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -16,6 +16,7 @@
 - [[_COMMUNITY_UI & HUD|UI & HUD]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
+- [[_COMMUNITY_PreflightGates|PreflightGates]]
 - [[_COMMUNITY_BattlePassRigAnimationClient|BattlePassRigAnimationClient]]
 - [[_COMMUNITY_AbilitiesPanelClient|AbilitiesPanelClient]]
 - [[_COMMUNITY_CollectionSoundClient|CollectionSoundClient]]
@@ -75,41 +76,47 @@ Nodes (13): AccessoryBuyPanel, CollectionService, EmoteBuyController, GiftPopupC
 Cohesion: 0.35
 Nodes (12): AnimationLoader, CarouselMath, CollectionClient, Config, DisplayCharacterAnimator, HunterList, NameGui, PreviewModel (+4 more)
 
-### Community 6 - "BattlePassRigAnimationClient"
+### Community 6 - "PreflightGates"
+Cohesion: 1.0
+Nodes (1): PreflightGates
+
+### Community 7 - "BattlePassRigAnimationClient"
 Cohesion: 1.0
 Nodes (1): BattlePassRigAnimationClient
 
-### Community 7 - "AbilitiesPanelClient"
+### Community 8 - "AbilitiesPanelClient"
 Cohesion: 1.0
 Nodes (1): AbilitiesPanelClient
 
-### Community 8 - "CollectionSoundClient"
+### Community 9 - "CollectionSoundClient"
 Cohesion: 1.0
 Nodes (1): CollectionSoundClient
 
-### Community 9 - "ViewportRigAnimationClient"
+### Community 10 - "ViewportRigAnimationClient"
 Cohesion: 1.0
 Nodes (1): ViewportRigAnimationClient
 
-### Community 10 - "TutorialCompleteController"
+### Community 11 - "TutorialCompleteController"
 Cohesion: 1.0
 Nodes (1): TutorialCompleteController
 
-### Community 11 - "Unused/Legacy"
+### Community 12 - "Unused/Legacy"
 Cohesion: 1.0
 Nodes (1): DisableDefaultLeaderboard
 
-### Community 12 - "Character Select"
+### Community 13 - "Character Select"
 Cohesion: 1.0
 Nodes (1): DisableResetCharacter
 
-### Community 13 - "Lobby"
+### Community 14 - "Lobby"
 Cohesion: 1.0
 Nodes (1): TumbleweedSpawner
 
 ## Knowledge Gaps
-- **26 isolated node(s):** `FriendBonusConfig`, `TitleStyles`, `CollisionService`, `RegionService`, `ProfileService` (+21 more)
+- **27 isolated node(s):** `FriendBonusConfig`, `TitleStyles`, `CollisionService`, `RegionService`, `ProfileService` (+22 more)
   These have ≤1 connection - possible missing edges or undocumented components.
+- **Thin community `PreflightGates`** (1 nodes): `PreflightGates`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `BattlePassRigAnimationClient`** (1 nodes): `BattlePassRigAnimationClient`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `AbilitiesPanelClient`** (1 nodes): `AbilitiesPanelClient`
@@ -131,12 +138,12 @@ Nodes (1): TumbleweedSpawner
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `DataService` connect `Server Bootstrap` to `Server Bootstrap`, `Main Menu`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`?**
-  _High betweenness centrality (0.298) - this node is a cross-community bridge._
+  _High betweenness centrality (0.293) - this node is a cross-community bridge._
 - **Why does `PartyService` connect `Server Bootstrap` to `Server Bootstrap`, `Main Menu`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`?**
-  _High betweenness centrality (0.110) - this node is a cross-community bridge._
+  _High betweenness centrality (0.108) - this node is a cross-community bridge._
 - **Why does `CollectionClient` connect `Server Bootstrap` to `Server Bootstrap`, `Server Bootstrap`, `Main Menu`?**
-  _High betweenness centrality (0.109) - this node is a cross-community bridge._
+  _High betweenness centrality (0.108) - this node is a cross-community bridge._
 - **What connects `FriendBonusConfig`, `TitleStyles`, `CollisionService` to the rest of the system?**
-  _26 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _27 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Server Bootstrap` be split into smaller, more focused modules?**
   _Cohesion score 0.14 - nodes in this community are weakly interconnected._

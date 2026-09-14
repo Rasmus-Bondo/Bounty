@@ -1,11 +1,11 @@
-# Graph Report - LocalRedwaterCanyon  (2026-09-13)
+# Graph Report - LocalRedwaterCanyon  (2026-09-14)
 
 ## Corpus Check
-- 252 files · ~324,752 words
+- 253 files · ~325,163 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 247 nodes · 770 edges · 18 communities detected
+- 248 nodes · 770 edges · 19 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -19,6 +19,7 @@
 - [[_COMMUNITY_Chrono Networking|Chrono Networking]]
 - [[_COMMUNITY_RevolverRemotes|RevolverRemotes]]
 - [[_COMMUNITY_HunterImplementationGuide|HunterImplementationGuide]]
+- [[_COMMUNITY_PreflightGates|PreflightGates]]
 - [[_COMMUNITY_Health|Health]]
 - [[_COMMUNITY_CharacterStateLockClient|CharacterStateLockClient]]
 - [[_COMMUNITY_DamageVignetteClient|DamageVignetteClient]]
@@ -91,50 +92,56 @@ Nodes (1): RevolverRemotes
 Cohesion: 1.0
 Nodes (1): HunterImplementationGuide
 
-### Community 9 - "Health"
+### Community 9 - "PreflightGates"
+Cohesion: 1.0
+Nodes (1): PreflightGates
+
+### Community 10 - "Health"
 Cohesion: 1.0
 Nodes (1): Health
 
-### Community 10 - "CharacterStateLockClient"
+### Community 11 - "CharacterStateLockClient"
 Cohesion: 1.0
 Nodes (1): CharacterStateLockClient
 
-### Community 11 - "DamageVignetteClient"
+### Community 12 - "DamageVignetteClient"
 Cohesion: 1.0
 Nodes (1): DamageVignetteClient
 
-### Community 12 - "DisableDefaultHealthBar"
+### Community 13 - "DisableDefaultHealthBar"
 Cohesion: 1.0
 Nodes (1): DisableDefaultHealthBar
 
-### Community 13 - "DisableDefaultLeaderboard"
+### Community 14 - "DisableDefaultLeaderboard"
 Cohesion: 1.0
 Nodes (1): DisableDefaultLeaderboard
 
-### Community 14 - "FortunaCardsWorldVisibilityClient"
+### Community 15 - "FortunaCardsWorldVisibilityClient"
 Cohesion: 1.0
 Nodes (1): FortunaCardsWorldVisibilityClient
 
-### Community 15 - "Player Data"
+### Community 16 - "Player Data"
 Cohesion: 1.0
 Nodes (1): HunterXPBarClient
 
-### Community 16 - "Audio"
+### Community 17 - "Audio"
 Cohesion: 1.0
 Nodes (1): RbxCharacterSounds
 
-### Community 17 - "SlowVignetteClient"
+### Community 18 - "SlowVignetteClient"
 Cohesion: 1.0
 Nodes (1): SlowVignetteClient
 
 ## Knowledge Gaps
-- **49 isolated node(s):** `BoostConfig`, `BountyPlusConfig`, `FriendBonusConfig`, `QuestConfig`, `TitleStyles` (+44 more)
+- **50 isolated node(s):** `BoostConfig`, `BountyPlusConfig`, `FriendBonusConfig`, `QuestConfig`, `TitleStyles` (+45 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **Thin community `Chrono Networking`** (1 nodes): `Types`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `RevolverRemotes`** (1 nodes): `RevolverRemotes`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `HunterImplementationGuide`** (1 nodes): `HunterImplementationGuide`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `PreflightGates`** (1 nodes): `PreflightGates`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Health`** (1 nodes): `Health`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -159,13 +166,13 @@ Nodes (1): SlowVignetteClient
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Main` connect `UI & HUD` to `Server Bootstrap`, `Server Bootstrap`, `Combat`?**
-  _High betweenness centrality (0.129) - this node is a cross-community bridge._
+  _High betweenness centrality (0.128) - this node is a cross-community bridge._
 - **Why does `FPSRevolverClient` connect `Combat` to `Server Bootstrap`, `Server Bootstrap`, `Combat`?**
-  _High betweenness centrality (0.124) - this node is a cross-community bridge._
+  _High betweenness centrality (0.123) - this node is a cross-community bridge._
 - **Why does `RoundController` connect `Server Bootstrap` to `Server Bootstrap`, `Combat`, `UI & HUD`, `Combat`?**
-  _High betweenness centrality (0.093) - this node is a cross-community bridge._
+  _High betweenness centrality (0.092) - this node is a cross-community bridge._
 - **What connects `BoostConfig`, `BountyPlusConfig`, `FriendBonusConfig` to the rest of the system?**
-  _49 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _50 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Server Bootstrap` be split into smaller, more focused modules?**
   _Cohesion score 0.1 - nodes in this community are weakly interconnected._
 - **Should `Server Bootstrap` be split into smaller, more focused modules?**
