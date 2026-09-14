@@ -14,6 +14,10 @@
 # subagent it spawns share one file while other panes are untouchable.
 #
 # This hook must NEVER block or fail a tool call. Every path exits 0, including the error path.
+# It runs with "async": true in .claude/settings.json: PowerShell 5.1 takes ~460 ms to start, which
+# every Studio mutation used to wait on. Async means parallel tool calls now really do append at the
+# same instant - hence the longer retry below - and a -Retire issued within a second of the last edit
+# could strand that one line in a fresh pending file, which -Archive then names.
 
 $ErrorActionPreference = 'Stop'
 
@@ -122,9 +126,9 @@ try {
     $path = Join-Path $dir ($session + '.jsonl')
     $line = ($entry | ConvertTo-Json -Compress) + "`n"
     $enc = New-Object System.Text.UTF8Encoding($false)
-    for ($i = 0; $i -lt 5; $i++) {
+    for ($i = 0; $i -lt 12; $i++) {
         try { [System.IO.File]::AppendAllText($path, $line, $enc); break }
-        catch { Start-Sleep -Milliseconds (25 * ($i + 1)) }
+        catch { Start-Sleep -Milliseconds (20 + (Get-Random -Maximum 60)) }
     }
 }
 catch {

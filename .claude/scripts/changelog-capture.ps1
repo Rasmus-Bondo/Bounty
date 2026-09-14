@@ -14,7 +14,14 @@
 # own capture file and nothing else, and a retired file stays on disk until a release archives it,
 # so -Coverage can still see every script the release touched.
 #
-#   changelog-capture.ps1                 status: my session id, every pending file, consumed count
+#   changelog-capture.ps1                 digest of MY pending capture: touched scripts and subtrees
+#                                         grouped by place, with tool counts and flags. /changelog reads
+#                                         this instead of the raw .jsonl, which is ~10x the tokens
+#   changelog-capture.ps1 -All            the same digest over EVERY pending file (the release sweep)
+#   changelog-capture.ps1 -Add <file>     insert <file>'s '## Section' bullets and Shared modules /
+#                                         Data-affecting bullets into UNRELEASED.md, without anyone
+#                                         having to Read a file that reaches 200 KB by release time
+#   changelog-capture.ps1 -Add <file> -Retire   ...then print my SUSPECTS and retire my capture
 #   changelog-capture.ps1 -Coverage       every capture file, then every touched name
 #                                         grouped by place, marked SUSPECT if UNRELEASED.md never names it
 #   changelog-capture.ps1 -Coverage -Mine same, restricted to this session's own capture
@@ -26,6 +33,8 @@
 #                                         fresh UNRELEASED.md and add the index row
 #   changelog-capture.ps1 -SyncIndex      copy Published / Data-affecting / Summary from the newest
 #                                         release file into its index row in CHANGELOG.md
+#   changelog-capture.ps1 -GitHubRelease  cut the GitHub release for the newest index row, body derived
+#                                         from its release file, then verify it (-Preview: print only)
 #
 # KEEP THIS FILE PURE ASCII. Windows PowerShell 5.1 reads a BOM-less .ps1 as CP1252, where an
 # em-dash decodes to a smart quote - which the parser accepts as a string delimiter, so one
@@ -40,8 +49,13 @@ param(
     [switch]$Mine,
     [string]$Archive,
     [string]$Roll,
-    [switch]$SyncIndex
+    [switch]$SyncIndex,
+    [string]$Add,
+    [switch]$GitHubRelease,
+    [switch]$Preview
 )
+# PowerShell variable names are case-insensitive, so no local may be called $add, $all, $mine,
+# $preview or $retire: assigning to one rebinds the parameter and throws on the type mismatch.
 
 $ErrorActionPreference = 'Stop'
 
@@ -155,25 +169,36 @@ function Get-IndexTop {
 
 # ---------------------------------------------------------------------------------------------
 
-if ($Coverage) {
-    # Every capture file with its owner and age, then every touched name
-    # grouped by place, cross-checked against the prose in changelog/UNRELEASED.md. Catches a session
-    # that was never curated AND one that was curated thinly - the second is invisible to every other
-    # gate, because retiring a file is what marks it "described" and nothing else reads the prose.
-    #
-    # This reports SUSPECTS, not failures. Good changelog prose describes the change in player
-    # terms ("the Collection menu stays deaf on join"), not by script name, so an unmentioned name
-    # is frequently the correct write-up. Confirm each one; never let it push script names into
-    # the entries, which would make the changelog worse to serve a checker.
-    $chg = Join-Path $root 'changelog\UNRELEASED.md'
-    if (-not (Test-Path $chg)) {
-        throw "changelog/UNRELEASED.md not found at $chg. The root CHANGELOG.md is an index only; /changelog writes the prose into changelog/UNRELEASED.md."
+# Capture lines carry the tool's instance_id - a per-Studio-process id - plus, since the hook learned
+# it, a placeName resolved from get_connected_instances. Older lines fall back to the shared map the
+# hook keeps, then to the raw id.
+function Get-InstanceMap {
+    $map = @{}
+    $mapPath = Join-Path $base 'instances.json'
+    if (Test-Path $mapPath) {
+        try {
+            $obj = (Read-Text $mapPath) | ConvertFrom-Json
+            foreach ($p in $obj.PSObject.Properties) { $map[$p.Name] = [string]$p.Value }
+        } catch { }
     }
+    return $map
+}
 
-    # Everything above the first '---' rule is boilerplate - title, concurrency warning, nav links.
-    # Counting it as prose would let a nav link ("Hotfix 4", "Conventions") mark a script as named.
-    # NOT $all: PowerShell variable names are case-insensitive, so it collides with the -All switch
-    # parameter and throws on assigning an array to a SwitchParameter. Same trap as $mine below.
+function Get-PlaceName($e, $instMap) {
+    $place = [string]$e.placeName
+    if ($place) { return $place }
+    $raw = [string]$e.place
+    if ($instMap.ContainsKey($raw)) { return $instMap[$raw] }
+    if ($raw) { return $raw }
+    return '(unknown)'
+}
+
+# UNRELEASED.md below its first '---' rule, lowercased. Everything above that rule is boilerplate -
+# title, concurrency warning, nav links - and counting it would let a nav link ("Hotfix 4",
+# "Conventions") mark a script as named.
+function Get-UnreleasedProse {
+    $chg = Join-Path $root 'changelog\UNRELEASED.md'
+    if (-not (Test-Path $chg)) { return $null }
     $srcLines = (Read-Text $chg) -split "`n"
     $section = New-Object System.Collections.Generic.List[string]
     $started = $false
@@ -185,31 +210,269 @@ if ($Coverage) {
         $section.Add([string]$l)
     }
     if (-not $started) { foreach ($l in $srcLines) { $section.Add([string]$l) } }
-    $prose = ($section -join "`n").ToLowerInvariant()
+    return ($section -join "`n").ToLowerInvariant()
+}
+
+# The universe-mirrored module names, parsed out of the gate module instead of kept here as one more
+# copy of the list: PreflightGates.luau is the copy that actually compares, so it is the one that is right.
+function Get-MirroredModules {
+    $set = @{}
+    $gate = Join-Path $root '.claude\skills\preflight\PreflightGates.luau'
+    if (-not (Test-Path $gate)) { return $set }
+    $src = Read-Text $gate
+    $i = $src.IndexOf('tier == "universe"')
+    if ($i -lt 0) { return $set }
+    $j = $src.IndexOf('return roots', $i)
+    if ($j -lt 0) { return $set }
+    $block = [regex]::Replace($src.Substring($i, $j - $i), '--[^\n]*', '')
+    $list = [regex]::Match($block, 'ipairs\(\{([^}]*)\}\)')
+    if ($list.Success) {
+        foreach ($m in [regex]::Matches($list.Groups[1].Value, '"([A-Za-z0-9_]+)"')) { $set[$m.Groups[1].Value] = $true }
+    }
+    foreach ($m in [regex]::Matches($block, 'add\("[^"]*/([A-Za-z0-9_]+)"')) { $set[$m.Groups[1].Value] = $true }
+    return $set
+}
+
+function Show-UnreleasedState {
+    $chg = Join-Path $root 'changelog\UNRELEASED.md'
+    if (-not (Test-Path $chg)) { Write-Output "UNRELEASED.md  not found"; return }
+    $parts = @(); $meta = @(); $cur = $null; $n = 0
+    foreach ($l in ((Read-Text $chg) -split "`n")) {
+        if ($l -match '^## (.+?)\s*$') {
+            if ($cur) { $parts += ($cur + ' ' + $n) }
+            $cur = $Matches[1]; $n = 0; continue
+        }
+        if ($cur -and $l -match '^- ') { $n++ }
+        if (-not $cur -and $l -match '^- \*\*(Shared modules|Data-affecting):\*\*\s*(.*)$') {
+            $v = $Matches[2]
+            if ($v.Length -gt 60) { $v = $v.Substring(0, 60) + '...' }
+            $meta += ($Matches[1] + ': ' + $v)
+        }
+    }
+    if ($cur) { $parts += ($cur + ' ' + $n) }
+    Write-Output ("UNRELEASED.md  bullets: " + ($parts -join ', ') + "  |  " + ($meta -join '  |  '))
+}
+
+# What /changelog curates from: touched scripts (full path) and instance subtrees (first two segments)
+# grouped by place, with per-tool counts. Replaces reading the raw .jsonl, which runs to 80 KB for a
+# busy session and says the same thing one line per tool call.
+function Show-Digest([bool]$everyone) {
+    $files = @()
+    if (Test-Path $pendDir) { $files = @(Get-ChildItem -LiteralPath $pendDir -Filter *.jsonl -ErrorAction SilentlyContinue | Sort-Object Name) }
+    $otherCount = @($files | Where-Object { $_.BaseName -ne $session }).Count
+    if (-not $everyone) { $files = @($files | Where-Object { $_.BaseName -eq $session }) }
+    $legacyFile = Join-Path $base 'pending.jsonl'
+    if ($everyone -and (Test-Path $legacyFile)) { $files += @(Get-Item -LiteralPath $legacyFile) }
+
+    Write-Output ("session  " + $session)
+    if (-not $everyone -and (Test-Path $legacyFile)) { Write-Output "NOTE     a legacy .changelog/pending.jsonl belongs to no session - only a release sweep (-All) takes it" }
+    if ($files.Count -eq 0) {
+        if ($everyone) { Write-Output "pending  (none) - nothing to sweep" }
+        else {
+            Write-Output "pending  no capture for this session"
+            if ($otherCount -gt 0) { Write-Output ("         " + $otherCount + " other session file(s) pending - not yours; only a release sweep (-All) takes them") }
+        }
+        Show-UnreleasedState
+        return
+    }
+    foreach ($f in $files) {
+        $owner = 'other session'
+        if ($f.BaseName -eq $session) { $owner = 'MINE' }
+        if ($f.Name -eq 'pending.jsonl') { $owner = 'legacy, unowned' }
+        $tag = ''
+        if (Test-BumpOnly $f.FullName) { $tag = '  <- version bump only, no entry needed' }
+        Write-Output ("file     " + (Show-Path $f.FullName) + "  " + (Get-LineCount $f.FullName) + " lines  " + $owner + $tag)
+    }
+
+    $instMap = Get-InstanceMap
+    $mirrored = Get-MirroredModules
+    $prose = Get-UnreleasedProse
+    $scriptTools = @('set_script_source', 'edit_script_lines', 'insert_script_lines', 'delete_script_lines', 'find_and_replace_in_scripts')
+    $short = @{
+        edit_script_lines = 'edit'; insert_script_lines = 'insert'; delete_script_lines = 'delete'
+        set_script_source = 'source'; find_and_replace_in_scripts = 'replace'; set_properties = 'props'
+        import_rbxm = 'import'; insert_asset = 'asset'; generate_model = 'model'
+    }
+    $groups = @{}
+    $first = $null; $last = $null
+    foreach ($f in $files) {
+        foreach ($line in (Get-Content -LiteralPath $f.FullName -Encoding UTF8 -ErrorAction SilentlyContinue)) {
+            if ([string]::IsNullOrWhiteSpace($line)) { continue }
+            $e = $null
+            try { $e = $line | ConvertFrom-Json } catch { continue }
+            $tool = [string]$e.tool
+            $t = ([string]$e.target) -replace '^game\.', ''
+            if (-not $t) { $t = '(unspecified)' }
+            $kind = 'script'
+            if ($scriptTools -notcontains $tool) {
+                # Property and instance churn is one entry per panel, so roll it up to the subtree.
+                $kind = 'subtree'
+                $segs = $t.Split('.')
+                if ($segs.Length -gt 2) { $t = $segs[0] + '.' + $segs[1] }
+            }
+            $place = Get-PlaceName $e $instMap
+            $key = $place + '|' + $t
+            if (-not $groups.ContainsKey($key)) {
+                $groups[$key] = [pscustomobject]@{ Place = $place; Path = $t; Kind = $kind; Tools = [ordered]@{} }
+            }
+            $label = $tool
+            if ($short.ContainsKey($tool)) { $label = $short[$tool] }
+            $tc = $groups[$key].Tools
+            if ($tc.Contains($label)) { $tc[$label] = $tc[$label] + 1 } else { $tc[$label] = 1 }
+            $ts = [string]$e.ts
+            if ($ts.Length -ge 16) {
+                $ts = $ts.Substring(0, 16)
+                if (-not $first -or $ts -lt $first) { $first = $ts }
+                if (-not $last -or $ts -gt $last) { $last = $ts }
+            }
+        }
+    }
+    if ($first) { Write-Output ("span     " + $first + " -> " + $last) }
+
+    # Redwater and Frostbite carry the same codebase, so an edit in one alone is either a per-place file
+    # or a mirror nobody finished. Only judged when the places resolved to names.
+    $twin = @{ 'Redwater Canyon' = 'Frostbite Claim'; 'Frostbite Claim' = 'Redwater Canyon' }
+    $placesSeen = @($groups.Values | Select-Object -ExpandProperty Place -Unique | Sort-Object)
+    $anyOneSided = $false
+    foreach ($pl in $placesSeen) {
+        $rowsP = @($groups.Values | Where-Object { $_.Place -eq $pl } | Sort-Object Kind, Path)
+        $nScripts = @($rowsP | Where-Object { $_.Kind -eq 'script' }).Count
+        Write-Output ""
+        Write-Output ("--- " + $pl + ": " + $nScripts + " script(s), " + ($rowsP.Count - $nScripts) + " instance subtree(s) ---")
+        $other = $null
+        if ($twin.ContainsKey($pl)) { $other = $twin[$pl] }
+        if ($other -and $placesSeen -notcontains $other) {
+            Write-Output ("  (no " + $other + " edits captured at all - every row below is one-sided)")
+            $anyOneSided = $true
+            $other = $null
+        }
+        foreach ($g in $rowsP) {
+            $tools = @($g.Tools.Keys | ForEach-Object { $_ + ' x' + $g.Tools[$_] }) -join ' '
+            $leaf = $g.Path.Split('.')[-1]
+            $flags = ''
+            if ($g.Kind -eq 'script' -and $mirrored.ContainsKey($leaf)) { $flags += ' [mirrored]' }
+            if ($other -and -not $groups.ContainsKey($other + '|' + $g.Path)) { $flags += ' [one-sided]'; $anyOneSided = $true }
+            if ($prose -and $prose -match ('\b' + [regex]::Escape($leaf.ToLowerInvariant()) + '\b')) { $flags += ' [in UNRELEASED]' }
+            Write-Output ("  " + $g.Path + "  " + $tools + $flags)
+        }
+    }
+
+    Write-Output ""
+    Show-UnreleasedState
+    Write-Output "[mirrored] a universe-mirrored module: name it under Shared modules."
+    if ($anyOneSided) { Write-Output "[one-sided] in one match place only: a per-place file (MapConfig, map geometry) or an unfinished mirror - check before writing." }
+    Write-Output "[in UNRELEASED] an entry already names it: if this amends that change, Grep the entry and Edit it instead of adding a bullet."
+    Write-Output "Never captured: execute_luau and hand edits in Studio - write those up from what you did."
+}
+
+# The -Add merge. Metadata bullets (Shared modules / Data-affecting) sit between the first two '---'
+# rules; each '## Section' of the entries file is appended at the end of the same section, or as a new
+# section at the end of the file. Returns report lines.
+function Merge-Entries($chg, $metaNew, $sections) {
+    $lines = New-Object System.Collections.Generic.List[string]
+    foreach ($l in ((Read-Text $chg) -split "`n")) { $lines.Add($l) }
+    $report = New-Object System.Collections.Generic.List[string]
+
+    function Find-Rules {
+        $r = @()
+        for ($i = 0; $i -lt $lines.Count; $i++) { if ($lines[$i] -match '^---\s*$') { $r += $i; if ($r.Count -eq 2) { break } } }
+        return ,$r
+    }
+    $rules = Find-Rules
+    if ($rules.Count -lt 2) { throw "-Add: UNRELEASED.md has no metadata block between two '---' rules - fix the file by hand" }
+
+    foreach ($fieldName in @($metaNew.Keys)) {
+        $val = @($metaNew[$fieldName])
+        # 'no' / 'none' never overrides: another pane may already have written yes, and the release
+        # needs the strongest claim anyone made.
+        if ($val[0] -match '^(no|none)\b') { $report.Add("metadata  " + $fieldName + ": '" + $val[0] + "' ignored - only a positive value is merged"); continue }
+        $rules = Find-Rules
+        $k = -1; $old = ''
+        for ($i = $rules[0] + 1; $i -lt $rules[1]; $i++) {
+            if ($lines[$i] -match ('^- \*\*' + [regex]::Escape($fieldName) + ':\*\*\s*(.*)$')) { $k = $i; $old = $Matches[1]; break }
+        }
+        $rest = @($val | Select-Object -Skip 1 | ForEach-Object { '  ' + $_ })
+        if ($k -lt 0) {
+            $at = $rules[1]
+            while ($at -gt $rules[0] + 1 -and -not $lines[$at - 1].Trim()) { $at-- }
+            $lines.InsertRange($at, [string[]](@('- **' + $fieldName + ':** ' + $val[0]) + $rest))
+            $report.Add("metadata  " + $fieldName + " added")
+            continue
+        }
+        $end = $k + 1
+        while ($end -lt $rules[1] -and $lines[$end] -match '^\s+\S') { $end++ }
+        if ($old -match '^(no|none)\b') {
+            $lines.RemoveRange($k, $end - $k)
+            $lines.InsertRange($k, [string[]](@('- **' + $fieldName + ':** ' + $val[0]) + $rest))
+            $report.Add("metadata  " + $fieldName + " set")
+        } else {
+            $lines.InsertRange($end, [string[]](@('  Also: ' + $val[0]) + $rest))
+            $report.Add("metadata  " + $fieldName + " appended to the existing value")
+        }
+    }
+
+    foreach ($name in @($sections.Keys)) {
+        $body = $sections[$name]
+        $nb = @($body | Where-Object { $_ -match '^- ' }).Count
+        $rules = Find-Rules
+        $hi = -1
+        for ($i = $rules[1] + 1; $i -lt $lines.Count; $i++) {
+            if ($lines[$i] -match ('^## ' + [regex]::Escape($name) + '\s*$')) { $hi = $i; break }
+        }
+        if ($hi -lt 0) {
+            while ($lines.Count -gt 0 -and -not $lines[$lines.Count - 1].Trim()) { $lines.RemoveAt($lines.Count - 1) }
+            $lines.Add(''); $lines.Add('## ' + $name); $lines.Add('')
+            foreach ($b in $body) { $lines.Add($b) }
+            $lines.Add('')
+            $report.Add("added     " + $nb + " bullet(s) under NEW section ## " + $name)
+            continue
+        }
+        $ni = $lines.Count
+        for ($i = $hi + 1; $i -lt $lines.Count; $i++) { if ($lines[$i] -match '^(## |---\s*$)') { $ni = $i; break } }
+        $back = $ni
+        while ($back -gt $hi + 1 -and -not $lines[$back - 1].Trim()) { $back-- }
+        $lines.RemoveRange($back, $ni - $back)
+        $ins = New-Object System.Collections.Generic.List[string]
+        if ($back -eq $hi + 1) { $ins.Add('') }
+        foreach ($b in $body) { $ins.Add($b) }
+        $ins.Add('')
+        $lines.InsertRange($back, $ins)
+        $report.Add("added     " + $nb + " bullet(s) under ## " + $name)
+    }
+
+    Write-Text $chg ($lines -join "`n")
+    return $report
+}
+
+function Show-Coverage([bool]$mineOnly, [bool]$suspectsOnly) {
+    # Every capture file with its owner and age, then every touched name
+    # grouped by place, cross-checked against the prose in changelog/UNRELEASED.md. Catches a session
+    # that was never curated AND one that was curated thinly - the second is invisible to every other
+    # gate, because retiring a file is what marks it "described" and nothing else reads the prose.
+    #
+    # This reports SUSPECTS, not failures. Good changelog prose describes the change in player
+    # terms ("the Collection menu stays deaf on join"), not by script name, so an unmentioned name
+    # is frequently the correct write-up. Confirm each one; never let it push script names into
+    # the entries, which would make the changelog worse to serve a checker.
+    $prose = Get-UnreleasedProse
+    if ($null -eq $prose) {
+        throw "changelog/UNRELEASED.md not found. The root CHANGELOG.md is an index only; /changelog writes the prose into changelog/UNRELEASED.md."
+    }
 
     $files = @(Get-CaptureFiles)
-    if ($Mine) {
+    if ($mineOnly) {
         # pending/<session>.jsonl and consumed/<session>-<stamp>.jsonl both start with the id.
         # Without this, /changelog reports every other pane's uncurated work as your suspect.
         $files = @($files | Where-Object { $_.BaseName.StartsWith($session) })
-        if ($files.Count -eq 0) { Write-Output ("no capture for this session (" + $session + ")"); exit 0 }
+        if ($files.Count -eq 0) { Write-Output ("no capture for this session (" + $session + "), nothing to cross-check"); return }
     }
-    if ($files.Count -eq 0) { Write-Output "no capture files, nothing to cross-check"; exit 0 }
+    if ($files.Count -eq 0) { Write-Output "no capture files, nothing to cross-check"; return }
 
-    # Capture lines carry the tool's instance_id - a per-Studio-process id - plus, since the hook
-    # learned it, a placeName resolved from get_connected_instances. Older lines fall back to the
-    # shared map the hook keeps, then to the raw id.
-    $instMap = @{}
-    $mapPath = Join-Path $base 'instances.json'
-    if (Test-Path $mapPath) {
-        try {
-            $obj = (Read-Text $mapPath) | ConvertFrom-Json
-            foreach ($p in $obj.PSObject.Properties) { $instMap[$p.Name] = [string]$p.Value }
-        } catch { }
-    }
+    $instMap = Get-InstanceMap
 
-    Write-Output ("=== capture summary: " + $files.Count + " capture file(s), " + $prose.Length + " chars of UNRELEASED.md prose ===")
+    if (-not $suspectsOnly) { Write-Output ("=== capture summary: " + $files.Count + " capture file(s), " + $prose.Length + " chars of UNRELEASED.md prose ===") }
     foreach ($f in ($files | Sort-Object LastWriteTime)) {
+        if ($suspectsOnly) { break }
         $state = 'consumed'
         if ($f.DirectoryName -eq $pendDir) { $state = 'pending ' }
         if ($f.Name -eq 'pending.jsonl') { $state = 'legacy  ' }
@@ -233,13 +496,7 @@ if ($Coverage) {
             if (-not $t -or $t -eq '(unspecified)') { $t = '(unspecified ' + [string]$e.tool + ')' }
             $parts = $t.Split('.')
 
-            $place = [string]$e.placeName
-            if (-not $place) {
-                $raw = [string]$e.place
-                if ($instMap.ContainsKey($raw)) { $place = $instMap[$raw] }
-                elseif ($raw) { $place = $raw }
-                else { $place = '(unknown)' }
-            }
+            $place = Get-PlaceName $e $instMap
 
             if ($scriptTools -contains [string]$e.tool) {
                 # A script edit names the script itself; the leaf of the path is what to look for.
@@ -266,13 +523,17 @@ if ($Coverage) {
         }
     }
 
+    $totalSus = 0
     foreach ($pl in ($rows | Select-Object -ExpandProperty Place -Unique | Sort-Object)) {
         $pr = @($rows | Where-Object { $_.Place -eq $pl })
         $sus = @($pr | Where-Object { -not $_.Named }).Count
+        $totalSus += $sus
+        if ($suspectsOnly -and $sus -eq 0) { continue }
         Write-Output ""
         Write-Output ("--- " + $pl + ": " + $pr.Count + " name(s), " + $sus + " SUSPECT ---")
         $sorted = $pr | Sort-Object @{ Expression = { $_.Named } }, @{ Expression = { $_.Kind } }, @{ Expression = { $_.Count }; Descending = $true }
         foreach ($r in $sorted) {
+            if ($suspectsOnly -and $r.Named) { continue }
             $flag = 'named  '
             if (-not $r.Named) { $flag = 'SUSPECT' }
             Write-Output ("  " + $flag + "  " + $r.Kind.PadRight(7) + "  " + $r.Name.PadRight(36) + $r.Count.ToString().PadLeft(4))
@@ -280,11 +541,13 @@ if ($Coverage) {
     }
 
     Write-Output ""
+    if ($suspectsOnly -and $totalSus -eq 0) { Write-Output "coverage: every captured name appears in UNRELEASED.md"; return }
     Write-Output "SUSPECT = the name appears nowhere in UNRELEASED.md. Prose that describes the change"
     Write-Output "in player terms is often right - confirm each, do not force script names into entries."
-    Write-Output "Never captured at all: execute_luau mutations and edits made by hand in Studio."
-    exit 0
+    if (-not $suspectsOnly) { Write-Output "Never captured at all: execute_luau mutations and edits made by hand in Studio." }
 }
+
+if ($Coverage) { Show-Coverage ([bool]$Mine) $false; exit 0 }
 
 if ($Roll) {
     # The mechanical half of /preflight Step 5, which used to be five hand edits: rename
@@ -473,6 +736,129 @@ if ($Archive) {
     exit 0
 }
 
+if ($Add) {
+    # Entries go in through here so nobody has to Read UNRELEASED.md first - it reached 233 KB before
+    # Update 2 rolled. The merge is a read-modify-write lasting milliseconds: the same exposure as an
+    # anchored Edit (and as -Roll's index row), where the Edit route also needs a fresh whole-file Read.
+    if (-not (Test-Path -LiteralPath $Add)) { throw ("-Add: file not found: " + $Add) }
+    $metaNew = [ordered]@{}
+    $sections = [ordered]@{}
+    $cur = $null
+    $field = $null
+    foreach ($l in ((Read-Text $Add) -split "`n")) {
+        if ($l -match '^## (.+?)\s*$') {
+            $cur = $Matches[1]
+            if (-not $sections.Contains($cur)) { $sections[$cur] = New-Object System.Collections.Generic.List[string] }
+            continue
+        }
+        if ($cur) { $sections[$cur].Add($l.TrimEnd()); continue }
+        if ($l -match '^- \*\*(Shared modules|Data-affecting):\*\*\s*(.*)$') {
+            $field = $Matches[1]
+            $metaNew[$field] = New-Object System.Collections.Generic.List[string]
+            $metaNew[$field].Add($Matches[2].Trim())
+        } elseif ($field -and $l -match '^\s+\S') {
+            $metaNew[$field].Add($l.Trim())
+        } elseif ($l.Trim()) {
+            throw ("-Add: above the first '## ' heading only a Shared modules or Data-affecting bullet may appear, got: " + $l)
+        }
+    }
+    foreach ($k in @($sections.Keys)) {
+        $body = $sections[$k]
+        while ($body.Count -gt 0 -and -not $body[0].Trim()) { $body.RemoveAt(0) }
+        while ($body.Count -gt 0 -and -not $body[$body.Count - 1].Trim()) { $body.RemoveAt($body.Count - 1) }
+        if ($body.Count -eq 0) { $sections.Remove($k) }
+    }
+    if ($sections.Count -eq 0 -and $metaNew.Count -eq 0) { throw "-Add: nothing to add. Put bullets under '## Added' / '## Changed' / '## Fixed'." }
+
+    $chg = Join-Path $root 'changelog\UNRELEASED.md'
+    if (-not (Test-Path $chg)) { throw "changelog/UNRELEASED.md not found" }
+    $report = $null
+    for ($try = 1; $try -le 5; $try++) {
+        try { $report = Merge-Entries $chg $metaNew $sections; break }
+        catch {
+            # Only a file held by a peer's write at this instant is worth retrying.
+            if ($try -eq 5 -or ([string]$_.Exception.Message).StartsWith('-Add:')) { throw }
+            Start-Sleep -Milliseconds (40 * $try)
+        }
+    }
+    foreach ($r in $report) { Write-Output $r }
+    if (-not $Retire) { exit 0 }
+    Show-Coverage (-not $All) $true
+    Write-Output ""
+}
+
+if ($GitHubRelease) {
+    # Step 10 of /preflight. Everything comes from the newest index row and its release file, so the
+    # body cannot disagree with the changelog: no hand-composed notes, no separate verification call.
+    $repo = 'Rasmus-Bondo/Bounty'
+    $top = Get-IndexTop
+    $file = $top.File
+    $relPath = Join-Path (Join-Path $root 'changelog') $file
+    if (-not (Test-Path $relPath)) { throw ("changelog/" + $file + " not found") }
+    if ($top.Published -match 'rTBD') { throw ($top.Name + " has no recorded place versions (" + $top.Published + "). Record them (Step 9), commit and push, then re-run.") }
+
+    # The human version string has a space and cannot be a git ref, so the tag is the dated filename
+    # without its date: 2026-08-29-update-2.md -> update-2.
+    $tag = ($file -replace '^\d{4}-\d{2}-\d{2}-', '') -replace '\.md$', ''
+
+    $rel = (Read-Text $relPath) -split "`n"
+    $pubLine = $null; $rollLine = $null
+    $ruleCount = 0
+    $bullets = New-Object System.Collections.Generic.List[string]
+    foreach ($l in $rel) {
+        if ($l -match '^---\s*$') { $ruleCount++; continue }
+        if (-not $pubLine -and $l -match '^- \*\*Published:\*\*\s*(.*)$') { $pubLine = $Matches[1] }
+        if (-not $rollLine -and $l -match '^- \*\*Rollback target:\*\*\s*(.*)$') { $rollLine = $Matches[1] }
+        # Past the metadata block, one line per change: the entry's own bolded summary, never rewritten.
+        if ($ruleCount -ge 2 -and $l -match '^- \*\*(.+?)\*\*') { $bullets.Add('- **' + $Matches[1].Trim() + '**') }
+    }
+    $pubVersions = [regex]::Match([string]$pubLine, '`([^`]+)`').Groups[1].Value
+    $rollVersions = [regex]::Match([string]$rollLine, '`([^`]+)`').Groups[1].Value
+    if (-not $pubVersions) { throw ("changelog/" + $file + ": no backticked versions in the Published field") }
+    $pubDate = [regex]::Match([string]$pubLine, 'published (\d{4}-\d{2}-\d{2})').Groups[1].Value
+    if (-not $pubDate) { $pubDate = $top.Date }
+    if ($bullets.Count -eq 0) { throw ("changelog/" + $file + ": no '- **summary**' bullets below the metadata block") }
+
+    $nl = "`n"
+    $notes = '**Published ' + $pubDate + '** ' + $dot + ' ' + $pubVersions + $nl
+    if ($rollVersions) { $notes += '**Rollback lands on:** ' + $rollVersions + $nl }
+    $notes += '**Data-affecting:** ' + ($top.DataAffecting -replace '\*', '') + $nl + $nl
+    $notes += ($bullets -join $nl) + $nl + $nl
+    $notes += 'Full entry: https://github.com/' + $repo + '/blob/main/changelog/' + $file + $nl
+
+    # Target the commit that carries the release file, not main: other panes may have pushed since. It
+    # must already be on the remote, or GitHub cannot tag it.
+    $sha = [string](& git -C $root log -1 '--format=%H' '--' ('changelog/' + $file))
+    if (-not $sha) { throw ("changelog/" + $file + " is not committed") }
+    $onRemote = @(& git -C $root branch -r --contains $sha) -match 'origin/main'
+    [Console]::OutputEncoding = $utf8
+
+    if ($Preview) {
+        Write-Output ("tag " + $tag + "  title '" + $top.Name + "'  target " + $sha + "  pushed: " + [bool]$onRemote)
+        Write-Output "--- notes ---"
+        Write-Output $notes
+        exit 0
+    }
+    if (-not $onRemote) { throw ("commit " + $sha + " is not on origin/main - push first") }
+    $tags = @(& gh release list --repo $repo --limit 200 --json tagName --jq '.[].tagName')
+    if ($LASTEXITCODE -ne 0) { throw "gh release list failed - is gh authenticated?" }
+    if ($tags -contains $tag) { throw ("GitHub release '" + $tag + "' already exists - tags are never reused") }
+
+    $notesFile = [System.IO.Path]::GetTempFileName()
+    Write-Text $notesFile $notes
+    & gh release create $tag --repo $repo --title $top.Name --target $sha --latest --notes-file $notesFile
+    $code = $LASTEXITCODE
+    [System.IO.File]::Delete($notesFile)
+    if ($code -ne 0) { throw ("gh release create failed (exit " + $code + ")") }
+
+    # A release whose numbers disagree with the index is worse than none, so read it back.
+    $body = (@(& gh release view $tag --repo $repo --json body --jq '.body') -join "`n")
+    $missing = @([regex]::Matches($pubVersions, 'r\d+') | ForEach-Object { $_.Value } | Where-Object { -not $body.Contains($_) })
+    if ($missing.Count -gt 0) { throw ("release " + $tag + " created, but its body is missing " + ($missing -join ', ') + " - fix it on GitHub") }
+    Write-Output ("verified  release " + $tag + " carries " + $pubVersions)
+    exit 0
+}
+
 if ($Retire) {
     # Collect the file set FIRST and bail only on an empty set. An earlier version guarded this
     # whole block on pending/ existing, which made the legacy pickup below unreachable in the one
@@ -539,34 +925,6 @@ if ($Retire) {
     exit 0
 }
 
-# Default: status only. Never mutates.
-Write-Output ("session   " + $session)
-
-$pending = @()
-if (Test-Path $pendDir) {
-    $pending = @(Get-ChildItem -LiteralPath $pendDir -Filter *.jsonl -ErrorAction SilentlyContinue | Sort-Object Name)
-}
-
-if ($pending.Count -eq 0) {
-    Write-Output "pending   (none)"
-} else {
-    foreach ($f in $pending) {
-        $owner = "other session"
-        if ($f.BaseName -eq $session) { $owner = "MINE" }
-        Write-Output ("pending   " + (Show-Path $f.FullName) + "  " + (Get-LineCount $f.FullName) + " lines  " + $owner + "  last " + $f.LastWriteTime.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ'))
-    }
-}
-
-# A stray pre-partition capture. Kept visible so it cannot rot unnoticed; it belongs to nobody.
-$legacy = Join-Path $base 'pending.jsonl'
-if (Test-Path $legacy) {
-    Write-Output ("legacy    .changelog/pending.jsonl  " + (Get-LineCount $legacy) + " lines  (pre-partition, unowned)")
-}
-
-$consumed = @()
-if (Test-Path $consDir) {
-    $consumed = @(Get-ChildItem -LiteralPath $consDir -Filter *.jsonl -ErrorAction SilentlyContinue)
-}
-$total = 0
-foreach ($f in $consumed) { $total += (Get-LineCount $f.FullName) }
-Write-Output ("consumed  " + $consumed.Count + " file(s), " + $total + " lines  (curated, awaiting release archive)")
+# Default: the digest. Never mutates.
+Show-Digest ([bool]$All)
+exit 0

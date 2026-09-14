@@ -19,35 +19,20 @@ Commit and push the release file + `CHANGELOG.md` (explicit paths).
 
 ## Step 10 — Cut the GitHub release
 
-Runs after Step 9, because the body carries the place versions. Internal, like the changelog: the repo
-is private, so the body may name place versions and describe a security fix plainly. **If the repo is
-ever made public, every past release becomes public with it** — the exploit rule would then apply to
-these bodies retroactively.
-
-- **Tag:** the dated filename without the date — `2026-08-29-update-2.md` → `update-2`. The human version
-  string has a space and cannot be a git ref. Tags are never reused.
-- **Target the commit that carries the dated release file**, not whatever `main` is by now — other
-  sessions may have pushed since.
-
-```bash
-gh release create <tag> --repo Rasmus-Bondo/Bounty --title "<human version string, e.g. Hotfix 1.3>" --target <sha> --latest --notes-file <file in the scratchpad>
-```
-
-**Body — five to ten lines, never the entry itself:**
+Runs once Step 9 is committed **and pushed**, because the body carries the place versions. One call:
 
 ```
-**Published 2026-09-05** · Bounty r2481 · Redwater Canyon r2733 · Frostbite Claim r410
-**Rollback lands on:** Bounty r2475 · Redwater r2726 · Frostbite r406
-**Data-affecting:** no
-
-- <one line per change, lifted from the entry's own bolded summaries>
-
-Full entry: https://github.com/Rasmus-Bondo/Bounty/blob/main/changelog/<release>.md
+.\.claude\scripts\changelog-capture.ps1 -GitHubRelease
 ```
 
-Lift the bullets from the entry's bolded one-line summaries; do not rewrite them. **Verify** with
-`gh release view <tag> --repo Rasmus-Bondo/Bounty` that the versions match `CHANGELOG.md` — a release
-whose numbers disagree with the index is worse than none.
+It builds the release from the newest index row and its release file: tag, title, target commit and a
+short body made of the Published/rollback/Data-affecting lines, the entry's bolded one-liners and a link
+to the full entry. Afterwards it reads the release back to check the versions. It refuses on `rTBD`, an
+unpushed commit or a tag that already exists. The comments in the script explain each rule. Add
+`-Preview` to print the release without creating it.
+
+The body is internal, like the changelog: the repo is private, so it may name place versions and
+security fixes plainly. **If the repo is ever made public, every past release becomes public with it.**
 
 ## Step 11 — Draft the public Discord post
 

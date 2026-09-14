@@ -79,8 +79,11 @@
       "Bash(gh issue view *)",
       "Bash(gh issue create *)",
       "Bash(gh issue comment *)",
+      "Bash(gh issue close *)",
+      "Bash(gh api graphql *)",
       "Bash(gh release list *)",
       "Bash(gh release view *)",
+      "Bash(gh release create *)",
       "Bash(gh run list *)",
       "Bash(gh run view *)",
       "PowerShell(gh auth status)",
@@ -90,7 +93,12 @@
       "PowerShell(gh pr create *)",
       "PowerShell(gh issue list *)",
       "PowerShell(gh issue view *)",
-      "PowerShell(gh issue create *)"
+      "PowerShell(gh issue create *)",
+      "PowerShell(gh issue close *)",
+      "PowerShell(gh api graphql *)",
+      "PowerShell(gh release list *)",
+      "PowerShell(gh release view *)",
+      "PowerShell(gh release create *)"
     ],
     "ask": [
       "Bash(git push --force*)",
@@ -144,7 +152,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\2000b\\Documents\\bulletsandbounty\\.claude\\hooks\\log-studio-change.ps1\""
+            "command": "powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\2000b\\Documents\\bulletsandbounty\\.claude\\hooks\\log-studio-change.ps1\"",
+            "async": true
           }
         ]
       }

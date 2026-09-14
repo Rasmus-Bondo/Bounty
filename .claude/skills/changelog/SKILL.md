@@ -5,149 +5,57 @@ description: Turn this session's raw Studio-mutation capture in .changelog/pendi
 
 # Update the changelog
 
-Reads the mechanical capture and writes human prose. The capture cannot be forgotten (it is a
-`PostToolUse` hook); the curation needs judgement, which is why it is a skill and not a script.
+A `PostToolUse` hook logs every Studio mutation to `.changelog/pending/<session>.jsonl`, one file per
+pane. This skill turns yours into entries in `changelog/UNRELEASED.md`, in three calls. **Never `Read`
+a capture file or `UNRELEASED.md` for it** — the script digests the one and writes into the other.
 
-**You write into `changelog/UNRELEASED.md` and nothing else.** The root `CHANGELOG.md` is an index —
-one table row per release, no prose — and it only changes when `/preflight` rolls a release. Shipped
-releases live in `changelog/YYYY-MM-DD-<release>.md` and are never edited after publishing. Standing
-concerns that outlive a release become **an issue on the project board**
-(<https://github.com/users/Rasmus-Bondo/projects/1>) — not a file in `changelog/open-items/`, which
-is redirect stubs only since 2026-08-31. Conventions are in `changelog/CONVENTIONS.md`.
-
-**Several agents work this project at once, so this skill never deletes anything and never touches
-another session's capture.** The capture is partitioned per session at write time —
-`.changelog/pending/<session>.jsonl`, one file per pane, shared with that pane's own subagents.
-Curating a file *retires* it into `.changelog/consumed/`, where it waits for `/preflight` to archive it
-under the release name. The old single shared `pending.jsonl` failed twice over: whichever agent curated
-first deleted the capture of everyone still mid-work, and two panes appending at the same instant
-could collide on a file lock that the hook silently swallows.
-
-## Steps
-
-**1. Find your capture.**
+## 1. Digest
 
 ```
 .\.claude\scripts\changelog-capture.ps1
 ```
 
-Prints your session id, every pending file with its line count and whether it is `MINE`, and the
-consumed count. **Curate the `MINE` file and no other.** If there is no file for your session, say
-so and stop — do not curate another pane's lines, and do not invent entries from memory of the
-conversation. Read the file itself with `Read`, not a shell command.
+Your capture grouped by place and script with tool counts, flags explained at the bottom, and the
+current section counts of `UNRELEASED.md`. **Curate only your own capture.** With none, say so; work
+the hook cannot see (`execute_luau`, hand edits in Studio) is still written up from what you did.
 
-Each line is one Studio mutation: `ts`, `tool`, `target`, `place`, sometimes `name`, and `origin`
-when the mutation came from a subagent; since 2026-09-14 also `placeName`, resolved by the hook. Place ids map as: `place:131701626847012` = Bounty,
-`place:98517073248449` = Redwater Canyon, `place:134041618959520` = Frostbite Claim.
+**`all`** (`/changelog all`, the pre-release sweep): add `-All` to the digest and to step 3. Called by
+`/preflight`, just sweep. Called on its own, first name the sessions you are about to absorb.
 
-**A mutation in one match place usually implies its twin.** Redwater and Frostbite carry the same
-codebase byte-identical, so a capture showing an edit in only one of them is either a per-place file
-(`MapConfig`, map geometry) or a mirror that has not been finished — worth a look before you write
-the entry, not after `/preflight` catches it.
+## 2. Write the entries to a scratchpad file
 
-> **`all`** — invoked as `/changelog all`. Curates every pending file, plus the unowned
-> pre-partition `pending.jsonl` if one is still lying around. This is the pre-release sweep and
-> what `/preflight` calls. When `/preflight` calls it, just sweep — calling `/preflight` is the user's
-> decision to publish everything, so do not pause to warn about other sessions. Invoked on its own,
-> list which sessions you are about to absorb first. Prose
-> for work you did not do is necessarily vaguer — that is the cost of the sweep, and the reason it
-> is not the default.
+```markdown
+- **Shared modules:** `Wallet` (new `ChestRefund` reason).
+- **Data-affecting:** yes — new Wallet reason.
 
-**2. Collapse it.**
+## Fixed
 
-The raw log is far too granular to publish. Group by subsystem, not by tool call:
-
-- Many `set_property` / `mass_set_property` on one GUI subtree → **one** line about that panel.
-- Repeated `set_script_source` on the same script → **one** line about that script's change.
-- `create_object` + `set_script_source` on the same path → a single "added X" line.
-- Ignore pure scaffolding churn (an object created then deleted in the same session).
-
-**3. Describe the change, not the edit.**
-
-Bad: *"Set source of ServerScriptService.SoftShutdown."*
-Good: *"Servers now evacuate players to the lobby on shutdown instead of disconnecting them."*
-
-The reader wants to know what is different about the game, not which tool ran.
-
-**Then keep it short.** An entry answers three things and stops: what changed, what breaks if you
-revert it, and whether it was verified. A bolded one-liner plus one to three short paragraphs.
-**Do not re-explain in the entry a mechanism you have just commented in the source** — that is a
-second copy which will drift, and the source is where the next person reads it. See
-[Entries are precise, not long](../../../changelog/CONVENTIONS.md) for the full rule, including the
-one case that does carry diagnosis: an entry cited by an issue on the board.
-
-**4. Write into `changelog/UNRELEASED.md` — by anchored `Edit` only.**
-
-Another agent may append to this file between your read and your write, so:
-
-- **`Read` `changelog/UNRELEASED.md` immediately before editing.** A read from earlier in the
-  session is stale.
-- **Use `Edit`, anchored on a `## Added` / `## Changed` / `## Fixed` heading** or on a distinctive
-  line of an existing bullet. Splitting the prose out of the root index made these anchors unique
-  within the file — a bare `## Fixed` no longer collides with every past release, because past
-  releases are separate files now.
-- **Never `Write` the whole file.** A whole-file write is the one operation that silently destroys
-  a concurrent agent's entry; a failed `Edit` only errors.
-- **If the `Edit` fails, re-`Read` and retry.** The anchor moving means someone else just wrote —
-  that is the mechanism working, not a problem to route around.
-- **Never edit a dated release file** in `changelog/`. Those are published history. If something
-  shipped and was described wrong, the correction is a new entry in `UNRELEASED.md`, not a rewrite
-  of the record.
-
-Use `## Added` / `## Changed` / `## Fixed` sections. Append to existing sections rather than
-duplicating them. One bullet per change, so two panes interleaving stays legible. Leave the header
-block and nav links at the top of the file alone — the coverage check treats everything above the
-first `---` rule as boilerplate.
-
-Then confirm your entries actually cover what you changed:
-
-```
-.\.claude\scripts\changelog-capture.ps1 -Coverage -Mine
+- **One bolded line saying what is different in the game.** Then what breaks if you revert it and
+  the verification basis, in one to three short paragraphs.
 ```
 
-`-Mine` restricts this to your own capture — without it every other pane's uncurated work is
-reported as your suspect. A `SUSPECT` is a name from your capture that appears nowhere in
-`changelog/UNRELEASED.md`. Often that is correct: an entry written in player terms will not contain the
-script's name. Read each one and decide. **Do not add script names to the prose to clear the
-list** — the check exists to find work you forgot to describe, not to make the changelog name
-files.
+- The two metadata bullets are optional: include **Shared modules** only when a `[mirrored]` module
+  was touched, **Data-affecting** only when it is yes (Wallet reasons, XP curve, RP awards,
+  battle-pass grants, profile shape — reverting a place does not undo those).
+- Sections are `## Added` / `## Changed` / `## Fixed`. One bullet per change, grouped by subsystem,
+  not by tool call. Describe the change, not the edit: *"Servers evacuate players to the lobby on
+  shutdown"*, not *"Set source of SoftShutdown"*.
+- Don't re-explain a mechanism already commented in the source. The exception is an entry cited by
+  a board issue, which carries the diagnosis (`changelog/CONVENTIONS.md`).
+- Exploit, duplication and anti-cheat fixes get full detail here, because this file is internal. Only
+  player-facing text says "backend improvements".
 
-**5. Flag the two things that carry release risk.**
-
-While grouping, watch for and call out explicitly:
-
-Record both in the metadata bullets at the top of `UNRELEASED.md`, above the section headings —
-`/preflight` reads them when it converts the file into the release entry.
-
-- **Shared modules touched.** The mirrored set is 21 files: `Wallet`, `Telemetry`,
-  `TelemetryClient`, `ProfileService`, `GameEnvironment`, `MapCatalog`, `GamemodeConfig`,
-  `SoftShutdown`, `VersionTagController`, `BattlePassConfig`, `BoostConfig`, `EmoteConfig`,
-  `QuestConfig`, `TitlesConfig`, `DailyRewardConfig`, `FriendBonusConfig`, `TitleStyles`,
-  `TitleRenderer`, `AnimationLoader`, `TesterGrantService`, `BountyPlusConfig`. If any appear,
-  note them so `/preflight` knows to verify the mirrors. If a module starts being mirrored and
-  is not on this list, say so — an untracked mirror is how `QuestConfig` drifted unnoticed.
-  **`MapCatalog` is not `MapConfig`** — the catalog is universe-wide and mirrored; `MapConfig` is
-  per-place and must never be.
-- **Data-affecting changes.** Anything touching Wallet reasons, the XP curve, RP awards,
-  battle-pass grants or the profile shape. These cannot be undone by reverting a place, so
-  they must be marked in the release entry.
-
-**6. Retire the capture — never delete it.**
+## 3. Add and retire
 
 ```
-.\.claude\scripts\changelog-capture.ps1 -Retire
+.\.claude\scripts\changelog-capture.ps1 -Add <file> -Retire
 ```
 
-Moves **your** file to `.changelog/consumed/<session>-<utc stamp>.jsonl`. Add `-All` only in `all`
-mode. Nothing is removed from disk: `-Coverage` reads `pending/` **and** `consumed/` together to
-get the full list of scripts a release touched, and archives them under the release name once it
-rolls. A retired file is also how a wrong entry gets rewritten instead of reconstructed.
+Appends each section under its heading, merges the metadata (a `no` never overwrites a peer's `yes`),
+prints your SUSPECTS and moves your capture to `.changelog/consumed/`. A SUSPECT is a captured name
+that no entry mentions. Often that is correct, because entries are written in player terms. If one
+turns out to be forgotten work, run `-Add` again with just that entry. **Don't add script names only
+to clear the list.**
 
-Do not delete, empty, or edit a file in `pending/` by hand, and do not retire a file that is not
-yours — an agent that is still working has no way to notice its capture disappeared.
-
-## Security note
-
-Never write an exploit, duplication bug or anti-cheat change into player-facing wording.
-The changelog is internal and records the full detail; the curated public note says
-"backend improvements". Naming an exploit publicly advertises that it existed.
+To amend an existing entry, `Grep` for it and `Edit` it. Never delete, empty or hand-edit a capture
+file, and never retire another pane's (without `-All`, `-Retire` only takes yours).

@@ -106,11 +106,12 @@ value (`MapConfig.Id` equals the catalog row's `id`) and nothing checks it.
 untracked mirror is worse than an untracked file, because it looks covered — it has gone wrong on
 each of the last three additions.
 
-The list lives in **three** prose files that must be updated together: this file, `CLAUDE.md` and
-`.claude/skills/changelog/SKILL.md`. The fourth copy is **executable code** —
+The list lives in **two** prose files that must be updated together: this file and `CLAUDE.md`. The
+third copy is **executable code** —
 `rootsFor("universe")` in `.claude/skills/preflight/PreflightGates.luau`, installed in all three places
 as `ServerStorage.PreflightGates`, which both `/preflight` and `/mirror` run. It is the one that
-actually compares, so when the count disagrees, the module is right and the prose is stale. `CLAUDE.md`
+actually compares, so when the count disagrees, the module is right and the prose is stale; the
+`/changelog` digest reads its `[mirrored]` flag from that file too. `CLAUDE.md`
 names the count twice (the module rule and the changelog-folder table); grep for the number, not
 just the list.
 
