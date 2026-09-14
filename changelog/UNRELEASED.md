@@ -22,4 +22,9 @@ which is the point.
 
 ## Changed
 
+- **`HunterViewmodelContract` header comment (both match places), comment only.** It said
+  "/preflight Step 2 runs it"; since the Hotfix 3.3 preflight rework the contract gate runs in Step 1
+  through `ServerStorage.PreflightGates`. No behaviour change, no data. Byte-identical in Redwater and
+  Frostbite (26206 B, `c737f84b`), compiles, `Hunters.Shared` match-tier fold equal.
+
 ## Fixed

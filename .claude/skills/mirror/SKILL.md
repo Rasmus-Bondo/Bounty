@@ -5,10 +5,10 @@ description: Compare and reconcile the shared code trees across the connected Ro
 
 # Mirror
 
-The scripted mirror sync from `FROSTBITE_CLAIM_SPEC.md` §7 (Option B). It answers one question —
+The scripted mirror sync from `depricated/FROSTBITE_CLAIM_SPEC.md` §7 (Option B). It answers one question —
 **do the shared trees match?** — and can push the answer one way when they do not.
 
-Read `FROSTBITE_CLAIM_SPEC.md` §7 for *why* this exists and why Packages were rejected. This file is
+Read `depricated/FROSTBITE_CLAIM_SPEC.md` §7 for *why* this exists and why Packages were rejected. This file is
 only *how to run it*.
 
 **Default is read-only.** `/mirror` reports. `/mirror apply …` writes, and only after you have
@@ -19,7 +19,7 @@ named a direction and the user has agreed to it.
 | Invocation | Does |
 |---|---|
 | `/mirror` | Compare the **match** tier: Redwater ↔ Frostbite, whole shared codebase. Top-level rollup. |
-| `/mirror universe` | Compare the **universe** tier: the 21 shared modules across **all three** places. This is what `/preflight` Step 1 runs. |
+| `/mirror universe` | Compare the **universe** tier: the 21 shared modules across **all three** places. `/preflight` Step 1's `run()` folds the same walk into its `universe=` line. |
 | `/mirror <path>` | Drill one level into a drifted subtree, e.g. `/mirror ReplicatedStorage.Hunters`. |
 | `/mirror apply <path>` | Reconcile the scripts under `<path>`. Requires a stated direction. |
 

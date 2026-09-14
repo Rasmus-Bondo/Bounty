@@ -1,7 +1,7 @@
 # changelog-capture.ps1
 #
 # Not a hook - a helper for the /changelog and /preflight skills. It answers "which capture files
-# exist and which one is mine", lists a release's scope grouped by place and cross-checks it against
+# exist and which one is mine", lists every touched name grouped by place and cross-checks it against
 # changelog/UNRELEASED.md, rolls the changelog, and retires a consumed file by MOVING it, never
 # deleting it.
 #
@@ -12,7 +12,7 @@
 # The capture is partitioned per session by .claude/hooks/log-studio-change.ps1 because several
 # agents work this project at once. The rule this script exists to enforce: an agent touches its
 # own capture file and nothing else, and a retired file stays on disk until a release archives it,
-# so /preflight can still see every script the release touched.
+# so -Coverage can still see every script the release touched.
 #
 #   changelog-capture.ps1                 status: my session id, every pending file, consumed count
 #   changelog-capture.ps1 -Coverage       every capture file, then every touched name
@@ -208,7 +208,7 @@ if ($Coverage) {
         } catch { }
     }
 
-    Write-Output ("=== release scope: " + $files.Count + " capture file(s), " + $prose.Length + " chars of UNRELEASED.md prose ===")
+    Write-Output ("=== capture summary: " + $files.Count + " capture file(s), " + $prose.Length + " chars of UNRELEASED.md prose ===")
     foreach ($f in ($files | Sort-Object LastWriteTime)) {
         $state = 'consumed'
         if ($f.DirectoryName -eq $pendDir) { $state = 'pending ' }
@@ -516,7 +516,7 @@ if ($Retire) {
         Move-Item -LiteralPath $f.FullName -Destination (Join-Path $consDir $name) -Force
         Write-Output ("retired   " + $f.Name + "  (" + $lines + " lines)  ->  consumed/" + $name)
     }
-    Write-Output "nothing was deleted; /preflight still reads consumed/ for release scope."
+    Write-Output "nothing was deleted; -Coverage still reads consumed/ until /preflight archives it."
 
     # A sweep that silently leaves something behind is the exact failure above, and it looks like
     # success. Assert instead: anything still claimable after -All gets named, and the exit code

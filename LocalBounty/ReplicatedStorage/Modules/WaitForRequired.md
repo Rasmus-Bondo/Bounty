@@ -26,7 +26,7 @@ Every lobby script that reaches into Workspace for a Persistent model — `Camer
 - **Not for children of an instance this already returned.** A Persistent model's descendants arrive with it, so `cameraFolder:WaitForChild("CameraPart")` resolves instantly and needs no helper. LoadingScreen is the one exception — it runs in `ReplicatedFirst`, the earliest point on the client, so its `CameraPart` wait goes through the helper defensively.
 
 ## Not mirrored
-Bounty-only. The waits it exists for are all lobby Workspace models, so it is **not** part of the 17-file mirror set and `/preflight` gains no new gate.
+Bounty-only. The waits it exists for are all lobby Workspace models, so it is **not** part of the 21-file mirror set and `/preflight` gains no new gate.
 
 ## Dependencies
 - **Requires:** Nothing

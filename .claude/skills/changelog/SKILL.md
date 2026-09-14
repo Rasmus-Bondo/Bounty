@@ -18,8 +18,8 @@ is redirect stubs only since 2026-08-31. Conventions are in `changelog/CONVENTIO
 **Several agents work this project at once, so this skill never deletes anything and never touches
 another session's capture.** The capture is partitioned per session at write time —
 `.changelog/pending/<session>.jsonl`, one file per pane, shared with that pane's own subagents.
-Curating a file *retires* it into `.changelog/consumed/`, where `/preflight` can still read it for
-release scope. The old single shared `pending.jsonl` failed twice over: whichever agent curated
+Curating a file *retires* it into `.changelog/consumed/`, where it waits for `/preflight` to archive it
+under the release name. The old single shared `pending.jsonl` failed twice over: whichever agent curated
 first deleted the capture of everyone still mid-work, and two panes appending at the same instant
 could collide on a file lock that the hook silently swallows.
 
@@ -37,7 +37,7 @@ so and stop — do not curate another pane's lines, and do not invent entries fr
 conversation. Read the file itself with `Read`, not a shell command.
 
 Each line is one Studio mutation: `ts`, `tool`, `target`, `place`, sometimes `name`, and `origin`
-when the mutation came from a subagent. Place ids map as: `place:131701626847012` = Bounty,
+when the mutation came from a subagent; since 2026-09-14 also `placeName`, resolved by the hook. Place ids map as: `place:131701626847012` = Bounty,
 `place:98517073248449` = Redwater Canyon, `place:134041618959520` = Frostbite Claim.
 
 **A mutation in one match place usually implies its twin.** Redwater and Frostbite carry the same
@@ -139,7 +139,7 @@ Record both in the metadata bullets at the top of `UNRELEASED.md`, above the sec
 ```
 
 Moves **your** file to `.changelog/consumed/<session>-<utc stamp>.jsonl`. Add `-All` only in `all`
-mode. Nothing is removed from disk: `/preflight` reads `pending/` **and** `consumed/` together to
+mode. Nothing is removed from disk: `-Coverage` reads `pending/` **and** `consumed/` together to
 get the full list of scripts a release touched, and archives them under the release name once it
 rolls. A retired file is also how a wrong entry gets rewritten instead of reconstructed.
 

@@ -32,7 +32,7 @@ Loads an AnimationTrack only after its clip is confirmed fetched, so a failed CD
 Server-side callers (HunterWorldModel, BotController) guard the **server's** own load only. A server-played track replicates as an id and each client fetches it independently, so a client-side fetch failure can only be closed by a client-side prewarm of the same ids. That is what WorldAnimationPrewarmClient does — ungated at the root of `StarterPlayerScripts`, warming the 12 hunter world clips at start and the 48 bot clips after the local character spawns, with two retries and a warn for anything that never arrives.
 
 ## Mirroring
-This module is one of the **17 shared modules mirrored VERBATIM across both places**. Edit both copies in the same pass and verify with a byte-length + checksum compare; `/preflight` gates it.
+This module is one of the **21 shared modules mirrored VERBATIM across all three places**. Edit both copies in the same pass and verify with a byte-length + checksum compare; `/preflight` gates it.
 
 ## Dependencies
 - **Requires:** Nothing (uses the `ContentProvider` service directly)

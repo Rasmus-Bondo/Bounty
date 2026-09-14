@@ -29,7 +29,7 @@ Loads an AnimationTrack only after its clip is confirmed fetched, so a failed CD
 2. **Never `load()` on a per-tile path without prewarming first.** Either `prewarm` the whole set in one call and then `load` (LobbySpawn, BattlePassClient, EmoteBuyController), or use `loadCached` when the ids differ per tile and there is no set to warm (`Viewport.playEmoteAnim`).
 
 ## Mirroring
-This module is one of the **17 shared modules mirrored VERBATIM across both places**. Edit both copies in the same pass and verify with a byte-length + checksum compare; `/preflight` gates it.
+This module is one of the **21 shared modules mirrored VERBATIM across all three places**. Edit both copies in the same pass and verify with a byte-length + checksum compare; `/preflight` gates it.
 
 ## Dependencies
 - **Requires:** Nothing (uses the `ContentProvider` service directly)

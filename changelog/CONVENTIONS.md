@@ -102,7 +102,7 @@ no old id at all.
 is per-place, describes only that map, and must never be mirrored. The two agree on exactly one
 value (`MapConfig.Id` equals the catalog row's `id`) and nothing checks it.
 
-**When a module starts being mirrored, add it here and to `/preflight` in the same pass.** An
+**When a module starts being mirrored, add it here and to the gate module's list in the same pass.** An
 untracked mirror is worse than an untracked file, because it looks covered — it has gone wrong on
 each of the last three additions.
 
