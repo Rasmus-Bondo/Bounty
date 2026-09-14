@@ -1,6 +1,6 @@
 ---
 name: preflight
-description: Run the pre-publish gates before shipping to Roblox - verify shared-module mirrors, syntax-check changed scripts, sync vault and graphs, confirm release scope, roll the changelog, bump the version, hand over the DEV soak and manual publish checklists, record the place versions, cut the GitHub release, and draft the public Discord announcement last. Pass "check" to run the read-only gates only. Use whenever the user is about to publish, or wants a health check on the mirrors.
+description: Run the pre-publish gates before shipping to Roblox - verify shared-module mirrors, syntax-check changed scripts, sync vault and graphs, roll the changelog, bump the version, hand over the DEV soak and manual publish checklists, record the place versions, cut the GitHub release, and draft the public Discord announcement last. Pass "check" to run the read-only gates only. Use whenever the user is about to publish, or wants a health check on the mirrors.
 ---
 
 # Preflight
@@ -15,14 +15,18 @@ that skips things. The only argument is **`check`** (any argument starting with 
 Step 4 and report. Steps 1–4 are read-only apart from regenerating the graph files, so `check` is
 always safe, and it is the right choice for a health check rather than a release.
 
-**Steps 1 and 4 are hard gates.** On a failure, stop and report — never continue because it looks
+**Calling `/preflight` is the decision to publish.** Everything in the three places ships — whichever
+session made it — so there is no scope confirmation and no "does this belong?" or "what else changed?"
+question anywhere in this flow.
+
+**Step 1 is the hard gate.** On a failure, stop and report — never continue because it looks
 cosmetic, only on the user's explicit override. Reconciling is not part of preflight either: fixing
 drift mid-publish ships a build nobody has run. Stop, fix, re-run.
 
 **Work fast — the cost here is what you write, not the tools.** Every tool call in this flow returns in
 about a second; the Hotfix 3.2 run spent its ten minutes generating retyped Luau and waiting on one
 call at a time. So: **never paste gate Luau** (it lives in Studio, one line runs it), **batch every
-independent call into one message**, and **never Read raw capture files** (`-Coverage` prints the scope).
+independent call into one message**, and **never Read raw capture files** (`-Coverage` summarises them).
 
 **Changelog layout:** `CHANGELOG.md` is an index, one row per release. Prose lives in `changelog/`:
 `UNRELEASED.md` in flight, `YYYY-MM-DD-<release>.md` shipped, `CONVENTIONS.md` for naming and the
@@ -42,7 +46,7 @@ user to open it. Pass each `id` verbatim as `instance_id` below.
 | Call | What it covers |
 |---|---|
 | `execute_luau` in **each** place: `loadstring(game.ServerStorage.PreflightGates.Source)().run(print)` | Step 1 universe mirror · Step 2 syntax of every script · BotConfig · RoundSystem.Config · weapon-skin contract · clip parity · current version line |
-| `.\.claude\scripts\changelog-capture.ps1 -Coverage` | Step 4's scope list |
+| `.\.claude\scripts\changelog-capture.ps1 -Coverage` | Touched scripts for Step 3 · uncurated captures for Step 4 |
 | `python update_bounty_graph.py` | Step 3 |
 | `python update_redwater_canyon_graph.py` | Step 3 |
 
@@ -100,53 +104,37 @@ superset of the changed ones and also catches `execute_luau` and hand edits the 
 
 ### Step 3 — Vault and graph sync
 
-The graphs rebuilt in the batch. Check the vault against the scope list: every script created this
+The graphs rebuilt in the batch. Check the vault against `-Coverage`'s touched scripts: every script created this
 release has a `.md` at its mirrored path, every deleted one lost its `.md`, and connections are
 updated on **both** sides. If you fix a vault file, re-run both update scripts. Verify a new script's
 edges by grepping `graph.json` for its lowercased id — every `_tgt` must be a real code-level
 connection (`CLAUDE.md`, Vault Rules).
 
-## Step 4 — Scope confirmation (HARD GATE)
+## Step 4 — Sweep uncurated captures
 
-`-Coverage` already printed the scope: every capture file (pending and consumed, owner, age) and then
-every touched script and instance subtree **grouped by place**, each marked `SUSPECT` or `named`. Walk
-it with the user and confirm **each entry belongs in this release**. This is the gate no automated check
-can replace — a half-finished feature riding along on an urgent push compiles and mirrors fine.
+Mechanical, no questions. If `-Coverage` lists any `pending` file, run `/changelog all` so every change
+has an entry before the roll — in `check` mode, just report how many. A file tagged `version bump only`
+needs no entry; the sweep retires it with the rest. `SUSPECT` lines are not acted on.
 
-- **A file tagged `possibly still in progress`, or from a session that is not the user's** — ask before
-  absorbing it. Another pane's unfinished edit does not look unfinished in the log.
-- **`SUSPECT`** = the name appears nowhere in `UNRELEASED.md`. A question, not a failure: prose written
-  in player terms often never names the script, and that is the better entry. **Never clear a suspect
-  by adding the script name to the prose.** A genuine miss goes back through `/changelog` (or
-  `/changelog all`) before Step 5.
-- **A file tagged `version bump only`** is a stranded bump from the previous release, not scope. Do not
-  curate it: retire it and archive it under the release it came from
-  (`-Retire`, then `-Archive "<that release>"`).
-- **A place group named `instance:xxx` or `(default)`** is a Studio process the hook never saw named;
-  match the id against Step 0's output.
-- **The list is a floor.** `execute_luau` mutations and hand edits in Studio are never captured. Ask what
-  else changed.
-
-Anything that does not belong → **stop** and resolve it. **In `check` mode, stop here and report.**
+**In `check` mode, stop here and report.**
 
 ## Step 5 — Roll the changelog
 
-1. `-Coverage` showed anything still in `pending/` → run `/changelog all` first.
-2. Propose the next release name from the top index row (`Update N` for features, `Hotfix N.M` for
+1. Propose the next release name from the top index row (`Update N` for features, `Hotfix N.M` for
    patches — `CONVENTIONS.md`) and ask.
-3. `.\.claude\scripts\changelog-capture.ps1 -Roll "<release name>"`. It renames `UNRELEASED.md` to the
+2. `.\.claude\scripts\changelog-capture.ps1 -Roll "<release name>"`. It renames `UNRELEASED.md` to the
    dated file, writes the header (Published `rTBD`, Rollback target from the previous row), links the
    previous release's `Next`, drops a fresh `UNRELEASED.md` and adds the index row. It refuses if the
    previous release has no recorded place versions.
-4. **One `Edit`** filling the new file's `TBD`s: **Summary** (one sentence — it becomes the index row),
+3. **One `Edit`** filling the new file's `TBD`s: **Summary** (one sentence — it becomes the index row),
    **Profile schema** (`vN, unchanged`, or bumped — one-way), **Data-affecting** (`yes` whenever Wallet
    reasons, the XP curve, RP awards, battle-pass grants or the profile shape changed). Leave **Shared
    modules** for Step 6. The body stays exactly as curated. Then `-SyncIndex`.
-5. **Board:** open an issue for anything this release knowingly leaves unfinished, deferred or broken
+4. **Board:** open an issue for anything this release knowingly leaves unfinished, deferred or broken
    (`gh issue create`, label `standing` or `internal`, set Status and Severity, body tagged
    `(raised: <release>)` with a link to the entry). Close any issue this release verified, saying in the
    closing comment whether the basis was a playtest or elapsed time without recurrence.
-6. **Do not archive the captures yet** — Step 6 does, because the bump is itself a captured edit.
+5. **Do not archive the captures yet** — Step 6 does, because the bump is itself a captured edit.
 
 ## Step 6 — Bump the version
 

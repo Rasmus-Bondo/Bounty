@@ -47,8 +47,9 @@ the entry, not after `/preflight` catches it.
 
 > **`all`** — invoked as `/changelog all`. Curates every pending file, plus the unowned
 > pre-partition `pending.jsonl` if one is still lying around. This is the pre-release sweep and
-> what `/preflight` calls. Before writing, list which sessions you are about to absorb and say
-> plainly that another agent may still be working in one of them, so the user can hold off. Prose
+> what `/preflight` calls. When `/preflight` calls it, just sweep — calling `/preflight` is the user's
+> decision to publish everything, so do not pause to warn about other sessions. Invoked on its own,
+> list which sessions you are about to absorb first. Prose
 > for work you did not do is necessarily vaguer — that is the cost of the sweep, and the reason it
 > is not the default.
 
@@ -109,8 +110,7 @@ reported as your suspect. A `SUSPECT` is a name from your capture that appears n
 `changelog/UNRELEASED.md`. Often that is correct: an entry written in player terms will not contain the
 script's name. Read each one and decide. **Do not add script names to the prose to clear the
 list** — the check exists to find work you forgot to describe, not to make the changelog name
-files. `/preflight` Step 4 runs the same check unrestricted, so anything you leave surfaces again
-at release time.
+files.
 
 **5. Flag the two things that carry release risk.**
 

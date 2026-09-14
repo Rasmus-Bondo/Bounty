@@ -15,7 +15,7 @@
 # so /preflight can still see every script the release touched.
 #
 #   changelog-capture.ps1                 status: my session id, every pending file, consumed count
-#   changelog-capture.ps1 -Coverage       release scope: every capture file, then every touched name
+#   changelog-capture.ps1 -Coverage       every capture file, then every touched name
 #                                         grouped by place, marked SUSPECT if UNRELEASED.md never names it
 #   changelog-capture.ps1 -Coverage -Mine same, restricted to this session's own capture
 #   changelog-capture.ps1 -Retire         move MY pending file to .changelog/consumed/
@@ -80,7 +80,7 @@ function Get-CaptureFiles {
     return $out
 }
 
-# A file whose every line edits GameEnvironment is a version bump, not work. See /preflight Step 4.
+# A file whose every line edits GameEnvironment is a version bump, not work: it needs no changelog entry.
 function Test-BumpOnly($file) {
     $lines = @(Get-Content -LiteralPath $file -ErrorAction SilentlyContinue | Where-Object { $_.Trim() })
     if ($lines.Count -eq 0) { return $false }
@@ -156,7 +156,7 @@ function Get-IndexTop {
 # ---------------------------------------------------------------------------------------------
 
 if ($Coverage) {
-    # Release scope in one read: every capture file with its owner and age, then every touched name
+    # Every capture file with its owner and age, then every touched name
     # grouped by place, cross-checked against the prose in changelog/UNRELEASED.md. Catches a session
     # that was never curated AND one that was curated thinly - the second is invisible to every other
     # gate, because retiring a file is what marks it "described" and nothing else reads the prose.
@@ -215,10 +215,8 @@ if ($Coverage) {
         if ($f.Name -eq 'pending.jsonl') { $state = 'legacy  ' }
         $owner = 'other'
         if ($f.BaseName.StartsWith($session)) { $owner = 'MINE ' }
-        $age = [int]((Get-Date) - $f.LastWriteTime).TotalMinutes
         $tag = ''
-        if (Test-BumpOnly $f.FullName) { $tag = '  <- version bump only (Step 4: archive it, not scope)' }
-        elseif ($state -eq 'pending ' -and $owner -eq 'other' -and $age -lt 30) { $tag = '  <- written ' + $age + ' min ago: possibly still in progress, ask before absorbing' }
+        if (Test-BumpOnly $f.FullName) { $tag = '  <- version bump only (no entry needed)' }
         Write-Output ("  " + $state + "  " + $owner + "  " + (Get-LineCount $f.FullName).ToString().PadLeft(4) + " lines  last " + $f.LastWriteTime.ToString('yyyy-MM-dd HH:mm') + "  " + $f.Name + $tag)
     }
 
