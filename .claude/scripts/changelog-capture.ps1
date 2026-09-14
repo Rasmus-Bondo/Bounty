@@ -448,8 +448,10 @@ if ($SyncIndex) {
     $lines[$top.Row] = $row
     Write-Text $top.Path ($lines -join "`n")
     Write-Output ("synced    CHANGELOG.md row for " + $top.Name + ": " + $published + " | " + $daCell)
-    if ($summary -eq 'TBD' -or $published -match 'rTBD' -or $daCell -eq 'TBD') {
-        Write-Output "still TBD - fill the release header and run -SyncIndex again"
+    if ($summary -eq 'TBD' -or $daCell -eq 'TBD') {
+        Write-Output "still TBD - fill Summary / Data-affecting in the release header and run -SyncIndex again"
+    } elseif ($published -match 'rTBD') {
+        Write-Output "Published is rTBD until the user publishes - record the versions (Step 9), then -SyncIndex again"
     }
     exit 0
 }
