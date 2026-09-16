@@ -2858,6 +2858,17 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "LocalBounty/StarterPlayer/StarterPlayerScripts/BattlePassClient.md",
+      "weight": 1.0,
+      "_src": "battlepassclient",
+      "_tgt": "weapondisplayconfig",
+      "source": "weapondisplayconfig",
+      "target": "battlepassclient"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "LocalBounty/StarterGui/BundleGuiHomeScreen/BundleHomeController.md",
       "weight": 1.0,
       "_src": "bundlehomecontroller",

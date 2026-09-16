@@ -1,11 +1,11 @@
 # Graph Report - LocalBounty  (2026-09-16)
 
 ## Corpus Check
-- 134 files · ~164,900 words
+- 134 files · ~165,072 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 134 nodes · 451 edges · 15 communities detected
+- 134 nodes · 452 edges · 15 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 

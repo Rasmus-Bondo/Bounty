@@ -2,7 +2,7 @@
 tags: [shared, modulescript, config, weapons, display]
 path: game.ReplicatedStorage.Config.WeaponDisplayConfig
 type: ModuleScript
-lines: 145
+lines: 154
 ---
 
 # WeaponDisplayConfig
@@ -11,7 +11,7 @@ Per-hunter weapon-skin display tuning, shared by every Bounty surface that puts 
 
 ## What it does
 1. `Hunters` — a per-hunter table of orientation and framing values, with `get(hunterName)` as the accessor. Nothing here is required, so a hunter with no entry is legitimate rather than a bug: Fortuna's card deck reads correctly off the shared base rotation
-2. Fields: `rotationOffset` (applied on top of the caller's base rotation), `explicitOrient` / `explicitIconOrient` (absolute world poses replacing the shared lookAt), `displayScale` (normalizes the model's longest axis to N studs so raw model scale never matters), `iconDistanceScale`, `standRaise`, `standCenterOffset`, and `previewDistanceScale`
+2. Fields: `rotationOffset` (applied on top of the caller's base rotation), `explicitOrient` / `explicitIconOrient` (absolute world poses replacing the shared lookAt), `displayScale` (normalizes the model's longest axis to N studs so raw model scale never matters), `iconDistanceScale`, `standRaise`, `standCenterOffset`, `previewDistanceScale`, and the battle-pass reward card's own `cardRoll` / `cardDistanceScale` (Bram only: 32° roll and 1.38× distance so a shotgun runs corner to corner instead of clipping as a flat strip)
 3. Carries the full measured rationale for each hunter's entry — why Vesper's sniper and Bram's Grudgekeeper both lie horizontal with the muzzle to screen-left, why Dust's `displayScale = 6` reproduces the old union revolver's on-screen length, and why `standCenterOffset` pins the bounding-box centre instead of bottom-aligning
 
 ## Why this is a module
@@ -23,7 +23,7 @@ It used to be a `WEAPON_DISPLAY` table copied **byte-for-byte** into both Hunter
 
 ## Dependencies
 - **Requires:** Nothing
-- **Required by:** HuntersBuyController, Viewport, Preview
+- **Required by:** HuntersBuyController, Viewport, Preview, ShopStandDisplay, BattlePassClient
 
 ## Connections
 ### RemoteEvents
