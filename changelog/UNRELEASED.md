@@ -14,6 +14,7 @@ destroys a concurrent entry without complaining.
 
 - **Shared modules:** `GameEnvironment` (RANK_SEASONS row), `TitlesConfig` (Season 2 podium titles + 7 Bounty Pass titles), `BattlePassConfig` (cadence comment).
   Also: `BattlePassConfig` (time-gated season blocks, Season 2), `TitlesConfig` (pass titles tagged by season).
+  Also: `GameEnvironment` (DEV mock ranked schedule removed), `BattlePassConfig` (comment only).
 - **Data-affecting:** yes — ranked season Token awards and title grants.
   Also: yes — Bounty Pass Season 2 (`S7`) resets every player's pass level, XP, quests, claims and Full Pass at 2026-09-19 18:00 UTC, and pass rewards now bank lootbox chests.
 
@@ -72,3 +73,10 @@ destroys a concurrent entry without complaining.
 - **The ranked payout could pay a winner twice.** `paySeason` cleared its per-season idempotency guard, then yielded inside `fetchStandings` before writing the mark, so two `resolveFor` coroutines for the same player could both reach `Wallet.award` — 2,000 Tokens twice for the season winner. Reachable at a boundary specifically, where a join still inside its profile-wait poll overlaps the rollover sweep. Now re-checked after the yield.
 
   **This was live for the Season 1 payout on 12 Sep** — worth auditing the economy analytics for duplicate `TimedReward` Token grants around 20:00 CEST that day. Revert and the race returns. Verified by inspection only; reproducing it needs two concurrent joins at a season boundary, so it was not playtested.
+- **DEV now runs the live ranked-season schedule, so its season reward card and leaderboard name the same season as live.** DEV's reward card for the season that closed 2026-09-12 read "SEASON 4" where live's read "SEASON 1": `DEV_RANK_SEASONS` (the 08-29 / 09-05 payout dry-run fixture, issue #20) inserted three mock rows, shifting every later DEV season +3, and DEV paid `s7_*` title ids `TitlesConfig` never minted. `DEV_RANK_SEASONS` and `seasonTable()` are deleted; `getRankSeason` and `getRankSeasonEnd` read `RANK_SEASONS` directly. Live is unchanged: it already read that table.
+
+  **Knock-on in DEV only** (separate universe, disposable data): DEV drops from code season 8 back to 5, so testers' DEV RP zeroes on their next DEV round; the DEV board reads `RankPoints_v5`, which may still hold entries from the 29 Aug 18:00-20:00 mock window; a DEV profile already marked paid for code season 5 from that window will not be paid again on 26 Sep. DEV now closes Season 2 on 26 Sep with the real `s5_*` titles, so the DEV soak can test that payout ahead of live.
+
+  **Revert risk:** restores the +3 DEV shift and DEV cannot test the 26 Sep close (its mock table has no row for it). No live effect either way.
+
+  **Verified:** all three copies of both modules byte-identical (length + checksum) and compiling; `loadstring` with each DEV PlaceId substituted resolves `env=Dev`, current season 5 / "SEASON 2", ends 1790445600, store `RankPoints_v5`, closed-season card "SEASON 1" — identical to the Live PlaceId. Not yet observed on a published DEV server.

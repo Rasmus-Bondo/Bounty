@@ -1,0 +1,15 @@
+{"ts":"2026-09-16T11:25:04.8670190+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.GameEnvironment","place":"instance:k96-uye","placeName":"Bounty"}
+{"ts":"2026-09-16T11:25:05.9861483+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.GameEnvironment","place":"instance:76h-m5j","placeName":"Redwater Canyon"}
+{"ts":"2026-09-16T11:25:07.1165300+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.GameEnvironment","place":"instance:6p2-sym","placeName":"Frostbite Claim"}
+{"ts":"2026-09-16T11:25:08.5296772+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.BattlePassConfig","place":"instance:k96-uye","placeName":"Bounty"}
+{"ts":"2026-09-16T11:25:09.6520845+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.BattlePassConfig","place":"instance:76h-m5j","placeName":"Redwater Canyon"}
+{"ts":"2026-09-16T11:25:10.5762691+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.BattlePassConfig","place":"instance:6p2-sym","placeName":"Frostbite Claim"}
+{"ts":"2026-09-16T11:25:13.0585541+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.GameEnvironment","place":"instance:k96-uye","placeName":"Bounty"}
+{"ts":"2026-09-16T11:25:14.1869754+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.GameEnvironment","place":"instance:76h-m5j","placeName":"Redwater Canyon"}
+{"ts":"2026-09-16T11:25:15.3200213+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.GameEnvironment","place":"instance:6p2-sym","placeName":"Frostbite Claim"}
+{"ts":"2026-09-16T11:25:24.0641801+02:00","tool":"delete_script_lines","target":"game.ReplicatedStorage.Config.GameEnvironment","place":"instance:k96-uye","placeName":"Bounty"}
+{"ts":"2026-09-16T11:25:24.9400914+02:00","tool":"delete_script_lines","target":"game.ReplicatedStorage.Config.GameEnvironment","place":"instance:76h-m5j","placeName":"Redwater Canyon"}
+{"ts":"2026-09-16T11:25:25.7122673+02:00","tool":"delete_script_lines","target":"game.ReplicatedStorage.Config.GameEnvironment","place":"instance:6p2-sym","placeName":"Frostbite Claim"}
+{"ts":"2026-09-16T11:25:30.1449030+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.GameEnvironment","place":"instance:k96-uye","placeName":"Bounty"}
+{"ts":"2026-09-16T11:25:32.2348326+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.GameEnvironment","place":"instance:76h-m5j","placeName":"Redwater Canyon"}
+{"ts":"2026-09-16T11:25:34.1575624+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.GameEnvironment","place":"instance:6p2-sym","placeName":"Frostbite Claim"}
