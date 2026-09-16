@@ -1,11 +1,11 @@
-# Graph Report - LocalBounty  (2026-09-14)
+# Graph Report - LocalBounty  (2026-09-16)
 
 ## Corpus Check
-- 134 files · ~166,926 words
+- 134 files · ~164,900 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 134 nodes · 449 edges · 15 communities detected
+- 134 nodes · 451 edges · 15 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -29,8 +29,8 @@
 ## God Nodes (most connected - your core abstractions)
 1. `DataService` - 40 edges
 2. `Main` - 23 edges
-3. `LootboxService` - 21 edges
-4. `TitlesConfig` - 19 edges
+3. `LootboxService` - 22 edges
+4. `TitlesConfig` - 20 edges
 5. `CollectionService` - 18 edges
 6. `Panels` - 17 edges
 7. `State` - 17 edges
@@ -47,8 +47,8 @@
   LocalBounty/ServerScriptService/PlayerServices/PlayerSettingsService.md → LocalBounty/ReplicatedFirst/LoadingScreen.md
 - `BattlePassConfig` --calls--> `GameEnvironment`  [EXTRACTED]
   LocalBounty/ReplicatedStorage/Config/BattlePassConfig.md → LocalBounty/ReplicatedStorage/Config/GameEnvironment.md
-- `Shop` --calls--> `BattlePassConfig`  [EXTRACTED]
-  LocalBounty/StarterGui/CollectionGui/CollectionGuiController/Shop.md → LocalBounty/ReplicatedStorage/Config/BattlePassConfig.md
+- `TitlesConfig` --calls--> `BattlePassConfig`  [EXTRACTED]
+  LocalBounty/ReplicatedStorage/Config/TitlesConfig.md → LocalBounty/ReplicatedStorage/Config/BattlePassConfig.md
 
 ## Communities
 
@@ -138,7 +138,7 @@ Nodes (1): TumbleweedSpawner
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `DataService` connect `Server Bootstrap` to `Server Bootstrap`, `Main Menu`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`?**
-  _High betweenness centrality (0.293) - this node is a cross-community bridge._
+  _High betweenness centrality (0.292) - this node is a cross-community bridge._
 - **Why does `PartyService` connect `Server Bootstrap` to `Server Bootstrap`, `Main Menu`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`?**
   _High betweenness centrality (0.108) - this node is a cross-community bridge._
 - **Why does `CollectionClient` connect `Server Bootstrap` to `Server Bootstrap`, `Server Bootstrap`, `Main Menu`?**

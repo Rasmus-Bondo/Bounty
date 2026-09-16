@@ -6,7 +6,7 @@ tags:
   - cosmetics
 path: game.ReplicatedStorage.Config.TitlesConfig
 type: ModuleScript
-lines: 313
+lines: 415
 ---
 
 # TitlesConfig
@@ -15,7 +15,7 @@ Cosmetic title catalog — display labels, visual styles and unlock costs. Mirro
 
 ## What it does
 1. `Titles` — an ordered list per hunter of `{ id, label, style, color, unlock }`. **Every title belongs to exactly one hunter.** Dust 8 · Vesper 7 · Bram 7 · Fortuna 6 = 28 total (4 free, 17 purchasable, 7 battle-pass). Ids are the stable keys persisted in `profile.EquippedTitles[hunter]`
-2. Seven are battle-pass rewards (pass levels 2/7/12/17/22/27 — level 27 grants **two**, `gunmetal` (chrome) paid and `devils_luck` (glow) free). The pass's four latest title slots (paid 17/22/27, free 27) hold **one title per hunter**: DUSTDEVIL, STAR SIGHT, GUNMETAL, DEVIL'S LUCK. The rest are one free title per hunter plus the Trading Post ladder
+2. Battle-pass titles, seven per pass season (levels 2/7/12/17/22/27 — level 27 grants **two**), tagged `unlock = pass(season, level)`. Season 1: DRIFTER, GUNHAND, MARKSMAN, DUSTDEVIL, STAR SIGHT, GUNMETAL, DEVIL'S LUCK. Season 2 (fire): CINDERKIN, HOT STREAK, HEAT HAZE, FORGEBORN, SUNSCORCH, EMBERLINE, ASHBORNE. The season tag drives the lobby's wardrobe badge and hiding (`RequirementText` / `IsHiddenUntilOwned`, via `BattlePassConfig.activeSeasonNumber()`); Redwater only displays labels, so it is unaffected. The rest are one free title per hunter plus the Trading Post ladder
 2b. **Four styles are RESERVED, one per hunter, each used by exactly one title and each that hunter's 600-Token apex — the top shop rung, there is no 800 rung:** `fire` → Dust's HIGH NOON, `lightning` → Vesper's STORMCALLER, `bloodmoon` → Bram's THE BUTCHER, `holo` → Fortuna's Wild Card. Every other style is shared freely across hunters and rungs. Redwater renders all of these on nameplates, the kill cam and the match summary, so a reserved style is also a *recognition* cue mid-match — you should be able to tell a hunter's apex title at a glance
 2c. **Price no longer follows style.** This file used to promise one rung per style; the 2026-07-27 reshuffle ended that — `glow` spans 250 Tokens, 600 Tokens and a pass grant. The 600-Token rung was crowded by the four ex-pass titles until all four (`high_roller`, then `the_legend`, `outlaw`, `dead_shot` on 2026-07-28) were **deleted**; it now holds 5 of the 17 purchasable titles. Those four ids are retired — never reuse one. Read `UnlockOf` rather than inferring from the style, though Redwater never needs to, since the lobby owns all pricing
 3. `HunterOrder` / `LabelById` / `EntryById` / `HunterById` — flattened lookups built once at require time
@@ -29,7 +29,7 @@ Redwater needs **no ownership logic**: Bounty's `CollectionService.equipTitle` i
 9. **GOLDEN OUTLAW, the BOUNTY+ title** (2026-09-06) — four ids (`golden_outlaw_dust` / `_vesper` / `_bram` / `_fortuna`) sharing one label, injected after the season block and before the flattened lookups. A single id listed under all four hunters would resolve to Fortuna alone through `HunterById`. Unlock is a `grant` with `detail = "BOUNTY+"`, and it is NOT `hiddenUntilOwned`. Granted in the lobby; this place only displays it, on the three surfaces that show a title. Catalog went 28 → 32 authored titles
 
 ## Dependencies
-- **Requires:** [[GameEnvironment]]
+- **Requires:** [[GameEnvironment]], [[BattlePassConfig]]
 - **Required by:** TitleDisplayService, TitleRenderer
 
 ## Connections
@@ -43,3 +43,4 @@ None
 | Target | Function | Purpose |
 |--------|----------|---------|
 | [[GameEnvironment]] | `getRankSeasonDisplay()` | The player-facing season number baked into each season title's label |
+| [[BattlePassConfig]] | `activeSeasonNumber()` | Pass-title badge and hiding (read by the lobby wardrobe; unused here) |

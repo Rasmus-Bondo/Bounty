@@ -2,72 +2,32 @@
 tags: [shared, modulescript, battlepass, config]
 path: game.ReplicatedStorage.Config.BattlePassConfig
 type: ModuleScript
-lines: 408
+lines: 605
 ---
 
 # BattlePassConfig
 
-Single source of truth for the current battle-pass season: metadata, XP source values, the 3 weekly quest sets, and the two-track (paid + free) reward layout. Identical copy must exist in Bounty — edit both when changing the season.
+Single source of truth for the battle pass: every season's quest sets and reward tracks, the shared XP/level constants, and which season is live right now. Mirrored byte-for-byte from Bounty (and into Frostbite Claim).
 
 ## What it does
-1. Exports season metadata: `SEASON_ID` (bump to start a fresh season / reset BP progress — currently `S6`; the bump also sets `ownsFullPass = false`, revoking the 800-Token Upgrade Pass without a refund), `SEASON_NAME`, `SEASON_START` (UTC unix time), `WEEK_SECONDS`, `TOTAL_WEEKS` (3), `XP_PER_LEVEL` (2,500), `TOTAL_LEVELS` (30), `FULL_PASS_PRICE` (800 Tokens — the Upgrade Pass cost spent via Wallet), plus the two week-unlock levers `TEST_ALL_WEEKS_UNTIL` (env-gated — Studio and DEV only) and `QUEST_PROGRESS_TOKEN`
-2. Exports `XP_SOURCES` — BP-specific XP amounts per gameplay event (gameComplete 25, kill 4, assist 2, becomeBounty 20, killBounty 10); consumed by Redwater's BattlePassService
-3. Exports `WEEKS` — 3 **themed** quest sets of 7 each. The set live from **2026-08-29** is W1 *Ride Together* (the team modes exist; go and try them), W2 *Hold the Line* (Domination's home week, with TDM carrying the kill quest), W3 *The Whole Roster* (hunter mastery). Every quest: `id` (unique across the whole season), `type` (must match the event tracked here), `goal`, `xp`, `label`. Each week totals 21,500 XP. This place tracks these and marks them completed; the XP is then **claimed by hand in the lobby Quests menu WEEKLY tab** in Bounty, one page per unlocked week
-4. Exports `PAID` — the **premium track**, indexed 1..30 (one reward per level). Requires the Full Pass to claim. Each reward: `kind` (title/emote/boost/cash/tokens/hunterSkin/gunSkin), `id`, `label`, optional `character` (**required** for hunterSkin/gunSkin — skin ownership is stored per hunter), optional `cash`, optional `tokens`, optional `boostId`, optional `count`. **Every `id` must resolve in the real catalog for its kind** (TitlesConfig / EmoteConfig / BoostConfig / `Characters.<character>.Skin` / `WeaponSkins.<character>`) or the claim records something no system reads. Milestone skins: L10 `SummerDust` (Dust), L20 `SummerVesper` (Vesper), L29 `HellFire` gun (Dust), L30 `SummerFortuna` (Fortuna); boosts at L8/L9/L14/L15/L19/L25; the 5 pass-exclusive emotes at L3/L13/L18/L24/L28
-4b. `count` is **boost-only** and defaults to 1 (PAID[15] grants 2× the 30-minute Cash boost). Boosts are the only stacking reward — every other kind is either an ownership record (owning a title twice is meaningless) or an amount already carried by `cash`/`tokens`
-4c. **Never bundle `cash`/`tokens` onto a cosmetic row.** A card is captioned from its `label` and by nothing else, so currency riding on a skin row is granted but advertised nowhere and the pass silently pays more than it claims to. S3 carried 350 such Tokens across L10/L20/L29/L30 until 2026-07-26; they are gone, and every currency row is now `kind = "cash"`/`"tokens"` with the amount in the label. The two `AmountText` overlays that used to sit on the level-1 paid card and section 1's `5Free` card were deleted from the authored GUI the same day — they duplicated the caption underneath. The cross-track link is what makes the rule safe: a cosmetic that sits on both tracks no longer needs a sweetener on the paid side to be worth a tap
-4d. **A `label` has one line to fit in.** The caption box overhangs the bottom of its card, so a label long enough for `TextScaled` to wrap loses its second line to the track's clip rect — "Hunter Skin: Summer Dust" wrapped, and on the free row the ScrollingFrame edge cut the second line in half. The client drops a leading `Hunter Skin: ` / `Gun Skin: ` / `Emote: ` kind prefix when it renders (the art is already a hunter, a revolver or a dancing dummy), which buys back the room; keep new labels short enough that they still fit once the prefix is gone
-5. Exports `FREE` — the **free track**, claimable by everyone once the level is reached. Levels are **arbitrary, not every 5th** (`1,5,7,10,15,18,20,23,25,27,29,30`): Bounty's authored panel reserves five grid cells per section and only the last ships a card, so its BattlePassClient clones that card into a blank cell for whatever levels are listed here — adding a free level is a config-only change. The one hard constraint is that no two free levels may want the **same cell**, i.e. share a value of `(level-1) % 5` inside one section
-5b. **The two tracks are LINKED for Full Pass owners** (Bounty's BattlePassService `tryGrantBoth`): claiming either card at a level claims both. That is what lets a level *split* one reward across the tracks — L1 pays 75 + 75 = **150 Cash** to a pass owner and 75 to everyone else, L23 the same at 200 + 200 — and it is what stops a pass owner being asked to claim the same cosmetic twice at L7 (`gunhand`), L10 (`SummerDust`) and L18 (`lasso_dance`), which sit on both tracks. L27 is a *pair* rather than a duplicate: `gunmetal` (chrome) paid, `devils_luck` (glow) free — no longer the same hunter's titles, since the pass's four latest title slots now hold one title per hunter
-6. Exports `ICONS` — reward art per `kind` for the Bounty panel (cash/tokens/emote); unused here, since this place has no pass UI. Boost art lives on the BoostConfig entry instead (per-boost); hunterSkin/gunSkin have no flat icon (the panel renders the model in a ViewportFrame) and titles are drawn as their own styled text
-7. `levelFromXP(xp)` — reached level = `min(TOTAL_LEVELS, floor(xp / XP_PER_LEVEL))`
-8. `currentWeek(now?)` — 1-based index of the unlocked week (0 before season start), clamped to `TOTAL_WEEKS`; weeks 1..currentWeek are all active. Short-circuits to `TOTAL_WEEKS` while `now < TEST_ALL_WEEKS_UNTIL` **and** `previewAllowed()` — `RunService:IsStudio()` or a non-live universe. `IsStudio` is checked first and separately, because a Studio session editing the *live* place resolves `env = "Live"` off its own PlaceId and would otherwise lose the preview exactly where it is most useful. The 0 is a real rendered state, not a placeholder: Bounty's QuestClient `seasonPending()` draws no cards and counts down to the reset
-9. Builds `questById` — `questId -> { quest, week }` lookup at module load
-10. Builds `exclusiveSkins` (`[character][skinName] = kind`) from both tracks and exposes `isExclusiveSkin(character, skinName, kind?)` — Bounty's DataService consults it to refuse a shop purchase of a pass skin, which would otherwise fall through to the 1,000-Cash default price
+1. **Seasons are blocks in a `SEASONS` list** (oldest first), each with `SEASON_ID`, `SEASON_NUMBER`, `SEASON_NAME`, `SEASON_START`, `TEST_ALL_WEEKS_UNTIL`, `QUEST_PROGRESS_TOKEN`, `WEEKS`, `PAID`, `FREE`. Currently Season 1 (`S6`) and Season 2 *Trial by Fire* (`S7`, starts 2026-09-19 18:00 UTC / 20:00 CEST).
+2. **`Config.<season field>` resolves to the LIVE season at read time** through a metatable `__index`. Live = the newest season whose `SEASON_START` has passed; a DEV-universe server always runs the newest. A match server that booted before the boundary switches by itself: the next `ensureData` rolls the player over and quest tracking moves to the new `WEEKS`.
+3. Shared constants: `WEEK_SECONDS`, `TOTAL_WEEKS`, `XP_PER_LEVEL`, `TOTAL_LEVELS`, `FULL_PASS_PRICE`, `XP_SOURCES` (the BP XP this place awards per event), `ICONS` (unused here — this place has no pass UI).
+4. `WEEKS` — the quests this place tracks (`BattlePassService.trackQuest`) and marks completed; the XP is claimed in Bounty. `PAID` / `FREE` are claimed in Bounty only.
+5. `levelFromXP`, `currentWeek(now?)` (live season), `activeSeasonNumber(now?)` (read by TitlesConfig), `questById`, `exclusiveSkins` / `isExclusiveSkin` (built from every season block).
 
 ## Dependencies
-- **Requires:** [[GameEnvironment]] — its only dependency, and the reason `TEST_ALL_WEEKS_UNTIL` can sit set through a publish instead of relying on someone unsetting it. Both are universe-tier mirrored modules in the same folder and GameEnvironment requires nothing, so there is no cycle
-- **Required by:** BattlePassService
+- **Requires:** [[GameEnvironment]]
+- **Required by:** BattlePassService, TitlesConfig
 
 ## Connections
+### RemoteEvents
 None
 
-## Editing for a new season
-1. Bump `SEASON_ID` and set `SEASON_START` to the launch date
-2. Replace the 3 `WEEKS` sets, the 30 `PAID` rows, and the `FREE` rows (any levels 1..30; Bounty's panel builds cells to match)
-3. Copy the whole file verbatim into Bounty **and** the other match place — all three copies must be byte-identical
-4. `type` strings in `WEEKS` must match the event names reported through `QuestEvents.track()`; adding a new type also needs a hook there and a `QUEST_TITLE` entry in Bounty's QuestClient
+### BindableEvents
+None
 
-## Three rules the weekly sets exist to obey
-1. **No type twice in one week.** W1 used to ship "Get 40 kills" alongside "Get 100 kills", which handed out the 40 for free the moment you started on the 100. Each week now runs seven distinct types.
-2. **Each week is its own week.** The three sets used to be one set rescaled — weeks 2 and 3 differed by exactly three numbers (assists 12/14, kills 120/130, bounties 7/8) and all three shipped a byte-identical Dead Man's Hand. Each mechanic now has one home week, with deliberate ramps *across* weeks — for the 08-29 set: matches 10 any-mode → 10 Domination → 12 TDM, damage 40k → 45k, team wins 10 any-mode → 6 Domination, kills 125 any → 150 in TDM → 50 on each of three hunters. Goals ramp for the same reason: an identical goal prints an identical label, and from week 2 onward every unlocked week is on screen at once, so two weeks sharing a goal would show the player the same card twice.
-3. **A label says what to do and nothing else.** Every label used to open with a flavour word — `Payday — 2 bounties`, `Most Wanted — Bounty x4` — which spent a third of a box that only fits ~34 characters and left the objective ambiguous: "2 bounties" reads equally as *kill* two bounty targets or *become* the bounty twice, and both of those were quests in the same week. The card's title slot already carries a category, so the label spends every character on the instruction. State the verb (`Use your ultimate 35 times`, never `35 ultimates`).
-
-Type choices worth not re-litigating: no `killStreak3` (a 3-kill streak **is** the bounty trigger, `RoundSystem.Config.BOUNTY_KILL_THRESHOLD = 3`, so it would duplicate `becomeBounty`); `ultimateUse`/`ultimateKill` rather than a generic ability quest (only Bram and Fortuna have a damaging ability, so half the roster could never finish one); `bountyTime` counts seconds marked rather than "bounties survived" (the survival signal also fires on death).
-
-## Suffixed types: `<event>:<mode>` and `killAs:<Hunter>`
-A quest that names a **gamemode** or a **hunter** uses a suffixed `type`, and the hook site fires the bare event *and* the suffixed one from the same call — `kill`, then `kill:tdm`, then `killAs:Vesper`. `trackQuest` matches `type` **exactly**, so a scoped key never disturbs the unscoped quest sitting on the same action, and a per-mode or per-hunter quest costs one line at an existing hook instead of an event per mode × hunter combination.
-
-Mode comes from the `Gamemode` workspace attribute, hunter from `SelectedHunter` — the same attribute RoundStatsService counts `hunterCount` from, so a death-gated mid-match swap moves subsequent kills onto the new hunter's quest with no extra bookkeeping. Both are nil-guarded, and the failure is asymmetric on purpose: a missing attribute drops the **scoped** key and leaves the bare one alone. A quest that stalls is recoverable; one credited to the wrong hunter is not.
-
-**Fortuna deliberately has no `killAs` quest.** She is the only hunter that costs money (`StoreConfig.HunterCashPrices`); Dust, Vesper and Bram are `StoreConfig.FreeCharacters`. A `killAs:Fortuna` quest would be 2,000 XP a non-owner could never earn — and with no complete-all bonus on the pass weeklies to make it a visible gate, it would read as a quiet paywall rather than a loud one.
-
-Every scoped type also needs a `QUEST_TITLE` entry keyed exactly (`["kill:tdm"]`) in Bounty's QuestClient, or the card heading falls back to `WEEKLY`.
-
-## SEASON_START must never sit FAR in the past
-`currentWeek()` is `floor(elapsed / WEEK_SECONDS) + 1` clamped to `TOTAL_WEEKS`. A start date set 27 days before launch made that clamp return 3 on day one and unlocked the **entire season at once, permanently**. The failure needs a backdate of a whole `WEEK_SECONDS` or more; **hours are harmless**, because `elapsed` stays inside week 1.
-
-It is now **2026-08-29 18:00 UTC / 20:00 CEST**, moved there on 2026-08-27 to roll the season's **second** quest set alongside the team gamemodes. That instant is `RANK_SEASONS[4]` in `GameEnvironment`, so the pass and the ranked leaderboard turn over together exactly as they did at launch. Moving it re-bases the **week clock only**: `SEASON_ID` is still `S6`, so levels, XP, reward-track claims and the Full Pass all survive. A season reset would have been a `SEASON_ID` bump, and this deliberately is not one. Week 1 opens at the boundary, week 2 on 09-05, week 3 on 09-12.
-
-**`SEASON_START` and `TEST_ALL_WEEKS_UNTIL` move together, always** — and since 2026-08-27 they hold the *same* value again, because the preview window is now **environment-gated** rather than something that has to be unset before a publish. It briefly shipped as `nil` under a "must be nil before you publish" rule; that rule lasted a matter of hours, because a lever that has to be remembered is a lever that gets forgotten, and forgetting this one hands every live player all 21 quests at once. The gate is the same one `RoundSystem.Config`'s `FORCE_GAMEMODE` and `FORCE_ROUND_TIME` use.
-
-Closing the test window used to carry its own cost: `currentWeek()` returns 0 until the season starts, and Bounty's QuestClient clamped 0 to 1 and rendered week 1's cards while the server refused to progress or claim them — seven quests on screen that silently never moved. **Fixed 2026-08-27** by that script's `seasonPending()`, which draws no cards and shows `BOUNTY PASS QUESTS RESET IN: hh:mm` instead.
-
-## Two week-unlock levers
-- **`TEST_ALL_WEEKS_UNTIL`** — while `os.time()` is below it, `currentWeek()` returns `TOTAL_WEEKS` and all 21 quests are visible and claimable. **Honoured only in Studio or off-live** (`previewAllowed()`, applied inside `currentWeek`), so DEV and Studio get the preview and a live server ignores it outright and runs the real week clock. Currently `1788026400`, i.e. `SEASON_START`, so it self-expires as well — once the season legitimately begins even a DEV server falls through to week 1. It remains the *only* safe way to preview later weeks: backdating `SEASON_START` to get the same effect is the bug described above, and that has no gate and no expiry. **What an open window hides:** `currentWeek()` never returns 0 while it applies, so the pre-season panel cannot be seen in Studio or on DEV — set it to `nil` temporarily to inspect that state.
-- **`QUEST_PROGRESS_TOKEN`** — bump the string to wipe every profile's `bp.quests` on next join (handled in `BattlePassService.ensureData`, mirrored all three places). Clears weekly quest progress **only**: `bp.xp`, level, `ownsFullPass` and the reward-track claims all survive, which is what makes it usable mid-season when a goal or label changes and stale progress would be counting against text that no longer describes it. A `SEASON_ID` bump would take the whole pass with it. Currently `2026-08-29-quest-set-2`, where it is **hygiene rather than load-bearing**: every new id is `s2w*`, so the old `w1_`/`w2_`/`w3_` progress matches nothing and could not have counted anyway — the bump just stops 21 dead keys riding in every profile forever.
-
-## Label length is a hard constraint
-Weekly quest labels render into a `TextScaled` + `TextWrapped` box measured at **86×13 px** on a 772×360 phone. A label needing more than ~1.3× that width wraps to two ~6px lines and becomes unreadable; below that it simply shrinks on one line. Every label in the original set — all 21, including the 7 that shipped — exceeded it. The current 21 top out at **34 characters** (`Kill 30 enemies with your ultimate`), the measured one-line ceiling. Note the *title* slot (86×16) has its own ceiling and `WEEK 3 · DEAD MAN'S HAND` sits at 1.35× — still one line, but visibly the smallest heading on the panel.
-5. Check every reward `id` against its catalog before shipping — a typo grants nothing and the claim is still consumed. Skin rows also need `character`
-6. Emotes put on the track should have their `price` dropped in EmoteConfig (both places) so the pass is their only source
+### Direct require()
+| Target | Function | Purpose |
+|--------|----------|---------|
+| [[GameEnvironment]] | `env`, `isLive` | DEV runs the newest season; the pre-launch week preview is honoured only off-live |

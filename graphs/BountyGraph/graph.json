@@ -1516,6 +1516,17 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "LocalBounty/ReplicatedStorage/Config/TitlesConfig.md",
+      "weight": 1.0,
+      "_src": "titlesconfig",
+      "_tgt": "battlepassconfig",
+      "source": "battlepassconfig",
+      "target": "titlesconfig"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "LocalBounty/ServerScriptService/PlayerServices/BattlePassService.md",
       "weight": 1.0,
       "_src": "battlepassservice",
@@ -3810,6 +3821,17 @@
       "_tgt": "dataservice",
       "source": "battlepassservice",
       "target": "dataservice"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "LocalBounty/ServerScriptService/PlayerServices/BattlePassService.md",
+      "weight": 1.0,
+      "_src": "battlepassservice",
+      "_tgt": "lootboxservice",
+      "source": "battlepassservice",
+      "target": "lootboxservice"
     },
     {
       "relation": "calls",

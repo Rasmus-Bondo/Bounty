@@ -154,7 +154,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "titlestyles",
-      "community": 4,
+      "community": 5,
       "norm_label": "titlestyles"
     },
     {
@@ -638,7 +638,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "cardsconfig",
-      "community": 1,
+      "community": 5,
       "norm_label": "cardsconfig"
     },
     {
@@ -1078,7 +1078,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "healthbarcontroller",
-      "community": 4,
+      "community": 5,
       "norm_label": "healthbarcontroller"
     },
     {
@@ -1111,7 +1111,7 @@
       "script_type": "ModuleScript",
       "side": "shared",
       "id": "titlerenderer",
-      "community": 4,
+      "community": 5,
       "norm_label": "titlerenderer"
     },
     {
@@ -1364,7 +1364,7 @@
       "script_type": "Script",
       "side": "server",
       "id": "cardsworldvisualserver",
-      "community": 1,
+      "community": 5,
       "norm_label": "cardsworldvisualserver"
     },
     {
@@ -2842,6 +2842,17 @@
       "_tgt": "gameenvironment",
       "source": "battlepassconfig",
       "target": "gameenvironment"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "LocalRedwaterCanyon/ReplicatedStorage/Config/TitlesConfig.md",
+      "weight": 1.0,
+      "_src": "titlesconfig",
+      "_tgt": "battlepassconfig",
+      "source": "battlepassconfig",
+      "target": "titlesconfig"
     },
     {
       "relation": "calls",

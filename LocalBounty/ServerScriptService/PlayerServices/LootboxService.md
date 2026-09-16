@@ -25,7 +25,7 @@ Server half of the lootbox chests (LOOTBOX_SPEC.md). Owns `profile.Lootboxes`, s
 
 ## Dependencies
 - **Requires:** [[LootboxConfig]], [[BoostConfig]], [[TitlesConfig]], [[EmoteConfig]], [[SkinCatalog]], [[BattlePassConfig]], [[StoreConfig]], [[GroupPerkConfig]], [[LimitedStockConfig]], [[DataService]], [[Wallet]], [[BoostService]], [[CollectionService]], [[Telemetry]], [[BountyPlusConfig]]
-- **Required by:** Main, BundleService, CodeRedemptionService
+- **Required by:** Main, BundleService, CodeRedemptionService, BattlePassService (pass `chest` rewards)
 
 ## Connections
 ### RemoteEvents
