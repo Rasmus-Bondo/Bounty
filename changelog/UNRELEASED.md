@@ -87,6 +87,11 @@ destroys a concurrent entry without complaining.
   The DEV gate is unchanged and does the whole job: `GameEnvironment.env == "Dev"`, so this cannot fire on a live server or on an unpublished file resolving to `"Unknown"`. Reverting takes the grants off future joins and leaves the DEV profiles that already have them — harmless, and live profiles were never reachable.
 
   Verified: all three copies byte-identical (10,851 B, hash 2195067036) and the universe mirror is clean at 21 of 21 roots, TOTAL `42b2b660`. The grant logic was dry-run against a stubbed profile in both shapes — with the `Grant*` API absent it writes all nine fields directly; with it present all nine route through the API and nothing is written directly; a second join grants 0 and makes no API call. Every listed name resolves to a real Model: all five guns in Bounty's `WeaponSkins`, and viewmodel **and** world art for all five in both match places, which is what the direct-write branch needs since it cannot check. **Not playtested on DEV.**
+- **Two redemption codes, `200LIKES` and `BONUSWEEK`, each worth 1 chest, live Sat 19 Sep 20:00 CEST -> Sat 26 Sep 20:00 CEST.** Added to the `CODES` table in all three places; `200LIKES` is the first entry in the LIKES ladder to pay a chest rather than Tokens.
+
+  Must be published before 20:00 on the 19th — `startsAt` only keeps a shipped code dark, so a later publish opens the window whenever it lands, not on time. Reverting a place past this publish withdraws both codes while `RedeemedCodes` keeps every redemption already made, so anyone who got in first cannot redeem again if they are re-shipped.
+
+  Verified in Studio: all three copies compile, and the `CODES` block is byte-identical across Bounty / Redwater / Frostbite (2925 bytes, matching checksum), with both entries resolving to 1 chest over the intended window.
 
 ## Changed
 
