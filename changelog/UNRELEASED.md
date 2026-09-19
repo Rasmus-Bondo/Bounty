@@ -17,11 +17,13 @@ destroys a concurrent entry without complaining.
   Also: `GameEnvironment` (DEV mock ranked schedule removed), `BattlePassConfig` (comment only).
   Also: `EmoteConfig` (3 Season 2 pass emotes), `BattlePassConfig` (6 Season 2 reward rows filled).
   Also: `BattlePassConfig` (comment only — the two lava guns it had parked for "the shop or chests" are now in both, and Emberpiercer's old misspelling came out).
+  Also: `TesterGrantService` (cosmetic grants on join, both DataService shapes).
 - **Data-affecting:** yes — ranked season Token awards and title grants.
   Also: yes — Bounty Pass Season 2 (`S7`) resets every player's pass level, XP, quests, claims and Full Pass at 2026-09-19 18:00 UTC, and pass rewards now bank lootbox chests.
   Also: yes — three new pass emote grants and three new hunter-skin grants on the Season 2 track, plus 100 Tokens (paid L13 + L18) and 3 extra chests (free L18 = 2, free L25 doubled to 2) added to the track's payout.
   Also: yes — two new Token-purchasable gun skins write `OwnedWeaponSkins`, and three battle-pass hunter skins become claimable through the shop/Collection surfaces.
   Also: yes — chests can now grant the two new gun skins.
+  Also: yes — DEV profiles only; testers gain six cosmetics they did not earn.
 
 ---
 
@@ -76,6 +78,15 @@ destroys a concurrent entry without complaining.
   `SUPER_WEAPON_SKINS` was deliberately left alone: it is one gun per always-owned hunter, and a second Vesper entry would skew the tutorial chest toward her.
 
   Reverting drops both from the pools and leaves anyone who already pulled one owning it, which is harmless — it stays buyable at 600 Tokens. Verified by auditing every skin in every pool against the six predicates `LootboxService` re-checks at grant time (catalog row, Model, `TokenPrice`, not `CodeOnly`, not limited, not a group perk, not bundle-exclusive): 12 of 12 OK, including both new entries. `BattlePassConfig` is byte-identical across all three places (42,380 B, hash 962211028). **Not playtested:** pulling either from a chest, and the duplicate refund.
+- **DEV testers now join owning the five new skins, plus Fortuna.** `TesterGrantService` held them at 999,999 Cash and Tokens and granted nothing, which was enough while everything had a price. It stopped being enough once the pass had exclusive skins: Bonewhite Dust, Nightshade Vesper and Desert Nomad Bram carry no price and every purchase handler refuses them, so no balance could reach one without grinding the pass to L20 / L30 / L10. Three allowlists — `TESTER_HUNTERS`, `TESTER_HUNTER_SKINS`, `TESTER_WEAPON_SKINS` — are granted on every join, covering those three plus Emberpiercer and Inferno Hand. Fortuna is in there because she is the only hunter not owned from day one and Inferno Hand cannot be equipped, rendered or seen in Collection without her.
+
+  Deliberately an allowlist rather than "everything in the folder": a tester buying a shop skin with the balance above exercises the purchase path, and a blanket grant would hide that. Trim a row once it has been tested.
+
+  **The two match places run a DataService with no `Grant*` functions at all**, so the module cannot simply call them — it is mirrored verbatim into all three and a tester can land in any of them first. Bounty routes through `GrantCharacter` / `GrantHunterSkin` / `GrantWeaponSkin`, which is what re-sends `SkinDataEvent` so a Collection tile unlocks without a rejoin; the match places write the profile fields directly, which is what the live grant sites do anyway since cosmetics are not chokepointed the way Wallet chokepoints currency. Same `PlayerData_v2` profile either way.
+
+  The DEV gate is unchanged and does the whole job: `GameEnvironment.env == "Dev"`, so this cannot fire on a live server or on an unpublished file resolving to `"Unknown"`. Reverting takes the grants off future joins and leaves the DEV profiles that already have them — harmless, and live profiles were never reachable.
+
+  Verified: all three copies byte-identical (10,269 B, hash 739510708) and the universe mirror is clean at 21 of 21 roots, TOTAL `6198faff`. The grant logic was dry-run against a stubbed profile in both shapes — with the `Grant*` API absent it writes all six fields directly; with it present all six route through the API and nothing is written directly; a second join grants 0 and makes no API call. **Not playtested on DEV.**
 
 ## Changed
 
