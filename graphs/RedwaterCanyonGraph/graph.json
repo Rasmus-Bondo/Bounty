@@ -2869,6 +2869,17 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "LocalRedwaterCanyon/ReplicatedStorage/Config/BoostConfig.md",
+      "weight": 1.0,
+      "_src": "boostconfig",
+      "_tgt": "gameenvironment",
+      "source": "boostconfig",
+      "target": "gameenvironment"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "LocalRedwaterCanyon/ServerScriptService/PlayerServices/BoostService.md",
       "weight": 1.0,
       "_src": "boostservice",

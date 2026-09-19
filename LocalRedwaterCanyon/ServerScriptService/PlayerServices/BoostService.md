@@ -2,7 +2,7 @@
 tags: [server, modulescript, boosts, economy]
 path: game.ServerScriptService.PlayerServices.BoostService
 type: ModuleScript
-lines: 233
+lines: 291
 ---
 
 # BoostService
@@ -11,7 +11,7 @@ Spends the live-round-time budget of active XP / Cash boost consumables and expo
 
 ## What it does
 1. `ensureBoosts(data)` — idempotent guard/migration; guarantees `Boosts = { Inventory, Active }`, resetting any pre-migration shape
-2. `getMultiplier(player, kind)` — **additive** multiplier: `1 + (active potion %/100) + (daily-streak passive %/100) + (friend-group %/100)`. Adds the potion bonus while a boost of that kind has time left, adds the [[DailyRewardConfig]] `PASSIVE_BOOST_PERCENT` (+10%) whenever the player's `DailyPermaBoost` flag is set (daily streak ≥ 7), and adds [[FriendBonusService]] `getBonusPercent` (+5% per friend on the server, capped +50%). So a 25% potion + passive + 3 friends = ×1.50. The friend term is a separate additive term — it never touches or extends the potion `remaining`. Read by ProgressionService `addRewards` (`math.floor(base*mult + 0.5)`)
+2. `getMultiplier(player, kind)` — **additive** multiplier: `1 + potion% + daily-streak passive% + friend-group% + BOUNTY+% + limited-time event%`. Adds the potion bonus while a boost of that kind has time left, adds the [[DailyRewardConfig]] `PASSIVE_BOOST_PERCENT` (+10%) whenever the player's `DailyPermaBoost` flag is set (daily streak ≥ 7), and adds [[FriendBonusService]] `getBonusPercent` (+5% per friend on the server, capped +50%). So a 25% potion + passive + 3 friends = ×1.50. The friend term is a separate additive term — it never touches or extends the potion `remaining`. Read by ProgressionService `addRewards` (`math.floor(base*mult + 0.5)`)
 3. `activate(player, boostId)` — the shared activation routine (validate id + inventory, block-if-already-running, decrement, set `Active[kind] = { percent, remaining = minutes*60 }`). Exposed as a server/testing API only; **NOT wired to a client RemoteEvent here** — activation is done in the Bounty lobby
 4. `grantBoost(player, boostId, count)` — adds consumables to the inventory (for the battle pass / future trading post / testing)
 5. Round-gated tick loop: every ~1s **while `State.roundActive`**, decrements each online player's `Active[*].remaining` by real elapsed time, expiring at ≤ 0 (clears the slot, fires `BoostExpired`). Pauses in intermission, in the lobby, and offline
@@ -19,7 +19,8 @@ Spends the live-round-time budget of active XP / Cash boost consumables and expo
 7. Streams inventory + active state via `BoostStateEvent` (on join, activate, grant, expire) and on demand via `RequestBoostState`
 8. Creates its RemoteEvents in ReplicatedStorage on `Start()` if missing
 9. **BOUNTY+ is the third additive term** (2026-09-06) — `getMultiplier` adds `BountyPlusConfig.bonusFraction(...)` beside the potion and friend terms, so the stack is now `1 + potion% + friend% + pass%`. Additive, not a factor on top: a 25% potion plus the pass is x1.50, not x1.5625. Tokens get no term because `bonusFraction` only maps `xp` and `cash`
-10. **Join-time ownership resolve** — `onPlayerAdded` reads `data.BountyPlus.Owned` off the shared profile (the lobby normally answered it long before anyone reaches a match) and only falls back to a live `UserOwnsGamePassAsync` for a profile that predates the stamp. Like every other reader it may move ownership nil/false → true and never back; a failed call leaves the stamp alone and the attribute nil. Runs BEFORE `sendState` because that yields. There is no BountyPlusService in this place — the purchase prompt, the grant and the state remote are all lobby-side
+10. **Limited-time events are the fourth additive term** (2026-09-19) — `getMultiplier` adds [[BoostConfig]] `eventPercent(kind)`, a server-wide bonus that needs no profile state and no per-player bookkeeping. Read fresh from `os.time()` on every earn rather than cached at boot, which is what lets a window open and close on a server that was already running, with no republish and no restart — the same way GameEnvironment rolls a ranked season. Additive like the rest: a +50% event over a 25% potion and the pass is ×2.00, not ×1.875
+11. **Join-time ownership resolve** — `onPlayerAdded` reads `data.BountyPlus.Owned` off the shared profile (the lobby normally answered it long before anyone reaches a match) and only falls back to a live `UserOwnsGamePassAsync` for a profile that predates the stamp. Like every other reader it may move ownership nil/false → true and never back; a failed call leaves the stamp alone and the attribute nil. Runs BEFORE `sendState` because that yields. There is no BountyPlusService in this place — the purchase prompt, the grant and the state remote are all lobby-side
 
 ## Dependencies
 - **Requires:** [[BoostConfig]], [[DailyRewardConfig]], [[BountyPlusConfig]], [[DataService]], [[State]] (in Start), [[FriendBonusService]] (in Start)
@@ -36,7 +37,7 @@ Spends the live-round-time budget of active XP / Cash boost consumables and expo
 ### Direct require()
 | Target | Function | Purpose |
 |--------|----------|---------|
-| [[BoostConfig]] | `get()` | Validate boost ids; read kind/percent/minutes |
+| [[BoostConfig]] | `get()`, `eventPercent()` | Validate boost ids; read kind/percent/minutes; add the limited-time event term to `getMultiplier` |
 | [[DailyRewardConfig]] | `PASSIVE_BOOST_PERCENT` | Add the daily-streak passive +10% to the multiplier when `DailyPermaBoost` is set |
 | [[DataService]] | `getPlayerData()` | Read/write the player's `Boosts` on the profile |
 | [[State]] | `State.roundActive` | Gate the tick loop to live rounds (match-time only) |
