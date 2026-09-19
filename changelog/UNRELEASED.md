@@ -18,7 +18,7 @@ destroys a concurrent entry without complaining.
   Also: `EmoteConfig` (3 Season 2 pass emotes), `BattlePassConfig` (6 Season 2 reward rows filled).
 - **Data-affecting:** yes — ranked season Token awards and title grants.
   Also: yes — Bounty Pass Season 2 (`S7`) resets every player's pass level, XP, quests, claims and Full Pass at 2026-09-19 18:00 UTC, and pass rewards now bank lootbox chests.
-  Also: yes — three new pass emote grants and three new hunter-skin grants on the Season 2 track.
+  Also: yes — three new pass emote grants and three new hunter-skin grants on the Season 2 track, plus 100 Tokens (paid L13 + L18) and 2 chests (free L18) added to the track's payout.
 
 ---
 
@@ -37,12 +37,14 @@ destroys a concurrent entry without complaining.
   - **`PreflightGates` (all three places, `gates=16db0750`):** the resolved "named Lava" and "no WorldModel.Skins entry" standing lines are removed. The rig-clip WARNs are kept, because rig clips are unread by design, so the lava guns play Dust's and Bram's manifest animations.
 
   Without these, a pass claim at L15/L29 is refused (no Bounty model) and other players see the default gun. Verified by render screenshots (world grip, lobby dummy, Trading Post, Collection, pass card) and the gate run (PASS, 0 new lines in all three places). **Needs a DEV playtest:** first-person fire/fan/reload/ultimate for Dust and blast/shrapnel/reload for Bram, the third-person view from a second client, and claiming both levels.
-- **Six of Season 2's eight ART PENDING rows filled (issue #42): three hunter skins and three pass emotes.**
+- **Season 2's reward track is complete — all eight ART PENDING rows closed (issue #42): three hunter skins, three pass emotes and two currency rows.**
   - **Emotes** (`EmoteConfig`): `good_vibes` (paid L3), `attitude` (paid L24), `coffin_dance` (paid L28). No `price` and `unlockText = "BOUNTY PASS"`, so they are earn-only. Purchasable count stays 11, so the lootbox emote pool is unchanged. The three asset ids were resolved through `GetProductInfo` (AssetTypeId 24) before wiring, not trusted as given.
   - **Hunter skins** (`BattlePassConfig`): `DesertNomadBram` paid + free L10, `BonewhiteDust` paid L20, `NightshadeVesper` paid L30. The Models existed in Bounty and were named by no config anywhere; they are now copied into `Hunters.<hunter>.Character.Skins` in Redwater and Frostbite too, which is what stops a claimed skin rendering as the default in a match. `isExclusiveSkin` picks all three up, keeping them out of the shop and chest pools.
-  - **Still COMING SOON:** emotes at paid L13 and paid/free L18. Issue #42 stays open for those two.
+  - **The last two emote slots became currency instead of waiting on art (owner's call):** paid L13 and paid L18 pay **50 Tokens** each, free L18 pays **2 chests**. L18 is now the only level where the two tracks pay *different* rewards, so a Full Pass owner claims both halves there — the same split the Season 1 L1 Cash row uses. Nothing is art-pending any more and **issue #42 closes**; the track is 30/30 paid and 13 free with no gaps.
 
-  Rollback: free before the 20:00 CEST flip. After it, reverting strands any claim of L3/L10/L20/L24/L28/L30 — the grant is already on the profile and the row justifying it would be gone. Verified: both mirrored modules byte-identical across all three places (`EmoteConfig` 8676 B, `BattlePassConfig` 41832 B / hash 2038481509), both compile, and with `GameEnvironment` stubbed to `Dev` the S7 block resolves with all seven cosmetic rows, every emote id passing `EmoteConfig.isValid` and every skin id resolving to a real Model in that place — zero problems. The three copied skins match their Bounty originals on descendant, part and mesh counts. **Not playtested**; folded into issue #43.
+    This moves the Token economics: the paid track goes 50 → 150, so a free player still takes 250 and a **pass owner now takes 400** against the 800-Token Full Pass price (was 300). Reverting these two rows alone is safe before the flip and costs a claimed 50/50/2-chests after it.
+
+  Rollback: free before the 20:00 CEST flip. After it, reverting strands any claim of L3/L10/L20/L24/L28/L30 — the grant is already on the profile and the row justifying it would be gone. Verified: both mirrored modules byte-identical across all three places (`EmoteConfig` 8702 B / hash 1444625214, `BattlePassConfig` 42203 B / hash 3785276877), both compile, and with `GameEnvironment` stubbed to `Dev` the S7 block enumerates 30/30 paid rows with no gaps and 13 free — every emote id passing `EmoteConfig.isValid`, every skin id resolving to a real Model in that place, every cash/tokens/chest/boost row carrying its amount field, and no duplicate reward ids — zero problems. The three copied skins match their Bounty originals on descendant, part and mesh counts. **Not playtested**; folded into issue #43.
 
 ## Changed
 
