@@ -90,3 +90,14 @@ destroys a concurrent entry without complaining.
   **Revert risk:** restores the +3 DEV shift and DEV cannot test the 26 Sep close (its mock table has no row for it). No live effect either way.
 
   **Verified:** all three copies of both modules byte-identical (length + checksum) and compiling; `loadstring` with each DEV PlaceId substituted resolves `env=Dev`, current season 5 / "SEASON 2", ends 1790445600, store `RankPoints_v5`, closed-season card "SEASON 1" — identical to the Live PlaceId. Not yet observed on a published DEV server.
+- **The TAB stats panel shows real XP progress instead of a flat 1000 per level.** The "My Stats"
+  XP number and bar split total XP by a hardcoded 1000, predating the quadratic curve, so they
+  disagreed with the HUD XP bar sitting on the same screen — a player on 2,000 XP read `0 / 1000`
+  with an empty bar where the truth is 644 / 658. The level badge beside them was always right,
+  which is what made the row look plausible.
+
+  `StatsResponse` already carried `CurrentLevelXP`, `XPNeeded` and `XPProgress`, computed server-side
+  off `RoundSystem.Config`; the panel now reads those three and computes nothing. Reverting brings
+  the wrong numbers back and must be done in Redwater **and** Frostbite together — the two copies
+  are byte-identical and `/mirror` will flag a one-sided revert. Display only, no stored data
+  touched. Verified by compile and a Redwater/Frostbite checksum compare, not by playtest.
