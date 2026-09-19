@@ -2,7 +2,7 @@
 tags: [shared, modulescript, battlepass, config]
 path: game.ReplicatedStorage.Config.BattlePassConfig
 type: ModuleScript
-lines: 611
+lines: 612
 ---
 
 # BattlePassConfig

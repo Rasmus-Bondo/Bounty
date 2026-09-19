@@ -16,10 +16,12 @@ destroys a concurrent entry without complaining.
   Also: `BattlePassConfig` (time-gated season blocks, Season 2), `TitlesConfig` (pass titles tagged by season).
   Also: `GameEnvironment` (DEV mock ranked schedule removed), `BattlePassConfig` (comment only).
   Also: `EmoteConfig` (3 Season 2 pass emotes), `BattlePassConfig` (6 Season 2 reward rows filled).
+  Also: `BattlePassConfig` (comment only — the two lava guns it had parked for "the shop or chests" are now in both, and Emberpiercer's old misspelling came out).
 - **Data-affecting:** yes — ranked season Token awards and title grants.
   Also: yes — Bounty Pass Season 2 (`S7`) resets every player's pass level, XP, quests, claims and Full Pass at 2026-09-19 18:00 UTC, and pass rewards now bank lootbox chests.
   Also: yes — three new pass emote grants and three new hunter-skin grants on the Season 2 track, plus 100 Tokens (paid L13 + L18) and 3 extra chests (free L18 = 2, free L25 doubled to 2) added to the track's payout.
   Also: yes — two new Token-purchasable gun skins write `OwnedWeaponSkins`, and three battle-pass hunter skins become claimable through the shop/Collection surfaces.
+  Also: yes — chests can now grant the two new gun skins.
 
 ---
 
@@ -65,6 +67,15 @@ destroys a concurrent entry without complaining.
 - **The three Season 2 pass hunter skins are in the Trading Post catalog: BONEWHITE DUST, NIGHTSHADE VESPER and DESERT NOMAD BRAM.** `ShopHuntersTab` builds its grid from `SkinCatalog.Skins`, so until now the three had Models in all three places and a claimable pass row but no shelf presence at all. Each carries title, header and copy and **no** `TokenPrice`, which is what keeps a pass exclusive off the shelf; `BattlePassConfig.isExclusiveSkin` already covered all three.
 
   Reverting hides them in the shop again without touching any grant. Verified by a catalog-against-Models cross-check in Bounty: every `SkinCatalog` row now resolves to a real Model and every Model under `Characters.<Hunter>.Skin` and `WeaponSkins.<Hunter>` has a row — no orphan in either direction, for the first time.
+- **The two new gun skins are in the chest pools: INFERNO HAND at Epic, EMBERPIERCER at Legendary.** Each took its frost twin's tier rather than a fresh judgement — Emberpiercer is Vesper's sniper like Frostpiercer, Inferno Hand is Fortuna's deck like Frozen Hand. All four sell for the same 600 Tokens, so price could never have split them; what the split encodes is that a sniper skin is the more wanted of the two. A duplicate refunds 210 Tokens, the same as every other 600-Token skin.
+
+  The three Season 2 hunter skins are **not** here and must not be: nothing the pass grants may come out of any chest, and `LootboxService`'s grant-time asserts would drop them with a warn even if listed. The Legendary block comment now names the two Season 2 pass guns alongside HellFire for the same reason.
+
+  **This dilutes the existing entries** — a category's weight is fixed and the roll inside it is uniform, so Epic's weapon-skin quarter splits three ways instead of two and Icefang went from 1/8 of Epic rolls to 1/12. That is the intended effect of a growing catalog; the note added above `POOLS` says to raise a category's weight rather than duplicate an entry if a tier should ever keep its old per-skin rate. Tier odds themselves are untouched, so `DISPLAYED_ODDS` needs no re-simulation.
+
+  `SUPER_WEAPON_SKINS` was deliberately left alone: it is one gun per always-owned hunter, and a second Vesper entry would skew the tutorial chest toward her.
+
+  Reverting drops both from the pools and leaves anyone who already pulled one owning it, which is harmless — it stays buyable at 600 Tokens. Verified by auditing every skin in every pool against the six predicates `LootboxService` re-checks at grant time (catalog row, Model, `TokenPrice`, not `CodeOnly`, not limited, not a group perk, not bundle-exclusive): 12 of 12 OK, including both new entries. `BattlePassConfig` is byte-identical across all three places (42,380 B, hash 962211028). **Not playtested:** pulling either from a chest, and the duplicate refund.
 
 ## Changed
 
