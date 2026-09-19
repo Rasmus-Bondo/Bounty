@@ -1,0 +1,22 @@
+{"ts":"2026-09-19T14:38:51.8299922+02:00","tool":"set_properties","target":"game.ReplicatedStorage.Hunters.Vesper.Weapon.Viewmodel.Skins.EmberpiercerRifle.Lava","place":"instance:gm5-9ft","placeName":"Redwater Canyon"}
+{"ts":"2026-09-19T14:38:54.4583280+02:00","tool":"set_properties","target":"game.ReplicatedStorage.Hunters.Vesper.Weapon.Viewmodel.Skins.EmberpiercerRifle","place":"instance:gm5-9ft","placeName":"Redwater Canyon"}
+{"ts":"2026-09-19T14:40:30.6451249+02:00","tool":"insert_script_lines","target":"game.ServerScriptService.Hunters.FortunaServer.CardsWorldVisualServer","place":"instance:gm5-9ft","placeName":"Redwater Canyon"}
+{"ts":"2026-09-19T14:40:44.2214110+02:00","tool":"delete_script_lines","target":"game.ServerScriptService.Hunters.FortunaServer.CardsWorldVisualServer","place":"instance:gm5-9ft","placeName":"Redwater Canyon"}
+{"ts":"2026-09-19T14:40:57.0960333+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Hunters.FortunaServer.CardsWorldVisualServer","place":"instance:gm5-9ft","placeName":"Redwater Canyon"}
+{"ts":"2026-09-19T14:41:04.9416721+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Hunters.FortunaServer.CardsWorldVisualServer","place":"instance:gm5-9ft","placeName":"Redwater Canyon"}
+{"ts":"2026-09-19T14:41:50.2993436+02:00","tool":"import_rbxm","target":"game.ServerStorage","place":"instance:bt6-cso","placeName":"Frostbite Claim"}
+{"ts":"2026-09-19T14:41:52.7457564+02:00","tool":"import_rbxm","target":"game.ServerStorage","place":"instance:7ku-wvw","placeName":"Bounty"}
+{"ts":"2026-09-19T14:42:12.4566173+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Hunters.FortunaServer.CardsWorldVisualServer","place":"instance:bt6-cso","placeName":"Frostbite Claim"}
+{"ts":"2026-09-19T14:42:17.4516118+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.Hunters.FortunaServer.CardsWorldVisualServer","place":"instance:bt6-cso","placeName":"Frostbite Claim"}
+{"ts":"2026-09-19T14:44:57.9318936+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.LobbySpawn","place":"instance:7ku-wvw","placeName":"Bounty"}
+{"ts":"2026-09-19T14:45:01.9615969+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.LobbySpawn","place":"instance:7ku-wvw","placeName":"Bounty"}
+{"ts":"2026-09-19T14:45:05.8281794+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.LobbySpawn","place":"instance:7ku-wvw","placeName":"Bounty"}
+{"ts":"2026-09-19T14:45:23.0137166+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.SkinCatalog","place":"instance:7ku-wvw","placeName":"Bounty"}
+{"ts":"2026-09-19T14:45:27.8397580+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.SkinCatalog","place":"instance:7ku-wvw","placeName":"Bounty"}
+{"ts":"2026-09-19T14:45:34.1667743+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.SkinCatalog","place":"instance:7ku-wvw","placeName":"Bounty"}
+{"ts":"2026-09-19T14:45:38.7498999+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.SkinCatalog","place":"instance:7ku-wvw","placeName":"Bounty"}
+{"ts":"2026-09-19T14:45:44.5608093+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.SkinCatalog","place":"instance:7ku-wvw","placeName":"Bounty"}
+{"ts":"2026-09-19T14:45:49.1370895+02:00","tool":"edit_script_lines","target":"game.ServerScriptService.PlayerServices.DataService","place":"instance:7ku-wvw","placeName":"Bounty"}
+{"ts":"2026-09-19T14:50:15.1632729+02:00","tool":"edit_script_lines","target":"game.ServerStorage.PreflightGates","place":"instance:gm5-9ft","placeName":"Redwater Canyon"}
+{"ts":"2026-09-19T14:50:29.3388529+02:00","tool":"edit_script_lines","target":"game.ServerStorage.PreflightGates","place":"instance:bt6-cso","placeName":"Frostbite Claim"}
+{"ts":"2026-09-19T14:50:43.5763698+02:00","tool":"edit_script_lines","target":"game.ServerStorage.PreflightGates","place":"instance:7ku-wvw","placeName":"Bounty"}

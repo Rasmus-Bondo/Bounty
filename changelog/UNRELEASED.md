@@ -19,6 +19,7 @@ destroys a concurrent entry without complaining.
 - **Data-affecting:** yes — ranked season Token awards and title grants.
   Also: yes — Bounty Pass Season 2 (`S7`) resets every player's pass level, XP, quests, claims and Full Pass at 2026-09-19 18:00 UTC, and pass rewards now bank lootbox chests.
   Also: yes — three new pass emote grants and three new hunter-skin grants on the Season 2 track, plus 100 Tokens (paid L13 + L18) and 3 extra chests (free L18 = 2, free L25 doubled to 2) added to the track's payout.
+  Also: yes — two new Token-purchasable gun skins write `OwnedWeaponSkins`, and three battle-pass hunter skins become claimable through the shop/Collection surfaces.
 
 ---
 
@@ -53,6 +54,17 @@ destroys a concurrent entry without complaining.
   Two of the three descriptions were first written from the skin's *name* and described art that does not exist: Nightshade Vesper was called "deep violet and black powder" when she is black with a heavy brown fur collar and a pale beaked mask, and Desert Nomad Bram was given a "trail-dusted hood" when he wears a banded serape and a green wide-brim hat. Both were rewritten after rendering all three in a ViewportFrame harness; Bonewhite Dust's was rewritten too, to name the skull on the hat crown. **A skin name is not a description of the skin** — render it before writing shop copy.
 
   Bounty-only (`SkinCatalog` is not mirrored — Redwater and Frostbite never sell anything). Rollback: drop the three rows; no data, though a player who claimed the level keeps the skin in `OwnedSkins` and it would go invisible again. Verified by recompiling the module from source (not `require`, which returns a stale cached copy in edit mode) and confirming all three resolve through `getSkin` with `TokenPrice = nil`; 17 catalog skin rows total; compiles. **Not playtested** — folded into issue #43.
+- **Vesper's EMBERPIERCER and Fortuna's INFERNO HAND are on sale for 600 Tokens each, wired end to end.** The last two lava guns; the other two (Dust's Cinder Six-Shooter, Bram's Molten Grudgekeeper) shipped as Season 2 pass rewards on 2026-09-16.
+  - **Redwater:** Vesper's viewmodel skin renamed `EmberpiecerRifle` to `Emberpiercer` and its inner weapon model `Lava` to `Sniper`, so the folder-driven first-person resolver finds it — under the old name a buyer would have held the default sniper while every other player saw the skin. Fortuna gained a `Throwables.Skins.InfernoHand` card, without which a bought skin throws the default metal card, and an `InfernoHand` row in `CardsWorldVisualServer`'s `worldCardSkins` / `WORLD_CARD_SKIN_OFFSETS`.
+  - **Frostbite:** all five models copied from Redwater and `CardsWorldVisualServer` mirrored; the match-tier fold is byte-identical across both places (TOTAL `7765384c`, 13,897 instances).
+  - **Bounty:** `WeaponSkins` tile models, `WeaponSkinsWorld` lobby-dummy models, `LobbySpawn` alias / offset / card-rotation entries, `SkinCatalog` rows and `DataService.TOKEN_WEAPON_SKIN_PRICES` entries. The price sits in both tables, which must agree — the catalog draws the number and the server enforces it.
+  - **`PreflightGates` (all three, `gates=a33c1ee1`):** the six standing lines for these two are retired; the two Emberpiercer rig-clip WARNs are re-keyed off the old misspelling and stay standing with the other lava guns' on purpose.
+
+  Reverting takes both skins off sale but leaves `OwnedWeaponSkins` entries on the profiles of anyone who bought one, so their 600 Tokens buy a gun that resolves back to the default. Verified: all three places compile, contract gate PASS (0 fail, 0 new, 14 standing), match-tier mirror byte-identical, and the grip point measured inside each model's own bounding box matches its proven sibling — Emberpiercer `(0.099, 0.096, 0.004)` against the default sniper's `(0.100, 0.096, 0.004)`, InfernoHand `(0.060, -0.136, -0.004)` between Prestige's and Frozen's. **Not playtested:** first-person fire/scope/reload for Vesper and throw/recall/ultimate for Fortuna, the third-person view from a second client, the thrown inferno card, the lobby dummy grip, and a Token purchase of each.
+
+- **The three Season 2 pass hunter skins are in the Trading Post catalog: BONEWHITE DUST, NIGHTSHADE VESPER and DESERT NOMAD BRAM.** `ShopHuntersTab` builds its grid from `SkinCatalog.Skins`, so until now the three had Models in all three places and a claimable pass row but no shelf presence at all. Each carries title, header and copy and **no** `TokenPrice`, which is what keeps a pass exclusive off the shelf; `BattlePassConfig.isExclusiveSkin` already covered all three.
+
+  Reverting hides them in the shop again without touching any grant. Verified by a catalog-against-Models cross-check in Bounty: every `SkinCatalog` row now resolves to a real Model and every Model under `Characters.<Hunter>.Skin` and `WeaponSkins.<Hunter>` has a row — no orphan in either direction, for the first time.
 
 ## Changed
 

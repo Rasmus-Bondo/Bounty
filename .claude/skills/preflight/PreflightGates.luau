@@ -63,25 +63,20 @@ local STANDING = {
 	["NOTE: Fortuna skin 'PrestigeCard': no Weapon.WorldModel.Skins entry of the same name"] = true,
 	["NOTE: Vesper ViewmodelAnimations holds 2 clip(s) no manifest entry names (BasicShootReload, Run)"] = true,
 
-	-- The two still-unwired Lava gun skins, Vesper's EmberpiecerRifle and Fortuna's InfernoHand: art
-	-- parked in Redwater's viewmodel Skins folders (no catalog entry, no script names them, Redwater
-	-- only), accepted as-is at Hotfix 3.2. These lines are standing ONLY while those two are unwired.
-	-- Delete them in the same pass that wires them: wiring is exactly when "weapon model is named
-	-- 'Lava'" and the stale rig clips reach players.
+	-- All four lava gun skins, now wired: Dust's CinderSix-Shooter and Bram's MoltenGrudgekeeper as
+	-- Season 2 pass rewards (2026-09-16), Vesper's Emberpiercer and Fortuna's InfernoHand as
+	-- 600-Token shop skins (2026-09-19). Wiring renamed each weapon model off 'Lava' and built the
+	-- same-named world skin, which retired those lines; Emberpiercer also lost the authored "piecer"
+	-- misspelling, so its two lines below are the old ones re-keyed rather than new drift.
+	--
+	-- Their rig clips still differ from the manifest and stay standing ON PURPOSE: no loader has read
+	-- a rig Animation since 2026-08-29 (HunterAnimations resolves every id off Config.Manifest), so
+	-- these skins play the hunter's base clips, which is intended. Delete these with the rig instances
+	-- in Phase 2 -- or, if those clips were authored for the lava meshes, give them Animations.Skins
+	-- entries instead.
 	["WARN: Fortuna skin 'InfernoHand' rig clip 'Ultimate' is rbxassetid://119957724727533 where the manifest resolves rbxassetid://89361073908392"] = true,
-	["WARN: Vesper skin 'EmberpiecerRifle': weapon model is named 'Lava', the default's is 'Sniper'"] = true,
-	["WARN: Vesper skin 'EmberpiecerRifle' rig clip 'Shoot' is rbxassetid://100006793489131 where the manifest resolves rbxassetid://84860686696858"] = true,
-	["WARN: Vesper skin 'EmberpiecerRifle' rig clip 'Reload' is rbxassetid://116410602734293 where the manifest resolves rbxassetid://73583544224104"] = true,
-	["NOTE: Fortuna skin 'InfernoHand': no Weapon.WorldModel.Skins entry of the same name"] = true,
-	["NOTE: Vesper skin 'EmberpiecerRifle': no Weapon.WorldModel.Skins entry of the same name"] = true,
-
-	-- The two Season 2 pass guns, Dust's CinderSix-Shooter and Bram's MoltenGrudgekeeper, wired on
-	-- 2026-09-16: weapon model renamed Lava to Default / Shotgun and a same-named world skin built in
-	-- both match places, which retired their other lines. Their rig clips still differ from the
-	-- manifest and stay standing ON PURPOSE: no loader has read a rig Animation since 2026-08-29
-	-- (HunterAnimations resolves every id off Config.Manifest), so these skins play the hunter's base
-	-- clips, which is intended. Delete these with the rig instances in Phase 2 -- or, if those clips
-	-- were authored for the lava meshes, give them Animations.Skins entries instead.
+	["WARN: Vesper skin 'Emberpiercer' rig clip 'Shoot' is rbxassetid://100006793489131 where the manifest resolves rbxassetid://84860686696858"] = true,
+	["WARN: Vesper skin 'Emberpiercer' rig clip 'Reload' is rbxassetid://116410602734293 where the manifest resolves rbxassetid://73583544224104"] = true,
 	["WARN: Bram skin 'MoltenGrudgekeeper' rig clip 'Shoot' is rbxassetid://78350631756950 where the manifest resolves rbxassetid://93041883597128"] = true,
 	["WARN: Bram skin 'MoltenGrudgekeeper' rig clip 'ShrapnelShoot' is rbxassetid://82623093683842 where the manifest resolves rbxassetid://137350091876899"] = true,
 	["WARN: Bram skin 'MoltenGrudgekeeper' rig clip 'Idle' is rbxassetid://101746142745601 where the manifest resolves rbxassetid://89197463725718"] = true,
