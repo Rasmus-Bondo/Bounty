@@ -283,6 +283,16 @@ survive going from an ultrawide monitor to a portrait phone.
   before the short one does. Equalise the captions (`STAY` / `LEAVE`, not `STAY IN MATCH` /
   `RETURN TO BOUNTY`) rather than trying to correct it with constraints. Put the detail in the body
   copy, which is where the house style keeps it anyway; every house button caption is 1–2 words.
+- **When the captions *cannot* be equalised, inset the shorter one with scale padding.** Two copies
+  of one badge whose text is fixed by meaning hit the case above with no way out: the bottom-bar
+  "NEW ..." pills (`NEW HUNTER` on the Store tab, `NEW PASS` on the Bounty Pass tab) are the same
+  authored component, and the shorter string grew until the pill *height* stopped it -- 31px beside
+  the other's 26px. Measure both strings at one size with `GetTextBoundsAsync` (353 and 274 at 100px
+  in Oswald Bold) and give the short label a symmetric `UIPadding` of `(1 - short / long) / 2` **in
+  scale units** per side. Both labels are then width-bound at the same size, and because the inset is
+  a ratio it holds at every viewport -- which a `UITextSizeConstraint` would not. Valid only while
+  the box aspect is constant (these pills sit in a square grid cell); if the box changes shape with
+  the viewport the binding axis can flip and the match breaks.
 - **A long line is WIDTH-bound, so a taller box does nothing for it.** `TextScaled` picks the largest
   size at which the *wrapped* text fits, and it will happily take one line at a modest size rather
   than two lines at a big one. Measured on the tutorial banner (2026-08-09): the 66-character bounty

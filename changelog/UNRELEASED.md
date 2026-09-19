@@ -92,6 +92,19 @@ destroys a concurrent entry without complaining.
   Must be published before 20:00 on the 19th — `startsAt` only keeps a shipped code dark, so a later publish opens the window whenever it lands, not on time. Reverting a place past this publish withdraws both codes while `RedeemedCodes` keeps every redemption already made, so anyone who got in first cannot redeem again if they are re-shipped.
 
   Verified in Studio: all three copies compile, and the `CODES` block is byte-identical across Bounty / Redwater / Frostbite (2925 bytes, matching checksum), with both entries resolving to 1 chest over the intended window.
+- **The Bounty Pass tab carries a NEW PASS badge, matching the Store tab's NEW HUNTER.** Cloned from
+  the Store pill to `MainMenuGui.CanvasBottom.Frame.4BattlePassFrame.NewItemFrame`, with a
+  `NewPassTextInset` UIPadding so the shorter caption does not out-scale its twin (UI_STYLE_GUIDE
+  3.3).
+
+  `MenuHandlerScript`'s badge hover was hard-wired to the Trading Post frame and is now a
+  `newItemBadges` table keyed by tab frame, so any tab authored with a `NewItemFrame` animates.
+  Reverting the script alone leaves the new pill visible but dead on hover - revert both or neither.
+  Neither pill is data-driven: both are authored `Visible = true` and have to be switched off by
+  hand when the content stops being new.
+
+  Verified in edit mode - the script compiles, the two pills render within a pixel of each other,
+  and the pair holds on iPhone 16 Pro, iPad 6th (4:3), Galaxy S25 Ultra and 1080p. No playtest.
 
 ## Changed
 
