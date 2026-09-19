@@ -1,0 +1,4 @@
+{"ts":"2026-09-19T14:38:14.8406097+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.BattlePassConfig","place":"instance:7ku-wvw","placeName":"Bounty"}
+{"ts":"2026-09-19T14:38:16.4505172+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.BattlePassConfig","place":"instance:gm5-9ft","placeName":"Redwater Canyon"}
+{"ts":"2026-09-19T14:38:18.2607603+02:00","tool":"edit_script_lines","target":"game.ReplicatedStorage.Config.BattlePassConfig","place":"instance:bt6-cso","placeName":"Frostbite Claim"}
+{"ts":"2026-09-19T14:41:03.2636705+02:00","tool":"edit_script_lines","target":"game.StarterPlayer.StarterPlayerScripts.BattlePassClient","place":"instance:7ku-wvw","placeName":"Bounty"}
