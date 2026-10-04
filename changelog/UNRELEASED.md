@@ -8,7 +8,7 @@ entries with `.\.claude\scripts\changelog-capture.ps1 -Add <file>` (what `/chang
 with an `Edit` anchored on its text after a fresh re-read. A whole-file write is the one operation that
 destroys a concurrent entry without complaining.
 
-[Index](../CHANGELOG.md) · [Conventions](CONVENTIONS.md) · Previous release: [Update 4](2026-09-19-update-4.md)
+[Index](../CHANGELOG.md) · [Conventions](CONVENTIONS.md) · Previous release: [Hotfix 4.1](2026-10-04-hotfix-4-1.md)
 
 ---
 
