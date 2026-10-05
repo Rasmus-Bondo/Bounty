@@ -1,0 +1,65 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "PartyPadService",
+      "file_type": "code",
+      "source_file": "LocalBountyLobby/ServerScriptService/PartyPadService.md",
+      "source_location": "game.ServerScriptService.PartyPadService",
+      "script_type": "Script",
+      "side": "server",
+      "id": "partypadservice",
+      "community": 0,
+      "norm_label": "partypadservice"
+    },
+    {
+      "label": "AltCursorClient",
+      "file_type": "code",
+      "source_file": "LocalBountyLobby/StarterPlayer/StarterPlayerScripts/AltCursorClient.md",
+      "source_location": "game.StarterPlayer.StarterPlayerScripts.AltCursorClient",
+      "script_type": "LocalScript",
+      "side": "client",
+      "id": "altcursorclient",
+      "community": 1,
+      "norm_label": "altcursorclient"
+    },
+    {
+      "label": "PartyPadClient",
+      "file_type": "code",
+      "source_file": "LocalBountyLobby/StarterPlayer/StarterPlayerScripts/PartyPadClient.md",
+      "source_location": "game.StarterPlayer.StarterPlayerScripts.PartyPadClient",
+      "script_type": "LocalScript",
+      "side": "client",
+      "id": "partypadclient",
+      "community": 0,
+      "norm_label": "partypadclient"
+    },
+    {
+      "label": "ViewmodelController",
+      "file_type": "code",
+      "source_file": "LocalBountyLobby/StarterPlayer/StarterPlayerScripts/ViewmodelController.md",
+      "source_location": "game.StarterPlayer.StarterPlayerScripts.ViewmodelController",
+      "script_type": "LocalScript",
+      "side": "client",
+      "id": "viewmodelcontroller",
+      "community": 2,
+      "norm_label": "viewmodelcontroller"
+    }
+  ],
+  "links": [
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "LocalBountyLobby/StarterPlayer/StarterPlayerScripts/PartyPadClient.md",
+      "weight": 1.0,
+      "_src": "partypadclient",
+      "_tgt": "partypadservice",
+      "source": "partypadservice",
+      "target": "partypadclient"
+    }
+  ],
+  "hyperedges": []
+}

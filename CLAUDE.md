@@ -143,6 +143,8 @@ When you need to understand or navigate the codebase, follow this two-step proce
 1. **Query the knowledge graph first** — Use `/graphify query "your question"` to search the relevant graph for scripts, connections, and relationships. Browse the place-specific vault folders for detailed summaries of individual scripts.
    - **Redwater Canyon**: `graphs/RedwaterCanyonGraph/graph.json` · vault at `LocalRedwaterCanyon/`
    - **Bounty (Lobby)**: `graphs/BountyGraph/graph.json` · vault at `LocalBounty/`
+   - **Secret (PVE, in development)**: `graphs/SecretGraph/graph.json` · vault at `LocalSecret/`. A separate place for PVE content, **outside the three-place publish and mirror set for now** — `/preflight` and `/mirror` do not cover it. Scripts live in domain folders (`Combat/ Enemies/ Missions/ World/ Mounts/ Progression/`) with no `PVE` prefix; runtime instance names (`PVE_Enemies`, the `PVE*` Bindables in ServerStorage, `ReplicatedStorage.PVE`) keep it. `ServerStorage._Archive` holds old `Before*` rollback snapshots and is not documented.
+   - **Bounty - Lobby (new, in development)**: `graphs/BountyLobbyGraph/graph.json` · vault at `LocalBountyLobby/`. The new in-world lobby (place 90720424663491); its party pads teleport into Secret. **Not the same place as `LocalBounty/`**, and like Secret it is outside the three-place publish and mirror set for now.
    - **Frostbite Claim** has no vault or graph of its own, by design — it mirrors Redwater's gamemode code, so Redwater's vault describes it. Read Redwater's, then check the live Frostbite source via MCP for anything map-specific.
 2. **Then fetch live source via MCP** — Once you've identified the scripts you need, use the Roblox MCP tools (`get_script_source`, `grep_scripts`, etc.) to read the actual current code. The graph tells you *where to look*; MCP gives you *what's actually there*.
 
@@ -164,6 +166,8 @@ Each place has its own Obsidian vault folder that mirrors the Roblox Studio scri
 |-------|-------------|-----------------|---------------|
 | Redwater Canyon | `LocalRedwaterCanyon/` | `graphs/RedwaterCanyonGraph/` | `python update_redwater_canyon_graph.py` |
 | Bounty (Lobby) | `LocalBounty/` | `graphs/BountyGraph/` | `python update_bounty_graph.py` |
+| Secret (PVE) | `LocalSecret/` | `graphs/SecretGraph/` | `python update_secret_graph.py` |
+| Bounty - Lobby (new, in development) | `LocalBountyLobby/` | `graphs/BountyLobbyGraph/` | `python update_bounty_lobby_graph.py` |
 
 ### When to update
 - **New script created** → Create a matching `.md` file with the standard template (see below).
