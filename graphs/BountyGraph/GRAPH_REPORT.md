@@ -1,11 +1,11 @@
-# Graph Report - LocalBounty  (2026-09-19)
+# Graph Report - LocalBounty  (2026-10-05)
 
 ## Corpus Check
-- 134 files · ~166,877 words
+- 134 files · ~166,923 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 134 nodes · 454 edges · 17 communities detected
+- 134 nodes · 454 edges · 18 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -13,6 +13,7 @@
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Main Menu|Main Menu]]
 - [[_COMMUNITY_UI & HUD|UI & HUD]]
+- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
@@ -41,16 +42,16 @@
 10. `PartyService` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `GiftPopupClient` --calls--> `RankSeasonRewardService`  [EXTRACTED]
+  LocalBounty/StarterGui/GiftGui/GiftPopupClient.md → LocalBounty/ServerScriptService/RankSeasonRewardService.md
 - `LoadingScreen` --calls--> `WaitForRequired`  [EXTRACTED]
   LocalBounty/ReplicatedFirst/LoadingScreen.md → LocalBounty/ReplicatedStorage/Modules/WaitForRequired.md
 - `PlayerSettingsService` --calls--> `LoadingScreen`  [EXTRACTED]
   LocalBounty/ServerScriptService/PlayerServices/PlayerSettingsService.md → LocalBounty/ReplicatedFirst/LoadingScreen.md
 - `BattlePassConfig` --calls--> `GameEnvironment`  [EXTRACTED]
   LocalBounty/ReplicatedStorage/Config/BattlePassConfig.md → LocalBounty/ReplicatedStorage/Config/GameEnvironment.md
-- `DataService` --calls--> `BattlePassConfig`  [EXTRACTED]
-  LocalBounty/ServerScriptService/PlayerServices/DataService.md → LocalBounty/ReplicatedStorage/Config/BattlePassConfig.md
-- `LootboxService` --calls--> `BattlePassConfig`  [EXTRACTED]
-  LocalBounty/ServerScriptService/PlayerServices/LootboxService.md → LocalBounty/ReplicatedStorage/Config/BattlePassConfig.md
+- `TitlesConfig` --calls--> `BattlePassConfig`  [EXTRACTED]
+  LocalBounty/ReplicatedStorage/Config/TitlesConfig.md → LocalBounty/ReplicatedStorage/Config/BattlePassConfig.md
 
 ## Communities
 
@@ -67,58 +68,62 @@ Cohesion: 0.56
 Nodes (18): BoostsTab, Catalog, CollectionGuiController, EmoteConfig, EmotesTab, EquipButton, HuntersTab, Panels (+10 more)
 
 ### Community 3 - "Server Bootstrap"
-Cohesion: 0.24
-Nodes (14): BundleHomeController, CodeRedemptionService, CollectionService, DataService, GiftPopupClient, MouseSensitivityService, NewItemClient, NewItemService (+6 more)
-
-### Community 4 - "Server Bootstrap"
 Cohesion: 0.27
 Nodes (14): AccessoryBuyPanel, AnimationLoader, CarouselMath, CollectionClient, Config, DisplayCharacterAnimator, EmoteBuyController, HunterList (+6 more)
 
-### Community 5 - "Server Bootstrap"
-Cohesion: 0.33
-Nodes (11): BattlePassClient, BattlePassConfig, BattlePassService, LobbySpawn, QuestClient, QuestConfig, QuestService, TitleBuyController (+3 more)
+### Community 4 - "Server Bootstrap"
+Cohesion: 0.28
+Nodes (9): BundleHomeController, CodeRedemptionService, DataService, GiftPopupClient, MouseSensitivityService, NewItemService, PlayerSettingsService, ProfileService (+1 more)
 
-### Community 6 - "Server Bootstrap"
+### Community 5 - "Server Bootstrap"
 Cohesion: 0.33
 Nodes (9): BoostConfig, BoostService, BundleService, DailyLoginController, DailyRewardConfig, DailyRewardService, FriendBonusConfig, FriendBonusService (+1 more)
 
-### Community 7 - "Lootbox"
+### Community 6 - "Server Bootstrap"
+Cohesion: 0.36
+Nodes (9): CollectionService, LobbySpawn, NewItemClient, RankRewardsConfig, RankSeasonRewardService, TitleBuyController, TitleRenderer, TitlesConfig (+1 more)
+
+### Community 7 - "Server Bootstrap"
+Cohesion: 0.52
+Nodes (7): BattlePassClient, BattlePassConfig, BattlePassService, QuestClient, QuestConfig, QuestService, Wallet
+
+### Community 8 - "Lootbox"
 Cohesion: 0.6
 Nodes (6): BountyPlusConfig, BountyPlusService, ChestArrivalClient, ChestController, LootboxConfig, LootboxService
 
-### Community 8 - "PreflightGates"
+### Community 9 - "PreflightGates"
 Cohesion: 1.0
 Nodes (1): PreflightGates
 
-### Community 9 - "BattlePassRigAnimationClient"
+### Community 10 - "BattlePassRigAnimationClient"
 Cohesion: 1.0
 Nodes (1): BattlePassRigAnimationClient
 
-### Community 10 - "AbilitiesPanelClient"
+### Community 11 - "AbilitiesPanelClient"
 Cohesion: 1.0
 Nodes (1): AbilitiesPanelClient
 
-### Community 11 - "CollectionSoundClient"
+### Community 12 - "CollectionSoundClient"
 Cohesion: 1.0
 Nodes (1): CollectionSoundClient
 
-### Community 12 - "ViewportRigAnimationClient"
+### Community 13 - "ViewportRigAnimationClient"
 Cohesion: 1.0
 Nodes (1): ViewportRigAnimationClient
 
-### Community 13 - "TutorialCompleteController"
+### Community 14 - "TutorialCompleteController"
 Cohesion: 1.0
 Nodes (1): TutorialCompleteController
 
-### Community 14 - "Unused/Legacy"
+### Community 15 - "Unused/Legacy"
 Cohesion: 1.0
 Nodes (1): DisableDefaultLeaderboard
 
-### Community 15 - "Character Select"
+### Community 16 - "Character Select"
 Cohesion: 1.0
 Nodes (1): DisableResetCharacter
 
-### Community 16 - "Lobby"
+### Community 17 - "Lobby"
 Cohesion: 1.0
 Nodes (1): TumbleweedSpawner
 
@@ -147,7 +152,7 @@ Nodes (1): TumbleweedSpawner
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `DataService` connect `Server Bootstrap` to `Server Bootstrap`, `Main Menu`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`, `Lootbox`?**
+- **Why does `DataService` connect `Server Bootstrap` to `Server Bootstrap`, `Main Menu`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`, `Lootbox`?**
   _High betweenness centrality (0.287) - this node is a cross-community bridge._
 - **Why does `PartyService` connect `Server Bootstrap` to `Main Menu`, `UI & HUD`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`?**
   _High betweenness centrality (0.108) - this node is a cross-community bridge._

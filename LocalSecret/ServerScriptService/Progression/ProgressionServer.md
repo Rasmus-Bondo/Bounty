@@ -15,6 +15,7 @@ Camp upgrade shop: server-validated Revolver, Shotgun and Grit upgrades paid wit
 3. Grit sets Humanoid MaxHealth to 100 + 10 per level (healing the difference on purchase) and is re-applied deferred on every spawn.
 4. The `OpenLoadout` ProximityPrompt on `workspace.PVE_LoadoutStation` opens the panel (also during Voting), or tells expedition players to return to camp.
 5. Replies to the client with a snapshot (scrap + levels) and a status message.
+5b. Levels and scrap persist via PVEDataService (plain attribute mirroring); Grit is re-applied whenever `PVEGritLevel` changes because the saved level loads after first spawn.
 6. Weapon levels are consumed by CombatServer as a +6%/level damage scale.
 
 ## Dependencies

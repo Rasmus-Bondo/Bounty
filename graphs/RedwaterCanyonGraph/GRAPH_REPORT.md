@@ -1,7 +1,7 @@
-# Graph Report - LocalRedwaterCanyon  (2026-10-04)
+# Graph Report - LocalRedwaterCanyon  (2026-10-05)
 
 ## Corpus Check
-- 253 files · ~323,399 words
+- 253 files · ~323,451 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary

@@ -15,6 +15,28 @@
       "norm_label": "partypadservice"
     },
     {
+      "label": "ProfileService",
+      "file_type": "code",
+      "source_file": "LocalBountyLobby/ServerScriptService/PlayerServices/ProfileService.md",
+      "source_location": "game.ServerScriptService.PlayerServices.ProfileService",
+      "script_type": "ModuleScript",
+      "side": "shared",
+      "id": "profileservice",
+      "community": 1,
+      "norm_label": "profileservice"
+    },
+    {
+      "label": "PVEDataService",
+      "file_type": "code",
+      "source_file": "LocalBountyLobby/ServerScriptService/PlayerServices/PVEDataService.md",
+      "source_location": "game.ServerScriptService.PlayerServices.PVEDataService",
+      "script_type": "Script",
+      "side": "server",
+      "id": "pvedataservice",
+      "community": 1,
+      "norm_label": "pvedataservice"
+    },
+    {
       "label": "AltCursorClient",
       "file_type": "code",
       "source_file": "LocalBountyLobby/StarterPlayer/StarterPlayerScripts/AltCursorClient.md",
@@ -22,7 +44,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "altcursorclient",
-      "community": 1,
+      "community": 2,
       "norm_label": "altcursorclient"
     },
     {
@@ -44,7 +66,7 @@
       "script_type": "LocalScript",
       "side": "client",
       "id": "viewmodelcontroller",
-      "community": 2,
+      "community": 3,
       "norm_label": "viewmodelcontroller"
     }
   ],
@@ -59,6 +81,17 @@
       "_tgt": "partypadservice",
       "source": "partypadservice",
       "target": "partypadclient"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "LocalBountyLobby/ServerScriptService/PlayerServices/PVEDataService.md",
+      "weight": 1.0,
+      "_src": "pvedataservice",
+      "_tgt": "profileservice",
+      "source": "profileservice",
+      "target": "pvedataservice"
     }
   ],
   "hyperedges": []

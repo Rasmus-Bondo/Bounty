@@ -1,15 +1,16 @@
 # Graph Report - LocalSecret  (2026-10-05)
 
 ## Corpus Check
-- 67 files · ~19,828 words
+- 69 files · ~20,244 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 67 nodes · 68 edges · 19 communities detected
+- 69 nodes · 69 edges · 20 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
+- [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
 - [[_COMMUNITY_Server Bootstrap|Server Bootstrap]]
@@ -82,59 +83,65 @@ Nodes (4): CoinDropClient, CoinDropConfig, CoinDropServer, CoinLedger
 
 ### Community 6 - "Server Bootstrap"
 Cohesion: 1.0
+Nodes (2): ProfileService, PVEDataService
+
+### Community 7 - "Server Bootstrap"
+Cohesion: 1.0
 Nodes (2): ProgressionClient, ProgressionServer
 
-### Community 7 - "ProgressionConfig"
+### Community 8 - "ProgressionConfig"
 Cohesion: 1.0
 Nodes (1): ProgressionConfig
 
-### Community 8 - "WadingServer"
+### Community 9 - "WadingServer"
 Cohesion: 1.0
 Nodes (1): WadingServer
 
-### Community 9 - "UI & HUD"
+### Community 10 - "UI & HUD"
 Cohesion: 1.0
 Nodes (1): HideBuildPlots
 
-### Community 10 - "Health"
+### Community 11 - "Health"
 Cohesion: 1.0
 Nodes (1): Health
 
-### Community 11 - "Main Menu"
+### Community 12 - "Main Menu"
 Cohesion: 1.0
 Nodes (1): MenuModalGuard
 
-### Community 12 - "Player Data"
+### Community 13 - "Player Data"
 Cohesion: 1.0
 Nodes (1): ExplorationFeedback
 
-### Community 13 - "BoneHorseIKClient"
+### Community 14 - "BoneHorseIKClient"
 Cohesion: 1.0
 Nodes (1): BoneHorseIKClient
 
-### Community 14 - "HorseIKClient"
+### Community 15 - "HorseIKClient"
 Cohesion: 1.0
 Nodes (1): HorseIKClient
 
-### Community 15 - "HorseRiderPoseClient"
+### Community 16 - "HorseRiderPoseClient"
 Cohesion: 1.0
 Nodes (1): HorseRiderPoseClient
 
-### Community 16 - "WadingClient"
+### Community 17 - "WadingClient"
 Cohesion: 1.0
 Nodes (1): WadingClient
 
-### Community 17 - "DisableReset"
+### Community 18 - "DisableReset"
 Cohesion: 1.0
 Nodes (1): DisableReset
 
-### Community 18 - "Input"
+### Community 19 - "Input"
 Cohesion: 1.0
 Nodes (1): PromptClickGuard
 
 ## Knowledge Gaps
-- **38 isolated node(s):** `ChronoConfig`, `ProgressionConfig`, `Ballistics`, `WeaponAudio`, `FastCastRedux` (+33 more)
+- **40 isolated node(s):** `ChronoConfig`, `ProgressionConfig`, `Ballistics`, `WeaponAudio`, `FastCastRedux` (+35 more)
   These have ≤1 connection - possible missing edges or undocumented components.
+- **Thin community `Server Bootstrap`** (2 nodes): `ProfileService`, `PVEDataService`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Server Bootstrap`** (2 nodes): `ProgressionClient`, `ProgressionServer`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `ProgressionConfig`** (1 nodes): `ProgressionConfig`
@@ -166,10 +173,10 @@ Nodes (1): PromptClickGuard
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `MissionServer` connect `Server Bootstrap` to `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`, `Server Bootstrap`?**
-  _High betweenness centrality (0.366) - this node is a cross-community bridge._
+  _High betweenness centrality (0.345) - this node is a cross-community bridge._
 - **Why does `CombatServer` connect `Server Bootstrap` to `Server Bootstrap`?**
-  _High betweenness centrality (0.164) - this node is a cross-community bridge._
+  _High betweenness centrality (0.154) - this node is a cross-community bridge._
 - **Why does `WorldRuntime` connect `Server Bootstrap` to `Server Bootstrap`, `Server Bootstrap`?**
-  _High betweenness centrality (0.144) - this node is a cross-community bridge._
+  _High betweenness centrality (0.136) - this node is a cross-community bridge._
 - **What connects `ChronoConfig`, `ProgressionConfig`, `Ballistics` to the rest of the system?**
-  _38 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _40 weakly-connected nodes found - possible documentation gaps or missing edges._

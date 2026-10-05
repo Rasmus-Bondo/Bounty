@@ -13,7 +13,7 @@ destroys a concurrent entry without complaining.
 ---
 
 - **Shared modules:** none yet.
-- **Data-affecting:** no.
+- **Data-affecting:** yes - profile gains an additive `PVE` block (`Scrap`, `RevolverLevel`, `ShotgunLevel`, `GritLevel`); reverting a place never removes it.
 
 ---
 
@@ -23,6 +23,7 @@ destroys a concurrent entry without complaining.
 - **Secret to lobby return (board #62).** `ServerStorage.Missions.LobbyReturn` / `LobbyReturnConfig` (lobby id 90720424663491, one home) teleport one player at a time with a pending guard and up to 3 retries; `MissionServer.finishBoardedPlayer` calls it after the one-time reward grant, and a new `ReplicatedStorage.PVE.ReturnToLobby` remote lets players idle at camp leave (refused for active runners). **Not verified:** the teleport itself (Studio cannot), retry path.
 - **Local coin drops (board #60).** `CoinDropConfig`, `CoinLedger` (server ledger, `awardScrap` is the single plug point; credits `PVEUnsecured`), `CoinDropServer` (watches `PVE_Enemies`), `CoinDropClient` (pooled parts, one Heartbeat loop, magnet inside 14 studs, no `Touched`), remote `PVE.Remotes.CoinDrop`, mesh at `ReplicatedStorage.PVE.CoinAssets.Coin`. Every eligible player within 150 studs of a kill gets a full drop (total scrap grows with party size); per-archetype values are placeholders. Edit-mode ledger test passed (duplicates, distance, downed, bad ids all paid 0); **not playtested**.
 - **Hold ALT frees the cursor, both new places.** Secret: `CombatClient` ALT is now hold (was toggle) and drives `StarterGui.AltCursorGui.ModalButton`; lobby: `AltCursorGui` + `AltCursorClient`. A 1x1 Modal button toggled by `Visible` is what frees the first-person lock; `MouseBehavior` writes lose to the camera.
+- **Secret and Bounty - Lobby now persist scrap and camp upgrade levels in the shared `PlayerData_v2` profile.** New `ServerScriptService.PlayerServices.PVEDataService` (identical in both) plus a verbatim `ProfileService` copy; same universe as the main game, key `Player_<UserId>`. It seeds `PVEScrap` / `PVERevolverLevel` / `PVEShotgunLevel` / `PVEGritLevel` from `Data.PVE` on join and mirrors later attribute changes back, so `MissionServer` / `ProgressionServer` are untouched; loose salvage (`PVEUnsecured`) is deliberately not saved. `DataService` templates in Bounty, Redwater and Frostbite gained the same `PVE` block (Reconcile-safe, no `DATA_VERSION` bump). `ProgressionServer` re-applies Grit max health when the loaded level arrives after first spawn. Rollback: delete `PVEDataService`; saved `Data.PVE` stays in profiles unused. **Not playtested** (compile-checked only): needs a throwaway-account earn, leave, rejoin, and a lobby to Secret round trip; Studio writes the live store.
 
 ## Changed
 
@@ -40,3 +41,4 @@ destroys a concurrent entry without complaining.
 - **`CombatClient` can no longer stall on the modal button:** its `WaitForChild` now times out (10s) and falls back to an inert stub.
 
 Not captured by the hook (all made with `execute_luau`): every item above that is a new instance or a script edit in Secret and the lobby.
+- **Cursor stays free after picking a trail boon (Secret) - NOT confirmed fixed.** Three attempts in `RunBoonClient` (close the panel on pick, release Modal on the cards when it hides), `ClientMenuState` and `MissionClient` (decision panel stops counting as open, buttons lose Modal, once a pick is locked). Owner reports the cursor still does not lock right after clicking a boon card; cause unresolved, needs a live read of Modal state and `MouseBehavior`.
