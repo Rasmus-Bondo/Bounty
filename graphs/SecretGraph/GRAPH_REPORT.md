@@ -1,7 +1,7 @@
-# Graph Report - LocalSecret  (2026-10-05)
+# Graph Report - LocalSecret  (2026-10-14)
 
 ## Corpus Check
-- 69 files · ~20,244 words
+- 69 files · ~20,362 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary

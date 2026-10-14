@@ -2,7 +2,7 @@
 tags: [client, localscript, missions, ui, hud]
 path: game.StarterPlayer.StarterPlayerScripts.Missions.MissionClient
 type: LocalScript
-lines: 714
+lines: 722
 ---
 
 # MissionClient
@@ -18,6 +18,7 @@ The expedition HUD: mission vote, phase titles, waypoints and markers, train ext
 6. Train flow: banners on phase changes, holdout countdown, and per-wave `INCOMING` billboards at the positions sent on `TrainThreatCue`; the board button is only active within 18 studs of the train door.
 7. Boss arena: dust-storm banners, a boundary `ColorCorrectionEffect` that strengthens near the arena edge, and a push-back warning; also eases Lighting toward a fixed daylight target.
 8. Downed overlay with the revive-token countdown.
+9. A LEAVE TO LOBBY button on the vote panel, visible only while `Phase=Idle`, fires `PVE.ReturnToLobby` (#48).
 
 ## Dependencies
 - **Requires:** Nothing
@@ -29,6 +30,7 @@ The expedition HUD: mission vote, phase titles, waypoints and markers, train ext
 |--------|-----------|-------------|
 | `PVE.MissionVote` | → Server | [[MissionServer]] job vote (`Easy` / `Standard` / `Hard`); the first vote while Idle starts the run |
 | `PVE.ExpeditionDecision` | → Server | [[MissionServer]] `Continue` / `Extract` |
+| `PVE.ReturnToLobby` | → Server | [[MissionServer]] leave for the lobby; ignored for active runners |
 | `PVE.TrainThreatCue` | ← Server | [[MissionServer]] train-holdout wave spawn positions and labels |
 
 ### BindableEvents
