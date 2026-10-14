@@ -2,7 +2,7 @@
 tags: [server, script, missions]
 path: game.ServerScriptService.Missions.MissionServer
 type: Script
-lines: 1491
+lines: 1496
 ---
 
 # MissionServer
@@ -19,7 +19,7 @@ The PVE expedition loop: vote, travel, fight or complete an objective, secure th
 7. `Boon` (15 s): each player picks Gunsmoke (+8% damage), Ironhide (+15 HP) or Fleetfoot (faster Quickstep), defaulting to Gunsmoke. `Decision` (35 s): `Continue` to the next day or `Extract` by boarding the train, which force-dismounts (`PVEForceDismountNow`), drops any carried revive token (`PVEReleaseCarriedToken`), secures loose supplies and writes the `PVELastRun*` summary. Players who give no Continue/Extract answer by the end of the 35 s window are extracted too (a sentinel boarding entry if they are too far from the door). `finishBoardedPlayer` banks carried scrap into `PVEScrap`, drops the player at camp and then calls `LobbyReturn.Send(p, "Extract")`.
 8. Any failure (wipe, travel timeout, uncollected reward) or an error in the loop ends with `cleanupRun`, which resets players and returns the phase to `Idle`. A lost run (`Failed`/`TravelFailed`) sends everyone still in it, tracked in a `participants` set because the roster drops the dead, to the lobby after 6 s; the crash-recovery path passes `skipLobby` and is excluded.
 9. `PVE.ReturnToLobby` remote: an explicit "leave for town" for players who are not active runners (idle at camp, already extracted or eliminated); boarding or already-pending players are ignored.
-10. Lobby hand-off (#48): reads `GetJoinData().TeleportData.mission` (`Easy`, `Hard`, or a Variety kind) from the first server join with `source="lobby"`, then once a living player stands at camp (and the party has landed or 8s passed) sets the Standard slot and calls `startFromVote`, so the lobby pick skips the camp vote. An unknown token changes nothing.
+10. Lobby hand-off (#48): reads `GetJoinData().TeleportData.mission` (`Easy`, `Hard`, or a Variety kind) from the first server join with `source="lobby"`, then once any living player is in (and the party has landed or 8s passed) sets the Standard slot and calls `startFromVote(..., true)`. A lobby start has no camp-distance requirement, rosters every living player, skips the Voting wait and sets `Encounter.LobbyStart` so MissionClient never shows the vote panel. An unknown token changes nothing.
 
 ## Dependencies
 - **Requires:** [[RewardCachePlacement]], [[EnemyService]], [[BossArena]], [[StationTemplateValidator]], [[WorldGenerationConfig]], [[MineSupplyMission]], [[MissionPlacement]], [[MissionVariety]], [[EscortPacing]], [[LobbyReturn]]
