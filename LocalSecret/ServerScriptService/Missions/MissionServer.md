@@ -2,7 +2,7 @@
 tags: [server, script, missions]
 path: game.ServerScriptService.Missions.MissionServer
 type: Script
-lines: 1487
+lines: 1491
 ---
 
 # MissionServer
